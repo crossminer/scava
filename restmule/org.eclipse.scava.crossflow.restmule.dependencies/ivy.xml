@@ -20,7 +20,7 @@
 		<dependency org="commons-logging" name="commons-logging" rev="1.1"/>
 		<dependency org="io.reactivex.rxjava2" name="rxjavafx" rev="2.1.0"/>
 		<dependency org="com.squareup.retrofit2" name="retrofit" rev="2.3.0"/>
-		<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.6.2"/>
+		<!--<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.6.2"/>-->
 		<dependency org="org.mortbay.jetty" name="jetty-util" rev="6.1.26"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.5"/>
 		<dependency org="com.squareup.retrofit2" name="converter-jackson" rev="2.3.0"/>
@@ -44,18 +44,17 @@
 		<dependency org="org.apache.httpcomponents" name="httpcore-nio" rev="4.4.10"/>
 		<dependency org="org.jetbrains.kotlin" name="kotlin-stdlib-jre8" rev="1.2.71"/>
 		<dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.2"/>
-		<dependency org="commons-io" name="commons-io" rev="2.4"/>
+		<dependency org="commons-io" name="commons-io" rev="2.6"/>
 		<dependency org="commons-codec" name="commons-codec" rev="1.11"/>
 		<dependency org="net.java.dev.jna" name="jna-platform" rev="4.4.0"/>
 		<dependency org="net.java.dev.jna" name="jna" rev="4.4.0"/>
 		<dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.6"/>
 		<dependency org="org.apache.httpcomponents" name="httpclient-win" rev="4.5.6"/>
-		<dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.6"/>
+		<!--<dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.6"/>-->
 		<dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.6"/>
 		<dependency org="commons-logging" name="commons-logging" rev="1.2"/>
 		<dependency org="commons-codec" name="commons-codec" rev="1.11"/>
 		<dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.10"/>
-		<dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.6"/>
 		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.6"/>
 		<dependency org="org.apache.httpcomponents" name="httpasyncclient-cache" rev="4.1.4"/>
 		<dependency org="commons-logging" name="commons-logging" rev="1.2"/>

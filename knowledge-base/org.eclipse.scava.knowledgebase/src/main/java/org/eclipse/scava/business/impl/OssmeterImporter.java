@@ -104,6 +104,7 @@ public class OssmeterImporter implements IImporter {
 			result.setDescription((String) obj.get("description"));
 		if (obj.get("descritpion") != null)
 			result.setReadmeText((String) obj.get("description"));
+		result.setMetricPlatformId(result.getShortName());
 		return result;
 	}
 
@@ -125,16 +126,16 @@ public class OssmeterImporter implements IImporter {
 		setArtifactFromJson(result, obj);
 		
 		bufferReader.close();
-		if(result.getHomePage().startsWith("https://github.com/")) {
+		if(result.getHtml_url().startsWith("https://github.com/")) {
 			try {
-				Artifact art = importer.importProject(result.getHomePage().replace("https://github.com/",""), access_token);
+				Artifact art = importer.importProject(result.getHtml_url().replace("https://github.com/", ""), access_token);
 				setArtifactFromJson(art, obj);
 				projectRepository.delete(art.getId());
 				art.setMetricPlatformId(result.getShortName());
 				art.setId(result.getId());
 				result = art;
 			}catch(Exception e) {
-				
+				logger.error(e.getMessage());
 			}
 		}
 		else {

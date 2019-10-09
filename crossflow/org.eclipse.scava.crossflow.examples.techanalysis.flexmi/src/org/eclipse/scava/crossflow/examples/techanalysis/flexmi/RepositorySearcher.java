@@ -20,7 +20,7 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
@@ -85,8 +85,8 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 				+ createUniqueFolderForRepo(repository.getName(), repository.getUrl()));
 
 		//
-		workflow.log(CrossflowLogger.SEVERITY.INFO, "cloning: " + CLONE_SOURCE);
-		workflow.log(CrossflowLogger.SEVERITY.INFO, "into: " + CLONE_REPO_DESTINATION);
+		workflow.log(LogLevel.INFO, "cloning: " + CLONE_SOURCE);
+		workflow.log(LogLevel.INFO, "into: " + CLONE_REPO_DESTINATION);
 		//
 
 		String clonedRepoLocalPath = CLONE_REPO_DESTINATION.getPath();
@@ -100,7 +100,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 			if (CLONE_PARENT_DESTINATION.exists()) {
 				if (replace) {
 					FileUtils.deleteDirectory(CLONE_PARENT_DESTINATION);
-					workflow.log(CrossflowLogger.SEVERITY.INFO, "Successfully cleaned local clone parent destination: "
+					workflow.log(LogLevel.INFO, "Successfully cleaned local clone parent destination: "
 							+ CLONE_PARENT_DESTINATION.getAbsolutePath());
 					CLONE_PARENT_DESTINATION.mkdir();
 				} else {
@@ -112,7 +112,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 			//
 			if (CLONE_REPO_DESTINATION.exists() && !replace) {
-				workflow.log(CrossflowLogger.SEVERITY.INFO,
+				workflow.log(LogLevel.INFO,
 						"Repo already exists and replace is false, not doing anything...");
 				return repositoryCloneInst;
 			}
@@ -125,16 +125,16 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 			}
 			Git git = Git.cloneRepository().setURI(CLONE_SOURCE).setDirectory(CLONE_REPO_DESTINATION).call();
 			git.close();
-			workflow.log(CrossflowLogger.SEVERITY.INFO,
+			workflow.log(LogLevel.INFO,
 					"Successfully cloned specified repo to local clone destination: "
 							+ CLONE_REPO_DESTINATION.getAbsolutePath());
 
 		} catch (Exception e) {
-			workflow.log(CrossflowLogger.SEVERITY.ERROR, "Error in creating clone:");
-			workflow.log(CrossflowLogger.SEVERITY.ERROR, "Repo name chars: ");
+			workflow.log(LogLevel.ERROR, "Error in creating clone:");
+			workflow.log(LogLevel.ERROR, "Repo name chars: ");
 			for (char c : CLONE_REPO_DESTINATION.getPath().toCharArray())
-				workflow.log(CrossflowLogger.SEVERITY.ERROR, c + " | ");
-			workflow.log(CrossflowLogger.SEVERITY.ERROR, "");
+				workflow.log(LogLevel.ERROR, c + " | ");
+			workflow.log(LogLevel.ERROR, "");
 			e.printStackTrace();
 		}
 
@@ -168,7 +168,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 	private String createUniqueFolderForRepo(String name, String url) {
 
-		workflow.log(CrossflowLogger.SEVERITY.INFO, "creating unique hash (SHA-1) for url: " + url);
+		workflow.log(LogLevel.INFO, "creating unique hash (SHA-1) for url: " + url);
 
 		String ret = cleanFileName(name);
 
@@ -183,7 +183,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 			ret = ret + "-" + DigestUtils.sha1Hex(md.digest());
 
 		} catch (NoSuchAlgorithmException e) {
-			workflow.log(CrossflowLogger.SEVERITY.ERROR,
+			workflow.log(LogLevel.ERROR,
 					"createUniqueFolderForRepo() tried to create a SHA-1 digest but a NoSuchAlgorithmException was thrown, appending nothing");
 		}
 
@@ -219,7 +219,7 @@ public class RepositorySearcher extends CommitmentRepositorySearcherBase {
 
 	private void countFiles(RepositoryClone repositoryClone) {
 
-		workflow.log(CrossflowLogger.SEVERITY.INFO, "count ( " + repositoryClone.path + " )");
+		workflow.log(LogLevel.INFO, "count ( " + repositoryClone.path + " )");
 
 		File repositoryLocalPath = new File(repositoryClone.path);
 

@@ -18,7 +18,9 @@ public class DirectoryCacheTests {
 		output.setCorrelationId(input.getId());
 
 		DirectoryCache cache = new DirectoryCache();
-		cache.setWorkflow(new MinimalWorkflow());
+		MinimalWorkflow cacheWorkflow = new MinimalWorkflow();
+		cacheWorkflow.getSerializer().register(NumberPair.class);
+		cache.setWorkflow(cacheWorkflow);
 		File directory = cache.getDirectory();
 		cache.cache(input);
 		cache.cache(output);
@@ -29,7 +31,9 @@ public class DirectoryCacheTests {
 		assertEquals(4, ((NumberPair) cache.getCachedOutputs(input).get(0)).getB());
 
 		DirectoryCache fresh = new DirectoryCache(directory);
-		fresh.setWorkflow(new MinimalWorkflow());
+		MinimalWorkflow freshWorkflow = new MinimalWorkflow();
+		freshWorkflow.getSerializer().register(NumberPair.class);
+		fresh.setWorkflow(freshWorkflow);
 
 		assertTrue(fresh.hasCachedOutputs(input));
 		assertFalse(fresh.hasCachedOutputs(output));

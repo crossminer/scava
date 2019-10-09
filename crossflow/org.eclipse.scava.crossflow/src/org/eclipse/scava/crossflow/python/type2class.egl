@@ -1,4 +1,4 @@
-from crossflow.runtime import Job, logger
+from crossflow.runtime import Job
 
 
 class [%=t.name%] [%if(t.isJob()){%](Job): [%}else{%](object):[%}%] 
