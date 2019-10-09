@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2018 Edge Hill University
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.plaintextprocessing.model;
 
 import com.mongodb.*;
@@ -24,13 +15,13 @@ public class NewsgroupArticlePlainTextProcessing extends Pongo {
 		super();
 		dbObject.put("plainText", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing");
-		ARTICLENUMBER.setOwningType("org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing");
 		PLAINTEXT.setOwningType("org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing");
 		HADREPLIES.setOwningType("org.eclipse.scava.metricprovider.trans.plaintextprocessing.model.NewsgroupArticlePlainTextProcessing");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsGroupName"); 
-	public static NumericalQueryProducer ARTICLENUMBER = new NumericalQueryProducer("articleNumber");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static StringQueryProducer HADREPLIES = new StringQueryProducer("hadReplies"); 
 	public static ArrayQueryProducer PLAINTEXT = new ArrayQueryProducer("plainText");
 	
@@ -44,12 +35,12 @@ public class NewsgroupArticlePlainTextProcessing extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleNumber() {
-		return parseLong(dbObject.get("articleNumber")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupArticlePlainTextProcessing setArticleNumber(long articleNumber) {
-		dbObject.put("articleNumber", articleNumber);
+	public NewsgroupArticlePlainTextProcessing setArticleId(String articleId) {
+		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
 	}

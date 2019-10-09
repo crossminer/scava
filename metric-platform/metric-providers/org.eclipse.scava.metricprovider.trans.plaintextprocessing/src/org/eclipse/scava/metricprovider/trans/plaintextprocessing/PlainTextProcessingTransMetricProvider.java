@@ -182,7 +182,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 				if (newsgroupArticlesData == null) {
 					newsgroupArticlesData = new NewsgroupArticlePlainTextProcessing();
 					newsgroupArticlesData.setNewsGroupName(communicationChannel.getOSSMeterId());
-					newsgroupArticlesData.setArticleNumber(article.getArticleNumber());
+					newsgroupArticlesData.setArticleId(article.getArticleId());
 					db.getNewsgroupArticles().add(newsgroupArticlesData);
 				}
 
@@ -230,7 +230,7 @@ public class PlainTextProcessingTransMetricProvider implements ITransientMetricP
 		NewsgroupArticlePlainTextProcessing newsgroupArticlesData = null;
 		Iterable<NewsgroupArticlePlainTextProcessing> newsgroupArticlesDataIt = db.getNewsgroupArticles().find(
 				NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
-				NewsgroupArticlePlainTextProcessing.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticlePlainTextProcessing.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlePlainTextProcessing nad : newsgroupArticlesDataIt) {
 			newsgroupArticlesData = nad;
 		}
