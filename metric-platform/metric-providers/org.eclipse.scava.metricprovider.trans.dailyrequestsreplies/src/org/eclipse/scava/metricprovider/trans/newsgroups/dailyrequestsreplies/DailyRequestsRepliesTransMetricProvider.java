@@ -178,7 +178,7 @@ NewsgroupsDailyRequestsRepliesTransMetric>{
 		}
 		if (newsgroupArticleData == null) {
 			System.err.println("Newsgroups - Daily Requests Replies -\t" + 
-					"there is no classification for article: " + article.getArticleNumber() +
+					"there is no classification for article: " + article.getArticleId() +
 					"\t belonging to: " + article.getCommunicationChannel().getUrl());
 //			System.exit(-1);
 		} else
