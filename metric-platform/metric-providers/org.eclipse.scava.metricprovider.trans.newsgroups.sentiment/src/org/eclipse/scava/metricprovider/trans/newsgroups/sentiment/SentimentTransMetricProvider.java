@@ -113,7 +113,7 @@ public class SentimentTransMetricProvider  implements
 		Map<String, String> articleSentiment = new HashMap<String, String>();
 		for (org.eclipse.scava.metricprovider.trans.sentimentclassification.model.NewsgroupArticlesSentimentClassification 
 				article: sentimentClassifier.getNewsgroupArticles())
-			articleSentiment.put(article.getNewsGroupName()+article.getArticleNumber(), 
+			articleSentiment.put(article.getNewsGroupName()+article.getArticleId(), 
 										article.getPolarity());
 
 		for (ThreadData thread: usedThreads.getThreads()) {
