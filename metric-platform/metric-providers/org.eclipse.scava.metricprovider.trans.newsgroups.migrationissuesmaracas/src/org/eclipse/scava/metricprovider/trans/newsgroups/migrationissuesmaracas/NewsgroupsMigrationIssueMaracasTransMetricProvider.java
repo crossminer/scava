@@ -233,11 +233,11 @@ public class NewsgroupsMigrationIssueMaracasTransMetricProvider implements ITran
 
 	}
 	
-	private String findPlainText(PlainTextProcessingTransMetric db, String newsgroupName, long articleId) {
+	private String findPlainText(PlainTextProcessingTransMetric db, String newsgroupName, String articleId) {
 		String text="";
 		Iterable<NewsgroupArticlePlainTextProcessing> issuesIt = db.getNewsgroupArticles().find(
 				NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(newsgroupName),
-				NewsgroupArticlePlainTextProcessing.ARTICLENUMBER.eq(articleId));
+				NewsgroupArticlePlainTextProcessing.ARTICLEID.eq(articleId));
 		for (NewsgroupArticlePlainTextProcessing btmi : issuesIt) {
 			text+=String.join("\n", btmi.getPlainText())+"\n";
 		}
