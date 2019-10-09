@@ -186,7 +186,7 @@ public class ActiveUsersTransMetricProvider implements ITransientMetricProvider<
 		}
 		if (newsgroupArticleData == null) {
 			System.err.println("Active users metric -\t" + 
-					"there is no classification for article: " + article.getArticleNumber() +
+					"there is no classification for article: " + article.getArticleId() +
 					"\t of newsgroup: " + ossmeterID);
 //			System.exit(-1);
 		} else
