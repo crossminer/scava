@@ -27,7 +27,7 @@ public class NewsgroupArticleData extends Pongo {
 		dbObject.put("charQuadgrams", new BasicDBList());
 		dbObject.put("charFivegrams", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
-		ARTICLENUMBER.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
 		UNIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
 		BIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
 		TRIGRAMS.setOwningType("org.eclipse.scava.metricprovider.trans.severityclassification.model.NewsgroupArticleData");
@@ -38,7 +38,7 @@ public class NewsgroupArticleData extends Pongo {
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("NewsGroupName"); 
-	public static NumericalQueryProducer ARTICLENUMBER = new NumericalQueryProducer("articleNumber");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static ArrayQueryProducer UNIGRAMS = new ArrayQueryProducer("unigrams");
 	public static ArrayQueryProducer BIGRAMS = new ArrayQueryProducer("bigrams");
 	public static ArrayQueryProducer TRIGRAMS = new ArrayQueryProducer("trigrams");
@@ -57,12 +57,12 @@ public class NewsgroupArticleData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleNumber() {
-		return parseLong(dbObject.get("articleNumber")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupArticleData setArticleNumber(long articleNumber) {
-		dbObject.put("articleNumber", articleNumber);
+	public NewsgroupArticleData setArticleId(String articleId) {
+		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
 	}

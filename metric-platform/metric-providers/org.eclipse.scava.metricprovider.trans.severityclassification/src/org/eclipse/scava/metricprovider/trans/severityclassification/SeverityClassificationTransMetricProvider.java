@@ -222,12 +222,12 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				if (communicationChannelDelta.getArticles().size()==0) continue;
 
 				//Load all stored articles for this newsgroup
-				Map<Long, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannel.getOSSMeterId());
+				Map<String, FeatureIdCollection> articlesFeatureIdCollections = retrieveNewsgroupArticleFeatures(db, communicationChannel.getOSSMeterId());
 				System.err.println("articlesFeatureIdCollections.size(): " + articlesFeatureIdCollections.size());
 
-				Map<Long, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<Long, CommunicationChannelArticle>();
+				Map<String, CommunicationChannelArticle> articlesDeltaArticles = new HashMap<String, CommunicationChannelArticle>();
 				for (CommunicationChannelArticle article: communicationChannelDelta.getArticles())
-					articlesDeltaArticles.put(article.getArticleNumber(), article);
+					articlesDeltaArticles.put(article.getArticleId(), article);
 				System.err.println("articlesDeltaArticles.size(): " + articlesDeltaArticles.size());
 				
 				for (ThreadData threadData: usedClassifier.getThreads())
@@ -235,15 +235,15 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 					int threadId = threadData.getThreadId();
 					for (ArticleData articleData: threadData.getArticles())
 					{
-						if (articlesFeatureIdCollections.containsKey(articleData.getArticleNumber()))
+						if (articlesFeatureIdCollections.containsKey(articleData.getArticleId()))
 						{
-							FeatureIdCollection featureIdCollection  = articlesFeatureIdCollections.get(articleData.getArticleNumber());
+							FeatureIdCollection featureIdCollection  = articlesFeatureIdCollections.get(articleData.getArticleId());
 							classifier.add(articleData, threadId, featureIdCollection);
 						}
 						else
 						{
 							//We need to match here the thread article with the code detector article
-							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleNumber());
+							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleId());
 							deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
 							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
 							db.getNewsgroupArticles().add(newsgroupArticleData);
@@ -387,7 +387,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		
 		NewsgroupArticleData newsgroupArticleData = new NewsgroupArticleData();
 		newsgroupArticleData.setNewsGroupName(ossmeterID);
-		newsgroupArticleData.setArticleNumber(deltaArticle.getArticleNumber());
+		newsgroupArticleData.setArticleId(deltaArticle.getArticleId());
 
 		for (int unigramId: classifier.getUnigramOrders(instanceToStore.getUnigrams()))
 			newsgroupArticleData.getUnigrams().add(unigramId);
@@ -489,7 +489,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().
 				find(NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
-						NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+						NewsgroupArticleDetectingCode.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
@@ -512,9 +512,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return featureIdCollection;
 	}
 
-	private Map<Long, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String ossmeterID)
+	private Map<String, FeatureIdCollection> retrieveNewsgroupArticleFeatures(SeverityClassificationTransMetric db, String ossmeterID)
 	{
-		Map<Long, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<Long, FeatureIdCollection>();
+		Map<String, FeatureIdCollection> articlesFeatureIdCollections = new HashMap<String, FeatureIdCollection>();
 		Iterable<NewsgroupArticleData> newsgroupArticleDataIt =	db.getNewsgroupArticles().find(NewsgroupArticleData.NEWSGROUPNAME.eq(ossmeterID));
 		for (NewsgroupArticleData newsgroupArticleData:  newsgroupArticleDataIt)
 		{
@@ -530,7 +530,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				featureIdCollection.addCharQuadgrams(newsgroupArticleData.getCharQuadgrams());
 				featureIdCollection.addCharFivegrams(newsgroupArticleData.getCharFivegrams());
 			}
-			articlesFeatureIdCollections.put(newsgroupArticleData.getArticleNumber(), featureIdCollection);
+			articlesFeatureIdCollections.put(newsgroupArticleData.getArticleId(), featureIdCollection);
 		}
 
 		return articlesFeatureIdCollections;

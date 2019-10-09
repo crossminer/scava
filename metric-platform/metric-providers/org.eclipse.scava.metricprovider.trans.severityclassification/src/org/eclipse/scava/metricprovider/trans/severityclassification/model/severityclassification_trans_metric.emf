@@ -25,7 +25,7 @@ class BugTrackerBugsData {
 class NewsgroupArticleData {
 	@searchable
    	attr String NewsGroupName;
-   	attr long articleNumber;
+   	attr String articleId;
 	attr int[*] unigrams;
 	attr int[*] bigrams;
 	attr int[*] trigrams;
