@@ -163,14 +163,14 @@ public class HourlyRequestsRepliesTransMetricProvider implements ITransientMetri
 			String ossmeterID, CommunicationChannelArticle article) {
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = usedClassifier.getNewsgroupArticles().
 				find(NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterID), 
-						NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
+						NewsgroupArticles.ARTICLEID.eq(article.getArticleId()));
 		NewsgroupArticles newsgroupArticle = null;
 		for (NewsgroupArticles art:  newsgroupArticlesIt) {
 			newsgroupArticle = art;
 		}
 		if (newsgroupArticle == null) {
 			System.err.println("Newsgroups - Hourly Requests Replies -\t" + 
-					"there is no classification for article: " + article.getArticleNumber() +
+					"there is no classification for article: " + article.getArticleId() +
 					"\t belonging too: " + article.getCommunicationChannel().getUrl());
 //			System.exit(-1);
 		} else{
