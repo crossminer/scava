@@ -18,6 +18,6 @@ class BugTrackerCommentsEmotionClassification {
 class NewsgroupArticlesEmotionClassification {
 	@searchable
    	attr String newsGroupName;
-   	attr long articleNumber;
+   	attr String articleId;
    	attr String[] emotions;
 }

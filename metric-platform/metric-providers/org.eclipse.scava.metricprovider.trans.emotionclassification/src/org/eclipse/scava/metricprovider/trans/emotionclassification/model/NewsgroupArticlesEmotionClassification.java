@@ -15,12 +15,12 @@ public class NewsgroupArticlesEmotionClassification extends Pongo {
 		super();
 		dbObject.put("emotions", new BasicDBList());
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification");
-		ARTICLENUMBER.setOwningType("org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification");
 		EMOTIONS.setOwningType("org.eclipse.scava.metricprovider.trans.emotionclassification.model.NewsgroupArticlesEmotionClassification");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsGroupName"); 
-	public static NumericalQueryProducer ARTICLENUMBER = new NumericalQueryProducer("articleNumber");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static ArrayQueryProducer EMOTIONS = new ArrayQueryProducer("emotions");
 	
 	
@@ -33,12 +33,12 @@ public class NewsgroupArticlesEmotionClassification extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleNumber() {
-		return parseLong(dbObject.get("articleNumber")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupArticlesEmotionClassification setArticleNumber(long articleNumber) {
-		dbObject.put("articleNumber", articleNumber);
+	public NewsgroupArticlesEmotionClassification setArticleId(String articleId) {
+		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
 	}

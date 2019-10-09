@@ -149,7 +149,7 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 			{
 				articleInEmotion = new NewsgroupArticlesEmotionClassification();
 				articleInEmotion.setNewsGroupName(article.getNewsGroupName());
-				articleInEmotion.setArticleNumber(article.getArticleNumber());
+				articleInEmotion.setArticleId(article.getArticleId());
 				db.getNewsgroupArticles().add(articleInEmotion);
 			}
 			db.sync();
@@ -192,7 +192,7 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 	
 	private String getNewsgroupArticleId(NewsgroupArticleDetectingCode article)
 	{
-		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleNumber();
+		return "NEWSGROUP#"+article.getNewsGroupName() + "#" + article.getArticleId();
 	}
 	
 	
@@ -216,7 +216,7 @@ public class EmotionClassificationTransMetricProvider implements ITransientMetri
 		Iterable<NewsgroupArticlesEmotionClassification> newsgroupArticlesDataIt = 
 				db.getNewsgroupArticles().
 						find(NewsgroupArticlesEmotionClassification.NEWSGROUPNAME.eq(article.getNewsGroupName()), 
-								NewsgroupArticlesEmotionClassification.ARTICLENUMBER.eq(article.getArticleNumber()));
+								NewsgroupArticlesEmotionClassification.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlesEmotionClassification nad:  newsgroupArticlesDataIt) {
 			newsgroupArticlesData = nad;
 		}
