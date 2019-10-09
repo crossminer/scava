@@ -1,7 +1,6 @@
 package org.eclipse.scava.metricprovider.trans.requestreplyclassification.model;
 
 import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
@@ -12,13 +11,13 @@ public class NewsgroupArticles extends Pongo {
 	public NewsgroupArticles() { 
 		super();
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles");
-		ARTICLENUMBER.setOwningType("org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles");
 		CLASSIFICATIONRESULT.setOwningType("org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles");
 		DATE.setOwningType("org.eclipse.scava.metricprovider.trans.requestreplyclassification.model.NewsgroupArticles");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer ARTICLENUMBER = new NumericalQueryProducer("articleNumber");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static StringQueryProducer CLASSIFICATIONRESULT = new StringQueryProducer("classificationResult"); 
 	public static StringQueryProducer DATE = new StringQueryProducer("date"); 
 	
@@ -32,12 +31,12 @@ public class NewsgroupArticles extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleNumber() {
-		return parseLong(dbObject.get("articleNumber")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupArticles setArticleNumber(long articleNumber) {
-		dbObject.put("articleNumber", articleNumber);
+	public NewsgroupArticles setArticleId(String articleId) {
+		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
 	}

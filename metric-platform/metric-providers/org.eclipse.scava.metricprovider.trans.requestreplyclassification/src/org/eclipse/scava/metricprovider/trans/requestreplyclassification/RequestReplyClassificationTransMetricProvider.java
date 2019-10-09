@@ -177,7 +177,7 @@ public class RequestReplyClassificationTransMetricProvider
 				if (articleInRequestReply == null) {
 					articleInRequestReply = new NewsgroupArticles();
 					articleInRequestReply.setNewsgroupName(communicationChannel.getOSSMeterId());
-					articleInRequestReply.setArticleNumber(article.getArticleNumber());
+					articleInRequestReply.setArticleId(article.getArticleId());
 					articleInRequestReply.setDate(new Date(article.getDate()).toString());
 					db.getNewsgroupArticles().add(articleInRequestReply);
 				}
@@ -248,14 +248,14 @@ public class RequestReplyClassificationTransMetricProvider
 	}
 
 	private String getNewsgroupArticleId(NewsgroupArticles article) {
-		return "NEWSGROUP#" + article.getNewsgroupName() + "#" + article.getArticleNumber();
+		return "NEWSGROUP#" + article.getNewsgroupName() + "#" + article.getArticleId();
 	}
 
 	private PlainTextObject getPlainTextObject(PlainTextProcessingTransMetric db, NewsgroupArticles article) {
 		NewsgroupArticlePlainTextProcessing newsgroupArticleInPlainText = null;
 		Iterable<NewsgroupArticlePlainTextProcessing> newsgroupArticleIt = db.getNewsgroupArticles().find(
 				NewsgroupArticlePlainTextProcessing.NEWSGROUPNAME.eq(article.getNewsgroupName()),
-				NewsgroupArticlePlainTextProcessing.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticlePlainTextProcessing.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlePlainTextProcessing nadc : newsgroupArticleIt) {
 			newsgroupArticleInPlainText = nadc;
 		}
@@ -267,7 +267,7 @@ public class RequestReplyClassificationTransMetricProvider
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().find(
 				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getNewsgroupName()),
-				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticleDetectingCode.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticleDetectingCode nadc : newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
@@ -296,7 +296,7 @@ public class RequestReplyClassificationTransMetricProvider
 		NewsgroupArticles newsgroupArticles = null;
 		Iterable<NewsgroupArticles> newsgroupArticlesIt = db.getNewsgroupArticles().find(
 				NewsgroupArticles.NEWSGROUPNAME.eq(ossmeterID),
-				NewsgroupArticles.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticles.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticles narr : newsgroupArticlesIt) {
 			newsgroupArticles = narr;
 		}
