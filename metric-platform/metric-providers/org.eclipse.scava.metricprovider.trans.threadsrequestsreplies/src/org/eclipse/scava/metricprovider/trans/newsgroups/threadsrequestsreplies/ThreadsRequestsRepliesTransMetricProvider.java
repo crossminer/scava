@@ -136,7 +136,7 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 			while (iterator.hasNext()) {
 				ArticleData article = iterator.next();
 				lastNewsgroupName = article.getNewsgroupName();
-				String responseReply = articleReplyRequest.get(article.getNewsgroupName() + article.getArticleNumber());
+				String responseReply = articleReplyRequest.get(article.getNewsgroupName() + article.getArticleId());
 				if (first)
 					firstMessageTime = article.getDate();
 				if ((first)&&(responseReply.equals("__label__Reply"))) isFirstRequest=false;
