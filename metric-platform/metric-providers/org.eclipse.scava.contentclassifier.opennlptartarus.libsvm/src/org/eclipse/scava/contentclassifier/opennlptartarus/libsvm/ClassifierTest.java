@@ -14,10 +14,10 @@ public class ClassifierTest {
     public static void main(String[] args) throws Exception {
 
     	String newsgroupName  = "newsgroupName";
-    	int doc1 = 1001;
-    	int doc2 = 1002;
-    	int doc3 = 1003;
-    	int doc4 = 1004;
+    	String doc1 = "1001";
+    	String doc2 = "1002";
+    	String doc3 = "1003";
+    	String doc4 = "1004";
     	String sub1 = "the latest of a series of inconclusive Western moves";
     	String sub2 = "re: the latest of a series of inconclusive Western moves";
     	String text1 = "redirection forgot option mailbox";
