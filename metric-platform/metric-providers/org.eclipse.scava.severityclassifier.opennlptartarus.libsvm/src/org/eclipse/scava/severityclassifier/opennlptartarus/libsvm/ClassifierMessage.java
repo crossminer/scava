@@ -20,7 +20,7 @@ public class ClassifierMessage {
 	
 	private String newsgroupName;
 	private int threadId;
-	private int articleNumber;
+	private String articleId;
 	private String subject;
 	
 	private String forumId;
@@ -129,12 +129,12 @@ public class ClassifierMessage {
 		if (composedId!=null) setComposedId();
 	}
 	
-	public int getArticleNumber() {
-		return articleNumber;
+	public String getArticleId() {
+		return articleId;
 	}
 	
-	public void setArticleNumber(int articleNumber) {
-		this.articleNumber = articleNumber;
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
 		if (composedId!=null) setComposedId();
 	}
 	
@@ -158,7 +158,7 @@ public class ClassifierMessage {
 	public String toString() {
 		if (newsgroupName!=null)
 			return "ClassifierMessage " + "[newsgroupName=" + newsgroupName + ", threadId=" + threadId + 
-					", articleNumber=" + articleNumber + ", subject=" + subject + "]";
+					", articleNumber=" + articleId + ", subject=" + subject + "]";
 		else if(bugTrackerId!=null)
 			return "ClassifierMessage "+ "[bugTrackerId=" + bugTrackerId + 
 					", bugId=" + bugId + ", commentId=" + commentId + ", subject=" + subject + "]";
