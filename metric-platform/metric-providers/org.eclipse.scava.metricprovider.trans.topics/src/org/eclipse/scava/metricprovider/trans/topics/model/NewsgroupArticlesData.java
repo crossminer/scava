@@ -1,7 +1,6 @@
 package org.eclipse.scava.metricprovider.trans.topics.model;
 
 import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
@@ -12,14 +11,14 @@ public class NewsgroupArticlesData extends Pongo {
 	public NewsgroupArticlesData() { 
 		super();
 		NEWSGROUPNAME.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
-		ARTICLENUMBER.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
+		ARTICLEID.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
 		SUBJECT.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
 		TEXT.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
 		DATE.setOwningType("org.eclipse.scava.metricprovider.trans.topics.model.NewsgroupArticlesData");
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer ARTICLENUMBER = new NumericalQueryProducer("articleNumber");
+	public static StringQueryProducer ARTICLEID = new StringQueryProducer("articleId"); 
 	public static StringQueryProducer SUBJECT = new StringQueryProducer("subject"); 
 	public static StringQueryProducer TEXT = new StringQueryProducer("text"); 
 	public static StringQueryProducer DATE = new StringQueryProducer("date"); 
@@ -34,12 +33,12 @@ public class NewsgroupArticlesData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getArticleNumber() {
-		return parseLong(dbObject.get("articleNumber")+"", 0);
+	public String getArticleId() {
+		return parseString(dbObject.get("articleId")+"", "");
 	}
 	
-	public NewsgroupArticlesData setArticleNumber(long articleNumber) {
-		dbObject.put("articleNumber", articleNumber);
+	public NewsgroupArticlesData setArticleId(String articleId) {
+		dbObject.put("articleId", articleId);
 		notifyChanged();
 		return this;
 	}

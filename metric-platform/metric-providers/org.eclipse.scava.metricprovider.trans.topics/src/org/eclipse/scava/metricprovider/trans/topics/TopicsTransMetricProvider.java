@@ -157,7 +157,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			for(Document document : cluster.getAllDocuments())
 			{
 				String[] uid = document.getStringId().split("\t");
-				newsgroupTopic.getArticlesId().add(Long.valueOf(uid[1]));
+				newsgroupTopic.getArticlesId().add(uid[1]);
 			}
 		}
 		db.sync();
@@ -234,7 +234,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 			if (articleInTopic == null) {
 				articleInTopic = new NewsgroupArticlesData();
 				articleInTopic.setNewsgroupName(communicationChannel.getOSSMeterId());
-				articleInTopic.setArticleNumber(article.getArticleNumber());
+				articleInTopic.setArticleId(article.getArticleId());
 				articleInTopic.setDate(new Date(article.getDate()).toString());
 				articleInTopic.setSubject(article.getSubject());
 				articleInTopic.setText(articleNaturalLanguage(detectingCodeMetric, article));
@@ -269,7 +269,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 	
 	private String produceUID(NewsgroupArticlesData article)
 	{
-		return article.getNewsgroupName()+"\t"+String.valueOf(article.getArticleNumber());
+		return article.getNewsgroupName()+"\t"+article.getArticleId();
 	}
 	
 	private String produceUID(BugTrackerCommentsData comment)
@@ -345,7 +345,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		NewsgroupArticlesData newsgroupArticles = null;
 		Iterable<NewsgroupArticlesData> articlesIt = db.getNewsgroupArticles().find(
 				NewsgroupArticlesData.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
-				NewsgroupArticlesData.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticlesData.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticlesData nad : articlesIt) {
 			newsgroupArticles = nad;
 		}
@@ -356,7 +356,7 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		NewsgroupArticleDetectingCode newsgroupArticles = null;
 		Iterable<NewsgroupArticleDetectingCode> articlesIt = db.getNewsgroupArticles().find(
 				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(article.getCommunicationChannel().getOSSMeterId()),
-				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticleDetectingCode.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticleDetectingCode nad : articlesIt) {
 			newsgroupArticles = nad;
 		}
