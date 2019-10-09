@@ -117,7 +117,7 @@ public class ThreadsRequestsRepliesTransMetricProvider  implements
 		
 		Map<String, String> articleReplyRequest = new HashMap<String, String>();
 		for (NewsgroupArticles article: usedClassifier.getNewsgroupArticles())
-			articleReplyRequest.put(article.getNewsgroupName()+article.getArticleNumber(), 
+			articleReplyRequest.put(article.getNewsgroupName()+article.getArticleId(), 
 										article.getClassificationResult());
 
 		for (ThreadData thread: usedThreads.getThreads()) {
