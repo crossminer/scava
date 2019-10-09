@@ -396,7 +396,7 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		NewsgroupArticleDetectingCode newsgroupArticleInDetectionCode = null;
 		Iterable<NewsgroupArticleDetectingCode> newsgroupArticleIt = db.getNewsgroupArticles().find(
 				NewsgroupArticleDetectingCode.NEWSGROUPNAME.eq(newsgroupName),
-				NewsgroupArticleDetectingCode.ARTICLENUMBER.eq(article.getArticleNumber()));
+				NewsgroupArticleDetectingCode.ARTICLEID.eq(article.getArticleId()));
 		for (NewsgroupArticleDetectingCode nadc : newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
