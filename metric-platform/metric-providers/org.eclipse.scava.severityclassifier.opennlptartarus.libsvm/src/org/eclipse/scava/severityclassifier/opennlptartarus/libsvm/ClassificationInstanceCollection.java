@@ -56,7 +56,7 @@ public class ClassificationInstanceCollection {
 		}
 	}
 	
-	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId, ClassificationInstance classificationInstance) {
+	public void add(String url, CommunicationChannelArticle deltaArticle, String threadId, ClassificationInstance classificationInstance) {
 		String composedId = getComposedId(url, threadId);
 		if (instanceMap.containsKey(composedId)) {
 				classificationInstance = instanceMap.get(composedId);
@@ -71,15 +71,15 @@ public class ClassificationInstanceCollection {
 		return instanceMap.get(classifierMessage.getComposedId());
 	}
 
-	private String getComposedId(String url, int threadId) {
-		if ( ( url==null ) || ( threadId==0 ) ) 
+	private String getComposedId(String url, String threadId) {
+		if ( ( url==null ) || ( threadId==null ) ) 
 			System.err.println("Unable to compose ID");
 		return url + "#" + threadId;
 	}
 
 	public void add(FeatureGenerator featureGenerator, 
 					ArticleData articleData,
-					int threadId, FeatureIdCollection featureIdCollection) {
+					String threadId, FeatureIdCollection featureIdCollection) {
 		String composedId = getComposedId(articleData, threadId);
 		ClassificationInstance classificationInstance;
 		if (instanceMap.containsKey(composedId)) {
@@ -94,8 +94,8 @@ public class ClassificationInstanceCollection {
 		}
 	}
 
-	private String getComposedId(ArticleData articleData, int threadId) {
-		if ( ( articleData.getNewsgroupName()==null ) || ( threadId==0 ) ) 
+	private String getComposedId(ArticleData articleData, String threadId) {
+		if ( ( articleData.getNewsgroupName()==null ) || ( threadId==null ) ) 
 			System.err.println("Unable to compose ID");
 		return articleData.getNewsgroupName() + "#" + threadId;
 	}

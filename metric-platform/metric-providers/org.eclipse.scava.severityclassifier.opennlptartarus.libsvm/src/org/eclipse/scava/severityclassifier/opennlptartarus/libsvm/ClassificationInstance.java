@@ -28,7 +28,7 @@ public class ClassificationInstance {
 	private String bugId;
 	
 	private String newsgroupName;
-	private int threadId;
+	private String threadId;
 	private String subject;
 	
 	private String forumId;
@@ -63,7 +63,7 @@ public class ClassificationInstance {
 
 	public ClassificationInstance(FeatureGenerator featureGenerator,
 								  ArticleData articleData, 
-								  int threadId,
+								  String threadId,
 								  FeatureIdCollection featureIdCollection) {
 		initialiseNGrams();
 		initialiseMetadata(articleData, threadId);
@@ -72,7 +72,7 @@ public class ClassificationInstance {
 
 	public ClassificationInstance(String url,
 								  CommunicationChannelArticle deltaArticle, 
-								  int threadId) {
+								  String threadId) {
 		initialiseNGrams();
 		initialiseMetadata(url, deltaArticle, threadId);
 		addText(deltaArticle.getText());
@@ -103,7 +103,7 @@ public class ClassificationInstance {
 		setTopicId(classifierMessage.getTopicId());
 	}
 
-	private void initialiseMetadata(ArticleData articleData, int threadId) {
+	private void initialiseMetadata(ArticleData articleData, String threadId) {
 		setNewsgroupName(articleData.getNewsgroupName());
 		setThreadId(threadId);
 		setSubject(articleData.getSubject());
@@ -111,7 +111,7 @@ public class ClassificationInstance {
 
 	private void initialiseMetadata(String newsgroupName, 
 									CommunicationChannelArticle deltaArticle, 
-									int threadId) {
+									String threadId) {
 		setNewsgroupName(newsgroupName);
 		setThreadId(threadId);
 		if (deltaArticle!=null) {
@@ -155,7 +155,7 @@ public class ClassificationInstance {
 	private void setComposedId() {
 		if ((bugTrackerId!=null)&&(bugId!=null))
 			composedId = bugTrackerId+"#"+bugId;
-		else if ((newsgroupName!=null)&&(threadId!=0)) 
+		else if ((newsgroupName!=null)&&(threadId!=null)) 
 			composedId = newsgroupName+"#"+threadId;
 		else if ((forumId != null) && (topicId != null))
 			composedId = forumId + "#" + topicId;
@@ -193,11 +193,11 @@ public class ClassificationInstance {
 	}
 
 
-	int getThreadId() {
+	String getThreadId() {
 		return threadId;
 	}
 	
-	void setThreadId(int threadId) {
+	void setThreadId(String threadId) {
 		this.threadId = threadId;
 		if (composedId!=null) setComposedId();
 	}

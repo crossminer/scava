@@ -56,11 +56,11 @@ public class Classifier {
 		classificationInstanceCollection.add(featureGenerator, classifierMessage, featureIdCollection);
 	}
 	
-	public void add(ArticleData articleData, int threadId, FeatureIdCollection featureIdCollection) {
+	public void add(ArticleData articleData, String threadId, FeatureIdCollection featureIdCollection) {
 		classificationInstanceCollection.add(featureGenerator, articleData, threadId, featureIdCollection);
 	}
 
-	public void add(String url, CommunicationChannelArticle deltaArticle, int threadId, ClassificationInstance classificationInstance) {
+	public void add(String url, CommunicationChannelArticle deltaArticle, String threadId, ClassificationInstance classificationInstance) {
 		classificationInstanceCollection.add(url, deltaArticle, threadId, classificationInstance);
 	}
 
