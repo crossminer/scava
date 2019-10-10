@@ -17,7 +17,7 @@ public class IrcMessage extends CommunicationChannelArticle {
 		this.setArticleId(message.getId());
 		this.setArticleNumber(message.getDate().getTime());
 		this.setCommunicationChannel(irc);
-		//this.setMessageThreadId(message.getThreadId);
+		this.setMessageThreadId(message.getThreadId());
 		//subject
 		this.setText(message.getText());
 		this.setUser(message.getUser());
