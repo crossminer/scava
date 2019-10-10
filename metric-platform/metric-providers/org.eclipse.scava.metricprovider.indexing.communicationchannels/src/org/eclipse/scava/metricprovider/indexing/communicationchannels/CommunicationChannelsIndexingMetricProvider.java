@@ -74,7 +74,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
 import com.googlecode.pongo.runtime.PongoCollection;
 import com.googlecode.pongo.runtime.PongoDB;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexingMetricProvider {
