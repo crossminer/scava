@@ -232,7 +232,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				
 				for (ThreadData threadData: usedClassifier.getThreads())
 				{
-					int threadId = threadData.getThreadId();
+					String threadId = threadData.getThreadId();
 					for (ArticleData articleData: threadData.getArticles())
 					{
 						if (articlesFeatureIdCollections.containsKey(articleData.getArticleId()))
@@ -317,7 +317,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 			for (ThreadData threadData: usedClassifier.getThreads()) {
 				
 				String newsgroupName = threadData.getArticles().get(0).getNewsgroupName();
-				int threadId = threadData.getThreadId();
+				String threadId = threadData.getThreadId();
 				ClassifierMessage classifierMessage =  prepareNewsgroupClassifierMessage(newsgroupName, threadId);
 				String severity = classifier.getClassificationResult(classifierMessage);
 				
@@ -379,7 +379,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		return bugTrackerBugsData;
 	}
 
-	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String ossmeterID, CommunicationChannelArticle deltaArticle, int threadId)
+	private NewsgroupArticleData prepareNewsgroupArticleData(Classifier classifier, String ossmeterID, CommunicationChannelArticle deltaArticle, String threadId)
 	{
 		ClassificationInstance instanceToStore = new ClassificationInstance(ossmeterID, deltaArticle, threadId);
 		
@@ -451,7 +451,7 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 	}
 	
 	
-	private ClassifierMessage prepareNewsgroupClassifierMessage(String newsgroupName, int threadId) {
+	private ClassifierMessage prepareNewsgroupClassifierMessage(String newsgroupName, String threadId) {
 		ClassifierMessage classifierMessage = new ClassifierMessage();
 		classifierMessage.setNewsgroupName(newsgroupName);
 		classifierMessage.setThreadId(threadId);

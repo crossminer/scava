@@ -38,6 +38,6 @@ class NewsgroupArticleData {
 class NewsgroupThreadData {
 	@searchable
    	attr String newsgroupName;
-   	attr int threadId;
+   	attr String threadId;
    	attr String severity;
 }

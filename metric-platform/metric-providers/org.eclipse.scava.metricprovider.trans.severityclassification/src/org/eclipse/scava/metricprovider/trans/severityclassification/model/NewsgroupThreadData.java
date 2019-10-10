@@ -1,7 +1,6 @@
 package org.eclipse.scava.metricprovider.trans.severityclassification.model;
 
 import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
@@ -17,7 +16,7 @@ public class NewsgroupThreadData extends Pongo {
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
+	public static StringQueryProducer THREADID = new StringQueryProducer("threadId"); 
 	public static StringQueryProducer SEVERITY = new StringQueryProducer("severity"); 
 	
 	
@@ -30,11 +29,11 @@ public class NewsgroupThreadData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
+	public String getThreadId() {
+		return parseString(dbObject.get("threadId")+"", "");
 	}
 	
-	public NewsgroupThreadData setThreadId(int threadId) {
+	public NewsgroupThreadData setThreadId(String threadId) {
 		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;
