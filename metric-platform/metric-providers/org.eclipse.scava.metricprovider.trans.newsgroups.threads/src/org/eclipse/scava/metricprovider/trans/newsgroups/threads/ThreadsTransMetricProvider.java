@@ -334,7 +334,6 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 						threadData.setNewsgroupName(ossmeterID);
 						threadData.setSubject(list.get(0).getSubject());
 						threadId="";
-						//Be sure of the order of the articles
 						for (Article article : list) {
 							if(threadId=="")
 							{
