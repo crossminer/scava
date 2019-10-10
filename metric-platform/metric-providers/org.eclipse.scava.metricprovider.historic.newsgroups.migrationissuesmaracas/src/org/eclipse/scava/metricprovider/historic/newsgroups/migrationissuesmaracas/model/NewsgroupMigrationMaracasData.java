@@ -20,7 +20,7 @@ public class NewsgroupMigrationMaracasData extends Pongo {
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
+	public static StringQueryProducer THREADID = new StringQueryProducer("threadId"); 
 	public static ArrayQueryProducer CHANGESANDMATCHINGPERCENTAGE = new ArrayQueryProducer("changesAndMatchingPercentage");
 	
 	
@@ -33,11 +33,11 @@ public class NewsgroupMigrationMaracasData extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
+	public String getThreadId() {
+		return parseString(dbObject.get("threadId")+"", "");
 	}
 	
-	public NewsgroupMigrationMaracasData setThreadId(int threadId) {
+	public NewsgroupMigrationMaracasData setThreadId(String threadId) {
 		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;

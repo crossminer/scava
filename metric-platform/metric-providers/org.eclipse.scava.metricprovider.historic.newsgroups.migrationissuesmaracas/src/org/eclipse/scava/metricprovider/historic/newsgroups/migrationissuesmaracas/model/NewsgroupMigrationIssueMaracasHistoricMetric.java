@@ -1,4 +1,4 @@
-package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas.model;
+	package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas.model;
 
 import java.util.List;
 

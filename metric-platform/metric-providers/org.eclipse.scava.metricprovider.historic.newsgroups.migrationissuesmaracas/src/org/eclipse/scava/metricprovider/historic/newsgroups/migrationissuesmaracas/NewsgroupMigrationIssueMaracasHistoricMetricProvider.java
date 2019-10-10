@@ -89,7 +89,7 @@ public class NewsgroupMigrationIssueMaracasHistoricMetricProvider extends Abstra
 				
 				
 				
-				for(int threadId : data.getThreadsId())
+				for(String threadId : data.getThreadsId())
 				{
 					dailyMigration.getThreadsId().add(threadId);
 					
@@ -110,18 +110,18 @@ public class NewsgroupMigrationIssueMaracasHistoricMetricProvider extends Abstra
 	
 	private class DataStructure {
 		int sumOfIssues;
-		Map<Integer, List<String>> changesMapping;
+		Map<String, List<String>> changesMapping;
 		
 		public DataStructure() {
 			sumOfIssues=0;
-			changesMapping= new HashMap<Integer, List<String>>();
+			changesMapping= new HashMap<String, List<String>>();
 		}
 		
 		public void increaseSumOfIssues() {
 			sumOfIssues++;
 		}
 		
-		public void addChange(int threadId, String change, Double percentage) {
+		public void addChange(String threadId, String change, Double percentage) {
 			List<String> changes;
 			if(changesMapping.containsKey(threadId))
 				changes=changesMapping.get(threadId);
@@ -131,7 +131,7 @@ public class NewsgroupMigrationIssueMaracasHistoricMetricProvider extends Abstra
 			changesMapping.put(threadId, changes);
 		}
 		
-		public Set<Integer> getThreadsId() {
+		public Set<String> getThreadsId() {
 			return changesMapping.keySet();
 		}
 		
@@ -139,7 +139,7 @@ public class NewsgroupMigrationIssueMaracasHistoricMetricProvider extends Abstra
 			return sumOfIssues;
 		}
 		
-		public List<String> getChangesPerBugId(int threadId)
+		public List<String> getChangesPerBugId(String threadId)
 		{
 			return changesMapping.get(threadId);
 		}
