@@ -36,23 +36,27 @@ operation Any getWorkflow() : Workflow {
 }
 
 @cached
-operation Any getParameters(ruleName : String, language : String) : Map {
+operation Any getParameters(ruleName : String, languageName : String) : Map {
 	var workflow = self.getWorkflow();
 	
 	var params = Map {};
 	params.put("w", workflow);
-	params.put("package", workflow.getPackageName());
 	params.put("genRule", ruleName);
-
-	// Generation Timestamp flag
 	params.put("genDate", getGenTime());
-	var l = workflow.getLanguage(language);
-	if (l.isDefined()) {
-		var p = l.parameters.selectOne(p|p.name == "genDate");
-		if (p.isDefined() and p.value == "false") {
+
+	// Language specific properties
+	var language = workflow.getLanguage(languageName);
+	if (language.isDefined()) {
+		// Package name
+		params.put("package", language.package);
+		
+		// Generation Timestamp flag
+		var genDateFlag = language.parameters.selectOne(p|p.name == "genDate");
+		if (genDateFlag.isDefined() and genDateFlag.value == "false") {
 			params.put("genDate", null);
 		}
 	}
+	
 	return params;
 }
 
