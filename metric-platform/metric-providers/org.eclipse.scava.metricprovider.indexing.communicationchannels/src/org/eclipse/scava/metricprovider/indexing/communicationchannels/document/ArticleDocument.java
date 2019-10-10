@@ -22,7 +22,7 @@ public class ArticleDocument extends DocumentAbstract {
 	private String request_reply_classification;
 	private String content_class;
 	private Boolean contains_code;
-	private List<Integer> threads_id;
+	private List<String> threads_id;
 
 	public ArticleDocument(String uid, String projectName, String collectionName,
 			String articleId,String subject, String messageBody, String creator, Date createdAt) {
@@ -65,7 +65,7 @@ public class ArticleDocument extends DocumentAbstract {
 		return communication_channel_id;
 	}
 
-	public List<Integer> getThreads_id() {
+	public List<String> getThreads_id() {
 		return threads_id;
 	}
 	
@@ -93,9 +93,9 @@ public class ArticleDocument extends DocumentAbstract {
 		this.communication_channel_id = newsgroup_name;
 	}
 
-	public void addThread_id(int thread_id) {
+	public void addThread_id(String thread_id) {
 		if(this.threads_id==null)
-			this.threads_id = new ArrayList<Integer>();
+			this.threads_id = new ArrayList<String>();
 		this.threads_id.add(thread_id);
 	}
 	

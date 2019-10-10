@@ -390,7 +390,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				}
 				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
 				{
-					for(Integer threadId : threadsByArticle.getThreads(article.getArticleId()))
+					for(String threadId : threadsByArticle.getThreads(article.getArticleId()))
 					{
 						if(threadId!=null)
 							articleDocument.addThread_id(threadId);
@@ -544,17 +544,17 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	
 	private class ThreadsByArticle
 	{
-		HashMap<String, Set<Integer>> threadsByArticle;
+		HashMap<String, Set<String>> threadsByArticle;
 		
 		public ThreadsByArticle() {
-			threadsByArticle = new HashMap<String, Set<Integer>>(); 
+			threadsByArticle = new HashMap<String, Set<String>>(); 
 		}
 		
-		public void addThread(String articleId, int threadId)
+		public void addThread(String articleId, String threadId)
 		{
-			Set<Integer> threads;
+			Set<String> threads;
 			if(!threadsByArticle.containsKey(articleId))
-				threads = new HashSet<Integer>();
+				threads = new HashSet<String>();
 			else
 				threads=threadsByArticle.get(articleId);
 			if(!threads.contains(threadId))
@@ -564,12 +564,12 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			}
 		}
 		
-		public Set<Integer> getThreads(String articleId)
+		public Set<String> getThreads(String articleId)
 		{
 			if(threadsByArticle.containsKey(articleId))
 				return threadsByArticle.get(articleId);
 			else
-				return new HashSet<Integer>();
+				return new HashSet<String>();
 		}
 
 		
