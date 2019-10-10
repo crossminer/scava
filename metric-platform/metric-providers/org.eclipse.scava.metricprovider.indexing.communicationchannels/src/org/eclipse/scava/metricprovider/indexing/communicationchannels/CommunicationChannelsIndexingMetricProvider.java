@@ -492,7 +492,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		T output = null;
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(article.getCommunicationChannel().getOSSMeterId()),
-				getNumericalQueryProducer(type, output, "ARTICLEID").eq(article.getArticleId()));
+				getStringQueryProducer(type, output, "ARTICLEID").eq(article.getArticleId()));
 
 		for (T t : iterator) {
 			output = t;
@@ -507,7 +507,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		T output = null;
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(threadData.getNewsgroupName()),
-				getNumericalQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
+				getStringQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
 
 		for (T t : iterator) {
 			output = t;
@@ -521,19 +521,6 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		try {
 
 			return (StringQueryProducer) type.getDeclaredField(field).get(t);
-
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			logger.error("Error while searching data in MongoBD:", e);
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private <T extends Pongo> NumericalQueryProducer getNumericalQueryProducer(Class<T> type, T t, String field) {
-
-		try {
-
-			return (NumericalQueryProducer) type.getDeclaredField(field).get(t);
 
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			logger.error("Error while searching data in MongoBD:", e);
