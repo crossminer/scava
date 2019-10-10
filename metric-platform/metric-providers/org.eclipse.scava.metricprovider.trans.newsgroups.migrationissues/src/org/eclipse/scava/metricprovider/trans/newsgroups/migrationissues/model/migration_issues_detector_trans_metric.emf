@@ -8,7 +8,7 @@ class NewsgroupsMigrationIssueTransMetric {
 class NewsgroupsMigrationIssue {
 	@searchable
    	attr String newsgroupName;
-   	attr int threadId;
+   	attr String threadId;
    	attr String articleId;
    	attr String summary;
    	attr String[*] changes;
