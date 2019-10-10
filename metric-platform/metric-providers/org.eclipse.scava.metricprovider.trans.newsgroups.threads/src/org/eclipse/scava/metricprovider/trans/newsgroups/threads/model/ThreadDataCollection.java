@@ -15,11 +15,11 @@ public class ThreadDataCollection extends PongoCollection<ThreadData> {
 		return new IteratorIterable<ThreadData>(new PongoCursorIterator<ThreadData>(this, dbCollection.find(new BasicDBObject("_id", id))));
 	}
 	
-	public Iterable<ThreadData> findByThreadId(int q) {
+	public Iterable<ThreadData> findByThreadId(String q) {
 		return new IteratorIterable<ThreadData>(new PongoCursorIterator<ThreadData>(this, dbCollection.find(new BasicDBObject("threadId", q + ""))));
 	}
 	
-	public ThreadData findOneByThreadId(int q) {
+	public ThreadData findOneByThreadId(String q) {
 		ThreadData threadData = (ThreadData) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("threadId", q + "")));
 		if (threadData != null) {
 			threadData.setPongoCollection(this);
@@ -28,7 +28,7 @@ public class ThreadDataCollection extends PongoCollection<ThreadData> {
 	}
 	
 
-	public long countByThreadId(int q) {
+	public long countByThreadId(String q) {
 		return dbCollection.count(new BasicDBObject("threadId", q + ""));
 	}
 	

@@ -22,17 +22,17 @@ public class ThreadData extends Pongo {
 		ARTICLESID.setOwningType("org.eclipse.scava.metricprovider.trans.newsgroups.threads.model.ThreadData");
 	}
 	
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
+	public static StringQueryProducer THREADID = new StringQueryProducer("threadId"); 
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
 	public static StringQueryProducer SUBJECT = new StringQueryProducer("subject"); 
 	public static ArrayQueryProducer ARTICLESID = new ArrayQueryProducer("articlesId");
 	
 	
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
+	public String getThreadId() {
+		return parseString(dbObject.get("threadId")+"", "");
 	}
 	
-	public ThreadData setThreadId(int threadId) {
+	public ThreadData setThreadId(String threadId) {
 		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;
