@@ -70,25 +70,25 @@ public class NewsgroupsMigrationIssueHistoricMetricProvider extends AbstractHist
 	public Pongo measure(Project project) {
 
 		NewsgroupsMigrationIssueTransMetric migration = ((NewsgroupsMigrationIssueTransMetricProvider)uses.get(0)).adapt(context.getProjectDB(project));
-		HashSet<Integer> threadIdSet = new HashSet<Integer>();
+		HashSet<String> threadIdSet = new HashSet<String>();
 		for (NewsgroupsMigrationIssue migrationIssue: migration.getNewsgroupsMigrationIssues())
 			threadIdSet.add(migrationIssue.getThreadId());
 		
 		NewsgroupsMigrationIssueHistoricMetric historicMigration = new NewsgroupsMigrationIssueHistoricMetric();
 		
 		Map<String, Integer> sumOfIssues = new HashMap<String, Integer>();
-		Map<String, List<Integer>> allThreadsIds = new HashMap<String, List<Integer>>();
+		Map<String, List<String>> allThreadsIds = new HashMap<String, List<String>>();
 		
 		for (NewsgroupsMigrationIssue newsgroupMigrationIssue: migration.getNewsgroupsMigrationIssues()) {
 			int sum = 1;
-			List<Integer> threadsIds;
+			List<String> threadsIds;
 			if (sumOfIssues.containsKey(newsgroupMigrationIssue.getNewsgroupName()))
 			{
 				sum += sumOfIssues.get(newsgroupMigrationIssue.getNewsgroupName());
 				threadsIds=allThreadsIds.get(newsgroupMigrationIssue.getNewsgroupName());
 			}
 			else
-				threadsIds=new ArrayList<Integer>(1);
+				threadsIds=new ArrayList<String>(1);
 			sumOfIssues.put(newsgroupMigrationIssue.getNewsgroupName(), sum);
 			threadsIds.add(newsgroupMigrationIssue.getThreadId());
 			allThreadsIds.put(newsgroupMigrationIssue.getNewsgroupName(), threadsIds);

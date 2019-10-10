@@ -1,18 +1,14 @@
 package org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.model;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.PrimitiveList;
-import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class DailyNewsgroupsMigrationData extends Pongo {
 	
-	protected List<Integer> threadsId = null;
+	protected List<String> threadsId = null;
 	
 	
 	public DailyNewsgroupsMigrationData() { 
@@ -47,9 +43,9 @@ public class DailyNewsgroupsMigrationData extends Pongo {
 		return this;
 	}
 	
-	public List<Integer> getThreadsId() {
+	public List<String> getThreadsId() {
 		if (threadsId == null) {
-			threadsId = new PrimitiveList<Integer>(this, (BasicDBList) dbObject.get("threadsId"));
+			threadsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("threadsId"));
 		}
 		return threadsId;
 	}
