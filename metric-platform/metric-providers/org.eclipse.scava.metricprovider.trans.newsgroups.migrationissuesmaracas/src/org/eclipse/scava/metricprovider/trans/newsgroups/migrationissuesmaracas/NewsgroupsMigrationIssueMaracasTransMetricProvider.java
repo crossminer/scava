@@ -281,7 +281,7 @@ public class NewsgroupsMigrationIssueMaracasTransMetricProvider implements ITran
 	}
 
 		
-	private NewsgroupMigrationIssueMaracas findBugTrackerCommentMaracas(NewsgroupsMigrationIssueMaracasTransMetric db, String newsgroupName, int threadId) {
+	private NewsgroupMigrationIssueMaracas findBugTrackerCommentMaracas(NewsgroupsMigrationIssueMaracasTransMetric db, String newsgroupName, String threadId) {
 		NewsgroupMigrationIssueMaracas bugTrackerIssues = null;
 		Iterable<NewsgroupMigrationIssueMaracas> issuesIt = db.getNewsgroupsMigrationIssuesMaracas().find(
 				NewsgroupMigrationIssueMaracas.NEWSGROUPNAME.eq(newsgroupName),
