@@ -64,7 +64,7 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 			 cumulativeSumOfDurations = 0;
 		int bugsConsidered = 0,
 			cumulativeBugsConsidered = 0;
-		String bugTrackerId = "";
+		String bugTrackerId = null;
 		
 //		if (usedBugsRequestsReplies==null)
 //			System.err.println("usedBugsRequestsReplies == null");
@@ -88,7 +88,7 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 		BugsResponseTimeHistoricMetric dailyAverageThreadResponseTime = new BugsResponseTimeHistoricMetric();
 		
 		//There were no bugs detected
-		if(bugTrackerId!="")
+		if(bugTrackerId!=null)
 		{
 			dailyAverageThreadResponseTime.setBugTrackerId(bugTrackerId);
 			dailyAverageThreadResponseTime.setBugsConsidered(bugsConsidered);
