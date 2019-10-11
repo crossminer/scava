@@ -1,32 +1,6 @@
-@cached
-operation getGenTime() : String {
-	return Native("java.time.Instant").now().toString();
-}
-
-@cached
-operation Language hasGenDate() : Boolean {
-	var genDate = self.parameters.selectOne(p|p.name == "genDate");
-	if (param.isDefined()) {
-		return param.name == "true";
-	}
-	return true;
-}
-
-@cached
-operation Task hasLanguage(language : String) : Boolean {
-	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
-}
-
-@cached
-operation Workflow hasLanguage(language : String) : Language {
-	return self.getLanguage(language).isDefined();
-}
-
-@cached
-operation Any getLanguage(language : String) : Language {
-	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
-}
-
+/**
+ * GENERAL
+ */
 @cached
 operation Any getWorkflow() : Workflow {
 	if (self.isTypeOf(Workflow)) {
@@ -35,6 +9,36 @@ operation Any getWorkflow() : Workflow {
 	return self.eContainer().getWorkflow();
 }
 
+operation String toSnakeCase() : String {
+	return self.replaceAll("(.)(\\p{Upper})", "$1_$2");
+}
+
+operation String toSnakeCaseUpper() : String {
+	return self.toSnakeCase().toUpperCase();
+}
+
+operation String toSnakeCaseLower() : String {
+	return self.toSnakeCase().toLowerCase();
+}
+
+/**
+ * LANGUAGES AND CONFIGURATION
+ */
+@cached
+operation Workflow hasLanguage(language : String) : Language {
+	return self.getLanguage(language).isDefined();
+}
+
+/**
+ * GENERATION CONFIGURATION
+ */
+// Return the language with the give name, ignoring case
+@cached
+operation Any getLanguage(language : String) : Language {
+	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
+}
+
+// Return EGL parameters for the specified language
 @cached
 operation Any getParameters(ruleName : String, languageName : String) : Map {
 	var workflow = self.getWorkflow();
@@ -63,93 +67,141 @@ operation Any getParameters(ruleName : String, languageName : String) : Map {
 	return params;
 }
 
+// Generate the current time in ISO-8061 format, for use with generation metadata 
+@cached
+operation getGenTime() : String {
+	return Native("java.time.Instant").now().toString();
+}
+
+// Returns whether the language parameter 'genDate' is set to true. Defaults to true
+@cached
+operation Language hasGenDate() : Boolean {
+	var genDate = self.parameters.selectOne(p|p.name == "genDate");
+	if (param.isDefined()) {
+		return param.name == "true";
+	}
+	return true;
+}
+
+/**
+ * TASKS
+ */
+@cached
+operation Task isJavaTask() {
+	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+}
+ 
+@cached
+operation Task hasLanguage(language : String) : Boolean {
+	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation Task isSingleOut() : Boolean {
+	return not self.multipleOutputs and self.output.size==1;
+}
+
+@cached
+operation Task isSource() : Boolean {
+	return self.isKindOf(Source);
+}
+
+@cached
+operation Task isSink() : Boolean {
+	return self.isKindOf(Sink);
+}
+
+@cached
+operation Task hasConfiguration() : Boolean {
+	return self.input.exists(c|c.isConfigurationChannel());
+}
+
+/**
+ * STREAMS
+ */
+@cached
+operation Stream isConfigurationChannel() {
+	if(not self.name.endsWith("ConfigTopic")) return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+
+/**
+ * TYPES
+ */
 operation Type createSource(){
-    var source = new Source;
-    self.eContainer.tasks.add(source);
-    self.eContainer.types.add(self);
-    source.name = self.name+"ConfigSource";
-    var configTopic = new Topic;
-    self.eContainer.streams.add(configTopic);
-    configTopic.name = self.name+"ConfigTopic";
-    configTopic.type = self;
-    source.output.add(configTopic);
-    //self.findEligibleConfigurableTasks().input.add(configTopic);
-    for(t in self.findEligibleConfigurableTasks()){
-        t.input.add(configTopic);
-    }       
-    return source;  
+	var source = new Source;
+	self.eContainer.tasks.add(source);
+	self.eContainer.types.add(self);
+	source.name = self.name+"ConfigSource";
+	var configTopic = new Topic;
+	self.eContainer.streams.add(configTopic);
+	configTopic.name = self.name+"ConfigTopic";
+	configTopic.type = self;
+	source.output.add(configTopic);
+	//self.findEligibleConfigurableTasks().input.add(configTopic);
+	for(t in self.findEligibleConfigurableTasks()){
+		t.input.add(configTopic);
+	}	   
+	return source;  
 }
-
-operation Any getPath() {
-    var workflow = self;
-    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-    
-    var lang = workflow.languages.select(l|l.isJava());
-    var langExists = not lang.isEmpty;
-
-    var path = "src-gen/";
-    
-    if (langExists and lang.first.genOutputFolder.isDefined()) {
-        path = lang.first.genOutputFolder + "/";
-    }
-    
-    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-    
-    return path;
-}
-
-
-operation Any getImplPath() {
-    var workflow = self;
-    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-    
-    var lang = workflow.languages.select(l|l.isJava());
-    var langExists = not lang.isEmpty;
-        
-    var path = "src/";
-        
-    if (langExists and lang.first.outputFolder.isDefined()) {
-        path = lang.first.outputFolder + "/";
-    }
-    
-    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-
-    return path;
-}
-
 
 operation Type findEligibleConfigurableTasks(){
-    return Task.all.select(t|t.configurations.exists(c|c=self));
+	return Task.all.select(t|t.configurations.exists(c|c=self));
 }
 
-operation String toSnakeCase() : String {
-	return self.replaceAll("(.)(\\p{Upper})", "$1_$2");
+/**
+ * OTHER - default helpers that set language to Java
+ * TODO: look at how these can be generified if possible
+ */
+operation Any getPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var path = "src-gen/";
+	
+	if (langExists and lang.first.genOutputFolder.isDefined()) {
+		path = lang.first.genOutputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+	
+	return path;
 }
 
-operation String toSnakeCaseUpper() : String {
-	return self.toSnakeCase().toUpperCase();
-}
+operation Any getImplPath() {
+	var workflow = self;
+	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+		
+	var path = "src/";
+		
+	if (langExists and lang.first.outputFolder.isDefined()) {
+		path = lang.first.outputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
 
-operation String toSnakeCaseLower() : String {
-	return self.toSnakeCase().toLowerCase();
+	return path;
 }
 
 operation Workflow getPackageName() {
-    var lang = self.languages.select(l | l.isJava());
-    var package;
-    if (not lang.isEmpty) {
-        package = lang.first.package;
-    }
-    else {
-        package = self.name.ftlc;
-    }
-    return package;
-}
-
-operation Task isJavaTask() {
-    return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+	var lang = self.languages.select(l | l.isJava());
+	var package;
+	if (not lang.isEmpty) {
+		package = lang.first.package;
+	}
+	else {
+		package = self.name.ftlc;
+	}
+	return package;
 }
 
 operation Language isJava() {
-    return self.name.toLowerCase() == "java";
+	return self.name.toLowerCase() == "java";
 }
