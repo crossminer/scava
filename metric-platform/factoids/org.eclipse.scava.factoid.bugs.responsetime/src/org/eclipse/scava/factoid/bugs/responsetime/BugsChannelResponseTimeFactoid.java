@@ -79,16 +79,9 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 			dayMilliSeconds = 3 * eightHoursMilliSeconds,
 			weekMilliSeconds = 7 * dayMilliSeconds;
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Date end = delta.getDate();
+		Date start = (delta.getDate()).addDays(-365);
+
 		List<Pongo> responseTimeList = responseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 		
 		long cumulativeAvgResponseTime = 0,
@@ -126,7 +119,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 
 		if (yearlyAvgResponseTime > 0) {
 			
-			stringBuffer.append("Over the last year, requests receive a first response ");
+			stringBuffer.append("Over the last year of analysis, requests receive a first response ");
 			if ( yearlyAvgResponseTime < eightHoursMilliSeconds ) {
 				stringBuffer.append("very quickly (in less than 8 hours).\n");
 			} else if ( yearlyAvgResponseTime < dayMilliSeconds ) {
@@ -143,7 +136,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 				stringBuffer.append("improved");
 			else 
 				stringBuffer.append("deteriorated");
-			stringBuffer.append(" over the last 12 months.\n");
+			stringBuffer.append(" over the last 12 months of analysis.\n");
 		}
 		
 		factoid.setFactoid(stringBuffer.toString());
