@@ -91,23 +91,13 @@ public class NewsgroupsChannelThreadLengthFactoid extends AbstractFactoidMetricP
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20040801");
-//			end = new Date("20050801");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> threadsList = threadsProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> threadsList = threadsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		float averageComments = 0;
 
 		if ( threadsList.size() > 0 ) {
 			NewsgroupsThreadsHistoricMetric bugsPongo = 
-					(NewsgroupsThreadsHistoricMetric) threadsList.get(threadsList.size() - 1);
+					(NewsgroupsThreadsHistoricMetric) threadsList.get(0);
 			averageComments = bugsPongo.getAverageArticlesPerThread();
 		}
 
