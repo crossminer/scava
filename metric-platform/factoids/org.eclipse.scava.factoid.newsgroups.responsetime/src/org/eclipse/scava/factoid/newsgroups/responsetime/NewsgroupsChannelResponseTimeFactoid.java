@@ -108,8 +108,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 		List<Pongo> responseTimeList = responseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 //					severityResponseTimeList = severityResponseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		long cumulativeAvgResponseTime = 0,
-				yearlyAvgResponseTime = 0;
+		double cumulativeAvgResponseTime = 0.0,
+				yearlyAvgResponseTime = 0.0;
 
 		if (responseTimeList.size() > 0) {
 			NewsgroupsResponseTimeHistoricMetric responseTimeMetric = 
@@ -167,8 +167,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 
 	}
 	
-	private long getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
-		long totalResponseTime = 0;
+	private double getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
+		double totalResponseTime = 0.0;
 		int totalThreadsConsidered = 0;
 		for (Pongo pongo: responseTimeList) {
 			NewsgroupsResponseTimeHistoricMetric responseTimePongo = 
