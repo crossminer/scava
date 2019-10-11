@@ -84,8 +84,8 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 
 		List<Pongo> responseTimeList = responseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		long cumulativeAvgResponseTime = 0,
-			 yearlyAvgResponseTime = 0;
+		double cumulativeAvgResponseTime = 0.0;
+		double yearlyAvgResponseTime = 0.0;
 
 		if ( responseTimeList.size() > 0 ) {
 			BugsResponseTimeHistoricMetric responseTimeMetric = 
@@ -143,8 +143,8 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 
 	}
 	
-	private long getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
-		long totalResponseTime = 0;
+	private double getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
+		double totalResponseTime = 0.0;
 		int totalBugsConsidered = 0;
 		for (Pongo pongo: responseTimeList) {
 			BugsResponseTimeHistoricMetric responseTimePongo = (BugsResponseTimeHistoricMetric) pongo;
@@ -154,7 +154,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 		if (totalBugsConsidered > 0)
 			return totalResponseTime / totalBugsConsidered;
 		else
-			return 0;
+			return 0.0;
 	}
 
 }
