@@ -22,7 +22,6 @@ import org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime
 import org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.SeveritySentimentHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.model.NewsgroupsSeveritySentimentHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.MetricProviderContext;
 import org.eclipse.scava.platform.delta.ProjectDelta;
@@ -115,22 +114,12 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20040801");
-//			end = new Date("20050801");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		List<Pongo> severityList = 
-						severityProvider.getHistoricalMeasurements(context, project, start, end),
+						severityProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					severityResponseTimeList = 
-						severityResponseTimeProvider.getHistoricalMeasurements(context, project, start, end),
+						severityResponseTimeProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					severitySentimentList = 
-						severitySentimentProvider.getHistoricalMeasurements(context, project, start, end);
+						severitySentimentProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		int numberOfBugs = getNumberOfBugs(severityList),
 			numberOfBlockerBugs = getNumberOfSeverityBugs(severityList, "blocker"),
@@ -296,7 +285,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 //			int numberOfThreads = 0;
 //			NewsgroupsSeveritySentimentHistoricMetric severityPongo = 
 //					(NewsgroupsSeveritySentimentHistoricMetric) 
-//							severitySentimentList.get(severitySentimentList.size()-1);
+//							severitySentimentList.get(0);
 //			for (org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.model.SeverityLevel 
 //						severityLevel: severityPongo.getSeverityLevels())
 //				numberOfThreads += severityLevel.getNumberOfThreads();
@@ -310,7 +299,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 			int numberOfThreads = 0;
 			NewsgroupsSeveritySentimentHistoricMetric severityPongo = 
 					(NewsgroupsSeveritySentimentHistoricMetric) 
-							severitySentimentList.get(severitySentimentList.size()-1);
+							severitySentimentList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.model.SeverityLevel 
 						severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -326,7 +315,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 			float threadsSentimentProduct = 0;
 			NewsgroupsSeveritySentimentHistoricMetric severityPongo = 
 					(NewsgroupsSeveritySentimentHistoricMetric) 
-							severitySentimentList.get(severitySentimentList.size()-1);
+							severitySentimentList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.model.SeverityLevel 
 						severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType)) {
@@ -345,7 +334,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 //			int numberOfThreads = 0;
 //			NewsgroupsSeverityResponseTimeHistoricMetric severityPongo = 
 //					(NewsgroupsSeverityResponseTimeHistoricMetric) 
-//							severityResponseTimeList.get(severityResponseTimeList.size()-1);
+//							severityResponseTimeList.get(0);
 //			for (org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.model.SeverityLevel 
 //						severityLevel: severityPongo.getSeverityLevels())
 //				numberOfThreads += severityLevel.getNumberOfThreads();
@@ -359,7 +348,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 			int numberOfThreads = 0;
 			NewsgroupsSeverityResponseTimeHistoricMetric severityPongo = 
 					(NewsgroupsSeverityResponseTimeHistoricMetric) 
-							severityResponseTimeList.get(severityResponseTimeList.size()-1);
+							severityResponseTimeList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -373,7 +362,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 		if ( severityList.size() > 0 ) {
 			int numberOfThreads = 0;
 			NewsgroupsSeveritiesHistoricMetric severityPongo = 
-					(NewsgroupsSeveritiesHistoricMetric) severityList.get(severityList.size()-1);
+					(NewsgroupsSeveritiesHistoricMetric) severityList.get(0);
 			for (SeverityLevel severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
 					numberOfThreads += severityLevel.getNumberOfThreads();
@@ -388,7 +377,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 			long threadsResponseTimeProduct = 0;
 			NewsgroupsSeverityResponseTimeHistoricMetric severityPongo = 
 					(NewsgroupsSeverityResponseTimeHistoricMetric) 
-							severityResponseTimeList.get(severityResponseTimeList.size()-1);
+							severityResponseTimeList.get(0);
 			
 			for (org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.model.SeverityLevel 
 						severityLevel: severityPongo.getSeverityLevels())
@@ -410,7 +399,7 @@ public class NewsgroupsChannelSeverityFactoid extends AbstractFactoidMetricProvi
 		if ( severityList.size() > 0 ) {
 			int numberOfThreads = 0;
 			NewsgroupsSeveritiesHistoricMetric severityPongo = 
-					(NewsgroupsSeveritiesHistoricMetric) severityList.get(severityList.size()-1);
+					(NewsgroupsSeveritiesHistoricMetric) severityList.get(0);
 			for (NewsgroupData newsgroupData: severityPongo.getNewsgroupData())
 				numberOfThreads += newsgroupData.getNumberOfThreads();
 			return numberOfThreads;
