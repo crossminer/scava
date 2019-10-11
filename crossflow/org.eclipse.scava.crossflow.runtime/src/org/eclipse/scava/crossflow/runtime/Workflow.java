@@ -381,6 +381,7 @@ public abstract class Workflow<E extends Enum<E>> {
 							// to waiting if upon firing the
 							// task has not been updated since
 
+							// FIXME: Make optional
 							if (!activeTimers.contains(taskName)) {
 								activeTimers.add(taskName);
 								taskStatusDelayedUpdateTimer.schedule(new TimerTask() {
