@@ -124,7 +124,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 
 		StringBuffer stringBuffer = new StringBuffer();
 
-		stringBuffer.append("Over the last year, ");
+		stringBuffer.append("Over the last year of analysis, ");
 		stringBuffer.append(numberOfBugs);
 		stringBuffer.append(" new bugs, ");
 		stringBuffer.append(numberOfComments);
@@ -148,7 +148,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		numberOfPatches = parsePatchesPongos(patchesList, trackerPatches);
 
 		
-		stringBuffer.append("Over the last month, ");
+		stringBuffer.append("Over the last month of analysis, ");
 		stringBuffer.append(numberOfBugs);
 		stringBuffer.append(" new bugs, ");
 		stringBuffer.append(numberOfComments);
