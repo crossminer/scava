@@ -95,8 +95,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 			dayMilliSeconds = 3 * eightHoursMilliSeconds,
 			weekMilliSeconds = 7 * dayMilliSeconds;
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
+		Date end = delta.getDate();
+		Date start = (delta.getDate()).addDays(-365);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -143,7 +143,7 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 		
 		if (yearlyAvgResponseTime > 0) {
 			
-			stringBuffer.append("Over the last year, requests receive a first response ");
+			stringBuffer.append("Over the last year of analysis, requests receive a first response ");
 			if ( yearlyAvgResponseTime < eightHoursMilliSeconds ) {
 				stringBuffer.append("very quickly (in less than 8 hours).\n");
 			} else if ( yearlyAvgResponseTime < dayMilliSeconds ) {
