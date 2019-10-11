@@ -101,8 +101,8 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 			}
 		}
 
-		Date end = delta.getDate();
-		Date start = (delta.getDate()).addDays(-365);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -143,8 +143,7 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 		stringBuffer.append(numberOfThreads);
 		stringBuffer.append(" new threads have been posted in total.\n");
 
-		end = delta.getDate();
-		start = (delta.getDate()).addDays(-30);
+		start = (new Date(delta.getDate())).addDays(-30);
 		articlesList = articlesProvider.getHistoricalMeasurements(context, project, start, end);
 		threadsList = threadsProvider.getHistoricalMeasurements(context, project, start, end);
 		
