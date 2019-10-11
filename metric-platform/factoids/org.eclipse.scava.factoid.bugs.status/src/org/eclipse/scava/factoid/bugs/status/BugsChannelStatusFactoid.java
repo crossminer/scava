@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.historic.bugs.status.StatusHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.bugs.status.model.BugsStatusHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
