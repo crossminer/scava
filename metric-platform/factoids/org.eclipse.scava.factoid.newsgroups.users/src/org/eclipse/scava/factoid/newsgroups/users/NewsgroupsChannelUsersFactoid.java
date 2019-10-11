@@ -99,8 +99,8 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 			}
 		}
 
-		Date end = delta.getDate();
-		Date start = (delta.getDate()).addDays(-30);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-30);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -113,7 +113,7 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 
 		List<Pongo> usersMonthList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		start = (delta.getDate()).addDays(-365);
+		start = (new Date(delta.getDate())).addDays(-365);
 		List<Pongo> usersYearList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
 		StringBuffer stringBuffer = new StringBuffer();
