@@ -132,7 +132,7 @@ public class BugsRequestsRepliesTransMetricProvider  implements
 			{
 				BugStatistics bugStats = new BugStatistics();
 				bugStats = new BugStatistics();
-				bugStats.setBugTrackerId(lastBugTrackerId);
+				bugStats.setBugTrackerId(bugData.getBugTrackerId());
 				bugStats.setBugId(bugData.getBugId());
 				bugStats.setAnswered(false);
 				db.getBugs().add(bugStats);
