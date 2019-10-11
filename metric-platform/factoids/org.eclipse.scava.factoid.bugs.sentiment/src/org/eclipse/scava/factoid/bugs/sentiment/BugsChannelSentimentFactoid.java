@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.bugs.sentiment.model.BugsSentimentHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -76,17 +75,7 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> sentimentList = sentimentProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> sentimentList = sentimentProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		float averageSentiment = getAverageSentiment(sentimentList),
 			  sentimentAtThreadBeggining = getSentimentAtThreadBeggining(sentimentList),
@@ -154,7 +143,7 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 	private float getAverageSentiment(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			BugsSentimentHistoricMetric sentimentPongo = 
-					(BugsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(BugsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallAverageSentiment();
 		}
 		return 0;
@@ -163,7 +152,7 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 	private float getSentimentAtThreadBeggining(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			BugsSentimentHistoricMetric sentimentPongo = 
-					(BugsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(BugsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallSentimentAtThreadBeggining();
 		}
 		return 0;
@@ -172,7 +161,7 @@ public class BugsChannelSentimentFactoid extends AbstractFactoidMetricProvider{
 	private float getSentimentAtThreadEnd(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			BugsSentimentHistoricMetric sentimentPongo = 
-					(BugsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(BugsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallSentimentAtThreadEnd();
 		}
 		return 0;
