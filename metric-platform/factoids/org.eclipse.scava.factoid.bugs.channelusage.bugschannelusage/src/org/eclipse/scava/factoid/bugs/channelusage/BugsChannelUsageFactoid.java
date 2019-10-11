@@ -110,7 +110,8 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		Map<String, Integer> trackerPatches = new HashMap<String, Integer>();
 		int numberOfPatches = parsePatchesPongos(patchesList, trackerPatches);
 
-		int workingDaysInAYear = 250;
+		long workingDaysInAYear= Math.round((newBugsList.size()*250.0)/365.0); //Proportion of working days
+		
 		if ( (numberOfBugs > workingDaysInAYear) || (numberOfComments > workingDaysInAYear) ) {
 			factoid.setStars(StarRating.FOUR);
 		} else if ( (2 * numberOfBugs > workingDaysInAYear) || (2 * numberOfComments > workingDaysInAYear) ) {
