@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.historic.newsgroups.responsetime.model;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -47,11 +38,11 @@ public class NewsgroupsResponseTimeHistoricMetric extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getAvgResponseTime() {
-		return parseLong(dbObject.get("avgResponseTime")+"", 0);
+	public double getAvgResponseTime() {
+		return parseDouble(dbObject.get("avgResponseTime")+"", 0.0d);
 	}
 	
-	public NewsgroupsResponseTimeHistoricMetric setAvgResponseTime(long avgResponseTime) {
+	public NewsgroupsResponseTimeHistoricMetric setAvgResponseTime(double avgResponseTime) {
 		dbObject.put("avgResponseTime", avgResponseTime);
 		notifyChanged();
 		return this;
@@ -74,11 +65,11 @@ public class NewsgroupsResponseTimeHistoricMetric extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public long getCumulativeAvgResponseTime() {
-		return parseLong(dbObject.get("cumulativeAvgResponseTime")+"", 0);
+	public double getCumulativeAvgResponseTime() {
+		return parseDouble(dbObject.get("cumulativeAvgResponseTime")+"", 0.0d);
 	}
 	
-	public NewsgroupsResponseTimeHistoricMetric setCumulativeAvgResponseTime(long cumulativeAvgResponseTime) {
+	public NewsgroupsResponseTimeHistoricMetric setCumulativeAvgResponseTime(double cumulativeAvgResponseTime) {
 		dbObject.put("cumulativeAvgResponseTime", cumulativeAvgResponseTime);
 		notifyChanged();
 		return this;

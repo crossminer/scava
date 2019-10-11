@@ -108,14 +108,14 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 	
 			if (threadsConsidered>0)
 			{
-				long avgResponseTime = computeAverageDuration(sumOfDurations, threadsConsidered);
+				double avgResponseTime = computeAverageDuration(sumOfDurations, threadsConsidered);
 				dailyAverageThreadResponseTime.setAvgResponseTime(avgResponseTime);
 				dailyAverageThreadResponseTime.setAvgResponseTimeFormatted(format(avgResponseTime));
 			}
 
 			if (cumulativeThreadsConsidered>0)
 			{
-				long cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeThreadsConsidered);
+				double cumulativeAvgResponseTime = computeAverageDuration(cumulativeSumOfDurations, cumulativeThreadsConsidered);
 				dailyAverageThreadResponseTime.setCumulativeAvgResponseTime(cumulativeAvgResponseTime);
 				dailyAverageThreadResponseTime.setCumulativeAvgResponseTimeFormatted(format(cumulativeAvgResponseTime));
 			}
@@ -126,17 +126,17 @@ public class ResponseTimeHistoricMetricProvider extends AbstractHistoricalMetric
 
 	private static final long SECONDS_DAY = 24 * 60 * 60;
 
-	private long computeAverageDuration(long sumOfDurations, int threads) {
+	private double computeAverageDuration(long sumOfDurations, int threads) {
 		if (threads>0)
-			return sumOfDurations/threads;
-		return 0;
+			return ((double)sumOfDurations)/threads;
+		return 0.0;
 	}
 
-	private String format(long avgDuration) {
+	private String format(double avgDuration) {
 		String formatted = null;
 		if (avgDuration>0) {
 			int days = (int) (avgDuration / SECONDS_DAY);
-			long lessThanDay = (avgDuration % SECONDS_DAY);
+			long lessThanDay = (long) (avgDuration % SECONDS_DAY);
 			formatted = days + ":" + 
 					DurationFormatUtils.formatDuration(lessThanDay*1000, "HH:mm:ss:SS");
 		} else {
