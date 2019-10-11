@@ -106,22 +106,12 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20040801");
-//			end = new Date("20050801");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		List<Pongo> unansweredThreadsList = 
-						unansweredThreadsProvider.getHistoricalMeasurements(context, project, start, end),
+						unansweredThreadsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					requestsRepliesList = 
-						requestsRepliesProvider.getHistoricalMeasurements(context, project, start, end),
+						requestsRepliesProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					averageRequestsRepliesList = 
-						requestsRepliesAverageProvider.getHistoricalMeasurements(context, project, start, end);
+						requestsRepliesAverageProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 		StringBuffer stringBuffer = new StringBuffer();		
@@ -195,7 +185,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 		if (averageRequestsRepliesList.size() > 0) {
 			NewsgroupsRequestsRepliesAverageHistoricMetric threadsPongo = 
 					(NewsgroupsRequestsRepliesAverageHistoricMetric) 
-							averageRequestsRepliesList.get(averageRequestsRepliesList.size() - 1);
+							averageRequestsRepliesList.get(0);
 			return threadsPongo.getAverageRequestsPerDay();
 		}
 		return 0;
@@ -206,7 +196,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 		if (averageRequestsRepliesList.size() > 0) {
 			NewsgroupsRequestsRepliesAverageHistoricMetric threadsPongo = 
 					(NewsgroupsRequestsRepliesAverageHistoricMetric) 
-							averageRequestsRepliesList.get(averageRequestsRepliesList.size() - 1);
+							averageRequestsRepliesList.get(0);
 			return threadsPongo.getAverageRepliesPerDay();
 		}
 		return 0;
@@ -216,7 +206,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 		if (requestsRepliesList.size() > 0) {
 			NewsgroupsRequestsRepliesHistoricMetric threadsPongo = 
 					(NewsgroupsRequestsRepliesHistoricMetric) 
-							requestsRepliesList.get(requestsRepliesList.size() - 1);
+							requestsRepliesList.get(0);
 			return threadsPongo.getCumulativeNumberOfRequests();
 		}
 		return 0;
@@ -226,7 +216,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 		if (requestsRepliesList.size() > 0) {
 			NewsgroupsRequestsRepliesHistoricMetric threadsPongo = 
 					(NewsgroupsRequestsRepliesHistoricMetric) 
-							requestsRepliesList.get(requestsRepliesList.size() - 1);
+							requestsRepliesList.get(0);
 			return threadsPongo.getCumulativeNumberOfReplies();
 		}
 		return 0;
@@ -236,7 +226,7 @@ public class NewsgroupsChannelStatusFactoid extends AbstractFactoidMetricProvide
 		if (unansweredThreadsList.size() > 0) {
 			NewsgroupsUnansweredThreadsHistoricMetric unansweredThreadsPongo = 
 					(NewsgroupsUnansweredThreadsHistoricMetric) 
-							unansweredThreadsList.get(unansweredThreadsList.size() - 1);
+							unansweredThreadsList.get(0);
 			return unansweredThreadsPongo.getNumberOfUnansweredThreads();
 		}
 		return 0;
