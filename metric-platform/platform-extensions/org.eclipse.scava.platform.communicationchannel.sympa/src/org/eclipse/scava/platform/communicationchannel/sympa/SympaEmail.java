@@ -11,7 +11,6 @@ public class SympaEmail extends CommunicationChannelArticle{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String sender;
 	private String recipient;
 	private String replyTo;
 	
@@ -19,7 +18,7 @@ public class SympaEmail extends CommunicationChannelArticle{
 		this.setCommunicationChannel(sympaMailingList);
 		
 		this.setDate(email.getDate());
-		this.setSender(email.getFrom());
+		this.setUser(email.getFrom());
 		this.setArticleId(email.getMessageId());
 		this.setReferences(email.getReferences());
 		this.setReplyTo(email.getReplyTo());
@@ -30,24 +29,10 @@ public class SympaEmail extends CommunicationChannelArticle{
 	}
 
 	/**
-	 * @return the sender
-	 */
-	public String getSender() {
-		return sender;
-	}
-
-	/**
 	 * @return the recipient
 	 */
 	public String getRecipient() {
 		return recipient;
-	}
-
-	/**
-	 * @param sender the sender to set
-	 */
-	public void setSender(String sender) {
-		this.sender = sender;
 	}
 
 	/**
