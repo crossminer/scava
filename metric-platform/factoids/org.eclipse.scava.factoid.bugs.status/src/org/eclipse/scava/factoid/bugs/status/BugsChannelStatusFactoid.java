@@ -75,17 +75,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> bugStatusList = bugStatusProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> bugStatusList = bugStatusProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		StringBuffer stringBuffer = new StringBuffer();
 		
@@ -183,7 +173,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private long getNumberBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfBugs();
 		}
 		return 0;
@@ -192,7 +182,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfDuplicateBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfDuplicateBugs();
 		}
 		return 0;
@@ -201,7 +191,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfFixedBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfFixedBugs();
 		}
 		return 0;
@@ -210,7 +200,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfInvalidBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfInvalidBugs();
 		}
 		return 0;
@@ -219,7 +209,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfNonResolvedClosedBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfNonResolvedClosedBugs();
 		}
 		return 0;
@@ -228,7 +218,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfResolvedClosedBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfResolvedClosedBugs();
 		}
 		return 0;
@@ -237,7 +227,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfWontFixBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfWontFixBugs();
 		}
 		return 0;
@@ -246,7 +236,7 @@ public class BugsChannelStatusFactoid extends AbstractFactoidMetricProvider{
 	private int getNumberOfWorksForMeBugs(List<Pongo> bugStatusList) {
 		if ( bugStatusList.size() > 0 ) {
 			BugsStatusHistoricMetric bugStatusPongo = 
-					(BugsStatusHistoricMetric) bugStatusList.get( bugStatusList.size() - 1 );
+					(BugsStatusHistoricMetric) bugStatusList.get(0);
 			return bugStatusPongo.getNumberOfWorksForMeBugs();
 		}
 		return 0;
