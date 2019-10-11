@@ -95,8 +95,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 			dayMilliSeconds = 3 * eightHoursMilliSeconds,
 			weekMilliSeconds = 7 * dayMilliSeconds;
 		
-		Date end = delta.getDate();
-		Date start = (delta.getDate()).addDays(-365);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
