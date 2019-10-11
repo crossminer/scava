@@ -60,8 +60,10 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 		SearchTabView view = new SearchTabView();
 		SearchTabController controller = new SearchTabController(this, model, view);
 		controller.init();
-
-		getView().addSearchTab(model.getDescription(), view);
+		
+		if( !view.isDisposed() ) {
+			getView().addSearchTab(model.getDescription(), view);
+		}
 	}
 
 	@Override
@@ -78,6 +80,8 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			return;
 		}
 
+		//Please, check your settings
+		
 		if (routedEvent instanceof FilterAlreadySelectedProjectsRequestEvent) {
 			FilterAlreadySelectedProjectsRequestEvent event = (FilterAlreadySelectedProjectsRequestEvent) routedEvent;
 
@@ -96,8 +100,10 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			SearchTabView view = new SearchTabView();
 			SearchTabController controller = new SearchTabController(this, model, view);
 			controller.init();
-
-			getView().addSearchTab(model.getDescription(), view);
+			
+			if( !view.isDisposed() ) {
+				getView().addSearchTab(model.getDescription(), view);
+			}
 
 			return;
 		}

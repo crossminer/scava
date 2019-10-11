@@ -65,7 +65,7 @@ public class CodeRecommendationRequest
 
 	@Override
 	public int compareTo(CodeRecommendationRequest o) {
-		return toString().compareTo(o.toString());
+		return toString().compareToIgnoreCase(o.toString());
 	}
 
 	@Override

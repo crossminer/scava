@@ -12,9 +12,10 @@ package org.eclipse.scava.plugin.projectsearch.search.tab;
 
 import org.eclipse.scava.plugin.mvc.view.IView;
 import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
+import org.eclipse.swt.custom.CTabItem;
 
 public interface ITab<ViewEventListenerType extends IViewEventListener> extends IView<ViewEventListenerType>{
 
-	void closed();
+	void setTabReference(CTabItem tab);
 
 }

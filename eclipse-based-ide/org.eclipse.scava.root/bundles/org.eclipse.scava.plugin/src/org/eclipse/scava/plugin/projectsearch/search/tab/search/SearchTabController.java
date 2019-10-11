@@ -19,15 +19,17 @@ import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
 import org.eclipse.scava.plugin.projectsearch.search.details.DetailsController;
 import org.eclipse.scava.plugin.projectsearch.search.details.DetailsModel;
 import org.eclipse.scava.plugin.projectsearch.search.details.DetailsView;
-import org.eclipse.scava.plugin.projectsearch.search.searchresult.ShowDetailsRequestEvent;
 import org.eclipse.scava.plugin.projectsearch.search.searchresult.SearchResultController;
 import org.eclipse.scava.plugin.projectsearch.search.searchresult.SearchResultModel;
 import org.eclipse.scava.plugin.projectsearch.search.searchresult.SearchResultView;
+import org.eclipse.scava.plugin.projectsearch.search.searchresult.ShowDetailsRequestEvent;
+import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
+import org.eclipse.scava.plugin.usermonitoring.ErrorType;
 
+import io.swagger.client.ApiException;
 import io.swagger.client.model.Artifact;
 
-public class SearchTabController extends ModelViewController<SearchTabModel, SearchTabView>
-		implements ISearchTabViewEventListener {
+public class SearchTabController extends ModelViewController<SearchTabModel, SearchTabView> implements ISearchTabViewEventListener {
 
 	public SearchTabController(Controller parent, SearchTabModel model, SearchTabView view) {
 		super(parent, model, view);
@@ -36,23 +38,50 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 	@Override
 	public void init() {
 		super.init();
-		
-		List<Artifact> results = getModel().getResults();
-		
-		List<SearchResultView> resultViews = results.stream().map(a -> {
+
+		loadNextPage();
+	}
+
+	private void loadNextPage() {
+		try {
 			
-			SearchResultModel model = new SearchResultModel(a);
-			SearchResultView view = new SearchResultView();
-			SearchResultController controller = new SearchResultController(SearchTabController.this, model, view);
-			controller.init();
+		
+			List<Artifact> results = getModel().getNextPageResults();
+
 			
-			return view;
-		}).collect(Collectors.toList());
+			
+			List<SearchResultView> resultViews = results.stream().map(a -> {
+
+				SearchResultModel model = new SearchResultModel(a);
+				SearchResultView view = new SearchResultView();
+				SearchResultController controller = new SearchResultController(SearchTabController.this, model, view);
+				controller.init();
+
+				return view;
+			}).collect(Collectors.toList());
+
+			getView().showResults(resultViews);
+			getView().setDescription(getModel().getDescription());
+			
+			if( getModel().hasNextPage() ) {
+				getView().showShowMoreButton();
+			}else {
+				getView().hideShowMoreButton();
+			}
+			
+			routeEventToParentController(new FilterAlreadySelectedProjectsRequestEvent(this, results));
+		}
+		 catch (ApiException e) {
+			e.printStackTrace();
+			ErrorHandler.handle(getView().getShell(), e);
+			dispose();
+		}
+		catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			ErrorHandler.handle(getView().getShell(),e, ErrorType.ILLEGAL_ARGUMENT);
+			dispose();
+		}
 		
-		getView().setResults(resultViews);
-		getView().setDescription(getModel().getDescription());
-		
-		routeEventToParentController(new FilterAlreadySelectedProjectsRequestEvent(this, results));
 	}
 
 	@Override
@@ -62,24 +91,28 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 
 	@Override
 	protected void onReceiveRoutedEventFromSubController(IRoutedEvent routedEvent, Controller forwarderController) {
-		
-		if( routedEvent instanceof ShowDetailsRequestEvent ) {
-			ShowDetailsRequestEvent event = (ShowDetailsRequestEvent)routedEvent;
-			
+
+		if (routedEvent instanceof ShowDetailsRequestEvent) {
+			ShowDetailsRequestEvent event = (ShowDetailsRequestEvent) routedEvent;
+
 			DetailsModel model = new DetailsModel(event.getProject());
 			DetailsView view = new DetailsView();
 			DetailsController controller = new DetailsController(this, model, view);
 			controller.init();
-			
+
 			getView().setDetails(view);
-			
+
 			getSubControllers().stream().filter(c -> c instanceof DetailsController && c != controller).forEach(c -> c.dispose());
-			
+
 			return;
 		}
-		
+
 		super.onReceiveRoutedEventFromSubController(routedEvent, forwarderController);
 	}
-	
-	
+
+	@Override
+	public void onShowMore() {
+		loadNextPage();
+	}
+
 }

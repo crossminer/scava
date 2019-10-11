@@ -494,5 +494,38 @@
            sequence="M1+M2+X C">
      </key>
   </extension>
+   <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.eclipse.scava.plugin.propertypages.main"
+           class="org.eclipse.scava.plugin.properties.ProjectID"
+           id="org.eclipse.scava.plugin.propertypages.projectid"
+           name="Project ID">
+        <enabledWhen>
+           <instanceof
+                 value="org.eclipse.jdt.core.IJavaProject">
+           </instanceof></enabledWhen>
+     </page>
+     <page
+           class="org.eclipse.scava.plugin.properties.Main"
+           id="org.eclipse.scava.plugin.propertypages.main"
+           name="CROSSMINER">
+        <enabledWhen>
+           <instanceof
+                 value="org.eclipse.jdt.core.IJavaProject">
+           </instanceof></enabledWhen>
+     </page>
+  </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml">
+      </toc>
+      <toc
+            file="CrossminerToc.xml"
+            primary="true">
+      </toc>
+   </extension>
+  
   
 </plugin>

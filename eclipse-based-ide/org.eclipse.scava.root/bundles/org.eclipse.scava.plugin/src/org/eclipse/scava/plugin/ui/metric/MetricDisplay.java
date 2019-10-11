@@ -12,11 +12,9 @@ package org.eclipse.scava.plugin.ui.metric;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.scava.plugin.usermonitoring.metric.metrics.Metric;
-import org.eclipse.scava.plugin.usermonitoring.metric.metrics.MetricException;
 import org.eclipse.scava.plugin.usermonitoring.metric.metrics.MetricProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -33,16 +31,15 @@ import org.eclipse.ui.services.IDisposable;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.jface.text.Document;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MetricDisplay extends TitleAreaDialog implements IDisposable {
-	private Table table;
 	private Text metricCounter;
-	private ProgressBar progressBar;
+	private String calculatedMetrics = "";
+	StyledText styledText;
 
 	public MetricDisplay(Shell parentShell) {
 		super(parentShell);
@@ -75,30 +72,15 @@ public class MetricDisplay extends TitleAreaDialog implements IDisposable {
 		setTitle("Metric informations");
 		Composite area = (Composite) super.createDialogArea(parent);
 		area.setLayout(new GridLayout(1, false));
-
-		Composite textContainer = new Composite(area, SWT.NONE);
-		textContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
-		textContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
-
-		table = new Table(textContainer, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-
-		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn.setWidth(300);
-		tblclmnNewColumn.setText("ID");
-
-		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_1.setWidth(100);
-		tblclmnNewColumn_1.setText("Value");
 		
-		TableColumn tblclmnNewColumn_2 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_2.setWidth(300);
-		tblclmnNewColumn_2.setText("Description");
+		Composite composite = new Composite(area, SWT.NONE);
+		composite.setBackgroundImage(SWTResourceManager.getImage("C:\\Users\\Szamos\\Desktop\\maven.png"));
 		
-
-		progressBar = new ProgressBar(area, SWT.SMOOTH);
-		progressBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		styledText = new StyledText(area, SWT.BORDER | SWT.V_SCROLL);
+		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Document document = new Document();
+		document.set("almafa");
 
 		refreshMetrics();
 
@@ -111,32 +93,11 @@ public class MetricDisplay extends TitleAreaDialog implements IDisposable {
 			@Override
 			public void run() {
 				
-				table.setItemCount(0);
-				progressBar.setVisible(true);
-				progressBar.setSelection(0);
+			
 				
-				List<Metric> metricList = MetricProvider.getMetricList();
-				progressBar.setMaximum(metricList.size());
-				for (Metric metric : metricList) {
-					
-					TableItem tableItem = new TableItem(table, SWT.NONE);
-					tableItem.setText(new String[] {});
-					tableItem.setText(0, metric.getID());
-					try {
-						tableItem.setText(1, metric.getCurrentValue() + "");
-					} catch (MetricException e1) {
-						tableItem.setText(1, "Not enough event to calculate metric");
-					}
-					tableItem.setText(2,metric.getDescription());
+				
+			
 
-					table.redraw();
-					table.update();
-
-					progressBar.setSelection(progressBar.getSelection() + 1);
-					progressBar.redraw();
-					progressBar.update();
-				}
-				progressBar.setVisible(false);
 			}
 		});
 	}
@@ -160,7 +121,7 @@ public class MetricDisplay extends TitleAreaDialog implements IDisposable {
 		});
 
 		@SuppressWarnings("unused")
-		Button button = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
+		Button button = createButton(parent, IDialogConstants.OK_ID, "Close", false);
 	}
 
 	@Override

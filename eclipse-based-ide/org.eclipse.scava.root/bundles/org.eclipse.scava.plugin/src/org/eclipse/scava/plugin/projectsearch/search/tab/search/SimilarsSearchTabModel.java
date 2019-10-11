@@ -10,7 +10,7 @@
 
 package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
@@ -27,20 +27,20 @@ public class SimilarsSearchTabModel extends SearchTabModel {
 		super();
 		this.referenceProject = referenceProject;
 		this.method = method;
+		hasNextPage = false;
 	}
 
 	@Override
-	public List<Artifact> getResults() {
-		List<Artifact> results = new ArrayList<>();
-		
-		try {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
-			results = recommenderRestController.getSimilarProjectUsingGET(method.name(), referenceProject.getId(), 10);
-		} catch (ApiException e) {
-			e.printStackTrace();
+	public List<Artifact> getNextPageResults() throws ApiException {
+		if (nextPage != 0) {
+			return Collections.emptyList();
 		}
 
-		return results;
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+		List<Artifact> projects = recommenderRestController.getSimilarProjectUsingGET(method.name(),
+				referenceProject.getId(), pageSize);
+		nextPage++;
+		return projects;
 	}
 
 	@Override

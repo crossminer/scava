@@ -19,7 +19,9 @@ import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultMo
 import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultView;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
+import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
 
 import io.swagger.client.ApiException;
 
@@ -50,10 +52,18 @@ public class ApiDocumentationController extends ModelViewController<ApiDocumenta
 
 				getView().showResult(view);
 			});
+
 		} catch (ApiException e) {
 			e.printStackTrace();
+			ErrorHandler.handle(Display.getDefault().getActiveShell(), e);
+		}
+
+		try {
+			ApiDocumentationView.open(ApiDocumentationView.ID);
+		} catch (PartInitException e) {
+			e.printStackTrace();
 			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
-					"Unexpected error during requesting api documentations:\n\n" + e);
+					"Unexpected error during showing view:\n\n" + e);
 		}
 	}
 }

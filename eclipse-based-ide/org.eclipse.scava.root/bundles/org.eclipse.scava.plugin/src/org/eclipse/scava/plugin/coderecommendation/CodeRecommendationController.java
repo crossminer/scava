@@ -32,12 +32,15 @@ import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationSel
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
+import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -99,8 +102,15 @@ public class CodeRecommendationController extends ModelViewController<CodeRecomm
 
 		} catch (ApiException e) {
 			e.printStackTrace();
+			ErrorHandler.handle(Display.getDefault().getActiveShell(), e);
+		}
+
+		try {
+			CodeRecommendationView.open(CodeRecommendationView.ID);
+		} catch (PartInitException e) {
+			e.printStackTrace();
 			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
-					"Unexpected error during requesting code recommendations.\n\n" + e);
+					"Unexpected error during showing view:\n\n" + e);
 		}
 	}
 

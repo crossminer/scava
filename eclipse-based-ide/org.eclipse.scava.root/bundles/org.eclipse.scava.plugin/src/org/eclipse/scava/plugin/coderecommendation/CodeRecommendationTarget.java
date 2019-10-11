@@ -65,6 +65,6 @@ public class CodeRecommendationTarget implements Comparable<CodeRecommendationTa
 
 	@Override
 	public int compareTo(CodeRecommendationTarget o) {
-		return file.getFullPath().toOSString().compareTo(o.getFile().getFullPath().toOSString());
+		return file.getFullPath().toOSString().compareToIgnoreCase(o.getFile().getFullPath().toOSString());
 	}
 }

@@ -13,5 +13,5 @@ package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
 public interface ISearchTabViewEventListener extends IViewEventListener {
-
+	void onShowMore();
 }

@@ -20,14 +20,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.scava.plugin.Activator;
-import org.eclipse.scava.plugin.usermonitoring.event.Event;
-import org.eclipse.scava.plugin.usermonitoring.event.IEvent;
+import org.eclipse.scava.plugin.usermonitoring.event.events.Event;
+import org.eclipse.scava.plugin.usermonitoring.event.events.IEvent;
 import org.eclipse.scava.plugin.usermonitoring.metric.basicmetrics.BasedOn;
-import org.eclipse.scava.plugin.usermonitoring.metric.metrics.Metric;
-import org.eclipse.scava.plugin.usermonitoring.metric.metrics.MetricProvider;
+import org.eclipse.scava.plugin.usermonitoring.metric.basicmetrics.IBasicMetric;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
@@ -39,9 +40,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.reflections.Reflections;
@@ -50,16 +53,25 @@ import com.google.gson.Gson;
 
 public class UserActivityEvents extends PreferencePage implements IWorkbenchPreferencePage {
 	private static final Color COLOR_DEFAULT = SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND);
-	private static final Color COLOR_DEPENDENCY = SWTResourceManager
-			.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT);
+	private static final Color COLOR_DEPENDENCY = SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT);
+	private final IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 
 	public UserActivityEvents() {
 	}
 
 	private Map<Class<?>, Button> eventButtons = new HashMap<>();
-	private Map<Metric, Button> metricButtons = new HashMap<>();
+	private Map<Class<?>, Button> metricButtons = new HashMap<>();
 	private UserActivityDisablements disablements;
 	private Gson gson = new Gson();
+
+	@Override
+	public void setVisible(boolean visible) {
+		if (!preferenceStore.getBoolean(Preferences.USERMONITORING_ENABLED) && visible) {
+			MessageDialog.openWarning(Activator.getDefault().getWorkbench().getDisplay().getActiveShell(), "Disabled usermonitoring",
+					"The settings are currently unavailable, because the user monitoring is disabled.");
+		}
+		super.setVisible(visible);
+	}
 
 	@Override
 	public Control createContents(Composite parent) {
@@ -87,8 +99,7 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 		collectedEventsComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 
 		Reflections reflections = new Reflections("org.eclipse.scava.plugin");
-		List<Class<? extends IEvent>> eventTypes = reflections.getSubTypesOf(Event.class).stream()
-				.sorted((a, b) -> a.getSimpleName().compareTo(b.getSimpleName())).collect(Collectors.toList());
+		List<Class<? extends IEvent>> eventTypes = reflections.getSubTypesOf(Event.class).stream().sorted((a, b) -> a.getSimpleName().compareTo(b.getSimpleName())).collect(Collectors.toList());
 
 		for (Class<?> eventType : eventTypes) {
 			Composite buttonContainer = new Composite(collectedEventsComposite, SWT.NONE);
@@ -141,7 +152,10 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 		computedMetricsComposite.setLayout(gl_computedMetricsComposite);
 		computedMetricsComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1));
 
-		for (Metric metric : MetricProvider.getMetricList()) {
+		List<Class<? extends IBasicMetric>> metricTypes = reflections.getSubTypesOf(IBasicMetric.class).stream().sorted((a, b) -> a.getSimpleName().compareTo(b.getSimpleName()))
+				.collect(Collectors.toList());
+
+		for (Class<? extends IBasicMetric> metricType : metricTypes) {
 			Composite buttonContainer = new Composite(computedMetricsComposite, SWT.NONE);
 			GridLayout gl_buttonContainer = new GridLayout(1, false);
 			gl_buttonContainer.marginHeight = 2;
@@ -151,25 +165,25 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 
 			Button btnCheckButton = new Button(buttonContainer, SWT.CHECK);
 			btnCheckButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-			btnCheckButton.setText(metric.getID());
+			btnCheckButton.setText(metricType.getSimpleName());
 
-			metricButtons.put(metric, btnCheckButton);
+			metricButtons.put(metricType, btnCheckButton);
 
 			btnCheckButton.addSelectionListener(new SelectionAdapter() {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					if (btnCheckButton.getSelection()) {
-						disablements.enable(metric);
+						disablements.enable(metricType);
 
-						BasedOn basedOn = metric.getBasicMetric().getClass().getDeclaredAnnotation(BasedOn.class);
+						BasedOn basedOn = metricType.getDeclaredAnnotation(BasedOn.class);
 						if (basedOn != null) {
 							for (Class<?> usedEvent : basedOn.value()) {
 								disablements.enable(usedEvent);
 							}
 						}
 					} else {
-						disablements.disable(metric);
+						disablements.disable(metricType);
 					}
 					resolveDependenciesAndUnusages();
 					updateMetricButtons();
@@ -179,10 +193,10 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 			});
 
 			btnCheckButton.addListener(SWT.MouseEnter, e -> {
-				highlightBaseEventsOfMetric(metric, true);
+				highlightBaseEventsOfMetric(metricType, true);
 			});
 			btnCheckButton.addListener(SWT.MouseExit, e -> {
-				highlightBaseEventsOfMetric(metric, false);
+				highlightBaseEventsOfMetric(metricType, false);
 			});
 		}
 
@@ -197,22 +211,21 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 
 		while (!lastState.equals(currentState)) {
 			// resolve metric dependencies
-			metricButtons.forEach((metric, button) -> {
-				BasedOn basedOn = metric.getBasicMetric().getClass().getDeclaredAnnotation(BasedOn.class);
-				if (basedOn != null
-						&& Arrays.stream(basedOn.value()).anyMatch(baseEvent -> disablements.isDisabled(baseEvent))) {
-					disablements.disable(metric);
+			metricButtons.forEach((metricType, button) -> {
+				BasedOn basedOn = metricType.getDeclaredAnnotation(BasedOn.class);
+				if (basedOn != null && Arrays.stream(basedOn.value()).anyMatch(baseEvent -> disablements.isDisabled(baseEvent))) {
+					disablements.disable(metricType);
 				}
 			});
 
 			// resolve unused events
 			Set<Class<?>> unusedEvents = new HashSet<>(eventButtons.keySet());
-			metricButtons.forEach((metric, button) -> {
-				if (disablements.isDisabled(metric)) {
+			metricButtons.forEach((metricType, button) -> {
+				if (disablements.isDisabled(metricType)) {
 					return;
 				}
 
-				BasedOn basedOn = metric.getBasicMetric().getClass().getDeclaredAnnotation(BasedOn.class);
+				BasedOn basedOn = metricType.getDeclaredAnnotation(BasedOn.class);
 				if (basedOn != null) {
 					for (Class<?> usedEvent : basedOn.value()) {
 						unusedEvents.remove(usedEvent);
@@ -235,22 +248,34 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 			Class<?> eventClass = entry.getKey();
 			Button button = entry.getValue();
 
-			button.setSelection(!disablements.isDisabled(eventClass));
-			button.setEnabled(!disablements.isDisabled(eventClass));
+			if (preferenceStore.getBoolean(Preferences.USERMONITORING_ENABLED)) {
+				button.setEnabled(!disablements.isDisabled(eventClass));
+				button.setSelection(!disablements.isDisabled(eventClass));
+			} else {
+				button.setEnabled(false);
+				button.setSelection(false);
+			}
+
 		}
 	}
 
 	private void updateMetricButtons() {
-		for (Entry<Metric, Button> entry : metricButtons.entrySet()) {
-			Metric metric = entry.getKey();
+		for (Entry<Class<?>, Button> entry : metricButtons.entrySet()) {
+			Class<?> metricType = entry.getKey();
 			Button button = entry.getValue();
 
-			button.setSelection(!disablements.isDisabled(metric));
+			if (preferenceStore.getBoolean(Preferences.USERMONITORING_ENABLED)) {
+				button.setSelection(!disablements.isDisabled(metricType));
+			} else {
+				button.setEnabled(false);
+				button.setSelection(false);
+			}
+
 		}
 	}
 
-	private void highlightBaseEventsOfMetric(Metric metric, boolean toggle) {
-		BasedOn basedOn = metric.getBasicMetric().getClass().getDeclaredAnnotation(BasedOn.class);
+	private void highlightBaseEventsOfMetric(Class<?> metricType, boolean toggle) {
+		BasedOn basedOn = metricType.getDeclaredAnnotation(BasedOn.class);
 		if (basedOn != null) {
 			for (Class<?> eventClass : basedOn.value()) {
 				Button button = eventButtons.get(eventClass);
@@ -263,11 +288,11 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 	}
 
 	private void highlightMetricsBasedOnEvent(Class<?> eventType, boolean toggle) {
-		for (Entry<Metric, Button> entry : metricButtons.entrySet()) {
-			Metric metric = entry.getKey();
+		for (Entry<Class<?>, Button> entry : metricButtons.entrySet()) {
+			Class<?> metricType = entry.getKey();
 			Button button = entry.getValue();
 
-			BasedOn basedOn = metric.getBasicMetric().getClass().getDeclaredAnnotation(BasedOn.class);
+			BasedOn basedOn = metricType.getDeclaredAnnotation(BasedOn.class);
 			if (basedOn != null) {
 				boolean dependencyDisabled = Arrays.stream(basedOn.value()).anyMatch(b -> eventType.equals(b));
 				if (dependencyDisabled) {
@@ -318,4 +343,5 @@ public class UserActivityEvents extends PreferencePage implements IWorkbenchPref
 		updateEventButtons();
 		updateMetricButtons();
 	}
+
 }
