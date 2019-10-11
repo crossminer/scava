@@ -94,16 +94,9 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Date end = delta.getDate();
+		Date start = (delta.getDate()).addDays(-365);
+
 		List<Pongo> newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, start, end),
 					commentsList = commentsProvider.getHistoricalMeasurements(context, project, start, end),
 					patchesList = patchesProvider.getHistoricalMeasurements(context, project, start, end);
@@ -139,8 +132,8 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		stringBuffer.append(numberOfPatches);
 		stringBuffer.append(" new patches have been posted, in total.\n");
 
-		end = new Date();
-		start = (new Date()).addDays(-30);
+		end = delta.getDate();
+		start = (delta.getDate()).addDays(-30);
 		newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, start, end);
 		commentsList = commentsProvider.getHistoricalMeasurements(context, project, start, end);
 		patchesList = patchesProvider.getHistoricalMeasurements(context, project, start, end);
