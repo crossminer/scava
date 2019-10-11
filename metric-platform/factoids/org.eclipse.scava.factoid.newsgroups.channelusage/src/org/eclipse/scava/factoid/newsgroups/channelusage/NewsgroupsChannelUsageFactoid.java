@@ -122,7 +122,8 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 		Map<String, Integer> newsgroupThreads = new HashMap<String, Integer>();
 		int numberOfThreads = parseThreadsPongos(threadsList, newsgroupThreads);
 
-		int workingDaysInAYear = 250;
+		long workingDaysInAYear= Math.round((articlesList.size()*250.0)/365.0); //Proportion of working days
+		
 		if ( (numberOfArticles > workingDaysInAYear) || (numberOfThreads > workingDaysInAYear) ) {
 			factoid.setStars(StarRating.FOUR);
 		} else if ( (2 * numberOfArticles > workingDaysInAYear) || (2 * numberOfThreads > workingDaysInAYear) ) {
