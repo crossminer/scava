@@ -20,7 +20,6 @@ import org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.mode
 import org.eclipse.scava.metricprovider.historic.newsgroups.unansweredthreads.UnansweredThreadsHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.newsgroups.unansweredthreads.model.NewsgroupsUnansweredThreadsHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
