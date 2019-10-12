@@ -55,6 +55,9 @@ operation Any getParameters(ruleName : String, languageName : String) : Map {
 		if (genDateFlag.isDefined() and genDateFlag.value == "false") {
 			params.put("genDate", null);
 		}
+	} else {
+		// Default package name for undefined languages
+		params.put("package", workflow.name.ftlc);
 	}
 	
 	return params;
