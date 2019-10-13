@@ -9,6 +9,25 @@ This is the reference implementation for the Scava APIs.
 
 All scripts rely on the `SCAVA_HOST` environment variable, or use the default url: `http://ci4.castalia.camp`.
 
+## Create all projects on a given instance
+
+The scripts rely on the environment variable `SCAVA_HOST`. It should point to an URL in the form of: `http://scava.myhost.com`. The list of projects to create is set in `list_projects.csv`.
+
+In the simplest case, just issue the two following commands to start the mass creation of projects and their associated tasks:
+
+```
+boris@kadath:gh_scava-scripts$ export SCAVA_HOST=http://ci4.castalia.camp
+boris@kadath:gh_scava-scripts$ sh create_all.sh 
+
+# Authenticating against http://ci4.castalia.camp.
+
+Authorisation is Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1BST0pFQ1RfTUFOQUdFUiIsIlJPTEVfVVNFUiJdLCJpYXQiOjE1NzA5ODAyNTIsImV4cCI6MTU3MTA2NjY1Mn0.iZFm7EyqyY0OS5RvWvQHm5ZKOfAZg5YlMu0pKs_qOm4.
+
+# Fetching http://ci4.castalia.camp:8086/administration/projects/import.
+
+[SNIP]
+```
+
 ## Get the list of projects
 
 Synopsis:
