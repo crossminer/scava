@@ -25,7 +25,7 @@ if ( exists( $ENV{'SCAVA_HOST'} ) ) {
     #$base_url = 'http://scava-dev.ow2.org';
 }
 
-if ( scalar(@ARGV) != 1 ) {
+if ( scalar(@ARGV) != 4 ) {
     print "Usage: $0 project\n";
     print "Example: \n";
     print "    $0 modeling.sirius \n";
@@ -33,6 +33,9 @@ if ( scalar(@ARGV) != 1 ) {
 }
 
 my $project = shift;
+my $a_start = shift;
+my $a_stop = shift;
+my $a_type = shift;
 
 my @metric_providers = (
     "trans.rascal.api.changedMethods",
@@ -87,9 +90,9 @@ my $json_create = {
     "analysisTaskId" => "${project}_task",
     "label" => "${project}_task",
     "projectId" => $project,
-    "type" => "SINGLE_EXECUTION", # Could be CONTINUOUS_MONITORING
-    "startDate" => "01/01/2018",
-    "endDate" => "31/12/2018",
+    "type" => "$a_type", # Could be CONTINUOUS_MONITORING or SINGLE_EXECUTION
+    "startDate" => "$a_start",
+    "endDate" => "$a_stop",
     "metricProviders" => \@metric_providers,
 };
 
