@@ -16,14 +16,19 @@ import org.eclipse.scava.plugin.projectsearch.search.tab.ITab;
 import org.eclipse.scava.plugin.ui.scrolledcomposite.ScrolledComposites;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class DetailsTabView extends CompositeView<IDetailsTabViewEventListener> implements ITab<IDetailsTabViewEventListener> {
 	private ScrolledComposite scrolledComposite;
-
+	
+	private CTabItem tabReference;
+	
 	/**
 	 * Create the composite.
 	 * @param parent
@@ -61,7 +66,23 @@ public class DetailsTabView extends CompositeView<IDetailsTabViewEventListener> 
 	}
 
 	@Override
-	public void closed() {
-		eventManager.invoke(l -> l.requestViewClose());
+	public void setTabReference(CTabItem tab) {
+		tabReference = tab;
+		
+		// this part is a bit hacky, but there is no other way to notify the view about
+		// the dispose
+		tab.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				eventManager.invoke(l -> l.requestViewClose());
+			}
+		});
+	}
+	
+	@Override
+	public void dispose() {
+		if( tabReference != null ) {
+			tabReference.dispose();
+		}
+		super.dispose();
 	}
 }

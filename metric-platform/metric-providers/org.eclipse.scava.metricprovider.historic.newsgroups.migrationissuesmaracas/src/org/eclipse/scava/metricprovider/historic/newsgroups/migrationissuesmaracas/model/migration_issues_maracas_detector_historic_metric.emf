@@ -7,13 +7,13 @@ class NewsgroupMigrationIssueMaracasHistoricMetric {
 
 class DailyNewsgroupMigrationMaracasData {
    	attr String newsgroupName;
-   	attr int[*] threadsId;
+   	attr String[*] threadsId;
    	attr int numberOfIssues;
 }
 
 class NewsgroupMigrationMaracasData {
    	attr String newsgroupName;
-   	attr int threadId;
+   	attr String threadId;
    	attr String[] changesAndMatchingPercentage;
 }
 

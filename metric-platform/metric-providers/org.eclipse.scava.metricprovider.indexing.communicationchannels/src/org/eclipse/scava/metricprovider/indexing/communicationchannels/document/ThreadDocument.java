@@ -8,10 +8,10 @@ public class ThreadDocument extends DocumentAbstract {
 	private String communication_channel_id;
 	private String project_name;
 	private String subject;
-	private int thread_id;
+	private String thread_id;
 	private MigrationIssue migration_issue;
 	
-	public ThreadDocument(String uid, String projectName, String collectionName, int threadId, String subject) {
+	public ThreadDocument(String uid, String projectName, String collectionName, String threadId, String subject) {
 		this.uid=uid;
 		this.project_name=projectName;
 		this.communication_channel_id = collectionName;
@@ -31,7 +31,7 @@ public class ThreadDocument extends DocumentAbstract {
 		return subject;
 	}
 
-	public int getThread_id() {
+	public String getThread_id() {
 		return thread_id;
 	}
 	

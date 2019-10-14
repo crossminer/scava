@@ -126,93 +126,6 @@
                 }
             }
         },
-        "/api/artifacts/artifacts.xml": {
-            "get": {
-                "tags": [
-                    "artifacts-rest-controller"
-                ],
-                "summary": "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER (XML)",
-                "operationId": "getArtifactsXMLUsingGET",
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Results page you want to retrieve (0..N)",
-                        "required": false,
-                        "type": "object"
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "Number of records per page.",
-                        "required": false,
-                        "type": "object"
-                    },
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-                        "required": false,
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Iterable"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-        "/api/artifacts/gargo}": {
-            "get": {
-                "tags": [
-                    "artifacts-rest-controller"
-                ],
-                "summary": "temp",
-                "operationId": "tempUsingGET",
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/MetricsForProject"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
         "/api/artifacts/search/{artifact_query}": {
             "get": {
                 "tags": [
@@ -276,7 +189,7 @@
                 }
             }
         },
-        "/api/artifacts/store-metrics}": {
+        "/api/artifacts/store-metrics": {
             "post": {
                 "tags": [
                     "artifacts-rest-controller"
@@ -464,6 +377,35 @@
                 }
             }
         },
+        "/api/recommendation/code-request-example": {
+            "get": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "getQuery",
+                "operationId": "getQueryUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/recommendation/focus/": {
             "post": {
                 "tags": [
@@ -498,70 +440,6 @@
                     },
                     "201": {
                         "description": "Created"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-        "/api/recommendation/pattern/{file_name}": {
-            "get": {
-                "tags": [
-                    "recommender-rest-controller"
-                ],
-                "summary": "getFile",
-                "operationId": "getFileUsingGET",
-                "produces": [
-                    "*/*"
-                ],
-                "parameters": [
-                    {
-                        "name": "file_name",
-                        "in": "path",
-                        "description": "file_name",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-        "/api/recommendation/query": {
-            "get": {
-                "tags": [
-                    "recommender-rest-controller"
-                ],
-                "summary": "getQuery",
-                "operationId": "getQueryUsingGET",
-                "produces": [
-                    "*/*"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Query"
-                        }
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -825,7 +703,7 @@
                 "tags": [
                     "recommender-rest-controller"
                 ],
-                "summary": "This resource get list of versions foreach dependecies",
+                "summary": "This resource lists plugin versions for each dependecies",
                 "operationId": "getVersionsUsingPOST",
                 "consumes": [
                     "application/json"
@@ -1166,7 +1044,10 @@
                         "$ref": "#/definitions/MetricMilestoneSlice"
                     }
                 },
-                "project": {
+                "projectId": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             },
@@ -1369,6 +1250,10 @@
             "properties": {
                 "libraryName": {
                     "type": "string"
+                },
+                "releaseDate": {
+                    "type": "string",
+                    "example": "dd-MM-yyyy hh:mm:ss"
                 },
                 "url": {
                     "type": "string"

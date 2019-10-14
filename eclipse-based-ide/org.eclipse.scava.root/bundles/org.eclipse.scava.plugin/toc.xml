@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Sample Table of Contents" topic="html/toc.html">
+ <topic href="html/SettingsAndCustomization/settingsAndCustomization.html" label="Settings and Customization">
+    <topic href="html/SettingsAndCustomization/integrationRelatedSettings.html" label="Integration Related Settings">
+    </topic>
+    <topic href="html/SettingsAndCustomization/processMetricRelatedSettings.html" label="Usermonitoring Related Settings">
+    </topic>
+ </topic>
+ <topic href="html/AcquireRecommendations/acquireRecommendations.html" label="Acquire Recommendation">
+    <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/libraryBasedRecommendations.html" label="Library Based Recommendations">
+       <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/projectSearch.html" label="Project Search">
+       </topic>
+       <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/searchingAdditionalLibraries.html" label="Searching additional libraries">
+       </topic>
+       <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/handlingChangedAndDeprecatedApis.html" label="Handling Changed and Deprecated APIs">
+       </topic>
+    </topic>
+    <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/sourceCodeBasedRecommendations.html" label="Source Code Based Recommendations">
+       <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/codeRecommendation.html" label="Code recommendation">
+       </topic>
+    </topic>
+    <topic href="html/AcquireRecommendations/TextBasedRecommendations/textBasedRecommendations.html" label="Text Based Recommendations">
+       <topic href="html/AcquireRecommendations/TextBasedRecommendations/apiDocumentationAndQnaPosts.html" label="API documentation and Q&amp;A posts">
+       </topic>
+       <topic href="html/AcquireRecommendations/TextBasedRecommendations/apiUsage.html" label="API Usage">
+       </topic>
+       <topic href="html/AcquireRecommendations/TextBasedRecommendations/handlingAPIChanges.html" label="Handling API changes">
+       </topic>
+    </topic>
+ </topic>
+ <topic href="html/UserActivityMonitoring/userActivityMonitoring.html" label="User Activity Monitoring">
+    <topic href="html/UserActivityMonitoring/userActivityMonitoringSettings.html" label="User Activity Monitoring Settings">
+    </topic>
+    <topic href="html/UserActivityMonitoring/listOfCollectedEvents.html" label="List of Collected Events">
+    </topic>
+    <topic href="html/UserActivityMonitoring/retrievingProcessMetricsViaWebbasedDashboard.html" label="Retrieving Process Metrics via crossminer Webbased Dashboard">
+    </topic>
+ </topic>
+</toc>

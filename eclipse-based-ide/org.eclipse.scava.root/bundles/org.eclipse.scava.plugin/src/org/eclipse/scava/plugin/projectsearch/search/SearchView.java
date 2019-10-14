@@ -30,7 +30,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
@@ -81,6 +83,7 @@ public class SearchView extends TitleAreaDialogView<ISearchViewEventListener> {
 		lblSearchForA.setText("Search for a project:");
 
 		searchText = new Text(searchComposite, SWT.BORDER);
+		searchText.setToolTipText("Only letters, digits, spaces, - and _ characters are allowed.");
 		searchText.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -90,6 +93,24 @@ public class SearchView extends TitleAreaDialogView<ISearchViewEventListener> {
 		searchText.setTextLimit(1024);
 		searchText.setText("");
 		searchText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		searchText.addListener(SWT.Verify, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				char[] chars = new char[event.text.length()];
+				event.text.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					char c = chars[i];
+
+					if (Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || c == '-' || c == '_') {
+						continue;
+					}
+
+					event.doit = false;
+					break;
+				}
+			}
+		});
 
 		Button btnSearch = new Button(searchComposite, SWT.NONE);
 		btnSearch.addSelectionListener(new SelectionAdapter() {
@@ -187,13 +208,7 @@ public class SearchView extends TitleAreaDialogView<ISearchViewEventListener> {
 
 		searchTabs.setSelection(tab);
 
-		// this part is a bit hacky, but there is no other way to notify the view about
-		// the dispose
-		tab.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				view.closed();
-			}
-		});
+		view.setTabReference(tab);
 	}
 
 	@Override
@@ -206,10 +221,15 @@ public class SearchView extends TitleAreaDialogView<ISearchViewEventListener> {
 	}
 
 	private void search() {
+		String text = searchText.getText();
+		if (text.trim().length() < 1) {
+			return;
+		}
+
 		eventManager.invoke(l -> l.onSearch(searchText.getText()));
 		searchText.setText("");
 	}
-	
+
 	public void setVisible(boolean visible) {
 		getShell().setVisible(visible);
 	}

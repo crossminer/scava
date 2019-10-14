@@ -99,8 +99,8 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-30);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -113,7 +113,7 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 
 		List<Pongo> usersMonthList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		start = (new Date()).addDays(-365);
+		start = (new Date(delta.getDate())).addDays(-365);
 		List<Pongo> usersYearList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
 		StringBuffer stringBuffer = new StringBuffer();
@@ -147,10 +147,10 @@ public class NewsgroupsChannelUsersFactoid extends AbstractFactoidMetricProvider
 		
 		stringBuffer.append("On average, there are "); 
 		stringBuffer.append(decimalFormat.format(dailyNumberOfNewUsersInTheLastMonth));
-		stringBuffer.append(" new users per day in the last month, while ");
+		stringBuffer.append(" new users per day in the last month of analysis, while ");
 		stringBuffer.append(decimalFormat.format(dailyNumberOfActiveUsersInTheLastMonth));
 		stringBuffer.append(" users are active.\n");
-		stringBuffer.append("In the last year, there have been "); 
+		stringBuffer.append("In the last year of analysis, there have been "); 
 		stringBuffer.append(decimalFormat.format(dailyNumberOfNewUsersInTheLastYear));
 		stringBuffer.append(" new and ");
 		stringBuffer.append(decimalFormat.format(dailyNumberOfActiveUsersInTheLastYear));

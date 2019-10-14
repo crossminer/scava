@@ -25,6 +25,11 @@ public class Date {
 		_date = new java.util.Date();
 	}
 	
+	public Date(Date date)
+	{
+		_date = date.toJavaDate();
+	}
+	
 	/**
 	 * 
 	 * @param date YYYMMDD

@@ -10,7 +10,6 @@
 
 package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.client.ApiException;
@@ -26,17 +25,13 @@ public class ExpressionSearchTabModel extends SearchTabModel {
 	}
 
 	@Override
-	public List<Artifact> getResults() {
-		List<Artifact> results = new ArrayList<>();
-		
-		try {
-			ArtifactsRestControllerApi artifactsRestControllerApi = knowledgeBaseAccess.getArtifactRestControllerApi();
-			results = artifactsRestControllerApi.getProjectUsingGET(expression, "0", "10", "asc");
-		} catch (ApiException e) {
-			e.printStackTrace();
-		}
-		
-		return results;
+	public List<Artifact> getNextPageResults() throws ApiException {
+		ArtifactsRestControllerApi artifactsRestControllerApi = knowledgeBaseAccess.getArtifactRestControllerApi();
+		List<Artifact> projects = artifactsRestControllerApi.getProjectUsingGET(expression, nextPage, pageSize,
+				pageSortAscending ? "ASC" : "DESC");
+		nextPage++;
+		hasNextPage = projects.size() >= pageSize;
+		return projects;
 	}
 
 	@Override

@@ -173,7 +173,7 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 		return threadData;
 	}
 	
-	private void createMigrationIssue(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId, String articleId, String subject)
+	private void createMigrationIssue(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, String threadId, String articleId, String subject)
 	{
 		NewsgroupsMigrationIssue migrationIssue = findNewsgroupArticle(db, newsgroupName, threadId, articleId);
 		if(migrationIssue==null)
@@ -189,7 +189,7 @@ public class NewsgroupsMigrationIssueTransMetricProvider  implements ITransientM
 	}
 	
 	
-	private NewsgroupsMigrationIssue findNewsgroupArticle(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, int threadId, String articleId) {
+	private NewsgroupsMigrationIssue findNewsgroupArticle(NewsgroupsMigrationIssueTransMetric db, String newsgroupName, String threadId, String articleId) {
 		NewsgroupsMigrationIssue newsgroupsIssues = null;
 		Iterable<NewsgroupsMigrationIssue> issuesIt = db.getNewsgroupsMigrationIssues().find(
 				NewsgroupsMigrationIssue.NEWSGROUPNAME.eq(newsgroupName),

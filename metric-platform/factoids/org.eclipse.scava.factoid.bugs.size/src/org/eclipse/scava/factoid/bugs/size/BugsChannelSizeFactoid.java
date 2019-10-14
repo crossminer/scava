@@ -24,7 +24,6 @@ import org.eclipse.scava.metricprovider.historic.bugs.newbugs.model.DailyBugData
 import org.eclipse.scava.metricprovider.historic.bugs.patches.PatchesHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.bugs.patches.model.BugsPatchesHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -95,19 +94,10 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, start, end),
-					commentsList = commentsProvider.getHistoricalMeasurements(context, project, start, end),
-					patchesList = patchesProvider.getHistoricalMeasurements(context, project, start, end);
+
+		List<Pongo> newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
+					commentsList = commentsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
+					patchesList = patchesProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 //		if ( ( newBugsList == null ) || ( newBugsList.size() == 0 ) )
 //			System.err.println("---===COULD NOT RETRIEVED PONGOLIST===---");
@@ -159,7 +149,7 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		Map<String, Integer> trackerBugs = new HashMap<String, Integer>();
 		if ( newBugsList.size() > 0 ) {
 			BugsNewBugsHistoricMetric newBugsPongo = 
-					(BugsNewBugsHistoricMetric) newBugsList.get(newBugsList.size()-1);
+					(BugsNewBugsHistoricMetric) newBugsList.get(0);
 			for (DailyBugData bugData: newBugsPongo.getBugs()) {
 				int bugs = bugData.getCumulativeNumberOfBugs();
 				trackerBugs.put(bugData.getBugTrackerId(), bugs);
@@ -179,7 +169,7 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		Map<String, Integer> trackerComments = new HashMap<String, Integer>();
 		if ( commentsList.size() > 0 ) {
 			BugsCommentsHistoricMetric commentsPongo = 
-					(BugsCommentsHistoricMetric) commentsList.get(commentsList.size()-1);
+					(BugsCommentsHistoricMetric) commentsList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.comments.model.DailyBugData 
 					commentsData: commentsPongo.getBugs()) {
 				int comments = commentsData.getCumulativeNumberOfComments();
@@ -193,7 +183,7 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		Map<String, Integer> trackerPatches = new HashMap<String, Integer>();
 		if ( patchesList.size() > 0 ) {
 			BugsPatchesHistoricMetric patchesPongo = 
-					(BugsPatchesHistoricMetric) patchesList.get(patchesList.size()-1);
+					(BugsPatchesHistoricMetric) patchesList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.patches.model.DailyBugData 
 					patchesData: patchesPongo.getBugs()) {
 				int patches = patchesData.getCumulativeNumberOfPatches();

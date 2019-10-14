@@ -1,9 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model;
 
-import com.googlecode.pongo.runtime.PongoDB;
+import com.googlecode.pongo.runtime.*;
+import com.mongodb.*;
 // protected region custom-imports on begin
 // protected region custom-imports end
-import com.mongodb.DB;
 
 public class NewsgroupsMigrationIssueMaracasTransMetric extends PongoDB {
 	

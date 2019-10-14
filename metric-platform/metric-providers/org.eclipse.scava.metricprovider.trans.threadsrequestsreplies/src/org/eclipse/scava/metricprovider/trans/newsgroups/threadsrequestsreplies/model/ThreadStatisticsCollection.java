@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.newsgroups.threadsrequestsreplies.model;
 
 import com.googlecode.pongo.runtime.*;
@@ -41,11 +32,11 @@ public class ThreadStatisticsCollection extends PongoCollection<ThreadStatistics
 	public long countByNewsgroupName(String q) {
 		return dbCollection.count(new BasicDBObject("newsgroupName", q + ""));
 	}
-	public Iterable<ThreadStatistics> findByThreadId(int q) {
+	public Iterable<ThreadStatistics> findByThreadId(String q) {
 		return new IteratorIterable<ThreadStatistics>(new PongoCursorIterator<ThreadStatistics>(this, dbCollection.find(new BasicDBObject("threadId", q + ""))));
 	}
 	
-	public ThreadStatistics findOneByThreadId(int q) {
+	public ThreadStatistics findOneByThreadId(String q) {
 		ThreadStatistics threadStatistics = (ThreadStatistics) PongoFactory.getInstance().createPongo(dbCollection.findOne(new BasicDBObject("threadId", q + "")));
 		if (threadStatistics != null) {
 			threadStatistics.setPongoCollection(this);
@@ -54,7 +45,7 @@ public class ThreadStatisticsCollection extends PongoCollection<ThreadStatistics
 	}
 	
 
-	public long countByThreadId(int q) {
+	public long countByThreadId(String q) {
 		return dbCollection.count(new BasicDBObject("threadId", q + ""));
 	}
 	

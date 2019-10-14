@@ -22,7 +22,6 @@ import org.eclipse.scava.metricprovider.historic.newsgroups.articles.model.Newsg
 import org.eclipse.scava.metricprovider.historic.newsgroups.newthreads.NewThreadsHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.newsgroups.newthreads.model.NewsgroupsNewThreadsHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -102,18 +101,8 @@ public class NewsgroupsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20040801");
-//			end = new Date("20050801");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> articlesList = articlesProvider.getHistoricalMeasurements(context, project, start, end),
-					newThreadsList = newThreadsProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> articlesList = articlesProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
+					newThreadsList = newThreadsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 //		System.err.println("---SIZE===RETRIEVED PONGOLIST FOR " + articlesList.size() + " DAYS===---");
 		
@@ -155,7 +144,7 @@ public class NewsgroupsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		int sum = 0;
 		if ( newArticlesList.size() > 0 ) {
 			NewsgroupsArticlesHistoricMetric newArticlesPongo = 
-					(NewsgroupsArticlesHistoricMetric) newArticlesList.get(newArticlesList.size()-1);
+					(NewsgroupsArticlesHistoricMetric) newArticlesList.get(0);
 			for (DailyNewsgroupData newsgroupData: newArticlesPongo.getNewsgroups()) {
 				int articles = newsgroupData.getCumulativeNumberOfArticles();
 				trackerArticles.put(newsgroupData.getNewsgroupName(), articles);

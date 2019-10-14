@@ -74,7 +74,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pongo.runtime.Pongo;
 import com.googlecode.pongo.runtime.PongoCollection;
 import com.googlecode.pongo.runtime.PongoDB;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
 import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexingMetricProvider {
@@ -390,7 +389,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				}
 				case "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider":
 				{
-					for(Integer threadId : threadsByArticle.getThreads(article.getArticleId()))
+					for(String threadId : threadsByArticle.getThreads(article.getArticleId()))
 					{
 						if(threadId!=null)
 							articleDocument.addThread_id(threadId);
@@ -492,7 +491,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		T output = null;
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(article.getCommunicationChannel().getOSSMeterId()),
-				getNumericalQueryProducer(type, output, "ARTICLEID").eq(article.getArticleId()));
+				getStringQueryProducer(type, output, "ARTICLEID").eq(article.getArticleId()));
 
 		for (T t : iterator) {
 			output = t;
@@ -507,7 +506,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		T output = null;
 
 		Iterable<T> iterator = collection.find(getStringQueryProducer(type, output, "NEWSGROUPNAME").eq(threadData.getNewsgroupName()),
-				getNumericalQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
+				getStringQueryProducer(type, output, "THREADID").eq(threadData.getThreadId()));
 
 		for (T t : iterator) {
 			output = t;
@@ -528,33 +527,20 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 		}
 		return null;
 	}
-
-	private <T extends Pongo> NumericalQueryProducer getNumericalQueryProducer(Class<T> type, T t, String field) {
-
-		try {
-
-			return (NumericalQueryProducer) type.getDeclaredField(field).get(t);
-
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			logger.error("Error while searching data in MongoBD:", e);
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	private class ThreadsByArticle
 	{
-		HashMap<String, Set<Integer>> threadsByArticle;
+		HashMap<String, Set<String>> threadsByArticle;
 		
 		public ThreadsByArticle() {
-			threadsByArticle = new HashMap<String, Set<Integer>>(); 
+			threadsByArticle = new HashMap<String, Set<String>>(); 
 		}
 		
-		public void addThread(String articleId, int threadId)
+		public void addThread(String articleId, String threadId)
 		{
-			Set<Integer> threads;
+			Set<String> threads;
 			if(!threadsByArticle.containsKey(articleId))
-				threads = new HashSet<Integer>();
+				threads = new HashSet<String>();
 			else
 				threads=threadsByArticle.get(articleId);
 			if(!threads.contains(threadId))
@@ -564,12 +550,12 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 			}
 		}
 		
-		public Set<Integer> getThreads(String articleId)
+		public Set<String> getThreads(String articleId)
 		{
 			if(threadsByArticle.containsKey(articleId))
 				return threadsByArticle.get(articleId);
 			else
-				return new HashSet<Integer>();
+				return new HashSet<String>();
 		}
 
 		

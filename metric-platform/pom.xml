@@ -529,6 +529,9 @@
 	<module>
 		factoids/org.eclipse.scava.factoid.documentation.entries
 	</module>
+	<module>
+		factoids/org.eclipse.scava.factoid.documentation.sentiment
+	</module>
   </modules>
   <build>
     <plugins>

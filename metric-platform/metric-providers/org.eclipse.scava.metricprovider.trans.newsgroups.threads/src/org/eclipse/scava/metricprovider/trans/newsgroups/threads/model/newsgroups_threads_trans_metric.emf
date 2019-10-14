@@ -10,7 +10,7 @@ class NewsgroupsThreadsTransMetric {
 
 class ThreadData {
    @searchable
-   attr int threadId;
+   attr String threadId;
    attr String newsgroupName;
    attr String subject;
    attr String[*] articlesId;

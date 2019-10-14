@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.historic.bugs.bugs.BugsHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.bugs.bugs.model.BugsBugsHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -76,23 +75,13 @@ public class BugsChannelThreadLengthFactoid extends AbstractFactoidMetricProvide
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> bugsList = bugsProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> bugsList = bugsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		float averageComments = 0;
 
 		if ( bugsList.size() > 0 ) {
 			BugsBugsHistoricMetric bugsPongo = 
-					(BugsBugsHistoricMetric) bugsList.get(bugsList.size() - 1);
+					(BugsBugsHistoricMetric) bugsList.get(0);
 			averageComments = bugsPongo.getAverageCommentsPerBug();
 		}
 

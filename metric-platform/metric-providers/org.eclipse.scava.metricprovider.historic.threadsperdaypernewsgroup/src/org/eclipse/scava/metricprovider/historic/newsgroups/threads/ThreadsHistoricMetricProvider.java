@@ -81,7 +81,7 @@ public class ThreadsHistoricMetricProvider extends AbstractHistoricalMetricProvi
 				((ActiveUsersTransMetricProvider)uses.get(1)).adapt(context.getProjectDB(project));
 		
 
-		HashSet<Integer> threadIdSet = new HashSet<Integer>();
+		HashSet<String> threadIdSet = new HashSet<String>();
 		for (ThreadData thread: usedThreads.getThreads())
 			threadIdSet.add(thread.getThreadId());
 		

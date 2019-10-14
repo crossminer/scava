@@ -38,7 +38,7 @@ public class CodeRecommendation implements Comparable<CodeRecommendation>, IPrev
 
 	@Override
 	public int compareTo(CodeRecommendation o) {
-		return recommendation.getPattern().compareTo(o.getRecommendation().getPattern());
+		return recommendation.getPattern().compareToIgnoreCase(o.getRecommendation().getPattern());
 	}
 
 	@Override

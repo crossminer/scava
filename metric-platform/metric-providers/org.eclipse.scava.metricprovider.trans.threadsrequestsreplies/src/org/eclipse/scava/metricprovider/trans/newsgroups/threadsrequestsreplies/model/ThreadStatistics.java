@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.newsgroups.threadsrequestsreplies.model;
 
 import com.googlecode.pongo.runtime.Pongo;
@@ -29,7 +20,7 @@ public class ThreadStatistics extends Pongo {
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
+	public static StringQueryProducer THREADID = new StringQueryProducer("threadId"); 
 	public static StringQueryProducer FIRSTREQUEST = new StringQueryProducer("firstRequest"); 
 	public static StringQueryProducer ANSWERED = new StringQueryProducer("answered"); 
 	public static NumericalQueryProducer RESPONSEDURATIONSEC = new NumericalQueryProducer("responseDurationSec");
@@ -45,11 +36,11 @@ public class ThreadStatistics extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
+	public String getThreadId() {
+		return parseString(dbObject.get("threadId")+"", "");
 	}
 	
-	public ThreadStatistics setThreadId(int threadId) {
+	public ThreadStatistics setThreadId(String threadId) {
 		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;

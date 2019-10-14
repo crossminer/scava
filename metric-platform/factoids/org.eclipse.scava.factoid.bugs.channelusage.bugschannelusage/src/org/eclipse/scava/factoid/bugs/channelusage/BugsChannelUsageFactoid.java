@@ -94,16 +94,9 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
+
 		List<Pongo> newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, start, end),
 					commentsList = commentsProvider.getHistoricalMeasurements(context, project, start, end),
 					patchesList = patchesProvider.getHistoricalMeasurements(context, project, start, end);
@@ -117,7 +110,8 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		Map<String, Integer> trackerPatches = new HashMap<String, Integer>();
 		int numberOfPatches = parsePatchesPongos(patchesList, trackerPatches);
 
-		int workingDaysInAYear = 250;
+		long workingDaysInAYear= Math.round((newBugsList.size()*250.0)/365.0); //Proportion of working days
+		
 		if ( (numberOfBugs > workingDaysInAYear) || (numberOfComments > workingDaysInAYear) ) {
 			factoid.setStars(StarRating.FOUR);
 		} else if ( (2 * numberOfBugs > workingDaysInAYear) || (2 * numberOfComments > workingDaysInAYear) ) {
@@ -131,7 +125,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 
 		StringBuffer stringBuffer = new StringBuffer();
 
-		stringBuffer.append("Over the last year, ");
+		stringBuffer.append("Over the last year of analysis, ");
 		stringBuffer.append(numberOfBugs);
 		stringBuffer.append(" new bugs, ");
 		stringBuffer.append(numberOfComments);
@@ -139,8 +133,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		stringBuffer.append(numberOfPatches);
 		stringBuffer.append(" new patches have been posted, in total.\n");
 
-		end = new Date();
-		start = (new Date()).addDays(-30);
+		start = (new Date(delta.getDate())).addDays(-30);
 		newBugsList = newBugsProvider.getHistoricalMeasurements(context, project, start, end);
 		commentsList = commentsProvider.getHistoricalMeasurements(context, project, start, end);
 		patchesList = patchesProvider.getHistoricalMeasurements(context, project, start, end);
@@ -155,7 +148,7 @@ public class BugsChannelUsageFactoid extends AbstractFactoidMetricProvider{
 		numberOfPatches = parsePatchesPongos(patchesList, trackerPatches);
 
 		
-		stringBuffer.append("Over the last month, ");
+		stringBuffer.append("Over the last month of analysis, ");
 		stringBuffer.append(numberOfBugs);
 		stringBuffer.append(" new bugs, ");
 		stringBuffer.append(numberOfComments);

@@ -6,7 +6,7 @@ class NewsgroupsMigrationIssueHistoricMetric {
 
 class DailyNewsgroupsMigrationData {
    	attr String newsgroupName;
-   	attr int[*] threadsId;
+   	attr String[*] threadsId;
    	attr int numberOfIssues;
 }
 

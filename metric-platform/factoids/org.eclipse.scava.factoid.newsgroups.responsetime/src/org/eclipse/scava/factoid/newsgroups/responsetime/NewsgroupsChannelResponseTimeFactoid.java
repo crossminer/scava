@@ -95,8 +95,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 			dayMilliSeconds = 3 * eightHoursMilliSeconds,
 			weekMilliSeconds = 7 * dayMilliSeconds;
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -108,8 +108,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 		List<Pongo> responseTimeList = responseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 //					severityResponseTimeList = severityResponseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		long cumulativeAvgResponseTime = 0,
-				yearlyAvgResponseTime = 0;
+		double cumulativeAvgResponseTime = 0.0,
+				yearlyAvgResponseTime = 0.0;
 
 		if (responseTimeList.size() > 0) {
 			NewsgroupsResponseTimeHistoricMetric responseTimeMetric = 
@@ -143,7 +143,7 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 		
 		if (yearlyAvgResponseTime > 0) {
 			
-			stringBuffer.append("Over the last year, requests receive a first response ");
+			stringBuffer.append("Over the last year of analysis, requests receive a first response ");
 			if ( yearlyAvgResponseTime < eightHoursMilliSeconds ) {
 				stringBuffer.append("very quickly (in less than 8 hours).\n");
 			} else if ( yearlyAvgResponseTime < dayMilliSeconds ) {
@@ -167,8 +167,8 @@ public class NewsgroupsChannelResponseTimeFactoid extends AbstractFactoidMetricP
 
 	}
 	
-	private long getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
-		long totalResponseTime = 0;
+	private double getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
+		double totalResponseTime = 0.0;
 		int totalThreadsConsidered = 0;
 		for (Pongo pongo: responseTimeList) {
 			NewsgroupsResponseTimeHistoricMetric responseTimePongo = 

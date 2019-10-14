@@ -9,7 +9,7 @@ class ThreadStatistics {
    @searchable
    attr String newsgroupName;
    @searchable
-   attr int threadId;
+   attr String threadId;
    attr float averageSentiment;
    attr String startSentiment; 
    attr String endSentiment; 

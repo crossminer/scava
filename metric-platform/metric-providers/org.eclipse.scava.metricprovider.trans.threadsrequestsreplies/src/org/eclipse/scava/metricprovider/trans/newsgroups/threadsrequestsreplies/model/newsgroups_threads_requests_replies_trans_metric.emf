@@ -9,7 +9,7 @@ class ThreadStatistics {
    @searchable
    attr String newsgroupName;
    @searchable
-   attr int threadId;
+   attr String threadId;
    attr boolean firstRequest;
    attr boolean answered;
    attr long responseDurationSec;

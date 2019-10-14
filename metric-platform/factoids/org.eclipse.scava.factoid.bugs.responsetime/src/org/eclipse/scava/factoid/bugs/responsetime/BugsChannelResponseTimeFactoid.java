@@ -79,20 +79,13 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 			dayMilliSeconds = 3 * eightHoursMilliSeconds,
 			weekMilliSeconds = 7 * dayMilliSeconds;
 		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Date end =  new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
+
 		List<Pongo> responseTimeList = responseTimeProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		long cumulativeAvgResponseTime = 0,
-			 yearlyAvgResponseTime = 0;
+		double cumulativeAvgResponseTime = 0.0;
+		double yearlyAvgResponseTime = 0.0;
 
 		if ( responseTimeList.size() > 0 ) {
 			BugsResponseTimeHistoricMetric responseTimeMetric = 
@@ -126,7 +119,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 
 		if (yearlyAvgResponseTime > 0) {
 			
-			stringBuffer.append("Over the last year, requests receive a first response ");
+			stringBuffer.append("Over the last year of analysis, requests receive a first response ");
 			if ( yearlyAvgResponseTime < eightHoursMilliSeconds ) {
 				stringBuffer.append("very quickly (in less than 8 hours).\n");
 			} else if ( yearlyAvgResponseTime < dayMilliSeconds ) {
@@ -143,15 +136,15 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 				stringBuffer.append("improved");
 			else 
 				stringBuffer.append("deteriorated");
-			stringBuffer.append(" over the last 12 months.\n");
+			stringBuffer.append(" over the last 12 months of analysis.\n");
 		}
 		
 		factoid.setFactoid(stringBuffer.toString());
 
 	}
 	
-	private long getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
-		long totalResponseTime = 0;
+	private double getYearlyAvgResponseTime(List<Pongo> responseTimeList) {
+		double totalResponseTime = 0.0;
 		int totalBugsConsidered = 0;
 		for (Pongo pongo: responseTimeList) {
 			BugsResponseTimeHistoricMetric responseTimePongo = (BugsResponseTimeHistoricMetric) pongo;
@@ -161,7 +154,7 @@ public class BugsChannelResponseTimeFactoid extends AbstractFactoidMetricProvide
 		if (totalBugsConsidered > 0)
 			return totalResponseTime / totalBugsConsidered;
 		else
-			return 0;
+			return 0.0;
 	}
 
 }

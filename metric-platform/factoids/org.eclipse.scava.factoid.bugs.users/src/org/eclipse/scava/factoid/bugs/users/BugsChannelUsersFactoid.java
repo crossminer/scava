@@ -84,21 +84,14 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> bugList = bugsProvider.getHistoricalMeasurements(context, project, start, end);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-30);
+
+		List<Pongo> bugList = bugsProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 
 		List<Pongo> usersMonthList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
-		start = (new Date()).addDays(-365);
+		start = (new Date(delta.getDate())).addDays(-365);
 		List<Pongo> usersYearList = usersProvider.getHistoricalMeasurements(context, project, start, end);
 		
 		StringBuffer stringBuffer = new StringBuffer();
@@ -132,10 +125,10 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 		
 		stringBuffer.append("On average, there are "); 
 		stringBuffer.append(decimalFormat.format(dailyNumberOfNewUsersInTheLastMonth));
-		stringBuffer.append(" new users per day in the last month, while ");
+		stringBuffer.append(" new users per day in the last month of analysis, while ");
 		stringBuffer.append(decimalFormat.format(dailyNumberOfActiveUsersInTheLastMonth));
 		stringBuffer.append(" users are active.\n");
-		stringBuffer.append("In the last year, there have been "); 
+		stringBuffer.append("In the last year of analysis, there have been "); 
 		stringBuffer.append(decimalFormat.format(dailyNumberOfNewUsersInTheLastYear));
 		stringBuffer.append(" new and ");
 		stringBuffer.append(decimalFormat.format(dailyNumberOfActiveUsersInTheLastYear));
@@ -216,7 +209,7 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 	private float getMessagesPerUser(List<Pongo> threadList) {
 		if ( threadList.size() > 0 ) {
 			BugsBugsHistoricMetric threadPongo = 
-					(BugsBugsHistoricMetric) threadList.get(threadList.size()-1);
+					(BugsBugsHistoricMetric) threadList.get(0);
 			return threadPongo.getAverageCommentsPerUser();
 		}
 		return 0;
@@ -225,7 +218,7 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 	private float getMessagesPerRequests(List<Pongo> threadList) {
 		if ( threadList.size() > 0 ) {
 			BugsBugsHistoricMetric threadPongo = 
-					(BugsBugsHistoricMetric) threadList.get(threadList.size()-1);
+					(BugsBugsHistoricMetric) threadList.get(0);
 			return threadPongo.getAverageRequestsPerUser();
 		}
 		return 0;
@@ -234,7 +227,7 @@ public class BugsChannelUsersFactoid extends AbstractFactoidMetricProvider{
 	private float getMessagesPerReplies(List<Pongo> threadList) {
 		if ( threadList.size() > 0 ) {
 			BugsBugsHistoricMetric threadPongo = 
-					(BugsBugsHistoricMetric) threadList.get(threadList.size()-1);
+					(BugsBugsHistoricMetric) threadList.get(0);
 			return threadPongo.getAverageRepliesPerUser();
 		}
 		return 0;

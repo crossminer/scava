@@ -101,8 +101,8 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-365);
+		Date end = new Date(delta.getDate());
+		Date start = (new Date(delta.getDate())).addDays(-365);
 //		Date start=null, end=null;
 //		try {
 //			start = new Date("20040801");
@@ -122,7 +122,8 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 		Map<String, Integer> newsgroupThreads = new HashMap<String, Integer>();
 		int numberOfThreads = parseThreadsPongos(threadsList, newsgroupThreads);
 
-		int workingDaysInAYear = 250;
+		long workingDaysInAYear= Math.round((articlesList.size()*250.0)/365.0); //Proportion of working days
+		
 		if ( (numberOfArticles > workingDaysInAYear) || (numberOfThreads > workingDaysInAYear) ) {
 			factoid.setStars(StarRating.FOUR);
 		} else if ( (2 * numberOfArticles > workingDaysInAYear) || (2 * numberOfThreads > workingDaysInAYear) ) {
@@ -136,14 +137,13 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 
 		StringBuffer stringBuffer = new StringBuffer();
 		
-		stringBuffer.append("Over the last year, ");
+		stringBuffer.append("Over the last year of analysis, ");
 		stringBuffer.append(numberOfArticles);
 		stringBuffer.append(" new articles and ");
 		stringBuffer.append(numberOfThreads);
 		stringBuffer.append(" new threads have been posted in total.\n");
 
-		end = new Date();
-		start = (new Date()).addDays(-30);
+		start = (new Date(delta.getDate())).addDays(-30);
 		articlesList = articlesProvider.getHistoricalMeasurements(context, project, start, end);
 		threadsList = threadsProvider.getHistoricalMeasurements(context, project, start, end);
 		
@@ -153,7 +153,7 @@ public class NewsgroupsChannelUsageFactoid extends AbstractFactoidMetricProvider
 		newsgroupThreads = new HashMap<String, Integer>();
 		numberOfThreads = parseThreadsPongos(threadsList, newsgroupThreads);
 		
-		stringBuffer.append("Over the last month, ");
+		stringBuffer.append("Over the last month of analysis, ");
 		stringBuffer.append(numberOfArticles);
 		stringBuffer.append(" new bugs and ");
 		stringBuffer.append(numberOfThreads);

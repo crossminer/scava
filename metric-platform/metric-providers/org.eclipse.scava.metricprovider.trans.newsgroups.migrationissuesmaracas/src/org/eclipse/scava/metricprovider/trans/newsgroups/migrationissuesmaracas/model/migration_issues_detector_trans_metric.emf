@@ -9,7 +9,7 @@ class NewsgroupsMigrationIssueMaracasTransMetric {
 class NewsgroupMigrationIssueMaracas {
 	@searchable
    	attr String newsgroupName;
-   	attr int threadId;
+   	attr String threadId;
    	attr String[*] changes;
    	attr Double[*] matchingPercentage;
 }

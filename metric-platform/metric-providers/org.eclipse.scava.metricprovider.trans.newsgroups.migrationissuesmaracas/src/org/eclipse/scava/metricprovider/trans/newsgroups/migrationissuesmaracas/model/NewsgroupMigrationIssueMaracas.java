@@ -1,13 +1,9 @@
 package org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.model;
 
-import java.util.List;
-
-import com.googlecode.pongo.runtime.Pongo;
-import com.googlecode.pongo.runtime.PrimitiveList;
-import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
-import com.googlecode.pongo.runtime.querying.NumericalQueryProducer;
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
-import com.mongodb.BasicDBList;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class NewsgroupMigrationIssueMaracas extends Pongo {
@@ -27,7 +23,7 @@ public class NewsgroupMigrationIssueMaracas extends Pongo {
 	}
 	
 	public static StringQueryProducer NEWSGROUPNAME = new StringQueryProducer("newsgroupName"); 
-	public static NumericalQueryProducer THREADID = new NumericalQueryProducer("threadId");
+	public static StringQueryProducer THREADID = new StringQueryProducer("threadId"); 
 	public static ArrayQueryProducer CHANGES = new ArrayQueryProducer("changes");
 	public static ArrayQueryProducer MATCHINGPERCENTAGE = new ArrayQueryProducer("matchingPercentage");
 	
@@ -41,11 +37,11 @@ public class NewsgroupMigrationIssueMaracas extends Pongo {
 		notifyChanged();
 		return this;
 	}
-	public int getThreadId() {
-		return parseInteger(dbObject.get("threadId")+"", 0);
+	public String getThreadId() {
+		return parseString(dbObject.get("threadId")+"", "");
 	}
 	
-	public NewsgroupMigrationIssueMaracas setThreadId(int threadId) {
+	public NewsgroupMigrationIssueMaracas setThreadId(String threadId) {
 		dbObject.put("threadId", threadId);
 		notifyChanged();
 		return this;

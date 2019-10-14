@@ -16,7 +16,6 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.historic.newsgroups.sentiment.SentimentHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.newsgroups.sentiment.model.NewsgroupsSentimentHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -91,17 +90,7 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 			}
 		}
 
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20040801");
-//			end = new Date("20050801");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		List<Pongo> sentimentList = sentimentProvider.getHistoricalMeasurements(context, project, start, end);
+		List<Pongo> sentimentList = sentimentProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		float averageSentiment = getAverageSentiment(sentimentList),
 			  sentimentAtThreadBeggining = getSentimentAtThreadBeggining(sentimentList),
@@ -169,7 +158,7 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 	private float getAverageSentiment(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			NewsgroupsSentimentHistoricMetric sentimentPongo = 
-					(NewsgroupsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(NewsgroupsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallAverageSentiment();
 		}
 		return 0;
@@ -178,7 +167,7 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 	private float getSentimentAtThreadBeggining(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			NewsgroupsSentimentHistoricMetric sentimentPongo = 
-					(NewsgroupsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(NewsgroupsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallSentimentAtThreadBeggining();
 		}
 		return 0;
@@ -187,7 +176,7 @@ public class NewsgroupsChannelSentimentFactoid extends AbstractFactoidMetricProv
 	private float getSentimentAtThreadEnd(List<Pongo> sentimentList) {
 		if ( sentimentList.size() > 0 ) {
 			NewsgroupsSentimentHistoricMetric sentimentPongo = 
-					(NewsgroupsSentimentHistoricMetric) sentimentList.get(sentimentList.size()-1);
+					(NewsgroupsSentimentHistoricMetric) sentimentList.get(0);
 			return sentimentPongo.getOverallSentimentAtThreadEnd();
 		}
 		return 0;

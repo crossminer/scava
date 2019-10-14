@@ -24,7 +24,6 @@ import org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.model
 import org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.SeveritySentimentHistoricMetricProvider;
 import org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.model.BugsSeveritySentimentHistoricMetric;
 import org.eclipse.scava.platform.AbstractFactoidMetricProvider;
-import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.IMetricProvider;
 import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.factoids.Factoid;
@@ -101,25 +100,15 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 				continue;
 			}
 		}
-		
-		Date end = new Date();
-		Date start = (new Date()).addDays(-30);
-//		Date start=null, end=null;
-//		try {
-//			start = new Date("20050301");
-//			end = new Date("20060301");
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 		List<Pongo> severityList = 
-						severityProvider.getHistoricalMeasurements(context, project, start, end),
+						severityProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					severityStatusList = 
-						severityBugStatusProvider.getHistoricalMeasurements(context, project, start, end),
+						severityBugStatusProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					severityResponseTimeList = 
-						severityResponseTimeProvider.getHistoricalMeasurements(context, project, start, end),
+						severityResponseTimeProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate()),
 					severitySentimentList = 
-						severitySentimentProvider.getHistoricalMeasurements(context, project, start, end);
+						severitySentimentProvider.getHistoricalMeasurements(context, project, delta.getDate(), delta.getDate());
 		
 		int numberOfBugs = getNumberOfBugs(severityList),
 			numberOfBlockerBugs = getNumberOfSeverityBugs(severityList, "blocker"),
@@ -310,7 +299,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 		if ( severityStatusList.size() > 0 ) {
 			int numberOfBugs = 0;
 			BugsSeverityBugStatusHistoricMetric severityPongo =
-					(BugsSeverityBugStatusHistoricMetric) severityStatusList.get(severityStatusList.size()-1);
+					(BugsSeverityBugStatusHistoricMetric) severityStatusList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -324,7 +313,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 		if ( severityStatusList.size() > 0 ) {
 			int numberOfBugs = 0;
 			BugsSeverityBugStatusHistoricMetric severityPongo =
-					(BugsSeverityBugStatusHistoricMetric) severityStatusList.get(severityStatusList.size()-1);
+					(BugsSeverityBugStatusHistoricMetric) severityStatusList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -339,7 +328,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 //			int numberOfBugs = 0;
 //			BugsSeveritySentimentHistoricMetric severityPongo = 
 //					(BugsSeveritySentimentHistoricMetric) 
-//					severitySentimentList.get(severitySentimentList.size()-1);
+//					severitySentimentList.get(0);
 //			for (org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.model.SeverityLevel 
 //					severityLevel: severityPongo.getSeverityLevels())
 //				numberOfBugs += severityLevel.getNumberOfBugs();
@@ -353,7 +342,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 			int numberOfBugs = 0;
 			BugsSeveritySentimentHistoricMetric severityPongo = 
 					(BugsSeveritySentimentHistoricMetric) 
-					severitySentimentList.get(severitySentimentList.size()-1);
+					severitySentimentList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -369,7 +358,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 			float bugsSentimentProduct = 0;
 			BugsSeveritySentimentHistoricMetric severityPongo = 
 					(BugsSeveritySentimentHistoricMetric) 
-					severitySentimentList.get(severitySentimentList.size()-1);
+					severitySentimentList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType)) {
@@ -388,7 +377,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 //			int numberOfThreads = 0;
 //			BugsSeverityResponseTimeHistoricMetric severityPongo = 
 //					(BugsSeverityResponseTimeHistoricMetric) 
-//					severityResponseTimeList.get(severityResponseTimeList.size()-1);
+//					severityResponseTimeList.get(0);
 //			for (org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.model.SeverityLevel 
 //					severityLevel: severityPongo.getSeverityLevels())
 //				numberOfThreads += severityLevel.getNumberOfBugs();
@@ -402,7 +391,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 			int numberOfBugs = 0;
 			BugsSeverityResponseTimeHistoricMetric severityPongo = 
 					(BugsSeverityResponseTimeHistoricMetric) 
-					severityResponseTimeList.get(severityResponseTimeList.size()-1);
+					severityResponseTimeList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
@@ -418,7 +407,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 			long bugsResponseTimeProduct = 0;
 			BugsSeverityResponseTimeHistoricMetric severityPongo = 
 					(BugsSeverityResponseTimeHistoricMetric) 
-					severityResponseTimeList.get(severityResponseTimeList.size()-1);
+					severityResponseTimeList.get(0);
 			for (org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.model.SeverityLevel 
 					severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType)) {
@@ -439,7 +428,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 		if ( severityList.size() > 0 ) {
 			int numberOfBugs = 0;
 			BugsSeveritiesHistoricMetric severityPongo = 
-					(BugsSeveritiesHistoricMetric) severityList.get(severityList.size()-1);
+					(BugsSeveritiesHistoricMetric) severityList.get(0);
 			for (BugData newsgroupData: severityPongo.getBugData())
 				numberOfBugs += newsgroupData.getNumberOfBugs();
 			return numberOfBugs;
@@ -451,7 +440,7 @@ public class BugsChannelSeverityFactoid extends AbstractFactoidMetricProvider{
 		if ( severityList.size() > 0 ) {
 			int numberOfBugs = 0;
 			BugsSeveritiesHistoricMetric severityPongo = 
-					(BugsSeveritiesHistoricMetric) severityList.get(severityList.size()-1);
+					(BugsSeveritiesHistoricMetric) severityList.get(0);
 			for (SeverityLevel severityLevel: severityPongo.getSeverityLevels())
 				if (severityLevel.getSeverityLevel().equals(severityType))
 					numberOfBugs += severityLevel.getNumberOfBugs();

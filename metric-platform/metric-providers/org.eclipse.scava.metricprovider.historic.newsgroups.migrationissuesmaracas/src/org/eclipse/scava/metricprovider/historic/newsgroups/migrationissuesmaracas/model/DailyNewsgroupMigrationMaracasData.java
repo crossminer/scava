@@ -8,7 +8,7 @@ import com.googlecode.pongo.runtime.querying.*;
 
 public class DailyNewsgroupMigrationMaracasData extends Pongo {
 	
-	protected List<Integer> threadsId = null;
+	protected List<String> threadsId = null;
 	
 	
 	public DailyNewsgroupMigrationMaracasData() { 
@@ -43,9 +43,9 @@ public class DailyNewsgroupMigrationMaracasData extends Pongo {
 		return this;
 	}
 	
-	public List<Integer> getThreadsId() {
+	public List<String> getThreadsId() {
 		if (threadsId == null) {
-			threadsId = new PrimitiveList<Integer>(this, (BasicDBList) dbObject.get("threadsId"));
+			threadsId = new PrimitiveList<String>(this, (BasicDBList) dbObject.get("threadsId"));
 		}
 		return threadsId;
 	}

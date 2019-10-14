@@ -19,7 +19,7 @@ public class ClassifierMessage {
 	private String commentId;
 	
 	private String newsgroupName;
-	private int threadId;
+	private String threadId;
 	private String articleId;
 	private String subject;
 	
@@ -41,7 +41,7 @@ public class ClassifierMessage {
 	private void setComposedId() {
 		if ((bugTrackerId!=null)&&(bugId!=null))
 			composedId = bugTrackerId+"#"+bugId;
-		else if ((newsgroupName!=null)&&(threadId!=0)) 
+		else if ((newsgroupName!=null)&&(threadId!=null)) 
 			composedId = newsgroupName+"#"+threadId;
 		else if ((forumId != null) && (topicId != null))
 			composedId = forumId + "#" + topicId;
@@ -120,11 +120,11 @@ public class ClassifierMessage {
 		if (composedId!=null) setComposedId();
 	}
 
-	public int getThreadId() {
+	public String getThreadId() {
 		return threadId;
 	}
 	
-	public void setThreadId(int threadId) {
+	public void setThreadId(String threadId) {
 		this.threadId = threadId;
 		if (composedId!=null) setComposedId();
 	}

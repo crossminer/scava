@@ -1,0 +1,36 @@
+/*********************************************************************
+* Copyright (c) 2017 FrontEndART Software Ltd.
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*    Zsolt János Szamosvölgyi
+*    Endre Tamás Váradi
+*    Gergõ Balogh
+**********************************************************************/
+package org.eclipse.scava.plugin.usermonitoring.filters;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+public class PropertyFilter implements IVertexFilter {
+
+	private String property;
+	private String value;
+
+	public PropertyFilter(String property, String value) {
+		super();
+		this.property = property;
+		this.value = value;
+	}
+
+	@Override
+	public GraphTraversal<Vertex, Vertex> doFilter(GraphTraversal<Vertex, Vertex> graphTraversal) {
+		return graphTraversal.has(property, value);
+	}
+
+}
