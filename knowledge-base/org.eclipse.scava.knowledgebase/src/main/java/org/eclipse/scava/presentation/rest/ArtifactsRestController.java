@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.m2;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
@@ -90,6 +91,21 @@ public class ArtifactsRestController {
 	public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
 	}
+	
+	@ApiOperation(value = "Get metrics by user id")
+	@RequestMapping(value = "/m4p/pid//{user_id}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody List<MetricsForProject> getMetricForProjectByUserId(@PathVariable("user_id") String userId) {
+		return m4pRepository.findByUserId(userId);
+	}
+	
+	@ApiOperation(value = "Get metrics by projectID id")
+	@RequestMapping(value = "/m4p/uid/{project_id}", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody List<MetricsForProject> getMetricForProjectByProjectId(@PathVariable("project_id") String id) {
+		return m4pRepository.findByProjectId(id);
+	}
+	
 
 //	@ApiOperation(value = "Search artifact to KB")
 //	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)

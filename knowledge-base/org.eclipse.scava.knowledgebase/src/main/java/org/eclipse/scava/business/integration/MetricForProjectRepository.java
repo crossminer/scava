@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.business.integration;
 
+import java.util.List;
+
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -17,4 +19,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  *
  */
 public interface MetricForProjectRepository extends MongoRepository<MetricsForProject, String> {
+	List<MetricsForProject> findByUserId(String userId);
+	List<MetricsForProject> findByProjectId(String projectId);
 }
