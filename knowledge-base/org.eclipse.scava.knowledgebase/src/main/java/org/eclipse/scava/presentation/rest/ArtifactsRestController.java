@@ -98,6 +98,17 @@ public class ArtifactsRestController {
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByUserId(@PathVariable("user_id") String userId) {
 		return m4pRepository.findByUserId(userId);
 	}
+	@ApiImplicitParams({ // FIXME
+		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+				+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
+	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
+	@RequestMapping(value = "/m4p/", produces = { "application/json",
+			"application/xml" }, method = RequestMethod.GET)
+	public @ResponseBody Page<MetricsForProject> getAllMetricForProject(Pageable pageable) {
+		return m4pRepository.findAll(pageable);
+	}
 	
 	@ApiOperation(value = "Get metrics by projectID id")
 	@RequestMapping(value = "/m4p/uid/{project_id}", produces = { "application/json",
