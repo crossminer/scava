@@ -1,41 +1,48 @@
 [%import "task2baseclass.egl";%]
 package [%=package%];
 
+import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Generated;
+
 import org.eclipse.scava.crossflow.runtime.FailedJob;
+
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class Opinionated[%=t.name%]Base extends [%=t.name%]Base {
 	
-	[%for (s in t.input) { %]
-[%=s.createStartOfConsumeMethod()%]
+[%for (s in t.input) { %]
+	[%=s.createStartOfConsumeMethod()%]
 		[%if(not t.multipleOutputs and t.output.size==1) {%]
-				[%=t.output.first.type.name%] result = null;
-				
-				if(acceptInput([%=s.type.name.ftlc()%]))
-					result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				else 	
-					workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());
-				
-				if(result != null){
-					result.setTransactional(false);
-					sendTo[%=t.output.first.name%](result);
-				}
+					[%=t.output.first.type.name%] result = null;
+					
+					if(acceptInput([%=s.type.name.ftlc()%]))
+						result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
+					else 	
+						workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());
+					
+					if(result != null){
+						result.setTransactional(false);
+						sendTo[%=t.output.first.name%](result);
+					}
 		[%}else {%]
-				if(acceptInput([%=s.type.name.ftlc()%]))
-					consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				else 
-					workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());				
-[%=s.sendConfirmationMessage()%]
+					if(acceptInput([%=s.type.name.ftlc()%]))
+						consume[%=s.name%]([%=s.type.name.ftlc()%]);
+					else 
+						workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());				
+	[%=s.sendConfirmationMessage()%]
 		[%}%]
-[%=s.createEndOfConsumeMethod()%]
-	[%}%]
+	[%=s.createEndOfConsumeMethod()%]
+[%}%]
 
 [%for (s in t.input) { %]
-/*
-* Return whether this instance of Opinionated[%=t.name%] will accept the task 'input' for processing.
-*/	
-public abstract boolean acceptInput([%=s.type.name%] input);	
+	/*
+	 * Return whether this instance of Opinionated[%=t.name%] will accept the task 'input' for processing.
+	 */	
+	public abstract boolean acceptInput([%=s.type.name%] input);	
+	
 [%}%]
 
 }
