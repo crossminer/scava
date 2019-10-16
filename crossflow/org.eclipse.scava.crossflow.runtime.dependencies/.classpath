@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/bundles/guava-28.0-jre.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activation-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-all-5.15.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/arpack_combined_all-0.1.jar"/>
