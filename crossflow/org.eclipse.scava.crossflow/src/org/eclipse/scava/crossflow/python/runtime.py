@@ -6,22 +6,22 @@ Created on 26 Mar 2019
 """
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 import csv
 import datetime
+from enum import Enum, auto
 import hashlib
 import logging
 import os
+from pathlib import Path
 import pickle
 import sys
 import tempfile
 import threading
 import time
 import traceback
-import uuid
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-from pathlib import Path
 from typing import Type
+import uuid
 
 import stomp
 import xmltodict
