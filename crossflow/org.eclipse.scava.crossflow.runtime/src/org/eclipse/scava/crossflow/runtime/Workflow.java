@@ -14,6 +14,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeoutException;
 
 import javax.management.MBeanServerConnection;
@@ -845,6 +846,11 @@ public abstract class Workflow<E extends Enum<E>> {
 				if (pending.size() > 0)
 					System.err.println("WARNING: there were pending tasks in the threadpool upon termination!");
 			}
+			
+			// Destroy the Timeout Manager if there is one
+			if (timeoutManager != null) {
+				timeoutManager.shutdownNow();
+			}
 
 			if (isMaster()) {
 				//
@@ -1075,6 +1081,24 @@ public abstract class Workflow<E extends Enum<E>> {
 		if (latestTime - startTime > timeoutMillis)
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
+	}
+	
+	/*
+	 * TASK TIMEOUTS
+	 */
+	protected ScheduledExecutorService timeoutManager; // Lazily initialised
+	
+	/**
+	 * Get the {@code ExecutorService} responsible for managing task timeouts.
+	 * 
+	 * @return the timeout manager
+	 */
+	// TODO: Does this need to be synchronized?
+	public ScheduledExecutorService getTimeoutManager() {
+		if (timeoutManager == null) {
+				timeoutManager = Executors.newScheduledThreadPool(1);				// TODO: Do we need this to be parallelisation * tasks?
+		}
+		return timeoutManager;
 	}
 	
 	/*

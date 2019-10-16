@@ -7,10 +7,15 @@ var multiples =
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
+import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Generated;
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
+
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
@@ -215,11 +220,17 @@ operation Stream createEndOfConsumeMethod() {%]
 
 		} catch (Exception ex) {
 			try {
-				[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
-				workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), TASK.getTaskName()));
+				boolean sendFailed = true;
+				if (ex instanceof InterruptedException) {
+					sendFailed = onConsume[%=self.name%]Timeout([%=self.type.name.ftlc()%]);
+				}
+				if (sendFailed) {
+					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
+					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), getName()));
+				}
 			} catch (Exception e) {
 				workflow.reportInternalException(e);
-				}
+			}
 		} finally {
 			try {
 				[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
@@ -235,16 +246,33 @@ operation Stream createEndOfConsumeMethod() {%]
 		[%if (not (self.isConfigurationChannel() or t.isSource() or t.isSink())){%]		
 	};
 	
-	workflow.get[%=t.name%]s().getExecutor().submit(consumer);
+	ListenableFuture<?> consumerFuture = workflow.get[%=t.name%]s().getExecutor().submit(consumer);
+	if ([%=self.type.name.ftlc()%].getTimeout() > 0) {
+		Futures.withTimeout(consumerFuture, [%=self.type.name.ftlc()%].getTimeout(), TimeUnit.SECONDS, workflow.getTimeoutManager());
+	}
 	[%}%]
+}
+
+/**
+ * Cleanup callback in the event of a timeout.
+ *
+ * If this method returns {@code true} then a failed job will be registered by
+ * crossflow
+ *
+ * @param [%=self.type.name.ftlc()%] original input
+ * @return {@code true} if a failed job should be registered, {@code false}
+ * otherwise.
+ */
+public boolean onConsume[%=self.name%]Timeout([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception {
+	return true;
 }
 	
 	[%if(self.isConfigurationChannel() or (t.multipleOutputs or t.output.size<>1)) {%]
 public abstract void consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
-	
+
 	[%}else {%]
 public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
-	
+
 	[%}
 }
 
