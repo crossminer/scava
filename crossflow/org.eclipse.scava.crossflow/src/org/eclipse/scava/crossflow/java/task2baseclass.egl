@@ -25,6 +25,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	public static final [%=w.name%]Tasks TASK = [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%]; 
 	
 	protected [%=w.name%] workflow;
+	protected long timeout = 0;
 	
 	[%// Task parameters
 	// TODO: Handle many attirbute of fields
@@ -82,6 +83,14 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 
 	public [%=w.name%]Tasks getTaskEnum() {
 		return TASK;
+	}
+	
+	public long getTimeout() {
+		return timeout;
+	}
+	
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
 	}
 
 	[% // Parameter getters and setters
@@ -242,11 +251,12 @@ operation Stream createEndOfConsumeMethod() {%]
 				workflow.reportInternalException(e);
 			}
 		}
-		[%if (not (self.isConfigurationChannel() or t.isSource() or t.isSink())){%]		
+	[%if (not (self.isConfigurationChannel() or t.isSource() or t.isSink())) {%]		
 	};
 	
 	ListenableFuture<?> consumerFuture = workflow.get[%=t.name%]s().getExecutor().submit(consumer);
-	if ([%=self.type.name.ftlc()%].getTimeout() > 0) {
+	long timeout = [%=self.type.name.ftlc()%].getTimeout() > 0 ? [%=self.type.name.ftlc()%].getTimeout() : this.timeout;
+	if (timeout > 0) {
 		Futures.withTimeout(consumerFuture, [%=self.type.name.ftlc()%].getTimeout(), TimeUnit.SECONDS, workflow.getTimeoutManager());
 	}
 	[%}%]
