@@ -544,6 +544,7 @@ class Task(object):
     def __init__(self):
         self.cacheable = True
         self.subscriptionId = uuid.uuid4().int
+        self.timeout = 0
 
     def getId(self):
         pass
@@ -559,6 +560,12 @@ class Task(object):
 
     def getSubscriptionId(self):
         return self.subscriptionId
+    
+    def setTimeout(self, timeout):
+        self.timeout = timeout
+        
+    def getTimeout(self):
+        return timeout
 
     """
      * Call this within consumeXYZ() to denote task blocked due to some reason
@@ -950,6 +957,7 @@ class Job(object):
         self.cached = False
         self.failures = 0
         self.cacheable = True
+        self.timeout = 0
         # sets whether self job requires a transactional level of caching (usually due
         # to being created multiple times per single task)
         self.transactional = True
@@ -996,6 +1004,12 @@ class Job(object):
 
     def setCacheable(self, cacheable):
         self.cacheable = cacheable
+        
+    def getTimeout(self):
+        return self.timeout
+        
+    def setTimeout(self, timeout: int):
+        self.timeout = timeout
 
     def getFailures(self):
         return self.failures
