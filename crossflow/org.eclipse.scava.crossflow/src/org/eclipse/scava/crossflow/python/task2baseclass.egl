@@ -83,7 +83,7 @@ class [%=t.name%]Base(Task):
                 [%=conf%].setIsTransactionSuccessMessage(True)
                 [%=conf%].totalOutputs = self.get_total_outputs()
                 if self._has_sent_to_[%=o.pyVarName()%]:
-                    self.sendTo[%=o.name%]
+                    self.sendTo[%=o.name%]([%=conf%])
                     
                 [%}
             }%]
