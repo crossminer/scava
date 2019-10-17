@@ -91,9 +91,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-		[%for (t in w.getParallelizableTasks()) {%]
-		[%=t.name.ftlc()%]s.init(this);
-		[%}%]
 	
 		this.delay=delay;
 	
@@ -118,10 +115,12 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				}
 			}
 	
-			connect();
-	
 			Thread.sleep(delay);
 		
+			[%for (t in w.getParallelizableTasks()) {%]
+			[%=t.name.ftlc()%]s.init(this);
+			[%}%]
+	
 			[%for (s in w.streams) { %]
 			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
 			activeStreams.add([%=s.name.ftlc()%]);
@@ -132,6 +131,8 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				[%=t.setup()%]
 			[%}%]
 			}
+
+			connect();
 			
 			if (isWorker()) {
 			[%for (t in w.getWorkerTasks()){%]
@@ -157,14 +158,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			[%}%]
 				sendConfigurations();
 			}
-				
-			// delay non-master connections to allow master to create the relevant listeners
-			// (in a multi-threaded parallel execution) to facilitate termination, by
-			// re-sending worker_added message
-			if (!isMaster()) {
-				Thread.sleep(1000);
-				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
-			}	
 					
 		} catch (Exception e) {
 			log(LogLevel.ERROR, e.getMessage());

@@ -20,7 +20,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 		CrawlerWorkflow worker = master.createWorker();
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 
@@ -41,7 +41,7 @@ public class CrawlerWorkflowTests extends WorkflowTests {
 		master.getTaskStatusTopic().addConsumer(recorder);
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 

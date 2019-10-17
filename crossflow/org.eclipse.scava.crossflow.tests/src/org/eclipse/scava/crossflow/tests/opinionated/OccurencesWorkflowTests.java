@@ -23,7 +23,7 @@ public class OccurencesWorkflowTests extends WorkflowTests {
 		worker.getOccurencesMonitor().setFavouriteWord("Banana");
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 

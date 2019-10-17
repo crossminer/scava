@@ -32,7 +32,7 @@ public class TransactionalCachingTests extends WorkflowTests {
 		w.setInstanceId(mb.getInstanceId());
 		w.setMaster("localhost");
 		w.getClonerTask().setFail(true);
-		w.run();
+		w.run(500);
 
 		waitFor(mb);
 
@@ -52,7 +52,7 @@ public class TransactionalCachingTests extends WorkflowTests {
 		w.setInstanceId(mb.getInstanceId());
 		w.setMaster("localhost");
 		w.getClonerTask().setFail(false);
-		w.run();
+		w.run(500);
 
 		waitFor(mb);
 
@@ -72,7 +72,7 @@ public class TransactionalCachingTests extends WorkflowTests {
 		w.setInstanceId(mb.getInstanceId());
 		w.setMaster("localhost");
 		w.getClonerTask().setFail(false);
-		w.run();
+		w.run(500);
 
 		waitFor(mb);
 
