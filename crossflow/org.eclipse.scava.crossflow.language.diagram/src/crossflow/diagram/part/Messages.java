@@ -336,52 +336,62 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Sink10CreationTool_title;
+	public static String Serialiser10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink10CreationTool_desc;
+	public static String Serialiser10CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source11CreationTool_title;
+	public static String Sink11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source11CreationTool_desc;
+	public static String Sink11CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task12CreationTool_title;
+	public static String Source12CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task12CreationTool_desc;
+	public static String Source12CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic13CreationTool_title;
+	public static String Task13CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic13CreationTool_desc;
+	public static String Task13CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type14CreationTool_title;
+	public static String Topic14CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type14CreationTool_desc;
+	public static String Topic14CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type15CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type15CreationTool_desc;
 
 	/**
 	* @generated
@@ -437,6 +447,11 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String LanguageLanguageParametersCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String SerialiserSerialiserParametersCompartmentEditPart_title;
 
 	/**
 	* @generated

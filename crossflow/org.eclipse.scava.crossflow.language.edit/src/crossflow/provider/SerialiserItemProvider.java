@@ -5,7 +5,7 @@ package crossflow.provider;
 
 import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
-import crossflow.Workflow;
+import crossflow.Serialiser;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link crossflow.Workflow} object.
+ * This is the item provider adapter for a {@link crossflow.Serialiser} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class WorkflowItemProvider 
+public class SerialiserItemProvider 
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -48,7 +48,7 @@ public class WorkflowItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorkflowItemProvider(AdapterFactory adapterFactory) {
+	public SerialiserItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -79,9 +79,9 @@ public class WorkflowItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Workflow_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Workflow_name_feature", "_UI_Workflow_type"),
-				 CrossflowPackage.Literals.WORKFLOW__NAME,
+				 getString("_UI_Serialiser_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Serialiser_name_feature", "_UI_Serialiser_type"),
+				 CrossflowPackage.Literals.SERIALISER__NAME,
 				 true,
 				 false,
 				 false,
@@ -102,12 +102,7 @@ public class WorkflowItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__STREAMS);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TASKS);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__TYPES);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__PARAMETERS);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__LANGUAGES);
-			childrenFeatures.add(CrossflowPackage.Literals.WORKFLOW__SERIALISER);
+			childrenFeatures.add(CrossflowPackage.Literals.SERIALISER__PARAMETERS);
 		}
 		return childrenFeatures;
 	}
@@ -126,14 +121,14 @@ public class WorkflowItemProvider
 	}
 
 	/**
-	 * This returns Workflow.gif.
+	 * This returns Serialiser.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Workflow"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Serialiser"));
 	}
 
 	/**
@@ -144,10 +139,10 @@ public class WorkflowItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Workflow)object).getName();
+		String label = ((Serialiser)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Workflow_type") :
-			getString("_UI_Workflow_type") + " " + label;
+			getString("_UI_Serialiser_type") :
+			getString("_UI_Serialiser_type") + " " + label;
 	}
 
 
@@ -162,16 +157,11 @@ public class WorkflowItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Workflow.class)) {
-			case CrossflowPackage.WORKFLOW__NAME:
+		switch (notification.getFeatureID(Serialiser.class)) {
+			case CrossflowPackage.SERIALISER__NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case CrossflowPackage.WORKFLOW__STREAMS:
-			case CrossflowPackage.WORKFLOW__TASKS:
-			case CrossflowPackage.WORKFLOW__TYPES:
-			case CrossflowPackage.WORKFLOW__PARAMETERS:
-			case CrossflowPackage.WORKFLOW__LANGUAGES:
-			case CrossflowPackage.WORKFLOW__SERIALISER:
+			case CrossflowPackage.SERIALISER__PARAMETERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -191,73 +181,8 @@ public class WorkflowItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__STREAMS,
-				 CrossflowFactory.eINSTANCE.createTopic()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__STREAMS,
-				 CrossflowFactory.eINSTANCE.createQueue()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createTask()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createSource()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createCsvSource()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createSink()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createCsvSink()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createCommitmentTask()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createOpinionatedTask()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TASKS,
-				 CrossflowFactory.eINSTANCE.createScriptedTask()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__TYPES,
-				 CrossflowFactory.eINSTANCE.createType()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__PARAMETERS,
-				 CrossflowFactory.eINSTANCE.createField()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__LANGUAGES,
-				 CrossflowFactory.eINSTANCE.createLanguage()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CrossflowPackage.Literals.WORKFLOW__SERIALISER,
-				 CrossflowFactory.eINSTANCE.createSerialiser()));
+				(CrossflowPackage.Literals.SERIALISER__PARAMETERS,
+				 CrossflowFactory.eINSTANCE.createParameter()));
 	}
 
 	/**

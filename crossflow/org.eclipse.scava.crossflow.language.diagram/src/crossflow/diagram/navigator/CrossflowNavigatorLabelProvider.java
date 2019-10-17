@@ -38,12 +38,16 @@ import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageNameEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
+import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
+import crossflow.diagram.edit.parts.SerialiserEditPart;
+import crossflow.diagram.edit.parts.SerialiserNameEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -164,6 +168,9 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?ScriptedTask", //$NON-NLS-1$
 					CrossflowElementTypes.ScriptedTask_2015);
+		case SerialiserEditPart.VISUAL_ID:
+			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?Serialiser", //$NON-NLS-1$
+					CrossflowElementTypes.Serialiser_2016);
 		case Field3EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Field", CrossflowElementTypes.Field_3001); //$NON-NLS-1$
 		case ParameterEditPart.VISUAL_ID:
@@ -171,6 +178,9 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 					CrossflowElementTypes.Parameter_3002);
 		case Field2EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Field", CrossflowElementTypes.Field_3003); //$NON-NLS-1$
+		case Parameter2EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Parameter", //$NON-NLS-1$
+					CrossflowElementTypes.Parameter_3004);
 		case StreamTypeEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?org.eclipse.scava.crossflow?Stream?type", //$NON-NLS-1$
 					CrossflowElementTypes.StreamType_4001);
@@ -269,12 +279,16 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 			return getField_2014Text(view);
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getScriptedTask_2015Text(view);
+		case SerialiserEditPart.VISUAL_ID:
+			return getSerialiser_2016Text(view);
 		case Field3EditPart.VISUAL_ID:
 			return getField_3001Text(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002Text(view);
 		case Field2EditPart.VISUAL_ID:
 			return getField_3003Text(view);
+		case Parameter2EditPart.VISUAL_ID:
+			return getParameter_3004Text(view);
 		case StreamTypeEditPart.VISUAL_ID:
 			return getStreamType_4001Text(view);
 		case TaskOutputEditPart.VISUAL_ID:
@@ -511,6 +525,22 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 	/**
 	* @generated
 	*/
+	private String getSerialiser_2016Text(View view) {
+		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Serialiser_2016,
+				view.getElement() != null ? view.getElement() : view,
+				CrossflowVisualIDRegistry.getType(SerialiserNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5020); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
 	private String getField_3001Text(View view) {
 		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Field_3001,
 				view.getElement() != null ? view.getElement() : view,
@@ -552,6 +582,22 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5018); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getParameter_3004Text(View view) {
+		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Parameter_3004,
+				view.getElement() != null ? view.getElement() : view,
+				CrossflowVisualIDRegistry.getType(ParameterNameValue2EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5019); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

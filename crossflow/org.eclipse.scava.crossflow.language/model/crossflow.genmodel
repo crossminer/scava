@@ -12,6 +12,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/types"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/languages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/serialiser"/>
     </genClasses>
     <genClasses image="false" ecoreClass="crossflow.ecore#//Stream">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Stream/name"/>
@@ -73,6 +74,10 @@
     <genClasses ecoreClass="crossflow.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//Serialiser">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Serialiser/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Serialiser/parameters"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
