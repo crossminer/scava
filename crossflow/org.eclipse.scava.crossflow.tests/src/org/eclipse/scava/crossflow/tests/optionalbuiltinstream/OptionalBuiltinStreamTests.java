@@ -22,6 +22,7 @@ public class OptionalBuiltinStreamTests extends WorkflowTests {
 	public void testOptionalStreamsActual(boolean enable) throws Exception {
 
 		MinimalWorkflow workflow = new MinimalWorkflow();
+		workflow.createBroker(createBroker);
 		workflow.enableStreamMetadataTopic(enable);
 		workflow.enableTaskMetadataTopic(enable);
 		workflow.getMinimalSource().setNumbers(Arrays.asList(1));
@@ -33,9 +34,11 @@ public class OptionalBuiltinStreamTests extends WorkflowTests {
 		workflow.getTaskMetadataTopic().addConsumer(tsr);
 
 		workflow.run();
-		
+
 		waitFor(workflow);
 
+		System.out.println(smr.getRecorded().size() + ", " + enable);
+		System.out.println(tsr.getRecorded().size() + ", " + enable);
 		assertEquals(smr.getRecorded().size() != 0, enable);
 		assertEquals(tsr.getRecorded().size() != 0, enable);
 
