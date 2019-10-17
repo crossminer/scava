@@ -618,7 +618,6 @@ class MessageListener(stomp.ConnectionListener):
         self.listenerId = str(self.listenerIdUuid)
         self.convertToObject = convertToObject
         self.clientAcks = clientAcks
-        self.workflow.local_logger.debug("Created listener for {}".format(destName))
 
     def on_error(self, headers, message):
         if headers["destination"] == self.destName:
@@ -626,8 +625,6 @@ class MessageListener(stomp.ConnectionListener):
 
     def on_message(self, headers, message):
         if headers["destination"] == self.destName:
-            self.workflow.local_logger.debug("Rx fm " + self.destName)
-            self.workflow.local_logger.debug("Received a message: \n{}".format(message))
             ackFunc = None
             if self.clientAcks:
 
@@ -1069,9 +1066,6 @@ class JobStream(Job):
 
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-        self.workflow.local_logger.debug(
-            "Sending to queue: {}, message: {}".format(dest, msg)
-        )
         self.txConnection.send(body=msg, destination=dest)
 
     def getRxConnection(self, dest):
@@ -1089,9 +1083,7 @@ class JobStream(Job):
         if queueInfo.getPrefetchSize() > 0:
             stompHeaders["activemq.prefetchSize"] = queueInfo.getPrefetchSize()
             ackMode = "client"
-        self.workflow.local_logger.debug(
-            "Subscribe {} to {}".format(self.workflow.getName(), stompDestName)
-        )
+
         consumer = BuiltinStreamConsumer(msgCallbackFunc)
         connection = self.getRxConnection(stompDestName)
         listener = MessageListener(
