@@ -147,7 +147,7 @@ export class CreateProjectComponent implements OnInit {
           'type': [type],
           'loginOption': [''],
           'url': ['', Validators.required],
-          'executionFrequency': ['', Validators.required],
+          'executionFrequency': [''],
           'loginURL': [''],
           'username': [''],
           'usernameFieldName': [''],

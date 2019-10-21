@@ -188,7 +188,9 @@ public class ProjectCreationResource extends ServerResource {
 						DocumentationSystematic systematic = new DocumentationSystematic();
 						if (cc.get("loginOption").asText().equals("option1")) {
 							systematic.setUrl(cc.get("url").asText());
-							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							if (cc.get("executionFrequency").asText() != null && !cc.get("executionFrequency").asText().equals("")) {
+								systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							}
 						} else if (cc.get("loginOption").asText().equals("option2")) {
 							systematic.setUrl(cc.get("url").asText());
 							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
