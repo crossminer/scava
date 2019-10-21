@@ -293,8 +293,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
-                <label for="mailingListName">Mailing List Name</label>
-                <input type="text" class="form-control" name="mailingListName" [(ngModel)]="repository.mailingListName" #mailingListNameInput="ngModel" required>
+                <label for="MailingListName">Mailing List Name</label>
+                <input type="text" class="form-control" name="MailingListName" [(ngModel)]="repository.MailingListName" #mailingListNameInput="ngModel" required>
                 <div *ngIf="mailingListNameInput.dirty && mailingListNameInput.invalid">
                     <small class="form-text text-danger" *ngIf="mailingListNameInput.errors.required">
                         This field is required.
@@ -302,8 +302,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.sympa.SympaMailingList'">
-                <label for="mailingListDescription">Mailing List Description</label>
-                <input type="text" class="form-control" name="mailingListDescription" [(ngModel)]="repository.mailingListDescription" #mailingListDescriptionInput="ngModel" required>
+                <label for="MailingListDescription">Mailing List Description</label>
+                <input type="text" class="form-control" name="MailingListDescription" [(ngModel)]="repository.MailingListDescription" #mailingListDescriptionInput="ngModel" required>
                 <div *ngIf="mailingListDescriptionInput.dirty && mailingListDescriptionInput.invalid">
                     <small class="form-text text-danger" *ngIf="mailingListDescriptionInput.errors.required">
                         This field is required.
@@ -338,8 +338,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
-                <label for="mboxName">Mbox Name</label>
-                <input type="text" class="form-control" name="mboxName" [(ngModel)]="repository.mboxName" #mboxNameInput="ngModel" required>
+                <label for="MboxName">Mbox Name</label>
+                <input type="text" class="form-control" name="MboxName" [(ngModel)]="repository.MboxName" #mboxNameInput="ngModel" required>
                 <div *ngIf="mboxNameInput.dirty && mboxNameInput.invalid">
                     <small class="form-text text-danger" *ngIf="mboxNameInput.errors.required">
                         This field is required.
@@ -347,8 +347,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.mbox.Mbox'">
-                <label for="mboxDescription">Mbox Description</label>
-                <input type="text" class="form-control" name="mboxDescription" [(ngModel)]="repository.mboxDescription" #mboxDescriptionInput="ngModel" required>
+                <label for="MboxDescription">Mbox Description</label>
+                <input type="text" class="form-control" name="MboxDescription" [(ngModel)]="repository.MboxDescription" #mboxDescriptionInput="ngModel" required>
                 <div *ngIf="mboxDescriptionInput.dirty && mboxDescriptionInput.invalid">
                     <small class="form-text text-danger" *ngIf="mboxDescriptionInput.errors.required">
                         This field is required.
@@ -374,8 +374,8 @@
             </div>
             <!-- ECLIPSE FORUM -->
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
-                <label for="forumId">Forum Id</label>
-                <input type="text" class="form-control" name="forumId" [(ngModel)]="repository.forumId" #forumIdInput="ngModel" required>
+                <label for="forum_id">Forum Id</label>
+                <input type="text" class="form-control" name="forum_id" [(ngModel)]="repository.forum_id" #forumIdInput="ngModel" required>
                 <div *ngIf="forumIdInput.dirty && forumIdInput.invalid">
                     <small class="form-text text-danger" *ngIf="forumIdInput.errors.required">
                         This field is required.
@@ -383,8 +383,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
-                <label for="forumName">Forum Name</label>
-                <input type="text" class="form-control" name="forumName" [(ngModel)]="repository.forumName" #forumNameInput="ngModel" required>
+                <label for="forum_name">Forum Name</label>
+                <input type="text" class="form-control" name="forum_name" [(ngModel)]="repository.forum_name" #forumNameInput="ngModel" required>
                 <div *ngIf="forumNameInput.dirty && forumNameInput.invalid">
                     <small class="form-text text-danger" *ngIf="forumNameInput.errors.required">
                         This field is required.
@@ -392,8 +392,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
-                <label for="clientId">Client Id</label>
-                <input type="text" class="form-control" name="clientId" [(ngModel)]="repository.clientId" #clientIdInput="ngModel" required>
+                <label for="client_id">Client Id</label>
+                <input type="text" class="form-control" name="client_id" [(ngModel)]="repository.client_id" #clientIdInput="ngModel" required>
                 <div *ngIf="clientIdInput.dirty && clientIdInput.invalid">
                     <small class="form-text text-danger" *ngIf="clientIdInput.errors.required">
                         This field is required.
@@ -401,8 +401,8 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum'">
-                <label for="clientSecret">Client Secret</label>
-                <input type="text" class="form-control" name="clientSecret" [(ngModel)]="repository.clientSecret" #clientSecretInput="ngModel" required>
+                <label for="client_secret">Client Secret</label>
+                <input type="text" class="form-control" name="client_secret" [(ngModel)]="repository.client_secret" #clientSecretInput="ngModel" required>
                 <div *ngIf="clientSecretInput.dirty && clientSecretInput.invalid">
                     <small class="form-text text-danger" *ngIf="clientSecretInput.errors.required">
                         This field is required.

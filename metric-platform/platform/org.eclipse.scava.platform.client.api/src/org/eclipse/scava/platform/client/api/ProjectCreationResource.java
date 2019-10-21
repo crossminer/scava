@@ -45,43 +45,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ProjectCreationResource extends ServerResource {
-	
-	public static void main(String[] args) throws Exception {
-		String j = "{\"name\":\"hi\",\"homePage\":\"hi\",\"description\":\"hi\",\"vcsRepositories\":[{\"name\":\"hi\",\"url\":\"hi\",\"type\":\"git\"}],\"bts\":[{\"product\":\"hi\",\"url\":\"hi\",\"component\":\"hi\"}],\"communication_channels\":[{\"name\":\"hi\",\"url\":\"hi\",\"newsgroup\":\"hi\"}]}";
-
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode json = mapper.readTree(j);
-		
-		Project project = new Project();
-		project.setName(json.get("name").asText());
-		project.setHomePage(json.get("homePage").asText());
-		project.setDescription(json.get("description").asText());
-		
-		for (JsonNode vcs : (ArrayNode)json.get("vcsRepositories")) {
-			VcsRepository repo = null;
-			if (vcs.get("type").asText().equals("svn")) {
-				repo = new SvnRepository();
-			} else if (vcs.get("type").asText().equals("git")) {
-				repo = new GitRepository();
-			}
-			repo.setName(vcs.get("name").asText());
-			repo.setUrl(vcs.get("url").asText());
-			project.getVcsRepositories().add(repo);
-		}
-		for (JsonNode cc : (ArrayNode)json.get("communication_channels")) {
-			NntpNewsGroup newsgroup = new NntpNewsGroup();
-			newsgroup.setName(cc.get("name").asText());
-			newsgroup.setUrl(cc.get("url").asText());
-			project.getCommunicationChannels().add(newsgroup);
-		}
-		for (JsonNode bts : (ArrayNode)json.get("bts")) {
-			Bugzilla bugs = new Bugzilla();
-			bugs.setProduct(bts.get("product").asText());
-			bugs.setUrl(bts.get("url").asText());
-			bugs.setComponent(bts.get("component").asText());
-			project.getBugTrackingSystems().add(bugs);
-		}
-	}
 
 	@Post
 	public Representation createProject(Representation entity) {
