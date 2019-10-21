@@ -146,7 +146,7 @@ export class CreateProjectComponent implements OnInit {
         return this.formBuilder.group({
           'type': [type],
           'loginOption': [''],
-          'url': ['', Validators.required],
+          'url': [''],
           'executionFrequency': [''],
           'loginURL': [''],
           'username': [''],

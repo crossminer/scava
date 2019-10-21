@@ -193,7 +193,9 @@ public class ProjectCreationResource extends ServerResource {
 							}
 						} else if (cc.get("loginOption").asText().equals("option2")) {
 							systematic.setUrl(cc.get("url").asText());
-							systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							if (cc.get("executionFrequency").asText() != null && !cc.get("executionFrequency").asText().equals("")) {
+								systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							}
 							systematic.setLoginURL(cc.get("loginURL").asText());
 							systematic.setUsername(cc.get("username").asText());
 							systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
