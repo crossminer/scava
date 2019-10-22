@@ -4,12 +4,12 @@ if (t.isTypeOf(Source)){%]
 import threading
 
 [%}%]
-from crossflow.[%=package%].[%=t.name.toSnakeCaseLowerLower()%] import [%=t.name%]Base
+from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]Base
 [% var types = new Set;
 types.addAll(t.output.collect(t|t.type));
 types = types.sortBy(t|t.name);
 for (t in types) { %]
-from crossflow.[%=package%].[%=t.name.toSnakeCaseLowerLower()%] import [%=t.name%]
+from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]
 [%}%]
 from crossflow.runtime import logger
 

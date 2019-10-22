@@ -12,7 +12,7 @@
 		<dependency org="commons-io" name="commons-io" rev="2.6"/>
 		<dependency org="org.eclipse.jgit" name="org.eclipse.jgit" rev="5.2.0.201812061821-r"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25"/>
-		<dependency org="com.google.guava" name="guava" rev="28.0-jre"/>
+		<dependency org="com.google.guava" name="guava" rev="28.1-jre"/>
 		<dependency org="org.renjin" name="renjin-script-engine" rev="0.9.2726"/>
 		
 		<exclude module="jmock"/>

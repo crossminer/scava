@@ -154,11 +154,9 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 						reportInternalException(ex);
 						terminate();
 					}finally {
-						System.out.println("removing thread: "+Thread.currentThread());
 						activeSources.remove(Thread.currentThread());
 					}
 				});
-				System.out.println("adding thread: "+Thread.currentThread());	
 				activeSources.add([%=t.name.ftlc()%]Thread);
 				[%=t.name.ftlc()%]Thread.start();	
 			[%}%]
