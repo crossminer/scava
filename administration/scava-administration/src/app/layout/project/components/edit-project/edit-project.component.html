@@ -174,7 +174,7 @@
                 <tr *ngIf="bts?.password != null" class="row">
                     <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Password: </td>
                     <td class="col-10">
-                        <input type="password" class="form-control" name="bts.password-{{i + 1}}" [(ngModel)]="bts.password">
+                        <input type="text" class="form-control" name="bts.password-{{i + 1}}" [(ngModel)]="bts.password">
                     </td>
                 </tr>
                 <tr *ngIf="bts?.project != null" class="row">
@@ -184,7 +184,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="bts?.token != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Token: </td>
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Github Token: </td>
                     <td class="col-10">
                         <input type="password" class="form-control" name="bts.token-{{i + 1}}" [(ngModel)]="bts.token">
                     </td>
@@ -196,7 +196,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="bts?.cgiQueryProgram != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;CGIQueryProgram: </td>
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;CGI Query Program: </td>
                     <td class="col-10">
                         <input type="text" class="form-control" name="bts.cgiQueryProgram-{{i + 1}}" [(ngModel)]="bts.cgiQueryProgram">
                     </td>
