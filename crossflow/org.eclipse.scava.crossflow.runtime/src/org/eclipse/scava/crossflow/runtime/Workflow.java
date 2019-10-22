@@ -149,6 +149,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	protected HashSet<Task> tasks = new HashSet<>();
 	protected List<String> activeJobs = new ArrayList<>();
 	protected HashSet<Stream> activeStreams = new HashSet<>();
+	protected List<Thread> activeSources = new LinkedList<>();
 
 	// for master to keep track of active and terminated workers
 	protected Collection<String> activeWorkerIds = new HashSet<>();
@@ -754,6 +755,11 @@ public abstract class Workflow<E extends Enum<E>> {
 
 		if (terminationTimer != null)
 			terminationTimer.cancel();
+
+		// stop all sources (forced termination)
+
+		for (Thread t : activeSources)
+			t.stop();
 
 		// close all tasks
 

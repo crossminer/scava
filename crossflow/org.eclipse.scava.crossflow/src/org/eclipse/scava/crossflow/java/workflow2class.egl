@@ -145,7 +145,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			if (isMaster()){
 			[%for (t in w.getNonConfigurationSources()){%]
 				// run all sources in parallel threads
-				new Thread(() -> {
+				Thread [%=t.name.ftlc()%]Thread = new Thread(() -> {
 					try {
 						setTaskInProgess([%=t.name.ftlc()%]);
 						[%=t.name.ftlc()%].produce();
@@ -153,8 +153,14 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 					} catch (Exception ex) {
 						reportInternalException(ex);
 						terminate();
+					}finally {
+						System.out.println("removing thread: "+Thread.currentThread());
+						activeSources.remove(Thread.currentThread());
 					}
-				}).start();	
+				});
+				System.out.println("adding thread: "+Thread.currentThread());	
+				activeSources.add([%=t.name.ftlc()%]Thread);
+				[%=t.name.ftlc()%]Thread.start();	
 			[%}%]
 				sendConfigurations();
 			}
