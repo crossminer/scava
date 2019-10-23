@@ -6,8 +6,6 @@ public abstract class Task {
 
 	protected boolean cacheable = true;
 
-	public abstract String getId();
-
 	public abstract Workflow<?> getWorkflow();
 
 	public void log(LogLevel level, String message) {
@@ -23,8 +21,8 @@ public abstract class Task {
 	}
 
 	/**
-	 * Gets called upon workflow termination -- implementers of task should
-	 * override this if they have any termination code to run
+	 * Gets called upon workflow termination -- implementers of task should override
+	 * this if they have any termination code to run
 	 */
 	public void close() {
 		// implement any termination-specific functionality here
@@ -47,4 +45,20 @@ public abstract class Task {
 	protected void taskUnblocked() throws Exception {
 		getWorkflow().setTaskUnblocked(this);
 	}
+
+	/**
+	 * The ID of this task which follows the form "{task name}:{workflow name}"
+	 * 
+	 * @return the ID of this task
+	 */
+	public String getId() {
+		return getName() + ":" + getWorkflow().getName();
+	}
+
+	/**
+	 * Get the name of this Task
+	 * 
+	 * @return the name of this Task.
+	 */
+	public abstract String getName();
 }
