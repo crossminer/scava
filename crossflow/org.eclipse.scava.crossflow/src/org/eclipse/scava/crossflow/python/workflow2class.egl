@@ -105,13 +105,12 @@ class [%=w.name%](Workflow):
 
         try:
             time.sleep(delay)
+            self.connect()
 
             [%for (s in w.streams) { %]
             self.[%=s.name.ftlc()%] = [%=s.name%](self, self.enablePrefetch)
             self.activeStreams.append(self.[%=s.name.ftlc()%])
             [%}%]
-
-            self.connect()
 
             if (self.is_worker()):
             [%for (t in w.getWorkerTasks()){%]
