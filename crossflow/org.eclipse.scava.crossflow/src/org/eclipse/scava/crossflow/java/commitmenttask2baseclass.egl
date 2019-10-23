@@ -1,15 +1,19 @@
 [%import "task2baseclass.egl";%]
 package [%=package%];
 
-import javax.annotation.Generated;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Generated;
+
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {
 	
 	protected volatile int rejections = 0;

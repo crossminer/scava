@@ -10,20 +10,13 @@ public class Job implements Serializable {
 
 	private static final long serialVersionUID = 431981L;
 
-	public Job() {
-		this.id = UUID.randomUUID().toString();
-	}
-
-	public String toString() {
-		return id + " " + correlationId + " " + destination + " " + cacheable + " " + failures;
-	}
-
 	protected String id;
 	protected String correlationId;
 	protected String destination;
 	protected boolean cached = false;
 	protected int failures = 0;
 	protected boolean cacheable = true;
+	protected long timeout = 0;
 	// sets whether this job requires a transactional level of caching (usually due
 	// to being created multiple times per single task)
 	protected boolean transactional = true;
@@ -32,6 +25,14 @@ public class Job implements Serializable {
 	private boolean isTransactionSuccessMessage = false;	
 	private int totalOutputs = 0; 
 
+	public Job() {
+		this.id = UUID.randomUUID().toString();
+	}
+
+	public String toString() {
+		return id + " " + correlationId + " " + destination + " " + cacheable + " " + failures;
+	}
+	
 	public boolean isTransactional() {
 		return transactional;
 	}
@@ -86,6 +87,14 @@ public class Job implements Serializable {
 
 	public void setFailures(int failures) {
 		this.failures = failures;
+	}
+
+	public long getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
 	}
 
 	public String getXML() {

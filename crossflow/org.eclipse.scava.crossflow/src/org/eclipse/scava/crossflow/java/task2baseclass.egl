@@ -1,75 +1,164 @@
+[%import "../util.eol";
+
+var hasParameters = not t.parameters.isEmpty();
+var hasOutputs = not t.output.isEmpty();
+%]
 /** This class was automatically generated and should not be modified */
 package [%=package%];
+
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Generated;
 
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] implements [%=t.input.collect(s|s.name + "Consumer").concat(",")%][%}%]{
-		
-	protected [%=w.name%] workflow;
+
+	/**
+	 * Enum Identifier of this Task
+	 */
+	public static final [%=w.name%]Tasks TASK = [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%]; 
 	
+	protected [%=w.name%] workflow;
+	protected long timeout = 0;
+	
+	[%// Task parameters
+	// TODO: Handle many attirbute of fields
+	if (hasParameters) {%]
+	// Parameters
+		[%for (p in t.parameters) {%]
+	protected [%=p.type%] [%=p.name%];
+		[%}%]
+
+	[%}
+	
+	// Output streams
+	if (hasOutputs) {%]
+	// Output Streams
+		[%for (o in t.output) {%]
+	protected [%=o.name%] [%=o.name.ftlc()%];
+		[%}
+		
+		if (not t.isSingleOut()) { %]
+		
+	// Output Sent Flags
+			[%for (o in t.output) {%]
+	boolean hasSentTo[%=o.name%] = false;
+			[%}
+		}
+	}
+	
+	// Configuration streams if applicable
+	var configStreams = t.input.select(s|s.isConfigurationChannel());
+	if (not configStreams.isEmpty()) {%]
+	// Configuration Received Flags
+		[%for (i in t.input.select(s|s.isConfigurationChannel())) {%]
+	boolean hasProcessed[%=i.name%] = false;
+		[%}%]
+
+	[%}
+	
+	// General methods
+	%]
 	public void setWorkflow([%=w.name%] workflow) {
 		this.workflow = workflow;
 	}
-	
+
 	public [%=w.name%] getWorkflow() {
 		return workflow;
 	}
-	
-	[%for (p in t.parameters) { %]
-	protected [%=p.type%] [%=p.name%];
-	
-	public void set[%=p.name.ftuc()%]([%=p.type%] [%=p.name%]) {
-		this.[%=p.name%] = [%=p.name%];
+
+	public String getId(){
+		return TASK.getTaskName() + ":" + workflow.getName();
 	}
 	
+	public String getName() {
+		return TASK.getTaskName();
+	}
+
+	public [%=w.name%]Tasks getTaskEnum() {
+		return TASK;
+	}
+	
+	public long getTimeout() {
+		return timeout;
+	}
+	
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
+
+	[% // Parameter getters and setters
+	if (hasParameters) {%]
+		[%for (p in t.parameters) {%]
 	public [%=p.type%] get[%=p.name.ftuc()%]() {
 		return [%=p.name%];
 	}
-	[%}%]
-	
-	public String getId(){
-		return "[%=t.name%]:" + workflow.getName();
+
+	public void set[%=p.name.ftuc()%]([%=p.type%] [%=p.name%]) {
+		this.[%=p.name%] = [%=p.name%];
+	}
+
+		[%}
 	}
 	
-	[%for (s in t.output) { %]
-	protected [%=s.name%] [%=s.name.ftlc()%];
-	
-	protected void set[%=s.name%]([%=s.name%] [%=s.name.ftlc()%]) {
-		this.[%=s.name.ftlc()%] = [%=s.name.ftlc()%];
+	// Output stream methods
+	if (hasOutputs) {%]
+		[%for (o in t.output) { %]
+	protected void set[%=o.name%]([%=o.name%] [%=o.name.ftlc()%]) {
+		this.[%=o.name.ftlc()%] = [%=o.name.ftlc()%];
+	}
+
+	protected [%=o.name%] get[%=o.name%]() {
+		return [%=o.name.ftlc()%];
+	}
+
+	public void sendTo[%=o.name%]([%=o.type.name%] [%=o.type.name.ftlc()%]) {
+		[%=o.type.name.ftlc()%].setCacheable(this.cacheable);
+			[%if(t.isTypeOf(Source)){%]
+		[%=o.type.name.ftlc()%].setTransactional(false);
+			[%}%]
+			[%if(t.multipleOutputs or not (t.output.size==1)) {%]
+		hasSentTo[%=o.name%] = true;
+			[%}%]
+		get[%=o.name%]().send([%=o.type.name.ftlc()%], TASK.getTaskName());
+	}
+
+		[%}
 	}
 	
-	protected [%=s.name%] get[%=s.name%]() {
-		return [%=s.name.ftlc()%];
+	// If task is a source, needs a produce method
+	if (t.isKindOf(Source)){%]
+	public abstract void produce() throws Exception;
+	
+	[%}
+	
+	// Helper for calculate totalOutputs
+	if (hasOutputs and not t.isSingleOut()) {%]
+	public int getTotalOutputs() {
+		return [%
+		for (s in t.output) {
+			out.print("(hasSentTo");
+			out.print(s.name);
+			out.print(" ? 1 : 0)");
+			if (hasMore) {
+				out.print("	+ ");
+			} else {
+				out.println(";");
+			}
+		}%]
 	}
 	
-	public void sendTo[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) {
-		[%=s.type.name.ftlc()%].setCacheable(this.cacheable);
-		[%if(t.isTypeOf(Source)){%]
-		[%=s.type.name.ftlc()%].setTransactional(false);
-		[%}%]
-		[%if(t.multipleOutputs or not (t.output.size==1)) {%]
-		hasSentTo[%=s.name%] = true;
-		[%}%]
-		get[%=s.name%]().send([%=s.type.name.ftlc()%], this.getClass().getName());
-	}
+	[%}
 	
-	[%if(t.multipleOutputs or not (t.output.size==1)) {%]
-	boolean hasSentTo[%=s.name%] = false;
-	[%}%]
-	[%}%]
-	
-	[%for (s in t.input) { %]
-	
-	[%if(s.isConfigurationChannel()){%]
-	boolean hasProcessed[%=s.name%] = false;
-	[%}%]	
-	
-[%=s.createStartOfConsumeMethod()%]
-		[%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%]
+	for (s in t.input) { %]
+	[%=s.createStartOfConsumeMethod()%]
+		[%if (not s.isConfigurationChannel() and t.isSingleOut()) {%]
 				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				if(result != null){
 					if(isCacheable())
@@ -78,114 +167,137 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 					sendTo[%=t.output.first.name%](result);
 				}
 		[%}else {%]
+		
+				// Perform the actual processing
 				consume[%=s.name%]([%=s.type.name.ftlc()%]);
-[%if(not s.isConfigurationChannel()){%][%=s.sendConfirmationMessage()%]
-		[%}}%]
-[%=s.createEndOfConsumeMethod()%]
+				
+			[%if(not s.isConfigurationChannel()){%]
+				[%=s.sendConfirmationMessage()%]
+			[%}
+		}%]
+	[%=s.createEndOfConsumeMethod()%]
 	[%}%]
-	
-	[%if (t.isKindOf(Source)){%]
-	public abstract void produce() throws Exception;
-	[%}%]
-	
 }
 
 [%
-operation Stream isConfigurationChannel() {
-	if(not self.name.endsWith("ConfigTopic")) return false;
-	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
-	return t.configurations.exists(c|c.name=configurationName);
-}
-
+@template
 operation Stream createStartOfConsumeMethod() {%]
-	@Override
-	public [%if(t.isTypeOf(Task)){%]final[%}else{%][%=out.chop(1)%][%}%] void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.type.name.ftlc()%]) {
-		
-		[%if (t.input.exists(c|c.isConfigurationChannel()) and not self.isConfigurationChannel()){%]
-		while([%
-		for (s in t.input) {
-			if(s.isConfigurationChannel()){
-				%]!hasProcessed[%=s.name%] ||[%
-			}
+@Override
+public void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.type.name.ftlc()%]) {
+	[%if (t.hasConfiguration() and not self.isConfigurationChannel()){ %]
+	// Await configuration to be processed
+	while([%
+	for (s in t.input) {
+		if(s.isConfigurationChannel()){
+			%]!hasProcessed[%=s.name%] ||[%
 		}
-		out.chop(3);
-		%])
+	}
+	out.chop(3);
+	%]) {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			workflow.reportInternalException(e);
 		}
-		[%}%]
-		[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
-		try {
-			workflow.get[%=t.name%]s().getSemaphore().acquire();
-		} catch (Exception e) {
-			workflow.reportInternalException(e);
-		}
-				
-		[%if(t.multipleOutputs or not (t.output.size==1)) {%]
-		[%for (ss in t.output) { %]
-		hasSentTo[%=ss.name%] = false;
-		[%}%]
-		[%}%]
-				
-		Runnable consumer = () -> {		
-		[%}%]
-			try {
-				workflow.setTaskInProgess(this);
-[%}%]
-[%
-operation Stream createEndOfConsumeMethod() {%]
-
-			} catch (Exception ex) {
-				try {
-					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
-					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), "[%=t.name%]"));
-				} catch (Exception e) {
-					workflow.reportInternalException(e);
-				}
-			} finally {
-				try {
-					[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
-					workflow.get[%=t.name%]s().getSemaphore().release();
-					[%}if(self.isConfigurationChannel()){%]
-					hasProcessed[%=self.name%] = true;
-					[%}%]
-					workflow.setTaskWaiting(this);
-				} catch (Exception e) {
-					workflow.reportInternalException(e);
-				}
-			}
-		[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]		
-		};
-
-		workflow.get[%=t.name%]s().getExecutor().submit(consumer);
-		[%}%]
+	}
+		
+	[%}
+	
+	if (not (self.isConfigurationChannel() or t.isSource() or t.isSink())) {%]
+	try {
+		workflow.get[%=t.name%]s().getSemaphore().acquire();
+	} catch (Exception e) {
+		workflow.reportInternalException(e);
 	}
 	
-	[%if(self.isConfigurationChannel() or (t.multipleOutputs or t.output.size<>1)) {%]
-	public abstract void consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
-	[%}else {%]
-	public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
+	[% if (not t.isSingleOut()) {
+	// Reset output sent flags
+		for (ss in t.output) { %]
+	hasSentTo[%=ss.name%] = false;
+		[%}
+		
+	}%]
+	Runnable consumer = () -> {		
 	[%}%]
-	
-[%}%]
-[%
-operation Stream sendConfirmationMessage() {%]
+		try {
+			workflow.setTaskInProgess(this);
+[%}
 
-		[%if(t.output.size>0) {%]
-		
-			[%for (ss in t.output) { %]
-		
-				[%=ss.type.name%] confirmation[%=ss.name%] = new [%=ss.type.name%]();
-				confirmation[%=ss.name%].setCorrelationId([%=self.type.name.ftlc()%].getId());
-				confirmation[%=ss.name%].setIsTransactionSuccessMessage(true);
-				confirmation[%=ss.name%].setTotalOutputs([%for (ss in t.output) { %](hasSentTo[%=ss.name%] ? 1 : 0)+[%}%][%=out.chop(1)%]);
-				if (hasSentTo[%=ss.name%]) {
-					sendTo[%=ss.name%](confirmation[%=ss.name%]);
+@template
+operation Stream createEndOfConsumeMethod() {%]
+
+		} catch (Exception ex) {
+			try {
+				boolean sendFailed = true;
+				if (ex instanceof InterruptedException) {
+					sendFailed = onConsume[%=self.name%]Timeout([%=self.type.name.ftlc()%]);
 				}
-			[%}%]
-			
-		[%}%]
-		
-[%}%]
+				if (sendFailed) {
+					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
+					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), getName()));
+				}
+			} catch (Exception e) {
+				workflow.reportInternalException(e);
+			}
+		} finally {
+			try {
+				[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
+				workflow.get[%=t.name%]s().getSemaphore().release();
+				[%}if(self.isConfigurationChannel()){%]
+				hasProcessed[%=self.name%] = true;
+				[%}%]
+				workflow.setTaskWaiting(this);
+			} catch (Exception e) {
+				workflow.reportInternalException(e);
+			}
+		}
+	[%if (not (self.isConfigurationChannel() or t.isSource() or t.isSink())) {%]		
+	};
+	
+	ListenableFuture<?> consumerFuture = workflow.get[%=t.name%]s().getExecutor().submit(consumer);
+	long timeout = [%=self.type.name.ftlc()%].getTimeout() > 0 ? [%=self.type.name.ftlc()%].getTimeout() : this.timeout;
+	if (timeout > 0) {
+		Futures.withTimeout(consumerFuture, [%=self.type.name.ftlc()%].getTimeout(), TimeUnit.SECONDS, workflow.getTimeoutManager());
+	}
+	[%}%]
+}
+
+/**
+ * Cleanup callback in the event of a timeout.
+ *
+ * If this method returns {@code true} then a failed job will be registered by
+ * crossflow
+ *
+ * @param [%=self.type.name.ftlc()%] original input
+ * @return {@code true} if a failed job should be registered, {@code false}
+ * otherwise.
+ */
+public boolean onConsume[%=self.name%]Timeout([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception {
+	return true;
+}
+	
+	[%if(self.isConfigurationChannel() or (t.multipleOutputs or t.output.size<>1)) {%]
+public abstract void consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
+
+	[%}else {%]
+public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type.name%] [%=self.type.name.ftlc()%]) throws Exception;
+
+	[%}
+}
+
+@template
+operation Stream sendConfirmationMessage() {
+	if(not t.isSingleOut()) {
+		for (s in t.output) { %]
+// Send confirmation to [%=s.name%]
+[%=s.type.name%] confirmation[%=s.name%] = new [%=s.type.name%]();
+confirmation[%=s.name%].setCorrelationId([%=self.type.name.ftlc()%].getId());
+confirmation[%=s.name%].setIsTransactionSuccessMessage(true);
+confirmation[%=s.name%].setTotalOutputs(getTotalOutputs());
+if (hasSentTo[%=s.name%]) {
+	sendTo[%=s.name%](confirmation[%=s.name%]);
+}
+
+		[%}	
+	}	
+}%]

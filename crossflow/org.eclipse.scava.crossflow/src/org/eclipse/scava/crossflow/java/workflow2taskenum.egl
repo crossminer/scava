@@ -13,10 +13,15 @@ import javax.annotation.Generated;
  * </ul>
  * </p>
  */
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public enum [%=w.name%]Tasks {
-
-	[% for (t in w.tasks) {%]
+	
+	[% var configs = w.tasks.collect(t|t.configurations).flatten.asSet();
+	var types = w.types.select(t|configs.contains(t));
+	for (t in types) {%]
+	[%=t.name.toSnakeCaseUpper()%]_CONFIG_SOURCE("[%=t.name%]ConfigSource", true),
+	[%}
+	for (t in w.tasks) {%]
 	[%=t.name.toSnakeCaseUpper()%]("[%=t.name%]", [%=t.isJavaTask()%])[%if (hasMore)%],[%else%];
 	[%}%]
 	

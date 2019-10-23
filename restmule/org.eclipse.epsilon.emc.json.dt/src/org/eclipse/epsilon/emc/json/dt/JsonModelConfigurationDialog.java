@@ -12,21 +12,19 @@ package org.eclipse.epsilon.emc.json.dt;
 
 import org.eclipse.epsilon.common.dt.launching.dialogs.AbstractCachedModelConfigurationDialog;
 import org.eclipse.epsilon.emc.json.JsonModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurationDialog {
 	
+	@Override
 	protected String getModelName() {
 		return "JSON Document";
 	}
 
+	@Override
 	protected String getModelType() {
 		return "JSON";
 	}
@@ -38,6 +36,7 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 	protected Button browseModelFile;
 	protected Button filebasedButton;
 	
+	@Override
 	protected void createGroups(Composite control) {
 		super.createGroups(control);
 		//createFilesGroup(control);
@@ -107,6 +106,7 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 
 	
 	
+	@Override
 	protected void loadProperties(){
 		super.loadProperties();
 		if (properties == null) return;
@@ -117,6 +117,7 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 	}
 	
 	
+	@Override
 	protected void storeProperties(){
 		super.storeProperties();
 		properties.put(JsonModel.PROPERTY_URI, uriText.getText());

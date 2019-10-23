@@ -5,7 +5,7 @@ public class PostConfigSource extends PostConfigSourceBase {
 	@Override
 	public void produce() throws Exception {
 		sendToPostConfigTopic(new Post());
-		System.out.println("sent: "+new Post());
+		//System.out.println("sent: "+new Post());
 	}
 
 

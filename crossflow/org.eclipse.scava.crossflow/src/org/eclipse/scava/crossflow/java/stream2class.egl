@@ -9,7 +9,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.JobStream;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
 	public [%=s.name%](Workflow<[%=w.name%]Tasks> workflow, boolean enablePrefetch) throws Exception {

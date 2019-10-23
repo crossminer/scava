@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 import org.eclipse.scava.crossflow.runtime.Job;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]Job[%}else{%][%=t.extending.first.name%][%}}else{%] implements Serializable[%}%] {
 	
 	public [%=t.name%]() {}

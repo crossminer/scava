@@ -18,11 +18,17 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
+<<<<<<< HEAD
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+=======
+>>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%for (p in w.parameters) { %]
 	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
@@ -91,9 +97,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-		[%for (t in w.getParallelizableTasks()) {%]
-		[%=t.name.ftlc()%]s.init(this);
-		[%}%]
 	
 		this.delay=delay;
 	
@@ -118,10 +121,12 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				}
 			}
 	
-			connect();
-	
 			Thread.sleep(delay);
 		
+			[%for (t in w.getParallelizableTasks()) {%]
+			[%=t.name.ftlc()%]s.init(this);
+			[%}%]
+	
 			[%for (s in w.streams) { %]
 			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
 			activeStreams.add([%=s.name.ftlc()%]);
@@ -132,6 +137,8 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				[%=t.setup()%]
 			[%}%]
 			}
+
+			connect();
 			
 			if (isWorker()) {
 			[%for (t in w.getWorkerTasks()){%]
@@ -144,7 +151,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			if (isMaster()){
 			[%for (t in w.getNonConfigurationSources()){%]
 				// run all sources in parallel threads
-				new Thread(() -> {
+				Thread [%=t.name.ftlc()%]Thread = new Thread(() -> {
 					try {
 						setTaskInProgess([%=t.name.ftlc()%]);
 						[%=t.name.ftlc()%].produce();
@@ -152,19 +159,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 					} catch (Exception ex) {
 						reportInternalException(ex);
 						terminate();
+					}finally {
+						activeSources.remove(Thread.currentThread());
 					}
-				}).start();	
+				});
+				activeSources.add([%=t.name.ftlc()%]Thread);
+				[%=t.name.ftlc()%]Thread.start();	
 			[%}%]
 				sendConfigurations();
 			}
-				
-			// delay non-master connections to allow master to create the relevant listeners
-			// (in a multi-threaded parallel execution) to facilitate termination, by
-			// re-sending worker_added message
-			if (!isMaster()) {
-				Thread.sleep(1000);
-				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
-			}	
 					
 		} catch (Exception e) {
 			log(LogLevel.ERROR, e.getMessage());

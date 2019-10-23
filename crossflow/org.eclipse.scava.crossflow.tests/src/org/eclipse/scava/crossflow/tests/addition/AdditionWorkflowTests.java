@@ -113,7 +113,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		//
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 
@@ -139,7 +139,7 @@ public class AdditionWorkflowTests extends WorkflowTests {
 		AdditionWorkflow worker = master.createWorker();
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 
@@ -171,25 +171,6 @@ public class AdditionWorkflowTests extends WorkflowTests {
 				.filter(r -> (r.getStatus() == TaskStatuses.WAITING)).collect(Collectors.toList()).size());
 
 	}
-
-//	@Test
-//	public void testWithExistingBroker() throws Exception {
-//
-//		if (!createBroker)
-//			startBroker();
-//
-//		AdditionWorkflow workflow = new AdditionWorkflow();
-//		workflow.createBroker(createBroker);
-//		workflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2));
-//		workflow.setTerminationTimeout(0);
-//		workflow.run();
-//
-//		waitFor(workflow);
-//		assertArrayEquals(new Integer[] { 2, 4 }, workflow.getAdditionResultsSink().getNumbers().toArray());
-//
-//		if (!createBroker)
-//			stopBroker();
-//	}
 
 	@Test
 	public void testParallelWorkflows() throws Exception {

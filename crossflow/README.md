@@ -36,8 +36,11 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 	- Xtext Runtime
 
 ### Tomcat
-- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.zip
+- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.zip
 - Set up Tomcat in your Eclipse through the Servers view
+
+### ActveMQ
+- Download a copy of ActiveMQ from https://activemq.apache.org/components/classic/download/
 
 ### Thrift
 - Install Apache Thrift (http://thrift.apache.org/)
@@ -52,22 +55,20 @@ To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thr
 ### Ivy
 We're using Apache Ivy for dependency management (i.e. so that we don't need to store jars in the repo)
 - Install the Ivy Eclipse plugin: http://www.apache.org/dist/ant/ivyde/updatesite
-- The main project requiring resolution is 'runtime.dependencies'. Since this project requires dependencies from a non-standard repository, you have to configure ivy to add this repository as well. Since this is not automated you need to right-click on the project -> Properties -> Ivy -> New... -> Settings -> Enable project specific settings (selected) -> Ivy settings path -> ${workspace_loc:org.eclipse.scava.crossflow.runtime.dependencies/ivysettings.xml}. To resolve the dependencies you now select this new retrieve option from the context menu of Ivy, instead of the default one. 
-- If you get an error regarding same-name artefacts, click on 'Add def. pattern' in the 'Main' tab of the previous configuration to replace everything after lib/, resulting in: lib/[type]s/[artifact]-[revision](-[classifier]).[ext] as the retrieve pattern.
-- For the remainder of the projects, if Ivy doesn't run automatically, look for any projects that contain an ivy.xml, right-click (on the project name) and select Ivy -> Resolve (. If you plan to run the web UI from eclipse instead of docker, the 'web' project requires resolution as well)
-
+- The main project requiring resolution is 'runtime.dependencies'. To resolve the dependencies you now select the retrieve option "Retrieve 'dependencies'", from the context menu of Ivy (found by right-clicking on the eclipse project itself). 
+- For the remainder of the projects with similar requirements, if Ivy doesn't run automatically, perform the same step as above.
 ### Generating stuff
-You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects.
+You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects (if you wish to use the web, tests or examples project(s)).
 
 - org.eclipse.scava.crossflow.tests/generate-all-tests.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.tests/models
-- org.eclipse.scava.crossflow.web/run-thrift.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript source code
-- org.eclipse.scava.crossflow.web/build-war.xml builds a Tomcat WAR file from org.eclipse.scava.crossflow.web
+- org.eclipse.scava.crossflow.web/build-war.xml runs the Thrift code generator against crossflow.thrift to produce Java and JavaScript source code and builds a Tomcat WAR file from org.eclipse.scava.crossflow.web
 - org.eclipse.scava.crossflow.examples/generate-all-examples.xml runs the Crossflow code generator against all models under /org.eclipse.scava.crossflow.examples/models
 
 ### Tests
-- JUnit tests can be ran through the CrossflowTests class in org.eclipse.scava.crossflow.tests
+- JUnit tests can be ran through the CrossflowTests test suite in org.eclipse.scava.crossflow.tests
 
 ### Web application
+- Before running the web application, start ActiveMQ from a terminal using 'activemq start'. If your path is not configured properly, move to the ActiveMQ directory on your machine and run the command in the 'bin' folder.
 - To run the web application (port: 8080) right-click on org.eclipse.scava.crossflow.web and select Run as -> Run on Server
 - The web app should be running on http://localhost:8080/org.eclipse.scava.crossflow.web/
 
