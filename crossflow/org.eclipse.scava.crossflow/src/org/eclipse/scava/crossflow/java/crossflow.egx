@@ -98,6 +98,7 @@ rule Task2ImplClass
 @greedy
 rule Steam2Class 
 	transform s : Stream {
+	guard : not s.inputOf.isEmpty()
 	parameters : s.getParameters("Steam2Class")
 	template : "stream2class.egl"
 	target : s.getPath() + s.name + ".java"
