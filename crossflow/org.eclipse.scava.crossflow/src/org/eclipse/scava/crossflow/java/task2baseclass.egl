@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Generated;
 
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 import org.eclipse.scava.crossflow.runtime.FailedJob;
 import org.eclipse.scava.crossflow.runtime.Task;
 
@@ -40,9 +41,15 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	// Output streams
 	if (hasOutputs) {%]
 	// Output Streams
-		[%for (o in t.output) {%]
-	protected [%=o.name%] [%=o.name.ftlc()%];
-		[%}
+		[%for (o in t.output) {
+			var type;		
+			if(o.inputOf.isEmpty()){
+				type = "BuiltinStream<" + o.type.name + ">";
+			} else {
+				type = o.name;
+			}%]	
+	protected [%=type%] [%=o.name.ftlc()%];	
+			[%}
 		
 		if (not t.isSingleOut()) { %]
 		
@@ -106,16 +113,23 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	
 	// Output stream methods
 	if (hasOutputs) {%]
-		[%for (o in t.output) { %]
-	protected void set[%=o.name%]([%=o.name%] [%=o.name.ftlc()%]) {
+		[%for (o in t.output) { 
+			var type;		
+			if(o.inputOf.isEmpty()){
+				type = "BuiltinStream<" + o.type.name + ">";
+			} else {
+				type = o.name;
+			}		
+		%]		
+	protected void set[%=o.name%]([%=type%] [%=o.name.ftlc()%]) {
 		this.[%=o.name.ftlc()%] = [%=o.name.ftlc()%];
 	}
 
-	protected [%=o.name%] get[%=o.name%]() {
+	protected [%=type%] get[%=o.name%]() {
 		return [%=o.name.ftlc()%];
 	}
 
-	public void sendTo[%=o.name%]([%=o.type.name%] [%=o.type.name.ftlc()%]) {
+	public void sendTo[%=o.name%]([%=o.type.name%] [%=o.type.name.ftlc()%]) [%if(o.inputOf.isEmpty()){%]throws Exception [%}%]{
 		[%=o.type.name.ftlc()%].setCacheable(this.cacheable);
 			[%if(t.isTypeOf(Source)){%]
 		[%=o.type.name.ftlc()%].setTransactional(false);
@@ -123,7 +137,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 			[%if(t.multipleOutputs or not (t.output.size==1)) {%]
 		hasSentTo[%=o.name%] = true;
 			[%}%]
-		get[%=o.name%]().send([%=o.type.name.ftlc()%], TASK.getTaskName());
+		get[%=o.name%]().send([%=o.type.name.ftlc()%][%if(not o.inputOf.isEmpty()){%], TASK.getTaskName()[%}%]);
 	}
 
 		[%}
