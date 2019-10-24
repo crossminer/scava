@@ -28,6 +28,11 @@ public abstract class JobStream<T extends Job> implements Stream {
 		public String getId() {
 			return "CacheManager";
 		}
+
+		@Override
+		public String getName() {
+			return "CacheManager";
+		}
 	};
 
 	public JobStream(Workflow<?> workflow) throws Exception {

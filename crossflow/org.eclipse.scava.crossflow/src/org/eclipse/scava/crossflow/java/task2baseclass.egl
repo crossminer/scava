@@ -72,11 +72,8 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	public [%=w.name%] getWorkflow() {
 		return workflow;
 	}
-
-	public String getId(){
-		return TASK.getTaskName() + ":" + workflow.getName();
-	}
 	
+	@Override
 	public String getName() {
 		return TASK.getTaskName();
 	}

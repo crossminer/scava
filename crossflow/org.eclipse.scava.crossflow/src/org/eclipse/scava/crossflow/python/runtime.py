@@ -565,7 +565,7 @@ class Task(object):
         self.timeout = timeout
         
     def getTimeout(self):
-        return timeout
+        return self.timeout
 
     """
      * Call this within consumeXYZ() to denote task blocked due to some reason

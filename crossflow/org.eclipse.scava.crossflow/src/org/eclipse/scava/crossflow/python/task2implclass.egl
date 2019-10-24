@@ -1,17 +1,15 @@
 [%import "../util.eol";
+import "pythonUtil.eol";
 
-if (t.isTypeOf(Source)){%]
+if (t.isSource()){%]
 import threading
 
 [%}%]
 from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]Base
-[% var types = new Set;
-types.addAll(t.output.collect(t|t.type));
-types = types.sortBy(t|t.name);
-for (t in types) { %]
-from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]
+
+[% for(i in t.output.collect(i|i.type).asOrderedSet().sortBy(i|i.name)) {%]
+from crossflow.[%=package%].[%=i.name.toSnakeCaseLower()%] import [%=i.name%]
 [%}%]
-from crossflow.runtime import logger
 
 
 class [%=t.name%]([%=t.name%]Base):
@@ -19,35 +17,52 @@ class [%=t.name%]([%=t.name%]Base):
     def __init__(self):
         super().__init__()
 
-    [%if (t.isTypeOf(Source)){%]
-    def produce(self):
-        def run():
-            # TODO: Add implementation that instantiates, sets, and submits source objects (example below)
-            [%for (s in t.output) { %]
-            [%var number = loopCount;%]
-            [%=s.type.name.ftlc()%][%=number%] = [%=s.type.name%]()
-            [%for (f in s.type.fields) { %]
-            #    [%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] )
-            [%}%]
-            self.sendTo[%=s.name%]( [%=s.type.name.ftlc()%][%=number%])
-            
-            [% } %]
-            threading.Timer(100, run).start()
-        run()
-    [%} else {%]
-    [% for (s in t.input) { %]
-    def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
-        # TODO: Add implementation that instantiates, sets, and submits result objects (example below)
-        [%for (s in t.output) { %]
-        [%var number= loopCount;%]
-        [%=s.type.name.ftlc()%][%=number%] = [%=s.type.name%]()
-        [%for (f in s.type.fields) { %]
-        #    [%=s.type.name.ftlc()%][%=number%].set[%=f.name.ftuc()%]( [%=f.type%] );
-        [%}%]
-        self.sendTo[%=s.name%]([%=s.type.name.ftlc()%][%=number%])
+    [% // This is a source task
+    if (t.isSource()){%]
+    [%=t.genSource()%]
+    [%} 
+    // This is a consuming task
+    else {%]
+        [% for (i in t.input) {%]
+    [%=i.genConsume(t.isSingleOut())%]
+        [%}
+    }
+
+
+@template
+operation Type genSource() {%]
+def produce(self):
+    def run():
+    [%for (o in self.output) {%]
+        [%=o.genResult(true)%]
         
-        [% } %]
-        [% if (t.output.notEmpty()==false) { %]
-        print('[' + self.workflow.getName() + '] Result is ' + str([%=s.type.name.ftlc()%]) + ' (cached=' + [%=s.type.name.ftlc()%].isCached() + ')')
-        [% } %]
-    [%}}%]
+    [%}%]
+        threading.Timer(100, run).start()
+    run()
+[%}
+
+@template
+operation Stream genConsume(send : Boolean) {%]
+def consume[%=self.name%](self, [%=self.type.pyVarName()%]: [%=self.type.name%]):
+    print(f"{self.workflow.getName()}:[%=t.name%]:consume[%=self.name%] received {[%=self.type.pyVarName()%]}")
+    
+    # Do work here
+    
+    [%for (o in t.output) {%]
+    [%=o.genResult(send)%]
+
+    [%}%]
+
+[%}
+
+@template
+operation Stream genResult(send : Boolean) {
+    var result = self.pyVarName() + "_" + self.type.pyVarName();%]
+[%=result%] = [%=self.type.name%]()
+# modify your result here
+    [%if (send) {%]
+self.sendTo[%=self.name%]([%=result%])
+    [%} else {%]
+return [%=self.name%]
+[%    }
+}%]

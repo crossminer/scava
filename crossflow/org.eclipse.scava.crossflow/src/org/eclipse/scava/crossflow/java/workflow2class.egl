@@ -11,6 +11,7 @@ import javax.annotation.Generated;
 
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
 import org.eclipse.scava.crossflow.runtime.Serializer;
@@ -38,8 +39,14 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	
 	// Streams
-	[%for (s in w.streams) { %]
-	protected [%=s.name%] [%=s.name.ftlc()%];
+	[%for (s in w.streams) {
+		var type;
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}%]
+	protected [%=type%] [%=s.name.ftlc()%];
 	[%}%]
 	
 	// Tasks
@@ -121,8 +128,14 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			[%=t.name.ftlc()%]s.init(this);
 			[%}%]
 	
-			[%for (s in w.streams) { %]
+			[%for (s in w.streams) { 
+				if (s.inputOf.isEmpty()) {%]
+			[%=s.name.ftlc()%] = new BuiltinStream<[%=s.type.name%]>(this, "[%=s.name%]", [%=s.isTypeOf(Topic)%]);
+			[%=s.name.ftlc()%].init();
+				[%} else {%]
 			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
+				[%}
+			%]
 			activeStreams.add([%=s.name.ftlc()%]);
 			[%}%]
 		
@@ -183,8 +196,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	}
 	
-	[%for (s in w.streams) { %]
-	public [%=s.name%] get[%=s.name%]() {
+	[%for (s in w.streams) {
+		var type; 
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}
+	%]
+	public [%=type%] get[%=s.name%]() {
 		return [%=s.name.ftlc()%];
 	}
 	[%}%]
