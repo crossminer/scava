@@ -16,6 +16,8 @@
        </topic>
        <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/handlingChangedAndDeprecatedApis.html" label="Handling Changed and Deprecated APIs">
        </topic>
+       <topic href="html/AcquireRecommendations/LibraryBasedRecommendations/libraryVersionUpdater.html" label="Library version update">
+       </topic>
     </topic>
     <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/sourceCodeBasedRecommendations.html" label="Source Code Based Recommendations">
        <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/codeRecommendation.html" label="Code recommendation">

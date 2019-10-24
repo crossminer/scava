@@ -102,15 +102,7 @@ public class CodeRecommendationController extends ModelViewController<CodeRecomm
 
 		} catch (ApiException e) {
 			e.printStackTrace();
-			ErrorHandler.handle(Display.getDefault().getActiveShell(), e);
-		}
-
-		try {
-			CodeRecommendationView.open(CodeRecommendationView.ID);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
-					"Unexpected error during showing view:\n\n" + e);
+			ErrorHandler.logAndShowErrorMessage(Display.getDefault().getActiveShell(), e);
 		}
 	}
 
@@ -125,8 +117,7 @@ public class CodeRecommendationController extends ModelViewController<CodeRecomm
 			if (element instanceof IPreviewable) {
 				IPreviewable previewable = (IPreviewable) element;
 
-				getSubControllers().stream().filter(CodeRecommendationPreviewController.class::isInstance)
-						.forEach(Controller::dispose);
+				getSubControllers(CodeRecommendationPreviewController.class).forEach(Controller::dispose);
 
 				CodeRecommendationPreviewModel model = new CodeRecommendationPreviewModel(previewable);
 				CodeRecommendationPreviewView view = new CodeRecommendationPreviewView();

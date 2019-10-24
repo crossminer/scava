@@ -11,6 +11,10 @@
 package org.eclipse.scava.plugin.projectsearch.search.searchresult;
 
 import org.eclipse.scava.plugin.projectsearch.search.ProjectSelectedEvent;
+
+import java.util.Collections;
+import java.util.Optional;
+
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -28,14 +32,14 @@ public class SearchResultController extends ModelViewController<SearchResultMode
 	@Override
 	public void init() {
 		super.init();
-
+		
 		Artifact project = getModel().getProject();
-
-		getView().setName(project.getFullName());
-		getView().setStarred(project.getStarred().size());
-		getView().setDependencies(project.getDependencies().size());
-		getView().setActive(project.isActive());
-		getView().setYear(project.getYear());
+		
+		getView().setName(Optional.ofNullable(project.getFullName()).orElse("n/a"));
+		getView().setStarred(Optional.ofNullable(project.getStarred()).orElse(Collections.emptyList()).size());
+		getView().setDependencies(Optional.ofNullable(project.getDependencies()).orElse(Collections.emptyList()).size());
+		getView().setActive(Optional.ofNullable(project.isActive()).orElse(false));
+		getView().setYear(Optional.ofNullable(project.getYear()).orElse(0));
 	}
 
 	@Override
@@ -52,10 +56,20 @@ public class SearchResultController extends ModelViewController<SearchResultMode
 	@Override
 	public void onOpen() {
 		routeEventToParentController(new ShowDetailsRequestEvent(this, getModel().getProject()));
+		getView().setSelected(true);
 	}
 
 	@Override
 	protected void onReceiveRoutedEventFromParentController(IRoutedEvent routedEvent) {
+		
+		if (routedEvent instanceof ShowDetailsRequestEvent) {
+			ShowDetailsRequestEvent event = (ShowDetailsRequestEvent) routedEvent;
+			if (!getModel().getProject().getId().equals(event.getProject().getId())) {
+				getView().setSelected(false);
+				return;
+			}
+		}	
+		
 		if (routedEvent instanceof ProjectSelectedEvent) {
 			ProjectSelectedEvent event = (ProjectSelectedEvent) routedEvent;
 

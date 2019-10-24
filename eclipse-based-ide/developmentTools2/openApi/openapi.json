@@ -531,93 +531,12 @@
                 }
             }
         },
-        "/api/artifacts/add-mpp.by-url/": {
+        "/api/artifacts/add/{project_name}": {
             "post": {
                 "tags": [
                     "artifacts-rest-controller"
                 ],
-                "summary": "Import projects from the metric provider platform from a specific url. The url should be <server_url>:<server_port>",
-                "operationId": "importMPPProjectsFromSpecificUrlUsingPOST",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "mppUrl",
-                        "in": "query",
-                        "description": "mppUrl",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    "201": {
-                        "description": "Created"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-        "/api/artifacts/add-mpp/": {
-            "post": {
-                "tags": [
-                    "artifacts-rest-controller"
-                ],
-                "summary": "Import projects from the metric provider platform",
-                "operationId": "importMPPProjectsUsingPOST",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "boolean"
-                        }
-                    },
-                    "201": {
-                        "description": "Created"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-        "/api/artifacts/add/{project_name}/{access_token}": {
-            "post": {
-                "tags": [
-                    "artifacts-rest-controller"
-                ],
-                "summary": "Add github project to KB. use <owner>--<repo>",
+                "summary": "Add github project to KB",
                 "operationId": "importGithubProjectUsingPOST",
                 "consumes": [
                     "application/json"
@@ -631,13 +550,6 @@
                         "name": "project_name",
                         "in": "path",
                         "description": "project_name",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "access_token",
-                        "in": "path",
-                        "description": "access_token",
                         "required": true,
                         "type": "string"
                     }
@@ -1246,33 +1158,6 @@
                 }
             }
         },
-        "/api/recommendation/force-distance-matrices-computation": {
-            "get": {
-                "tags": [
-                    "recommender-rest-controller"
-                ],
-                "summary": "This resource forces tha KB to compute all similarity matrixes",
-                "operationId": "forceDistanceMatricesComputationUsingGET",
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
         "/api/recommendation/recommendation-feedback/": {
             "post": {
                 "tags": [
@@ -1627,12 +1512,6 @@
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "licenseName": {
-                    "type": "string"
-                },
-                "licenseUrl": {
                     "type": "string"
                 },
                 "master_branch": {

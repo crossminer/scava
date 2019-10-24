@@ -8,10 +8,10 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-package org.eclipse.scava.plugin.apidocumentation.result;
+package org.eclipse.scava.plugin.libraryversions.apimigration.migration.result;
 
 import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
-public interface IApiDocumentationResultViewEventListener extends IViewEventListener {
-	void onOpenUrl();
+public interface IApiMigrationResultViewEventListener extends IViewEventListener {
+	void onTryAgainLoadResults();
 }

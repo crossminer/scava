@@ -273,6 +273,11 @@ public class InstallableController extends ModelViewController<InstallableModel,
 
 	private class ConditionFailException extends Exception {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8602813200023726340L;
+
 		public ConditionFailException(String message) {
 			super(message);
 		}
@@ -280,6 +285,11 @@ public class InstallableController extends ModelViewController<InstallableModel,
 	}
 
 	private class AlreadyInstalledException extends Exception {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 187058380555723933L;
 
 		public AlreadyInstalledException(String message) {
 			super(message);

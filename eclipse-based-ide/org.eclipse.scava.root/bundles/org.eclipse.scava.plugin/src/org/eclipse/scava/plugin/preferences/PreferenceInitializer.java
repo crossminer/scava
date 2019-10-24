@@ -22,10 +22,7 @@ import com.google.gson.Gson;
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
-	public void initializeDefaultPreferences() {
-		
-		System.out.println("Meghívtak");
-		
+	public void initializeDefaultPreferences() {	
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
 
 		preferences.setDefault(Preferences.KNOWLEDGEBASE_SERVER_ADDRESS, "http://localhost");

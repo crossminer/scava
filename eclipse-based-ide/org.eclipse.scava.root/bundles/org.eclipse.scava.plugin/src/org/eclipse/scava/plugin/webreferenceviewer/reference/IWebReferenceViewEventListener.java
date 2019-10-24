@@ -8,24 +8,10 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-package org.eclipse.scava.plugin.apidocumentation.result;
+package org.eclipse.scava.plugin.webreferenceviewer.reference;
 
-public class ApiDocumentation {
-	private final String label;
-	private final String url;
+import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
-	public ApiDocumentation(String label, String url) {
-		super();
-		this.label = label;
-		this.url = url;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
+public interface IWebReferenceViewEventListener extends IViewEventListener {
+	void onOpenUrl();
 }

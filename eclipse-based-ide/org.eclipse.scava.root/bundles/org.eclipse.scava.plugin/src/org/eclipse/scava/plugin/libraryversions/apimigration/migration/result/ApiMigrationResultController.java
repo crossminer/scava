@@ -8,18 +8,15 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-package org.eclipse.scava.plugin.apidocumentation.result;
+package org.eclipse.scava.plugin.libraryversions.apimigration.migration.result;
 
-import org.eclipse.scava.plugin.main.OpenInExternalBrowserRequestEvent;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 
-public class ApiDocumentationResultController
-		extends ModelViewController<ApiDocumentationResultModel, ApiDocumentationResultView>
-		implements IApiDocumentationResultViewEventListener {
+public abstract class ApiMigrationResultController<ModelType extends ApiMigrationResultModel, ViewType extends ApiMigrationResultView>
+		extends ModelViewController<ModelType, ViewType> implements IApiMigrationResultViewEventListener {
 
-	public ApiDocumentationResultController(Controller parent, ApiDocumentationResultModel model,
-			ApiDocumentationResultView view) {
+	public ApiMigrationResultController(Controller parent, ModelType model, ViewType view) {
 		super(parent, model, view);
 	}
 
@@ -27,7 +24,7 @@ public class ApiDocumentationResultController
 	public void init() {
 		super.init();
 
-		getView().showApiDocumentation(getModel().getApiDocumentation());
+		loadResults();
 	}
 
 	@Override
@@ -36,9 +33,9 @@ public class ApiDocumentationResultController
 	}
 
 	@Override
-	public void onOpenUrl() {
-		String url = getModel().getApiDocumentation().getUrl();
-		routeEventToParentController(new OpenInExternalBrowserRequestEvent(this, url));
+	public void onTryAgainLoadResults() {
+		loadResults();
 	}
 
+	protected abstract void loadResults();
 }

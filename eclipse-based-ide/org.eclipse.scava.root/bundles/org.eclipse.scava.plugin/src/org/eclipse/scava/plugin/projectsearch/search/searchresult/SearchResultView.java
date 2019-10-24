@@ -134,6 +134,17 @@ public class SearchResultView extends CompositeView<ISearchResultViewEventListen
 	@Override
 	protected void checkSubclass() {
 	}
+	
+	public void setSelected(boolean isSelected) {
+		
+		if(isSelected) {
+			setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT));
+		}else {
+			setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		}
+		
+		
+	}
 
 	public void setName(String value) {
 		lblName.setText(value);

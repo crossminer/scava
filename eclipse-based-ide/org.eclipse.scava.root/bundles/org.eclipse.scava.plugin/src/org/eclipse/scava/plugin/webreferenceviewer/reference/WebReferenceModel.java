@@ -8,19 +8,26 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-package org.eclipse.scava.plugin.apidocumentation.result;
+package org.eclipse.scava.plugin.webreferenceviewer.reference;
 
 import org.eclipse.scava.plugin.mvc.model.Model;
 
-public class ApiDocumentationResultModel extends Model {
-	private final ApiDocumentation apiDocumentation;
+public abstract class WebReferenceModel extends Model {
+	private final String url;
+	private final String title;
 
-	public ApiDocumentationResultModel(ApiDocumentation apiDocumentation) {
+	public WebReferenceModel(String url, String title) {
 		super();
-		this.apiDocumentation = apiDocumentation;
+		this.url = url;
+		this.title = title;
 	}
 
-	public ApiDocumentation getApiDocumentation() {
-		return apiDocumentation;
+	public String getUrl() {
+		return url;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
 }
