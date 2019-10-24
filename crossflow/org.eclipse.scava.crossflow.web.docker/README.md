@@ -58,6 +58,10 @@ Kill container:
 - Push new Crossflow Docker image to DockerHub:
 `docker push crossminer/crossflow:latest`
 
+## Extras
+
+- Since docker exposes the Web UI on port 80 instead of 8080, if you are using the Crossflow Eclipse UI to upload your experiment (through: 'Deploy Artifacts'), make sure you change the experiment.xml file (found in the 'artifacts' folder of your project) 'webServer' property to reflect this 
+
 ### Links:
 
 [Scava framework source code repository (GitHub)](https://github.com/crossminer/scava/tree/crossflow/crossflow)

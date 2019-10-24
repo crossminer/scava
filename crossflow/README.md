@@ -22,32 +22,39 @@ More details on running Crossflow with Docker are available [here](https://githu
 To run Crossflow from source you will need Eclipse, Apache Tomcat and Apache Thrift. Brief instructions are provided below.
 
 ### Eclipse
-- Start with a J2EE distribution from https://www.eclipse.org/downloads/packages/release/2018-09/r/eclipse-ide-java-ee-developers
-- Install Emfatic from http://download.eclipse.org/emfatic/update/ (Untick the "Group items by category" check box)
-- Install the Graphical Modelling Framework (GMF) Tooling SDK from http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases/
-- Install the following features from http://download.eclipse.org/epsilon/interim/
+- Start with a J2EE distribution, from https://www.eclipse.org/downloads/packages/release/2019-09/r/eclipse-ide-enterprise-java-developers
+- Install Emfatic, from http://download.eclipse.org/emfatic/update/ (Untick the "Group items by category" check box)
+- Install the Graphical Modelling Framework (GMF) Tooling SDK, from http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases/ 
+(choose keep my installation the same option)
+- Install the following Epsilon features, from http://download.eclipse.org/epsilon/interim/
 	- Epsilon Core
 	- Epsilon Core Develoment Tools
 	- Epsilon EMF Integration
 	- Epsilon GMF Integration
-- Install Web Tools Platform SDK (WTP SDK) from http://download.eclipse.org/webtools/repository/photon
-- Install Eclipse Xtext for textual workflow modelling support from https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ update site and select the following:
+	(choose modify current installation option)
+- Install Eclipse Xtext for textual workflow modelling support, from https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ update site and select the following:
 	- Xtext Complete SDK
 	- Xtext Runtime
+	(choose keep my installation the same option)
+
+### Update site
+- The update site for Crossflow can be found in the folder named 'org.eclipse.scava.crossflow.updatesite' in the 'crossflow' folder of the repository
+- For example, to access it online, for the 'crossflow' branch, the update site is at: https://github.com/crossminer/scava/raw/crossflow/crossflow/org.eclipse.scava.crossflow.updatesite (a.k.a pointing eclipse to that url in 'install new software') 
+- NB: the following (8) steps are not required if Crossflow is installed using this method, and running the Web UI needs to be done through docker
 
 ### Tomcat
-- Download a copy of Tomcat from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.zip
+- Download a copy of Tomcat, from http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.zip
 - Set up Tomcat in your Eclipse through the Servers view
 
 ### ActveMQ
-- Download a copy of ActiveMQ from https://activemq.apache.org/components/classic/download/
+- Download a copy of ActiveMQ, from https://activemq.apache.org/components/classic/download/
 
 ### Thrift
 - Install Apache Thrift (http://thrift.apache.org/)
 	- Standalone executable for Windows
 	- Homebrew for Mac
 
-### Git
+### Source Code (Git)
 - Clone the https://github.com/crossminer/scava/ repository
 - Switch to the crossflow branch
 - Import all projects from the crossflow and the restmule folders
@@ -57,6 +64,7 @@ We're using Apache Ivy for dependency management (i.e. so that we don't need to 
 - Install the Ivy Eclipse plugin: http://www.apache.org/dist/ant/ivyde/updatesite
 - The main project requiring resolution is 'runtime.dependencies'. To resolve the dependencies you now select the retrieve option "Retrieve 'dependencies'", from the context menu of Ivy (found by right-clicking on the eclipse project itself). 
 - For the remainder of the projects with similar requirements, if Ivy doesn't run automatically, perform the same step as above.
+
 ### Generating stuff
 You will need to run the ANT build-files below to generate stuff after you import all the crossflow and restmule projects (if you wish to use the web, tests or examples project(s)).
 
