@@ -306,50 +306,6 @@ class Stream(object):
         self.numberOfSubscribers = numberOfSubscribers
 
 
-class StreamMetadata(object):
-    def __init__(self):
-        self.streams = set()
-
-    def addStream(self, name, size, inFlight, isTopic, l):
-        stream = Stream(name, size, inFlight, isTopic, l)
-        sizeBefore = len(self.streams)
-        self.streams.add(stream)
-        return not (sizeBefore == len(self.streams))
-
-    def getStreams(self):
-        return self.streams
-
-    def getStream(self, name):
-        for s in self.streams:
-            if s.name == name:
-                return s
-
-    def pruneNames(self, length):
-        for s in self.streams:
-            if len(s.name) >= length:
-                s.name = s.name[0:length]
-            elif len(s.name) < length:
-                s.name = ("%-" + length + "s") % s.name
-
-    def __str__(self, *args, **kwargs):
-        ret = "Stream Metadata at epoch: " + int(round(time.time() * 1000)) + "\r\n"
-        for s in self.streams:
-            ret = (
-                ret
-                + s.name
-                + "\tsize: "
-                + s.size
-                + "\t: "
-                + s.inFlight
-                + "\tisTopic: "
-                + s.isTopic
-                + "\tnumberOfSubscribers: "
-                + s.numberOfSubscribers
-                + "\r\n"
-            )
-        return ret
-
-
 class TaskStatuses(Enum):
     """
     Flags indicating the status of a Task.
@@ -1175,7 +1131,6 @@ class Workflow(ABC):
         self.deleteCache = deleteCache
 
         # TODO: REMOVE THIS, KEPT IN UNTIL CODE REFACTOR CAN BE DONE NOT NEEDED UNLESS PYTHON MASTER REQUIRED
-        self.createBroker = True
         self.activeJobs = []
         self.activeStreams = []
         self.terminated = False
@@ -1183,7 +1138,6 @@ class Workflow(ABC):
         self.serializer = Serializer()
         self.serializer.register(ControlSignal)
         self.serializer.register(Job)
-        self.serializer.register(StreamMetadata)
         self.serializer.register(TaskStatus)
 
         self.inputDirectory = ""
@@ -1191,8 +1145,6 @@ class Workflow(ABC):
         self.tempDirectory = None
 
         self.taskStatusTopic = BuiltinStream(self, "TaskStatusPublisher")
-        self.streamMetadataTopic = BuiltinStream(self, "StreamMetadataBroadcaster")
-        self.taskMetadataTopic = BuiltinStream(self, "TaskMetadataBroadcaster")
         self.controlTopic = BuiltinStream(self, "ControlTopic")
         self.logTopic = BuiltinStream(self, "LogTopic")
         self.failedJobsTopic = BuiltinStream(self, "FailedJobs")
@@ -1200,8 +1152,6 @@ class Workflow(ABC):
 
         self._allStreams = []
         self._allStreams.append(self.taskStatusTopic)
-        self._allStreams.append(self.streamMetadataTopic)
-        self._allStreams.append(self.taskMetadataTopic)
         self._allStreams.append(self.controlTopic)
         self._allStreams.append(self.logTopic)
         self._allStreams.append(self.failedJobsTopic)
@@ -1216,7 +1166,6 @@ class Workflow(ABC):
 
         self.delay = 0
         self.terminationTimer = None
-        self.streamMetadataTimer = None
 
         """
          * Sets whether tasks are able to obtain more jobs while they are in the middle
@@ -1246,8 +1195,6 @@ class Workflow(ABC):
             self.tempDirectory = tempfile.NamedTemporaryFile(prefix="crossflow")
 
         self.taskStatusTopic.init()
-        self.streamMetadataTopic.init()
-        self.taskMetadataTopic.init()
         self.controlTopic.init()
         self.logTopic.init()
         self.failedJobsTopic.init()
@@ -1261,7 +1208,6 @@ class Workflow(ABC):
         # activestreams as the workflow should be able to terminate regardless of their
         # state
         # activeStreams.add(controlTopic);
-        # activeStreams.add(streamMetadataTopic);
         self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal))
         # XXX if the worker sends this before the master is listening to this topic
         # / this information is lost which affects termination
@@ -1277,12 +1223,6 @@ class Workflow(ABC):
     @abstractmethod
     def excluded_tasks(self, tasks=[]):
         raise NotImplementedError
-
-    def isCreateBroker(self):
-        return self.createBroker
-
-    def setCreateBroker(self, createBroker):
-        self.createBroker = createBroker
 
     """
      * used to manually add local workers to master as they may be enabled too
@@ -1371,11 +1311,6 @@ class Workflow(ABC):
     def getBroker(self):
         return [(self.brokerHost, self.stompPort)]
 
-    def stopBroker(self):
-        self.brokerService.deleteAllMessages()
-        self.brokerService.stopGracefully("", "", 1000, 1000)
-        self.local_logger.info("terminated broker (" + self.getName() + ")")
-
     """
      * delays the execution of sources for 'delay' milliseconds. Needs to set the
      * delay field in the superclass.
@@ -1432,9 +1367,6 @@ class Workflow(ABC):
 
     def getTaskStatusTopic(self):
         return self.taskStatusTopic
-
-    def getStreamMetadataTopic(self):
-        return self.streamMetadataTopic
 
     def getControlTopic(self):
         return self.controlTopic
@@ -1499,9 +1431,3 @@ class Workflow(ABC):
 
     def getSerializer(self):
         return self.serializer
-
-    def setStreamMetadataPeriod(self, p):
-        self.streamMetadataPeriod = p
-
-    def getStreamMetadataPeriod(self):
-        return self.streamMetadataPeriod
