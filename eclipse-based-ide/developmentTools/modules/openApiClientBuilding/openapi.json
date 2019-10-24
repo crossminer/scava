@@ -1,19 +1,26 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Api Documentation",
-        "version": "1.0",
-        "title": "Api Documentation",
-        "termsOfService": "urn:tos",
-        "contact": {},
+        "description": "This web interface allows one to use with the provided recommendations.",
+        "version": "0.0.1.2",
+        "title": "CROSSMINER APIs",
+        "termsOfService": "EPL-2.0",
+        "contact": {
+            "name": "Juri Di Rocco",
+            "email": "juri.dirocco@univaq.it"
+        },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+            "name": "EPL-2.0",
+            "url": "https://www.eclipse.org/legal/epl-2.0/"
         }
     },
     "host": "10.6.13.58:8080",
     "basePath": "/",
     "tags": [
+        {
+            "name": "api-migration-rest-controller",
+            "description": "Api Migration Rest Controller"
+        },
         {
             "name": "artifacts-rest-controller",
             "description": "Artifacts Rest Controller"
@@ -24,6 +31,506 @@
         }
     ],
     "paths": {
+        "/api/api-migration/M3Model": {
+            "post": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns the m3 model of the input jar file",
+                "operationId": "getM3ModelUsingPOST",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "file",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/client-code": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns the snippet (pointed by @clientLoc) of code of @coordV1",
+                "operationId": "getCodeUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "query",
+                        "description": "coordV1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "clientLoc",
+                        "in": "query",
+                        "description": "clientLoc",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/delta/{coordV1}/{coordV2}": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns the delta between coordV1 and coordV2",
+                "operationId": "getDeltaUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v1 (groupId:artifactId:version)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v2 (groupId:artifactId:version)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string",
+                            "format": "byte"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/detection/{coordV1}/{coordV2}": {
+            "post": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns detections",
+                "operationId": "getDetectionUsingPOST",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "coordV1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "coordV2",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "file",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Detection"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/matrix/{coordV1}": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns the migration matrix of coord (groupid:artifactid)",
+                "operationId": "getMigrationPairsUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v2 (groupId:artifactId:version)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MigrationInfo"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/similar_migration_location/{coordV1}/{coordV2}": {
+            "post": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns recommendation",
+                "operationId": "getRecommendationUsingPOST",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "coordV1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "coordV2",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "file",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DetectionResult"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/similar_migration_snippet/{coordV1}/{coordV2}": {
+            "post": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns recommendation",
+                "operationId": "getRecommendationSnippetUsingPOST",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "coordV1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "coordV2",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "file",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/sorec/{coordV1}/{coordV2}": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns stack overflow posts related to the version parameters",
+                "operationId": "getDocumentationUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v1 (groupId:artifactId:version)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v2 (groupId:artifactId:version)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/{coordV1}": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns all client that use a specific dependency coordV1",
+                "operationId": "getClientsUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v1 (groupId:artifactId:version)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Artifact"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/api-migration/{coordV1}/{coordV2}": {
+            "get": {
+                "tags": [
+                    "api-migration-rest-controller"
+                ],
+                "summary": "This API returns all client pairs that migrate from coordV1 to coordV2",
+                "operationId": "getMigrationPairsUsingGET_1",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "coordV1",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v1 (groupId:artifactId:version)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "coordV2",
+                        "in": "path",
+                        "description": "maven cooridnate of lib v2 (groupId:artifactId:version)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/MigrationInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/artifacts/add/{project_name}": {
             "post": {
                 "tags": [
@@ -56,6 +563,45 @@
                     },
                     "201": {
                         "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/artifact/mpp/{metricPlatformId}": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Get artifact by metric platform id",
+                "operationId": "getProjectByMetricPlatformIdUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "metricPlatformId",
+                        "in": "path",
+                        "description": "metricPlatformId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Artifact"
+                        }
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -164,7 +710,7 @@
                         "in": "query",
                         "description": "Sorting criteria in the format: [asc|desc]",
                         "required": false,
-                        "type": "object"
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -218,7 +764,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "boolean"
+                            "type": "object"
                         }
                     },
                     "201": {
@@ -260,7 +806,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Iterable"
+                            "$ref": "#/definitions/Artifact"
                         }
                     },
                     "401": {
@@ -377,22 +923,181 @@
                 }
             }
         },
-        "/api/recommendation/code-request-example": {
-            "get": {
+        "/api/recommendation/crossindex-c/": {
+            "post": {
                 "tags": [
                     "recommender-rest-controller"
                 ],
-                "summary": "getQuery",
-                "operationId": "getQueryUsingGET",
+                "summary": "This resource is used to retrieve recommendation about discussions and code snippets for C code using ElasticSearch Indexes.",
+                "operationId": "getCROSSIndexCRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
-                    "*/*"
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/crossindex-java/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve recommendation about discussions and code snippets for Java code using ElasticSearch Indexes.",
+                "operationId": "getCROSSIndexJavaRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
                             "$ref": "#/definitions/Query"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/crossindex-js/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve recommendation about discussions and code snippets for JavaScript code using ElasticSearch Indexes.",
+                "operationId": "getCROSSIndexJSRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/crossindex-php/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve recommendation about discussions and code snippets for PHP code using ElasticSearch Indexes.",
+                "operationId": "getCROSSIndexPHPRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -552,7 +1257,7 @@
                 "tags": [
                     "recommender-rest-controller"
                 ],
-                "summary": "This resource is used to retrieve documentation recommendation from code context. NOT YET IMPLEMENTED.",
+                "summary": "This resource is used to retrieve documentation recommendation from code context.",
                 "operationId": "getApiDocumentationRecommendationUsingPOST",
                 "consumes": [
                     "application/json"
@@ -947,6 +1652,140 @@
             },
             "title": "Dependency"
         },
+        "Detection": {
+            "type": "object",
+            "properties": {
+                "clientLocation": {
+                    "type": "string"
+                },
+                "newLibraryLocation": {
+                    "type": "string"
+                },
+                "oldLibraryLocation": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "ACCESS_MODIFIER",
+                        "FINAL_MODIFIER",
+                        "STATIC_MODIFIER",
+                        "ABSTRACT_MODIFIER",
+                        "DEPRECATED",
+                        "RENAMED",
+                        "MOVED",
+                        "REMOVED",
+                        "PARAMS_LIST",
+                        "RETURN_TYPE",
+                        "TYPE",
+                        "EXTENDS",
+                        "IMPLEMENTS",
+                        "ADDED"
+                    ]
+                }
+            },
+            "title": "Detection"
+        },
+        "DetectionMetaData": {
+            "type": "object",
+            "properties": {
+                "clientM3": {
+                    "type": "string"
+                },
+                "clientSource": {
+                    "type": "string"
+                },
+                "coordinate1": {
+                    "type": "string"
+                },
+                "coordinate2": {
+                    "type": "string"
+                },
+                "detections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Detection"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                }
+            },
+            "title": "DetectionMetaData"
+        },
+        "DetectionResult": {
+            "type": "object",
+            "properties": {
+                "detection": {
+                    "$ref": "#/definitions/Detection"
+                },
+                "detectionsMD": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DetectionMetaData"
+                    }
+                }
+            },
+            "title": "DetectionResult"
+        },
+        "File": {
+            "type": "object",
+            "properties": {
+                "absolute": {
+                    "type": "boolean"
+                },
+                "absoluteFile": {
+                    "$ref": "#/definitions/File"
+                },
+                "absolutePath": {
+                    "type": "string"
+                },
+                "canonicalFile": {
+                    "$ref": "#/definitions/File"
+                },
+                "canonicalPath": {
+                    "type": "string"
+                },
+                "directory": {
+                    "type": "boolean"
+                },
+                "file": {
+                    "type": "boolean"
+                },
+                "freeSpace": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "hidden": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent": {
+                    "type": "string"
+                },
+                "parentFile": {
+                    "$ref": "#/definitions/File"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "totalSpace": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "usableSpace": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "title": "File"
+        },
         "FocusInput": {
             "type": "object",
             "properties": {
@@ -1053,7 +1892,35 @@
             },
             "title": "MetricsForProject"
         },
-        "PageOfArtifacts": {
+        "MigrationInfo": {
+            "type": "object",
+            "properties": {
+                "clientsV1": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Artifact"
+                    }
+                },
+                "clientsV2": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Artifact"
+                    }
+                },
+                "count": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "libv1": {
+                    "$ref": "#/definitions/Artifact"
+                },
+                "libv2": {
+                    "$ref": "#/definitions/Artifact"
+                }
+            },
+            "title": "MigrationInfo"
+        },
+        "PageOfArtifact": {
             "type": "object",
             "properties": {
                 "content": {
@@ -1092,7 +1959,7 @@
                     "format": "int32"
                 }
             },
-            "title": "PageOfArtifacts"
+            "title": "PageOfArtifact"
         },
         "Parameter": {
             "type": "object",
