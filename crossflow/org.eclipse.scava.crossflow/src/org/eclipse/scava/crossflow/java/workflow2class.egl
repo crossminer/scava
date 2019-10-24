@@ -18,12 +18,6 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
-<<<<<<< HEAD
-
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;

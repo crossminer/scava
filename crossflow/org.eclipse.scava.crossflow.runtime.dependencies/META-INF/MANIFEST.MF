@@ -3,15 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CROSSFLOW Runtime Dependencies
 Bundle-SymbolicName: org.eclipse.scava.crossflow.runtime.dependencies
 Bundle-Version: 1.0.0.qualifier
-<<<<<<< HEAD
-Bundle-ClassPath: lib/jars/activation-1.1.1.jar,
-=======
 Bundle-ClassPath: lib/bundles/failureaccess-1.0.1.jar,
  lib/bundles/guava-28.1-jre.jar,
  lib/bundles/JavaEWAH-1.1.6.jar,
  lib/bundles/jettison-1.2.jar,
  lib/jars/activation-1.1.1.jar,
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
  lib/jars/activemq-all-5.15.8.jar,
  lib/jars/animal-sniffer-annotations-1.18.jar,
  lib/jars/arpack_combined_all-0.1.jar,
@@ -121,8 +117,6 @@ Export-Package: .,
  com.ctc.wstx.util,
  com.github.fommil.jni,
  com.github.fommil.netlib,
-<<<<<<< HEAD
-=======
  com.google.common.annotations,
  com.google.common.base,
  com.google.common.base.internal,
@@ -150,7 +144,6 @@ Export-Package: .,
  com.googlecode.javaewah.symmetric,
  com.googlecode.javaewah32,
  com.googlecode.javaewah32.symmetric,
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
  com.jcraft.jsch,
  com.jcraft.jsch.jce,
  com.jcraft.jsch.jcraft,
@@ -687,8 +680,6 @@ Export-Package: .,
  org.apache.xbean.spring.generator,
  org.apache.xbean.spring.jndi,
  org.apache.xbean.spring.util,
-<<<<<<< HEAD
-=======
  org.checkerframework.checker.compilermsgs.qual,
  org.checkerframework.checker.fenum.qual,
  org.checkerframework.checker.formatter,
@@ -727,7 +718,6 @@ Export-Package: .,
  org.codehaus.jettison.mapped,
  org.codehaus.jettison.util,
  org.codehaus.mojo.animal_sniffer,
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
  org.codehaus.plexus.util,
  org.codehaus.plexus.util.cli,
  org.codehaus.plexus.util.cli.shell,

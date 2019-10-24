@@ -3,13 +3,6 @@ Created on 26 Mar 2019
 
 @author: stevet
 @author: Jon Co
-<<<<<<< HEAD
-'''
-from __future__ import annotations
-
-import csv
-import datetime
-=======
 """
 from __future__ import annotations
 
@@ -17,21 +10,18 @@ from abc import ABC, abstractmethod
 import csv
 import datetime
 from enum import Enum, auto
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 import hashlib
 import logging
 import os
+from pathlib import Path
 import pickle
 import sys
 import tempfile
 import threading
 import time
 import traceback
-import uuid
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-from pathlib import Path
 from typing import Type
+import uuid
 
 import stomp
 import xmltodict
@@ -42,53 +32,6 @@ class LogLevel(Enum):
     LogLevels are used to indicate priority of a log message in the global
     workflow logging topic
     """
-<<<<<<< HEAD
-    INFO = auto()
-    WARNING = auto()
-    ERROR = auto()
-    DEBUG = auto()
-
-    def __str__(self):
-        return self.name
-
-    @staticmethod
-    def enum_from_name(name: str):
-        """Returns the enum of this constant from it's name
-
-        :param name: the name of the enum to return, case-insensitive
-        :type name: str
-        :return: Corresponding ControlSignals enum member
-        :rtype: LogLevel
-        :raises:
-            ValueError: if no member of LogLevel can be identified with the given name
-        """
-        try:
-            return LogLevel[name.upper()]
-        except KeyError:
-            raise ValueError(f"No LogLevel exists with name '{name.upper()}'. "
-                             f"Must be one of  {', '.join([i.name for i in LogLevel])}")
-
-
-class LogMessage:
-
-    def __init__(self,
-                 level: LogLevel = LogLevel.DEBUG,
-                 instance_id: str = None,
-                 workflow: str = None,
-                 task: str = None,
-                 message: str = None):
-        self.level = level
-        self.instanceId = instance_id
-        self.workflow = workflow
-        self.task = task
-        self.message = message
-        self.timestamp = int(round(time.time() * 1000))
-
-    @classmethod
-    def from_workflow(cls, workflow: Workflow) -> LogMessage:
-        return LogMessage(instance_id=workflow.getInstanceId(), workflow=workflow.getName())
-
-=======
 
     INFO = auto()
     WARNING = auto()
@@ -140,25 +83,16 @@ class LogMessage:
             instance_id=workflow.getInstanceId(), workflow=workflow.getName()
         )
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     @classmethod
     def from_task(cls, task: Task) -> LogMessage:
         m = LogMessage.from_workflow(workflow=task.getWorkflow())
         m.task = task.getId()
         return m
-<<<<<<< HEAD
-    
-    @property
-    def instance_id(self):
-        return self.instanceId
-    
-=======
 
     @property
     def instance_id(self):
         return self.instanceId
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     @instance_id.setter
     def instance_id(self, value):
         self.instanceId = value
@@ -170,12 +104,8 @@ class LogMessage:
             as_date.strftime("%Y-%m-%dT%H:%M:%S."),
             str(int(as_date.microsecond / 1000)),
             self.level,
-<<<<<<< HEAD
-            self.to_external_log_str())
-=======
             self.to_external_log_str(),
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def to_external_log_str(self) -> str:
         """Same as calling str() but without the timestamp or level prefixed.
@@ -192,24 +122,13 @@ class LogMessage:
 
 
 class CrossflowLogger:
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self, workflow: Workflow, pre_print: bool = False):
         self.workflow = workflow
         self.pre_print = pre_print
 
-<<<<<<< HEAD
-    def log(self,
-            level: LogLevel = LogLevel.DEBUG,
-            message: str = "",
-            task: Task = None):
-=======
     def log(
         self, level: LogLevel = LogLevel.DEBUG, message: str = "", task: Task = None
     ):
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         if task:
             m = LogMessage.from_task(task)
         else:
@@ -238,10 +157,7 @@ class ControlSignals(Enum):
     A control signal is sent between nodes on important workflow events, mainly
     relating to worker registration and overall status
     """
-<<<<<<< HEAD
-=======
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     TERMINATION = auto()
     ACKNOWLEDGEMENT = auto()
     WORKER_ADDED = auto()
@@ -264,15 +180,10 @@ class ControlSignals(Enum):
         try:
             return ControlSignals[name.upper()]
         except KeyError:
-<<<<<<< HEAD
-            raise ValueError(f"No ControlSignals exists with name '{name.upper()}'. "
-                             f"Must be one of  {', '.join([i.name for i in ControlSignals])}")
-=======
             raise ValueError(
                 f"No ControlSignals exists with name '{name.upper()}'. "
                 f"Must be one of  {', '.join([i.name for i in ControlSignals])}"
             )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class ControlSignal(object):
@@ -282,10 +193,6 @@ class ControlSignal(object):
 
 
 class CSVParser(object):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self, path):
         self.parser = csv.DictReader(path)
 
@@ -294,21 +201,12 @@ class CSVParser(object):
 
     def getRecordsList(self):
         return list(self.parser)
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class CSVWriter(object):
     def __init__(self, filePath, headers):
-<<<<<<< HEAD
-        if (not os.path.isfile(filePath)):
-            parent = filePath[0:filePath.rfind("/") - 1]
-=======
         if not os.path.isfile(filePath):
             parent = filePath[0 : filePath.rfind("/") - 1]
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
             os.mkdir(parent)
         self.writer = csv.writer(filePath)
         self.writer.writerow(headers)
@@ -331,10 +229,7 @@ class QueueType(Enum):
     delivers messages to a single consumer. Topics broadcast the message
     to all consumers
     """
-<<<<<<< HEAD
-=======
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     QUEUE = auto()
     TOPIC = auto()
 
@@ -355,15 +250,10 @@ class QueueType(Enum):
         try:
             return QueueType[name.upper()]
         except KeyError:
-<<<<<<< HEAD
-            raise ValueError(f"No QueueType exists with name '{name.upper()}'. "
-                             f"Must be one of  {', '.join([i.name for i in QueueType])}")
-=======
             raise ValueError(
                 f"No QueueType exists with name '{name.upper()}'. "
                 f"Must be one of  {', '.join([i.name for i in QueueType])}"
             )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class QueueInfo(object):
@@ -383,11 +273,7 @@ class QueueInfo(object):
         if self.isQueue():
             return "/queue/" + self.queueName
         else:
-<<<<<<< HEAD
-            return '/topic/' + self.queueName
-=======
             return "/topic/" + self.queueName
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def getPrefetchSize(self):
         return self.prefetchSize
@@ -421,10 +307,6 @@ class Stream(object):
 
 
 class StreamMetadata(object):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self):
         self.streams = set()
 
@@ -439,11 +321,7 @@ class StreamMetadata(object):
 
     def getStream(self, name):
         for s in self.streams:
-<<<<<<< HEAD
-            if (s.name == name):
-=======
             if s.name == name:
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
                 return s
 
     def pruneNames(self, length):
@@ -456,10 +334,6 @@ class StreamMetadata(object):
     def __str__(self, *args, **kwargs):
         ret = "Stream Metadata at epoch: " + int(round(time.time() * 1000)) + "\r\n"
         for s in self.streams:
-<<<<<<< HEAD
-            ret = ret + s.name + "\tsize: " + s.size + "\t: " + s.inFlight + "\tisTopic: " + s.isTopic + \
-                  "\tnumberOfSubscribers: " + s.numberOfSubscribers + "\r\n"
-=======
             ret = (
                 ret
                 + s.name
@@ -473,7 +347,6 @@ class StreamMetadata(object):
                 + s.numberOfSubscribers
                 + "\r\n"
             )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         return ret
 
 
@@ -508,15 +381,6 @@ class TaskStatuses(Enum):
         try:
             return TaskStatuses[name.upper()]
         except KeyError:
-<<<<<<< HEAD
-            raise ValueError(f"No TaskStatuses exists with name '{name.upper()}'. "
-                             f"Must be one of  {', '.join([i.name for i in TaskStatuses])}")
-
-
-class TaskStatus(object):
-
-    def __init__(self, status=TaskStatuses.STARTED, caller='', reason=''):
-=======
             raise ValueError(
                 f"No TaskStatuses exists with name '{name.upper()}'. "
                 f"Must be one of  {', '.join([i.name for i in TaskStatuses])}"
@@ -525,7 +389,6 @@ class TaskStatus(object):
 
 class TaskStatus(object):
     def __init__(self, status=TaskStatuses.STARTED, caller="", reason=""):
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         self.status = status
         self.caller = caller
         self.reason = reason
@@ -558,10 +421,7 @@ class Mode(Enum):
     WORKER workflows will only perform task execution
     API workflows will not perform any functionality other than monitoring streams
     """
-<<<<<<< HEAD
-=======
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     MASTER_BARE = auto()
     MASTER = auto()
     WORKER = auto()
@@ -584,15 +444,10 @@ class Mode(Enum):
         try:
             return Mode[name.upper()]
         except KeyError:
-<<<<<<< HEAD
-            raise ValueError(f"No Mode exists with name '{name.upper()}'. "
-                             f"Must be one of  {', '.join([i.name for i in Mode])}")
-=======
             raise ValueError(
                 f"No Mode exists with name '{name.upper()}'. "
                 f"Must be one of  {', '.join([i.name for i in Mode])}"
             )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class Serializer(object):
@@ -620,13 +475,9 @@ class Serializer(object):
             return self.__serialize_internal(obj)
 
         name = self.aliases.get(type(obj), type(obj).__name__)
-<<<<<<< HEAD
-        return xmltodict.unparse({name: obj.__dict__}, full_document=False, pretty=__debug__)
-=======
         return xmltodict.unparse(
             {name: obj.__dict__}, full_document=False, pretty=__debug__
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def to_object(self, xml):
         return self.deserialize(xml)
@@ -675,12 +526,6 @@ class Serializer(object):
         exDict = {
             "InternalException": {
                 "exception": {
-<<<<<<< HEAD
-                    "detailMessage": "!PYTHON!" + str(ex.exception) + "\n" + "\n".join(
-                        traceback.extract_stack(ex.exception.__traceback__).format()),
-                    "stackTrace": {},
-                    "suppressedExceptions": {}
-=======
                     "detailMessage": "!PYTHON!"
                     + str(ex.exception)
                     + "\n"
@@ -689,17 +534,10 @@ class Serializer(object):
                     ),
                     "stackTrace": {},
                     "suppressedExceptions": {},
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
                 }
             }
         }
         return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
-<<<<<<< HEAD
-
-
-class Task(object):
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class Task(object):
@@ -722,15 +560,12 @@ class Task(object):
 
     def getSubscriptionId(self):
         return self.subscriptionId
-<<<<<<< HEAD
-=======
     
     def setTimeout(self, timeout):
         self.timeout = timeout
         
     def getTimeout(self):
         return timeout
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     """
      * Call this within consumeXYZ() to denote task blocked due to some reason
@@ -783,18 +618,6 @@ class MessageListener(stomp.ConnectionListener):
         self.listenerId = str(self.listenerIdUuid)
         self.convertToObject = convertToObject
         self.clientAcks = clientAcks
-<<<<<<< HEAD
-        self.workflow.local_logger.debug("Created listener for {}".format(destName))
-
-    def on_error(self, headers, message):
-        if headers['destination'] == self.destName:
-            self.workflow.local_logger.debug("Received an error: \n{}".format(message))
-
-    def on_message(self, headers, message):
-        if headers['destination'] == self.destName:
-            self.workflow.local_logger.debug("Rx fm " + self.destName)
-            self.workflow.local_logger.debug("Received a message: \n{}".format(message))
-=======
 
     def on_error(self, headers, message):
         if headers["destination"] == self.destName:
@@ -802,9 +625,9 @@ class MessageListener(stomp.ConnectionListener):
 
     def on_message(self, headers, message):
         if headers["destination"] == self.destName:
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
             ackFunc = None
             if self.clientAcks:
+
                 def doClientAck():
                     messageId = headers["message-id"]
                     subscription = headers["subscription"]
@@ -826,15 +649,11 @@ class MessageListener(stomp.ConnectionListener):
                 else:
                     raise e
         else:
-<<<<<<< HEAD
-            self.workflow.local_logger.debug("{} discarded message from {}:\n{}".format(self.destName, headers['destination'], message))
-=======
             self.workflow.local_logger.debug(
                 "{} discarded message from {}:\n{}".format(
                     self.destName, headers["destination"], message
                 )
             )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def on_disconnected(self):
         self.workflow.local_logger.debug("Disconnected")
@@ -844,12 +663,6 @@ class MessageListener(stomp.ConnectionListener):
 
     def getListenerIdAsInt(self):
         return self.listenerIdUuid.int
-<<<<<<< HEAD
-
-
-class BuiltinStream(object):
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 
 class BuiltinStream(object):
@@ -882,15 +695,6 @@ class BuiltinStream(object):
         for consumer in self.pendingConsumers:
             self.addConsumer(consumer)
         self.sessionCreated = True
-<<<<<<< HEAD
-        self.pendingConsumers.clear();
-
-    def updateDestination(self):
-        if (self.broadcast):
-            self.destination = '/topic/' + self.getDestinationName()
-        else:
-            self.destination = '/queue/' + self.getDestinationName()
-=======
         self.pendingConsumers.clear()
 
     def updateDestination(self):
@@ -898,7 +702,6 @@ class BuiltinStream(object):
             self.destination = "/topic/" + self.getDestinationName()
         else:
             self.destination = "/queue/" + self.getDestinationName()
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def send(self, t):
         self.updateDestination()
@@ -914,15 +717,9 @@ class BuiltinStream(object):
     def addConsumer(self, consumer):
         self.updateDestination()
 
-<<<<<<< HEAD
-        if (not self.sessionCreated):
-            self.pendingConsumers.add(consumer);
-            return;
-=======
         if not self.sessionCreated:
             self.pendingConsumers.add(consumer)
             return
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
         self.consumers.append(consumer)
         listener = MessageListener(
@@ -955,10 +752,6 @@ class BuiltinStream(object):
 
 
 class DirectoryCache(object):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self, directory=None):
         self.jobFolderMap = {}
         self.jobMap = {}
@@ -972,13 +765,8 @@ class DirectoryCache(object):
 
         self.directoryFullpath = os.path.realpath(self.directory.name)
 
-<<<<<<< HEAD
-        if (not Path(directory).is_dir()):
-            return;
-=======
         if not Path(directory).is_dir():
             return
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
         for streamFolder in os.listdir(self.directoryFullpath):
             if not Path(streamFolder).is_dir():
@@ -1015,11 +803,7 @@ class DirectoryCache(object):
         self.jobMap[outputJob.getId()] = outputJob
         inputJob = self.jobMap.get(outputJob.getCorrelationId())
 
-<<<<<<< HEAD
-        if (not inputJob == None):
-=======
         if not inputJob == None:
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
             streamFolderPath = self.directoryFullpath + "/" + inputJob.getDestination()
             try:
                 inputFolderPath = streamFolderPath + "/" + inputJob.getHash()
@@ -1029,13 +813,9 @@ class DirectoryCache(object):
                     self.save(outputJob, outputFile)
             except Exception as ex:
                 self.workflow.local_logger.exception("Error caching Job")
-<<<<<<< HEAD
-                self.workflow.reportInternalException(ex, "Error caching job " + outputJob.name)
-=======
                 self.workflow.reportInternalException(
                     ex, "Error caching job " + outputJob.name
                 )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def getDirectory(self):
         return self.directory
@@ -1045,11 +825,7 @@ class DirectoryCache(object):
         file.flush()
 
     def setWorkflow(self, workflow):
-<<<<<<< HEAD
-        self.workflow = workflow;
-=======
         self.workflow = workflow
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def cacheTransactionally(self, outputJob):
 
@@ -1091,14 +867,6 @@ class DirectoryCache(object):
                             self.jobFolderMap[inputJob.getHash()] = inputFolder
                             self.save(outputJob, outputFile)
             except Exception as e:
-<<<<<<< HEAD
-                msg = "Error caching pending transaction for CorrelationID: {} ".format(correlationId)
-                self.workflow.local_logger.exception(msg)
-                self.workflow.reportInternalException(e, msg);
-
-
-'''
-=======
                 msg = "Error caching pending transaction for CorrelationID: {} ".format(
                     correlationId
                 )
@@ -1107,16 +875,11 @@ class DirectoryCache(object):
 
 
 """
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 Created on 27 Feb 2019
 
 @author: stevet
 """
 
-<<<<<<< HEAD
-class FailedJob(object):
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 class FailedJob(object):
     def __init__(self, job, exception, worker, task):
@@ -1154,10 +917,6 @@ class FailedJob(object):
 
 
 class InternalException(Exception):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self, exception=None, message=None, worker=None):
         self.exception = exception
         self.worker = worker
@@ -1177,10 +936,6 @@ class InternalException(Exception):
 
 
 class CacheManagerTask(Task):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self, workflow):
         self.workflow = workflow
 
@@ -1192,10 +947,6 @@ class CacheManagerTask(Task):
 
 
 class Job(object):
-<<<<<<< HEAD
-
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
     def __init__(self):
         self.id = str(uuid.uuid4())
         self.correlationId = ""
@@ -1299,11 +1050,6 @@ class Job(object):
     def setIsTransactionSuccessMessage(self, isTransactionSuccessMessage):
         self.isTransactionSuccessMessage = isTransactionSuccessMessage
 
-<<<<<<< HEAD
-
-class JobStream(Job):
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
 class JobStream(Job):
     def __init__(self, workflow):
@@ -1320,10 +1066,6 @@ class JobStream(Job):
 
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
-<<<<<<< HEAD
-        self.workflow.local_logger.debug("Sending to queue: {}, message: {}".format(dest, msg))
-=======
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         self.txConnection.send(body=msg, destination=dest)
 
     def getRxConnection(self, dest):
@@ -1339,15 +1081,9 @@ class JobStream(Job):
         stompHeaders = {}
         ackMode = "auto"
         if queueInfo.getPrefetchSize() > 0:
-<<<<<<< HEAD
-            stompHeaders['activemq.prefetchSize'] = queueInfo.getPrefetchSize()
-            ackMode = 'client'
-        self.workflow.local_logger.debug("Subscribe {} to {}".format(self.workflow.getName(), stompDestName))
-=======
             stompHeaders["activemq.prefetchSize"] = queueInfo.getPrefetchSize()
             ackMode = "client"
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         consumer = BuiltinStreamConsumer(msgCallbackFunc)
         connection = self.getRxConnection(stompDestName)
         listener = MessageListener(
@@ -1387,11 +1123,7 @@ class JobStream(Job):
                     self.sendMessage(msgBody, stompDest)
         except Exception as ex:
             self.workflow.local_logger.exception("")
-<<<<<<< HEAD
-            self.workflow.reportInternalException(ex, "");
-=======
             self.workflow.reportInternalException(ex, "")
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def getDestinationNames(self):
         return map(lambda x: x.getStompDestinationName(), self.dest.keys())
@@ -1412,20 +1144,6 @@ class JobStream(Job):
 
 
 class Workflow(ABC):
-<<<<<<< HEAD
-
-    def __init__(self,
-                 name='',
-                 cache=None,
-                 brokerHost='localhost',
-                 stompPort=61613,
-                 instanceId=None,
-                 mode=Mode.WORKER,
-                 cacheEnabled=True,
-                 deleteCache=None,
-                 excluded_tasks=[]):
-
-=======
     def __init__(
         self,
         name="",
@@ -1439,7 +1157,6 @@ class Workflow(ABC):
         excluded_tasks=[],
     ):
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         self.name = name
         self.cache = cache
         self.brokerHost = brokerHost
@@ -1513,13 +1230,9 @@ class Workflow(ABC):
         # Init local_logger
         self.local_logger = logging.getLogger(self.name)
         self.local_logger.setLevel(logging.DEBUG)
-<<<<<<< HEAD
-        __fmt = logging.Formatter("{}[{}] | {}".format("%(asctime)s", "%(levelname)5s", "%(message)s"))
-=======
         __fmt = logging.Formatter(
             "{}[{}] | {}".format("%(asctime)s", "%(levelname)5s", "%(message)s")
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
         __handler = logging.StreamHandler(sys.stdout)
         __handler.setLevel(logging.DEBUG)
         __handler.setFormatter(__fmt)
@@ -1529,13 +1242,8 @@ class Workflow(ABC):
         self.logger = CrossflowLogger(self)
 
     def connect(self):
-<<<<<<< HEAD
-        if (self.tempDirectory == None):
-            self.tempDirectory = tempfile.NamedTemporaryFile(prefix='crossflow')
-=======
         if self.tempDirectory == None:
             self.tempDirectory = tempfile.NamedTemporaryFile(prefix="crossflow")
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
         self.taskStatusTopic.init()
         self.streamMetadataTopic.init()
@@ -1557,13 +1265,9 @@ class Workflow(ABC):
         self.controlTopic.addConsumer(BuiltinStreamConsumer(self.consumeControlSignal))
         # XXX if the worker sends this before the master is listening to this topic
         # / this information is lost which affects termination
-<<<<<<< HEAD
-        self.controlTopic.send(ControlSignal(ControlSignals.WORKER_ADDED, self.getName()))
-=======
         self.controlTopic.send(
             ControlSignal(ControlSignals.WORKER_ADDED, self.getName())
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     @property
     def excluded_tasks(self):
@@ -1595,11 +1299,7 @@ class Workflow(ABC):
         return self.terminationTimeout
 
     def consumeControlSignal(self, signal):
-<<<<<<< HEAD
-        if (self.is_master()):
-=======
         if self.is_master():
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
             sig = signal.signal
             if sig == ControlSignals.ACKNOWLEDGEMENT:
                 self.terminatedWorkerIds.append(signal.senderId)
@@ -1708,27 +1408,16 @@ class Workflow(ABC):
         if self.terminationTimer != None:
             self.terminationTimer.cancel()
 
-<<<<<<< HEAD
-        self.local_logger.info("Terminating workflow {}...".format(self.getName()));
-        self.controlTopic.send(ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName()))
-=======
         self.local_logger.info("Terminating workflow {}...".format(self.getName()))
         self.controlTopic.send(
             ControlSignal(ControlSignals.ACKNOWLEDGEMENT, self.getName())
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
         for stream in self._allStreams:
             self.local_logger.info("Terminating stream {}".format(stream.name))
             try:
                 stream.stop()
             except Exception:
-<<<<<<< HEAD
-                self.local_logger.exception("Failed to stop stream ({})during termination".format(stream.name))
-
-        self.terminated = True
-        self.local_logger.info("Workflow {} successfully terminated".format(self.getName()))
-=======
                 self.local_logger.exception(
                     "Failed to stop stream ({})during termination".format(stream.name)
                 )
@@ -1737,7 +1426,6 @@ class Workflow(ABC):
         self.local_logger.info(
             "Workflow {} successfully terminated".format(self.getName())
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def hasTerminated(self):
         return self.terminated
@@ -1766,15 +1454,6 @@ class Workflow(ABC):
             ser_obj = self.serializer.serialize(InternalException(ex, message, None))
             self.internalExceptionsQueue.sendSerialized(ser_obj)
         except Exception as ex:
-<<<<<<< HEAD
-            self.local_logger.exception("Could not propagate exception, serialisation error encountered")
-
-    def setTaskInProgess(self, caller):
-        self.setTaskInProgessWithReason(caller, 'reason')
-
-    def setTaskInProgessWithReason(self, caller, reason):
-        self.taskStatusTopic.send(TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), reason))
-=======
             self.local_logger.exception(
                 "Could not propagate exception, serialisation error encountered"
             )
@@ -1786,18 +1465,11 @@ class Workflow(ABC):
         self.taskStatusTopic.send(
             TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), reason)
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def setTaskWaiting(self, caller):
         self.taskStatusTopic.send(TaskStatus(TaskStatuses.WAITING, caller.getId(), ""))
 
     def setTaskBlocked(self, caller, reason):
-<<<<<<< HEAD
-        self.taskStatusTopic.send(TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason))
-
-    def setTaskUnblocked(self, caller):
-        self.taskStatusTopic.send(TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), ""))
-=======
         self.taskStatusTopic.send(
             TaskStatus(TaskStatuses.BLOCKED, caller.getId(), reason)
         )
@@ -1806,7 +1478,6 @@ class Workflow(ABC):
         self.taskStatusTopic.send(
             TaskStatus(TaskStatuses.INPROGRESS, caller.getId(), "")
         )
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 
     def getInputDirectory(self):
         return self.inputDirectory

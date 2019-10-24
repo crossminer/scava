@@ -96,12 +96,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 			try {
 				workflow.run();
 			} catch (Exception e) {
-<<<<<<< HEAD
-				workflow.log(LogLevel.ERROR, "Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
-=======
 				workflow.log(LogLevel.ERROR,
 						"Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 				throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Error executiong the workflow");
 			}
 			// add new workflow to registry

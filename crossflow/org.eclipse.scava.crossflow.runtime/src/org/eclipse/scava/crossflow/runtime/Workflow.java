@@ -132,8 +132,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	protected BuiltinStream<StreamMetadataSnapshot> streamMetadataTopic = null;
 	protected boolean enableStreamMetadataTopic = true;
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Optional throttled version of {@link taskStatusTopic} that will only send
 	 * messages for effective status changes happening every
@@ -142,7 +140,6 @@ public abstract class Workflow<E extends Enum<E>> {
 	protected BuiltinStream<TaskStatus> taskMetadataTopic = null;
 	protected boolean enableTaskMetadataTopic = true;
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 	protected BuiltinStream<FailedJob> failedJobsTopic = null;
 	protected BuiltinStream<InternalException> internalExceptionsQueue = null;
 
@@ -475,11 +472,7 @@ public abstract class Workflow<E extends Enum<E>> {
 					failedJobs.add(failedJob);
 				}
 			});
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 			// If the strategy is set to all then log everything
 			if (loggingStrategy == LoggingStrategy.ALL) {
 				logTopic.addConsumer(new DefaultLogConsumer());
@@ -1158,62 +1151,7 @@ public abstract class Workflow<E extends Enum<E>> {
 			throw new TimeoutException(
 					"Workflow took longer than " + timeoutMillis + ", so released the wait() to avoid hanging");
 	}
-	
-	/*
-	 * SERIALIZATION
-	 */
-	protected Serializer serializer;
-	
-	public Serializer getSerializer() {
-		if (serializer == null) {
-			serializer = setupSerializer();
-			serializer.register(ControlSignal.class);
-			serializer.register(FailedJob.class);
-			serializer.register(InternalException.class);
-			serializer.register(Job.class);
-			serializer.register(LogMessage.class);
-			serializer.register(StreamMetadata.class);
-			serializer.register(StreamMetadataSnapshot.class);
-			serializer.register(TaskStatus.class);
-		}
-		return serializer;
-	}
-	
-	/**
-	 * Retrieve the Serializer used in this Workflow
-	 * <p>
-	 * Implementing classes should lazily initialise an instance of the serializer
-	 * to use and register all classes that should be serializable in this workflow
-	 * 
-	 * @return an instance of serializer
-	 */
-	public abstract Serializer setupSerializer();
-	
-	/*
-	 * LOGGING
-	 */
-	@Parameter(names = { "-logging" }, description = "The logging strategy of this workflow. Can be one of ALL, SELF or NONE. By default MASTER -> ALL, WORKER -> SELF")
-	protected LoggingStrategy loggingStrategy;
-	protected CrossflowLogger logger = new CrossflowLogger(this);
-	
-	protected void setupLogger() {
-		if (loggingStrategy == null) {
-			loggingStrategy = isMaster() ? LoggingStrategy.ALL : LoggingStrategy.SELF;
-		}
-		logger = new CrossflowLogger(this);
-		logger.setPrePrint(loggingStrategy == LoggingStrategy.SELF);
-	}
 
-	public CrossflowLogger getLogger() {
-		return logger;
-	}
-	
-	public void log(LogLevel level, String message) {
-		logger.log(level, message);
-	}
-
-<<<<<<< HEAD
-=======
 	/*
 	 * TASK TIMEOUTS
 	 */
@@ -1287,7 +1225,6 @@ public abstract class Workflow<E extends Enum<E>> {
 		logger.log(level, message);
 	}
 
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 	/**
 	 * When running in a shell check if the help flag is set
 	 * 

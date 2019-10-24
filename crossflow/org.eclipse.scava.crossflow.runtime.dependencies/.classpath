@@ -79,13 +79,10 @@
 	<classpathentry exported="true" kind="lib" path="lib/jars/xpp3_min-1.1.4c.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xstream-1.4.11.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/xz-1.8.jar"/>
-<<<<<<< HEAD
-=======
 	<classpathentry exported="true" kind="lib" path="lib/bundles/failureaccess-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bundles/guava-28.1-jre.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bundles/JavaEWAH-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bundles/jettison-1.2.jar"/>
->>>>>>> c947bbc9435fc5864f18aa3d3eb022c24f5ce930
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
