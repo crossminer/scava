@@ -22,6 +22,7 @@ import time
 import traceback
 from typing import Type
 import uuid
+import warnings
 
 import stomp
 import xmltodict
@@ -496,17 +497,27 @@ class Serializer(object):
         return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
 
 
-class Task(object):
+class Task(ABC):
     def __init__(self):
         self.cacheable = True
         self.subscriptionId = uuid.uuid4().int
         self.timeout = 0
+        self._workflow = None
 
-    def getId(self):
-        pass
+    def getId(self) -> str:
+        return f"{self.name}:{self.workflow.name}"
 
+    @property
+    def workflow(self) -> Workflow:
+        return self._workflow
+    
+    @workflow.setter
+    def workflow(self, workflow: Workflow):
+        self._workflow = workflow
+    
     def getWorkflow(self) -> Workflow:
-        pass
+        warnings.warn("Task.getWorkflow() to be Deprecated use workflow property instead")
+        return self.workflow
 
     def isCacheable(self):
         return self.cacheable
@@ -529,7 +540,7 @@ class Task(object):
     """
 
     def taskBlocked(self, reason):
-        self.getWorkflow().setTaskBlocked(reason)
+        self.workflow.setTaskBlocked(reason)
 
     """
      * Call this within consumeXYZ() to denote task is now unblocked
@@ -537,7 +548,12 @@ class Task(object):
     """
 
     def taskUnblocked(self):
-        self.getWorkflow().setTaskUnblocked(self)
+        self.workflow.setTaskUnblocked(self)
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        pass
 
 
 class BuiltinStreamConsumer(object):
@@ -892,14 +908,10 @@ class InternalException(Exception):
 
 
 class CacheManagerTask(Task):
-    def __init__(self, workflow):
-        self.workflow = workflow
-
-    def getWorkflow(self):
-        return self.workflow
-
-    def getId(self):
-        return "CacheManager"
+    
+    @property
+    def name(self)->str:
+        return "CacheManagerTask"
 
 
 class Job(object):
@@ -1018,7 +1030,9 @@ class JobStream(Job):
         self.txConnection = stomp.Connection(self.workflow.getBroker())
         self.txConnection.connect(wait=True)  # add credentials?
         self.consumers = []
-        self.cacheManagerTask = CacheManagerTask(workflow)
+        
+        self.cacheManagerTask = CacheManagerTask()
+        self.cacheManagerTask.workflow = workflow
 
     # TODO should probably make this thread safe
     def sendMessage(self, msg, dest):
@@ -1113,7 +1127,7 @@ class Workflow(ABC):
         excluded_tasks=[],
     ):
 
-        self.name = name
+        self._name = name
         self.cache = cache
         self.brokerHost = brokerHost
         self.stompPort = stompPort
@@ -1274,10 +1288,20 @@ class Workflow(ABC):
     def cancelTermination(self):
         self.aboutToTerminate = False
 
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value: str):
+        self._name = value
+    
     def getName(self):
+        warnings.warn("Workflow.getName() to be deprecated use name property instead")
         return self.name
 
     def setName(self, name):
+        warnings.warn("Workflow.setName() to be deprecated use name property instead")
         self.name = name
 
     def getInstanceId(self):

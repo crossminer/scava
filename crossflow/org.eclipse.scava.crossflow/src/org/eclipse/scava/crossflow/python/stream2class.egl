@@ -37,14 +37,14 @@ class [%=s.name%](JobStream):
                         job = self.workflow.serializer.to_object(message)
                         if (self.workflow.getCache() != None and self.workflow.getCache().hasCachedOutputs(job)):
                             self.workflow.setTaskInProgess(self.cacheManagerTask)
-                            cachedOutputs = self.workflow.getCache().getCachedOutputs(job)
                             self.workflow.setTaskWaiting(self.cacheManagerTask)
+                            cachedOutputs = self.workflow.getCache().getCachedOutputs(job)
                             [%if (s.inputOf.output.flatten().size > 0){%]
                             for outputJob in cachedOutputs:
                                 [%for (next in s.inputOf.output.flatten()){%]
                                 if outputJob.getDestination() == '[%=next.name%]':
                                     self.workflow.cancelTermination()
-                                    self.workflow.get[%=next.name%]().send(outputJob, consumerId)
+                                    self.workflow.get[%=next.name%]().send(outputJob[%if(not next.inputOf.isEmpty()){%], consumerId[%}%])
                                 [%}%]
                             [%}%]
                         else:

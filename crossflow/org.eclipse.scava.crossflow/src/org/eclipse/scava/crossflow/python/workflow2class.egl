@@ -1,25 +1,29 @@
-[%import "../util.eol";%]
+[%import "../util.eol";
+import "pythonUtil.eol";%]
 import argparse
 import sys
 import time
-import traceback
 
-[% var imports = new Sequence; 
-imports.addAll(w.getMasterTasks().collect(t|t.name));
-imports.addAll(w.getWorkerTasks().collect(t|t.name));
-imports = imports.sortBy(i|i);
-for (i in imports) {%]
-from [%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+# Tasks
+[%for (t in w.getPyTasks()) {%]
+from [%=package%].[%=t.pyVarName()%] import [%=t.name%]
 [%}%]
-[% imports = new Sequence;
-imports.addAll(w.streams.collect(s|s.name));
-imports.addAll(w.types.collect(t|t.name));
-imports.add(w.name + "Tasks");
-imports = imports.sortBy(i|i);
-for (i in imports) {%]
-from crossflow.[%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+
+# Types
+[%for (t in w.types) {%]
+from crossflow.[%=package%].[%=t.pyVarName()%] import [%=t.name%]
 [%}%]
-from crossflow.runtime import ControlSignal, ControlSignals, Mode, Workflow
+
+# Streams
+[%for (s in w.streams) {
+	if(not s.inputOf.isEmpty()) {%]
+from crossflow.[%=package%].[%=s.pyVarName()%] import [%=s.name%]
+[%	}
+}%]
+
+# Utility
+from crossflow.[%=package%].[%=w.pyVarName()%]_tasks import [%=w.name%]Tasks
+from crossflow.runtime import BuiltinStream, Mode, Workflow
 
 
 class [%=w.name%](Workflow):
@@ -56,22 +60,22 @@ class [%=w.name%](Workflow):
         
         # Streams
         [%for (s in w.streams) { %]
-        self.[%=s.name.ftlc()%] = None
+        self.[%=s.name.ftlc()%]: [%=s.pyType()%] = None
         [%}%]
 
         # Tasks
         [%for (t in w.tasks) {%]
-        [%if (t.isPythonTask()) {%]
+        [%if (t.isPyTask()) {%]
         self.[%=t.name.ftlc()%] = None
         [%}%]
         [%}%]
         
         # Task creation
         self.tasks = []
-        [%for (t in w.getWorkerTasks()){%]
-        if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+        [%for (t in w.getPyTasks()){%]
+        if [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] not in self.excluded_tasks:
             self.[%=t.name.ftlc()%] = [%=t.name%]()
-            self.[%=t.name.ftlc()%].setWorkflow(self)
+            self.[%=t.name.ftlc()%].workflow = self
             self.tasks.append(self.[%=t.name.ftlc()%])
         [%}%]
 
@@ -106,14 +110,15 @@ class [%=w.name%](Workflow):
         try:
             time.sleep(delay)
             self.connect()
-
-            [%for (s in w.streams) { %]
-            self.[%=s.name.ftlc()%] = [%=s.name%](self, self.enablePrefetch)
-            self.activeStreams.append(self.[%=s.name.ftlc()%])
+            
+            # Initialise Streams
+            [%for (s in w.streams) {%]
+            [%=s.genInitStream()%]
+            
             [%}%]
 
             if (self.is_worker()):
-            [%for (t in w.getWorkerTasks()){%]
+            [%for (t in w.getPyTasks()){%]
                 if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
                     [%=t.setup()%]
             [%}%]
@@ -122,7 +127,7 @@ class [%=w.name%](Workflow):
             self.local_logger.exception("")
 
     [%for (s in w.streams) { %]
-    def get[%=s.name%](self):
+    def get[%=s.name%](self) -> [%=s.pyType()%]:
         return self.[%=s.name.ftlc()%]
         
     [%}%]
@@ -164,18 +169,6 @@ if __name__ == '__main__':
     app.run();
     
 [%
-operation Task isPythonTask(){
-    return self.languages.exists(l | l.name.toLowerCase()== "python");
-}
-
-operation Workflow getMasterTasks() {
-    return self.tasks.select(t | t.isPythonTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
-}
-
-operation Workflow getWorkerTasks() {
-    return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isPythonTask());
-}
-
 @template
 operation Task setup() {%]
     [%for (i in self.input) { %]
@@ -185,4 +178,15 @@ operation Task setup() {%]
     self.[%=self.name.ftlc()%].set[%=o.name%](self.[%=o.name.ftlc%]);
     [%}%]
 [%}
-%]
+
+@template
+operation Stream genInitStream() {
+	if (self.inputOf.isEmpty()) {
+		if (self.isTypeOf(Topic)) {self.~broadcast="True";} else {self.~broadcast="False";}%]
+self.[%=self.name.ftlc()%] = BuiltinStream(self, "[%=self.name%]", broadcast=[%=self.~broadcast%])
+self.[%=self.name.ftlc()%].init()
+	[%} else {%]
+self.[%=self.name.ftlc()%] = [%=self.name%](self, self.enablePrefetch)
+	[%}%]
+self.activeStreams.append(self.[%=self.name.ftlc()%])
+[%}%]

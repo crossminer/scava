@@ -4,6 +4,7 @@ import multiprocessing
 import time
 
 from crossflow.runtime import FailedJob, Task
+from crossflow.[%=package%].[%=w.pyVarName()%]_tasks import [%=w.name%]Tasks
 
 [% for (t in outputTypes) { %]
 from crossflow.[%=package%].[%=t.name.toSnakeCaseLower()%] import [%=t.name%]
@@ -15,24 +16,23 @@ class [%=t.name%]Base(Task):
     
     Do not edit this class manually
     """
+    
+    task_enum: [%=w.name%]Tasks = [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%]
 
     def __init__(self):
         super().__init__()
-        self.workflow = None
+        
+        # Streams
         [%for (s in t.output) { %]
         self.[%=s.name.ftlc()%] = None
         self._has_sent_to_[%=s.pyVarName()%] = False
-        [%}%]
-    
-    def setWorkflow(self, workflow):
-        self.workflow = workflow
-    
-    def getWorkflow(self):
-        return self.workflow
-    
-    def getId(self):
-        return "[%=t.name%]:" + self.workflow.getName()
         
+        [%}%]
+
+    @property
+    def name(self) -> str:
+        return self.__class__.task_enum.value
+
     def get_total_outputs(self):
         return sum([[%
         for (s in t.output) {
@@ -42,19 +42,19 @@ class [%=t.name%]Base(Task):
             }
         }%]])
     
-    [%for (s in t.output) { %]
-    def set[%=s.name%](self, [%=s.name.ftlc()%]):
-        self.[%=s.name.ftlc()%] = [%=s.name.ftlc()%]
+    [%for (o in t.output) { %]
+    def set[%=o.name%](self, [%=o.name.ftlc()%]):
+        self.[%=o.name.ftlc()%] = [%=o.name.ftlc()%]
     
-    def get[%=s.name%](self):
-        return self.[%=s.name.ftlc()%]
+    def get[%=o.name%](self):
+        return self.[%=o.name.ftlc()%]
     
-    def sendTo[%=s.name%](self, [%=s.type.name.ftlc()%]):
-        [%=s.type.name.ftlc()%].setCacheable(self.cacheable)
+    def sendTo[%=o.name%](self, [%=o.type.name.ftlc()%]):
+        [%=o.type.name.ftlc()%].setCacheable(self.cacheable)
         [%if(t.isTypeOf(Source)){%]
-        [%=s.type.name.ftlc()%].setTransactional(False)
+        [%=o.type.name.ftlc()%].setTransactional(False)
         [%}%]
-        self.get[%=s.name%]().send([%=s.type.name.ftlc()%], self.__class__.__name__)
+        self.get[%=o.name%]().send([%=o.type.name.ftlc()%][%if(not o.inputOf.isEmpty()){%], self.__class__.__name__[%}%])
     
     [%}%]
     [%for (s in t.input) { %]
@@ -67,7 +67,7 @@ class [%=t.name%]Base(Task):
             def consumer():
                 self.workflow.setTaskInProgessWithReason(self, [%=s.type.name.ftlc()%].getId())
             [%if (t.isSingleOut()) {%]
-                result = self.consume[%=s.name%]([%=s.type.name.ftlc()%]);
+                result = self.consume[%=s.name%]([%=s.type.name.ftlc()%])
                 if result is not None:
                     if self.cacheable:
                         result.setCorrelationId([%=s.type.name.ftlc()%].getId())
