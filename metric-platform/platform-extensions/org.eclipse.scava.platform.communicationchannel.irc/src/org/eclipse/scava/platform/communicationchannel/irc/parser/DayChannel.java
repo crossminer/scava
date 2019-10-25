@@ -19,10 +19,12 @@ public class DayChannel {
 //	private Map<Integer, Action> actions;
 	private String channelName;
 	
+	private static final Pattern chExp = Pattern.compile("(_[^_]+\\.txt)$");
 	private static final Pattern msgExp =  Pattern.compile("^\\[(\\d{2}:\\d{2})\\] <.*> .*$");
 							   //aka = " is now known as ",
 							   //joined = "  has joined ",
 							   //left = "  has left ";
+	
 	
 	public DayChannel(File file, Date date) {
 		super();
@@ -35,7 +37,9 @@ public class DayChannel {
 
 	private void extractChannelName(File file) {
 		String fileName = file.getName();
-		channelName = fileName.substring(0, fileName.length() - 4);
+//		channelName = fileName.substring(0, fileName.length() - 4);
+//		channelName = fileName.replaceAll("(_[^_]+\\.txt)$", ""); 
+		channelName = chExp.matcher(fileName).replaceAll("");
 		System.out.println("channelName: " + channelName + "\n");
 	}
 	

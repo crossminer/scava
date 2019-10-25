@@ -22,6 +22,7 @@ import org.eclipse.scava.platform.communicationchannel.irc.parser.Message;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
 
@@ -30,7 +31,7 @@ import com.mongodb.DB;
 public class IrcManager implements ICommunicationChannelManager<Irc> {
 	
 	Path rootPath;
-	Boolean deltaFlag = false;
+	protected OssmeterLogger logger;
 
 	@Override
 	public boolean appliesTo(CommunicationChannel communicationChannel) {
@@ -59,7 +60,7 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	}
 	
 
-	private void getMessageData(Irc irc, Date date) {
+	private boolean getMessageData(Irc irc, Date date) {
 		
 		String downloadLink = irc.getUrl();
 
@@ -72,12 +73,12 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 		if (irc.getUsername().equals("null") || irc.getPassword().equals("null")) {
 
 			//.tar.gz
-			downloadMessage(downloadLink,  irc.getCompressedFileExtension());
+			return downloadMessage(downloadLink,  irc.getCompressedFileExtension());
 
 		} else {
 
 			//.tar.gz
-			downloadMessage(downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
+			return downloadMessage(downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
 
 		}
 		
@@ -88,10 +89,10 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * 
 	 * @param downloadURL
 	 */
-	private void downloadMessage(String downloadURL, String ext) {
+	private boolean downloadMessage(String downloadURL, String ext) {
 
-		deltaFlag = false;
 		URL url = null;
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("IRC downloadMessage without authentication");
 
 		try {
 
@@ -102,9 +103,12 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 		} catch (MalformedURLException e) {
 
+			logger.error("malformed URL:", e);
 			e.printStackTrace();
 
 		} catch (FileNotFoundException e) {
+			
+			logger.info("file not found on first attempt");
 
 			// Wait for specified tmie and try again
 			try {
@@ -116,21 +120,29 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 			} catch (MalformedURLException e1) {
 
+				logger.error("malformed URL:", e1);
 				e.printStackTrace();
+				return false;
 
 			} catch (FileNotFoundException e1) {
 
-				deltaFlag = true;
+				logger.info("file not found on second attempt");
+				return false;
 
 			} catch (IOException e1) {
 
+				logger.error("IO exception:", e1);
 				e.printStackTrace();
+				return false;
 			}
 
 		} catch (IOException e) {
 
+			logger.error("IO exception:", e);
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 
 	}
 
@@ -141,13 +153,13 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * @param username
 	 * @param password
 	 */
-	private void downloadMessage(String downloadURL, String username, String password, String ext) {
+	private boolean downloadMessage(String downloadURL, String username, String password, String ext) {
 
 		MyAuthenticator.setPasswordAuthentication(username, password);
 		Authenticator.setDefault(new MyAuthenticator());
-		deltaFlag = false;
 		URL url = null;
-
+		
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("IRC downloadMessage with authentication");
 		try {
 
 			url = new URL(downloadURL);
@@ -157,9 +169,13 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 		} catch (MalformedURLException e) {
 
+			logger.error("malformed URL:", e);
 			e.printStackTrace();
+			return false;
 
 		} catch (FileNotFoundException e) {
+			
+			logger.info("file not found on first attempt");
 
 			// Wait for specified tmie and try again
 			try {
@@ -171,21 +187,29 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 			} catch (MalformedURLException e1) {
 
+				logger.error("malformed URL:", e1);
 				e.printStackTrace();
+				return false;
 
 			} catch (FileNotFoundException e1) {
-				deltaFlag = true;
-				System.err.println("no archive found at :" + downloadURL);
+				
+				logger.info("file not found on second attempt");
+				return false;
+				
 			} catch (IOException e1) {
 
+				logger.error("IO exception:", e1);
 				e.printStackTrace();
+				return false;
 			}
 
 		} catch (IOException e) {
 
+			logger.error("IO exception:", e);
 			e.printStackTrace();
+			return false;
 		}
-
+		return true;
 	}
 
 	/**
@@ -199,9 +223,11 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 		List<IrcMessage> analysisDateMessage = new ArrayList<>();
 		
-		getMessageData(irc, date);
+		if(!getMessageData(irc, date))
+			return analysisDateMessage;
 		
 		Stream<Path> filePaths;
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("IRC get message");
 		
 		try {
 
@@ -237,6 +263,7 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 
 		} catch (IOException e) {
 
+			logger.error("IO exception:", e);
 			e.printStackTrace();
 		}
 		
