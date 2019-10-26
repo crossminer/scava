@@ -32,30 +32,34 @@ class [%=w.name%](Workflow):
     Do not edit this class manually
     """
 
-    def __init__(self,
-                 name='',
-                 cache=None,
-                 brokerHost='localhost',
-                 stompPort=61613,
-                 instanceId=None,
-                 mode=Mode.WORKER,
-                 cacheEnabled=True,
-                 deleteCache=None,
-                 excluded_tasks=[]):
+    def __init__(
+        self,
+        name="",
+        instance=None,
+        broker_host="localhost",
+        stomp_port=61613,
+        mode=Mode.WORKER,
+        cache=None,
+        cache_enabled=True,
+        delete_cache=None,
+        excluded_tasks=None,
+        enable_prefetch=False
+    ):
                  
         super().__init__(name=name,
-                         cache=cache,
-                         brokerHost=brokerHost,
-                         stompPort=stompPort,
-                         instanceId=instanceId,
+                         instance=instance,
+                         broker_host=broker_host,
+                         stomp_port=stomp_port,
                          mode=mode,
-                         cacheEnabled=cacheEnabled,
-                         deleteCache=deleteCache,
-                         excluded_tasks=excluded_tasks)
+                         cache=cache,
+                         cache_enabled=cache_enabled,
+                         delete_cache=delete_cache,
+                         excluded_tasks=excluded_tasks,
+                         enable_prefetch=False)
         
         # Register types with serializer
         [%for (t in w.types) {%]
-        self.serializer.register([%=t.name%])
+        self._serializer.register([%=t.name%])
         [%}%]
         
         # Streams
@@ -73,15 +77,20 @@ class [%=w.name%](Workflow):
         # Task creation
         self.tasks = []
         [%for (t in w.getPyTasks()){%]
-        if [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] not in self.excluded_tasks:
+        if [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] not in self._excluded_tasks:
             self.[%=t.name.ftlc()%] = [%=t.name%]()
             self.[%=t.name.ftlc()%].workflow = self
             self.tasks.append(self.[%=t.name.ftlc()%])
         [%}%]
 
+    def excluded_tasks(self, tasks=[]):
+        assert isinstance(tasks, list)
+        assert not tasks or [t for t in tasks if isinstance(t, [%=w.name%]Tasks)]
+        self._excluded_tasks = tasks
+
     def createWorker(self):
         worker = [%=w.name%](Mode.WORKER)
-        worker.setInstanceId(self.instanceId)
+        worker.instance(self._instance)
         return worker
 
     [%for (p in w.parameters) { %]
@@ -105,7 +114,7 @@ class [%=w.name%](Workflow):
         :param delay: delay in ms before this worker will start running. Defaults to 0
         :type delay: int
         """
-        self.delay=delay
+        self._delay=delay
 
         try:
             time.sleep(delay)
@@ -119,7 +128,7 @@ class [%=w.name%](Workflow):
 
             if (self.is_worker()):
             [%for (t in w.getPyTasks()){%]
-                if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+                if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self._excluded_tasks:
                     [%=t.setup()%]
             [%}%]
 
@@ -136,19 +145,6 @@ class [%=w.name%](Workflow):
         return self.[%=t.name.ftlc()%]
         
     [%}%]
-    def isEnablePrefetch(self):
-        """Are tasks allowed to obtain more jobs while already executing
-        :rtype: boolean
-        """
-        return self.enablePrefetch
-
-    def setEnablePrefetch(self, enablePrefetch):
-        self.enablePrefetch = enablePrefetch
-        
-    def excluded_tasks(self, tasks=[]):
-        assert isinstance(tasks, list)
-        assert not tasks or [t for t in tasks if isinstance(t, [%=w.name%]Tasks)]
-        self.excluded_tasks = tasks
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -161,18 +157,22 @@ if __name__ == '__main__':
     parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
     
     app = [%=w.name%](name=parsedArgs.name,
-                      brokerHost=parsedArgs.brokerHost,
-                      stompPort=parsedArgs.stompPort,
-                      instanceId=parsedArgs.instance,
+                      instance=parsedArgs.instance,
+                      broker_host=parsedArgs.brokerHost,
+                      stomp_port=parsedArgs.stompPort,
                       mode=Mode.enum_from_name(parsedArgs.mode))
                       
-    app.run();
+    app.run()
+
+    while (not app.terminated):
+        time.sleep(0.1)
+    print("terminated")
     
 [%
 @template
 operation Task setup() {%]
     [%for (i in self.input) { %]
-    self.[%=i.name.ftlc()%].addConsumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
+    self.[%=i.name.ftlc()%].add_consumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
     [%}%]
     [%for (o in self.output) { %]
     self.[%=self.name.ftlc()%].set[%=o.name%](self.[%=o.name.ftlc%]);
@@ -181,12 +181,11 @@ operation Task setup() {%]
 
 @template
 operation Stream genInitStream() {
-	if (self.inputOf.isEmpty()) {
-		if (self.isTypeOf(Topic)) {self.~broadcast="True";} else {self.~broadcast="False";}%]
-self.[%=self.name.ftlc()%] = BuiltinStream(self, "[%=self.name%]", broadcast=[%=self.~broadcast%])
+	if (self.inputOf.isEmpty()) {%]
+self.[%=self.name.ftlc()%] = BuiltinStream("[%=self.name%]", self[%if (self.isTypeOf(Topic)) {%], False[%}%])
 self.[%=self.name.ftlc()%].init()
 	[%} else {%]
-self.[%=self.name.ftlc()%] = [%=self.name%](self, self.enablePrefetch)
+self.[%=self.name.ftlc()%] = [%=self.name%](self, self._enable_prefetch)
 	[%}%]
-self.activeStreams.append(self.[%=self.name.ftlc()%])
+self._active_streams.append(self.[%=self.name.ftlc()%])
 [%}%]

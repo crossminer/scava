@@ -65,7 +65,7 @@ class [%=t.name%]Base(Task):
         
         try:
             def consumer():
-                self.workflow.setTaskInProgessWithReason(self, [%=s.type.name.ftlc()%].getId())
+                self.workflow.set_task_in_progress(self, [%=s.type.name.ftlc()%].getId())
             [%if (t.isSingleOut()) {%]
                 result = self.consume[%=s.name%]([%=s.type.name.ftlc()%])
                 if result is not None:
@@ -109,18 +109,18 @@ class [%=t.name%]Base(Task):
                 
                 if send_failed:
                     [%=s.type.name.ftlc()%].setFailures(int([%=s.type.name.ftlc()%].getFailures()) + 1)
-                    self.workflow.getFailedJobsTopic().send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.getName(), "[%=t.name%]"))
+                    self.workflow.failed_jobs_topic.send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.name, "[%=t.name%]"))
             
             except Exception as e:
                 self.workflow.local_logger.exception("")
-                self.workflow.reportInternalException(e, "")
+                self.workflow.report_internal_exception(e, "")
         
         finally:
             try:
-                self.workflow.setTaskWaiting(self)
+                self.workflow.set_task_waiting(self)
             except Exception as e:
                 self.workflow.local_logger.exception("")
-                self.workflow.reportInternalException(e, "")
+                self.workflow.report_internal_exception(e, "")
     
     def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
         pass

@@ -44,7 +44,7 @@ def produce(self):
 @template
 operation Stream genConsume(send : Boolean) {%]
 def consume[%=self.name%](self, [%=self.type.pyVarName()%]: [%=self.type.name%]):
-    print(f"{self.workflow.getName()}:[%=t.name%]:consume[%=self.name%] received {[%=self.type.pyVarName()%]}")
+    print(f"{self.workflow.name}:[%=t.name%]:consume[%=self.name%] received {[%=self.type.pyVarName()%]}")
     
     # Do work here
     
