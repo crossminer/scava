@@ -1,0 +1,21 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	
+	<workflow name="orphanqueuesworkflow">
+	
+		<queue name="q0" type="ty1"/>
+	
+		<queue name="q1" type="ty1"/>
+		
+		<task name="t1" in="q1" out="q2"/>
+		
+		<queue name="q2" type="ty1"/>
+	
+		<type name="ty1">
+			<field name="f0" type="String"/>
+		</type>
+	
+	</workflow>	
+	
+</_>

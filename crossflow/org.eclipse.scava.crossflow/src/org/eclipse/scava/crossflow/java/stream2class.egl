@@ -49,7 +49,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 								[%for (next in s.inputOf.output.flatten()){%]
 								if (output.getDestination().equals("[%=next.name%]")) {
 									workflow.cancelTermination();
-									(([%=w.name%]) workflow).get[%=next.name%]().send(([%=next.type.name%]) output, consumerId);
+									(([%=w.name%]) workflow).get[%=next.name%]().send(([%=next.type.name%]) output[%if(not next.inputOf.isEmpty()){%], consumerId[%}%]);
 								}
 								[%}%]
 								

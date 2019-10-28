@@ -252,10 +252,10 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	
 	@Override
 	public Serializer setupSerializer() {
-	    Serializer serializer = new Serializer();
-	    [% for (t in w.types) {%]
-        serializer.register([%=t.name%].class);
-        [%}%]
+		Serializer serializer = new Serializer();
+		[% for (t in w.types) {%]
+		serializer.register([%=t.name%].class);
+		[%}%]
 		return serializer;
 	}
 	
@@ -272,22 +272,22 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-	      // Parse all values into an temporary object
-        [%=w.name%] argsHolder = new [%=w.name%]();
-        JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
-        
-        try {
-            jct.parse(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-	    if(argsHolder.isHelp()) {
-            jct.setProgramName("[%=w.name%]");
-            jct.usage();
-            System.exit(0);
-        }
-	
+		// Parse all values into an temporary object
+		[%=w.name%] argsHolder = new [%=w.name%]();
+		JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
+		
+		try {
+			jct.parse(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		if(argsHolder.isHelp()) {
+			jct.setProgramName("[%=w.name%]");
+			jct.usage();
+			System.exit(0);
+			}
+			
 		run(args);
 	}
 	

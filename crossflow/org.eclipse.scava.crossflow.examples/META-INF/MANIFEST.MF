@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ghmde
+Bundle-Name: Crossflow Simple Examples
 Bundle-SymbolicName: org.eclipse.scava.crossflow.examples
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.eclipse.scava.crossflow.examples.ghmde
