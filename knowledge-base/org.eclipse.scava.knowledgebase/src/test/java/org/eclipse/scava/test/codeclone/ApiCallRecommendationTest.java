@@ -91,7 +91,7 @@ public class ApiCallRecommendationTest {
 	@Test
 	public void apiCallRecommendationTest() throws Exception {
 		Query query = new Query();
-		query.setCurrentMethodCode(method);
+		query.setCompilationUnit(method);
 		List<Pattern> patterns = new ArrayList<Pattern>();
 		patterns.add(pattern);
 		
