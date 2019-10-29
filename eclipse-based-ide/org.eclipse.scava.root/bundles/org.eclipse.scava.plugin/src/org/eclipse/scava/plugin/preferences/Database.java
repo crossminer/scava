@@ -101,9 +101,7 @@ public class Database extends FieldEditorPreferencePage implements IWorkbenchPre
 		boolean performOk = super.performOk();
 		if (restartRequired) {
 			preferenceStore.setValue(Preferences.DATABASE_PATH, directoryFieldEditor.getStringValue());
-			System.out.println("Kikapcsolok");
 			String string = preferenceStore.getString(Preferences.DATABASE_PATH);
-			System.out.println(string);
 			requestRestart();
 		}
 		return performOk;
@@ -128,7 +126,6 @@ public class Database extends FieldEditorPreferencePage implements IWorkbenchPre
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 
-		System.out.println("Triggered");
 
 		Object source = event.getSource();
 

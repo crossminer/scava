@@ -4,8 +4,8 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger.SEVERITY;
 import org.eclipse.scava.crossflow.runtime.utils.CsvWriter;
+import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class Data extends DataBase {
 	// CSV file writer(s)
@@ -26,7 +26,7 @@ public class Data extends DataBase {
 			writer1.writeRecord( line.getText(),  line.isCached() );
 			writer1.flush();
 		} catch (Exception e) {
-			workflow.log(SEVERITY.ERROR, e.getMessage());
+			workflow.log(LogLevel.ERROR, e.getMessage());
 		}
 	}
 	

@@ -25,9 +25,11 @@ import crossflow.diagram.edit.parts.FieldNameType3EditPart;
 import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
 import crossflow.diagram.edit.parts.LanguageNameEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
+import crossflow.diagram.edit.parts.SerialiserNameEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
@@ -269,6 +271,23 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
+	private IParser serialiserName_5020Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSerialiserName_5020Parser() {
+		if (serialiserName_5020Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getSerialiser_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			serialiserName_5020Parser = parser;
+		}
+		return serialiserName_5020Parser;
+	}
+
+	/**
+	* @generated
+	*/
 	private IParser fieldNameType_5018Parser;
 
 	/**
@@ -332,6 +351,27 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
+	private IParser parameterNameValue_5019Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getParameterNameValue_5019Parser() {
+		if (parameterNameValue_5019Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getParameter_Name(),
+					CrossflowPackage.eINSTANCE.getParameter_Value() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
+			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
+			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
+			parameterNameValue_5019Parser = parser;
+		}
+		return parameterNameValue_5019Parser;
+	}
+
+	/**
+	* @generated
+	*/
 	protected IParser getParser(int visualID) {
 		switch (visualID) {
 		case CsvSourceNameEditPart.VISUAL_ID:
@@ -360,12 +400,16 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 			return getFieldNameType_5016Parser();
 		case LanguageNameEditPart.VISUAL_ID:
 			return getLanguageName_5015Parser();
+		case SerialiserNameEditPart.VISUAL_ID:
+			return getSerialiserName_5020Parser();
 		case FieldNameType2EditPart.VISUAL_ID:
 			return getFieldNameType_5018Parser();
 		case FieldNameType3EditPart.VISUAL_ID:
 			return getFieldNameType_5011Parser();
 		case ParameterNameValueEditPart.VISUAL_ID:
 			return getParameterNameValue_5014Parser();
+		case ParameterNameValue2EditPart.VISUAL_ID:
+			return getParameterNameValue_5019Parser();
 		}
 		return null;
 	}

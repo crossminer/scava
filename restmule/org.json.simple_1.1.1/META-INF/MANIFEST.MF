@@ -7,3 +7,4 @@ Bundle-ClassPath: json-simple-1.1.1.jar
 Export-Package: org.json.simple,
  org.json.simple.parser
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Automatic-Module-Name: org.json.simple_1.1.1

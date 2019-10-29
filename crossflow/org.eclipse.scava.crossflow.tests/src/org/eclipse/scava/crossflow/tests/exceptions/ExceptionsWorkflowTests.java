@@ -18,7 +18,7 @@ public class ExceptionsWorkflowTests extends WorkflowTests {
 		worker.setFailOnNumber(1);
 
 		master.run();
-		worker.run();
+		worker.run(500);
 
 		waitFor(master);
 		waitFor(worker);

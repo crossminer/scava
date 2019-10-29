@@ -10,26 +10,44 @@
 
 package org.eclipse.scava.plugin.apidocumentation;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentation;
-import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultController;
-import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultModel;
-import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultView;
+import org.eclipse.scava.plugin.async.api.ApiAsyncRequestController;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
+import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerController;
+import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerModel;
+import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerView;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PartInitException;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.model.Recommendation;
+import io.swagger.client.model.RecommendationItem;
 
 public class ApiDocumentationController extends ModelViewController<ApiDocumentationModel, ApiDocumentationView>
 		implements IApiDocumentationViewEventListener {
+	private final ApiAsyncRequestController<Recommendation> recommendationRequestController;
+	private WebReferenceViewerController webReferenceController;
 
 	public ApiDocumentationController(Controller parent, ApiDocumentationModel model, ApiDocumentationView view) {
 		super(parent, model, view);
+
+		recommendationRequestController = new ApiAsyncRequestController<>(this,
+				b -> b.onSuccess(this::onSuccess).onFail(this::onFail).executeWith(Display.getDefault()::asyncExec));
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
+		WebReferenceViewerModel model = new WebReferenceViewerModel();
+		WebReferenceViewerView view = new WebReferenceViewerView();
+		webReferenceController = new WebReferenceViewerController(this, model, view);
+		webReferenceController.init();
+
+		getView().showWebReferences(view);
 	}
 
 	@Override
@@ -38,32 +56,20 @@ public class ApiDocumentationController extends ModelViewController<ApiDocumenta
 	}
 
 	public void request(String methodCode) {
-		getSubControllers().forEach(Controller::dispose);
-
-		try {
-			Collection<ApiDocumentation> apiDocumentations = getModel().getApiDocumentations(methodCode);
-
-			apiDocumentations.forEach(apiDocumentation -> {
-				ApiDocumentationResultModel model = new ApiDocumentationResultModel(apiDocumentation);
-				ApiDocumentationResultView view = new ApiDocumentationResultView();
-				ApiDocumentationResultController controller = new ApiDocumentationResultController(this, model, view);
-
-				controller.init();
-
-				getView().showResult(view);
-			});
-
-		} catch (ApiException e) {
-			e.printStackTrace();
-			ErrorHandler.handle(Display.getDefault().getActiveShell(), e);
-		}
-
-		try {
-			ApiDocumentationView.open(ApiDocumentationView.ID);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
-					"Unexpected error during showing view:\n\n" + e);
-		}
+		recommendationRequestController.execute(getModel().requestApiDocumentationAsync(methodCode));
 	}
+
+	private void onSuccess(Recommendation recommendation) {
+		List<RecommendationItem> recommendationItems = recommendation.getRecommendationItems();
+		List<String> postIds = recommendationItems.stream().map(RecommendationItem::getApiDocumentationLink)
+				.collect(Collectors.toList());
+
+		webReferenceController.clearResults();
+		webReferenceController.showStackOverflowReferences(postIds);
+	}
+
+	private void onFail(ApiException e) {
+		webReferenceController.showError(ErrorHandler.logAndGetMessage(e));
+	}
+
 }

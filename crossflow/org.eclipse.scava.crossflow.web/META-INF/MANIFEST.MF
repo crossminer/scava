@@ -12,5 +12,5 @@ Export-Package: org.apache.thrift,
  org.apache.thrift.server,
  org.apache.thrift.transport,
  org.eclipse.scava.crossflow.web
-Bundle-ClassPath: WebContent/WEB-INF/lib/jars/libthrift-0.12.0.jar,
+Bundle-ClassPath: WebContent/WEB-INF/lib/libthrift-0.12.0.jar
  .

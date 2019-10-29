@@ -11,7 +11,7 @@ public class Pattern {
 	private String patternName;
 	private String patternFileName;
 	private List<String> patternNamespaces;
-	private Artifact artifact;
+	//private Artifact artifact;
 	public String getPatternCode() {
 		return patternCode;
 	}
@@ -36,12 +36,12 @@ public class Pattern {
 	public void setPatternNamespaces(List<String> patternNamespaces) {
 		this.patternNamespaces = patternNamespaces;
 	}
-	public Artifact getArtifact() {
-		return artifact;
-	}
-	public void setArtifact(Artifact artifact) {
-		this.artifact = artifact;
-	}
+//	public Artifact getArtifact() {
+//		return artifact;
+//	}
+//	public void setArtifact(Artifact artifact) {
+//		this.artifact = artifact;
+//	}
 	public String getId() {
 		return id;
 	}

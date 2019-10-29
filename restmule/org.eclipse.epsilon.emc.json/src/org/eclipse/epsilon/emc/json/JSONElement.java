@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Objects;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,11 +29,11 @@ public class JSONElement {
 			this.parent = parent;
 		}
 		
-		if (value instanceof JSONObject){
-			this.value = (JSONObject) value;
+		if (value instanceof JSONObject) {
+			this.value = value;
 			this.array = false;
-		} else if (value instanceof JSONArray){
-			this.value = (JSONArray) value;
+		} else if (value instanceof JSONArray) {
+			this.value = value;
 			this.array = true;
 		} else {
 			this.value = value;
@@ -46,7 +46,7 @@ public class JSONElement {
 			this.tag = PlainXmlType.parse("t_" +tag).getTagName();
 		}	
 		
-		if (id == null || id.isEmpty()){
+		if (id == null || id.isEmpty()) {
 			this.id = this.tag;
 		} else {
 			this.id = id;
@@ -79,7 +79,7 @@ public class JSONElement {
 
 	public void setTag() {
 		if (parent != null){
-			if (parent.isArray()){
+			if (parent.isArray()) {
 				
 			} else {
 				JSONObject parentObject = (JSONObject) parent.getValue();
@@ -87,12 +87,12 @@ public class JSONElement {
 				while (iterator.hasNext()){
 					Object key = iterator.next();
 					Object element = parentObject.get(key);
-					if (this.isArray()){
-						if (((JSONArray) element).equals((JSONArray) this.value)){
+					if (this.isArray()) {
+						if (((JSONArray) element).equals(this.value)) {
 							this.tag = PlainXmlType.parse("t_"+String.valueOf(key)).getTagName();
 						}
-					} else if (!this.isArray()){
-						if (((JSONObject) element).equals((JSONObject) this.value)){
+					} else if (!this.isArray()) {
+						if (((JSONObject) element).equals(this.value)){
 							this.tag = PlainXmlType.parse("t_"+String.valueOf(key)).getTagName();
 						}
 					}
@@ -125,8 +125,8 @@ public class JSONElement {
 		this.root = root;
 	}
 
-	public JSONElement getGet(String key){
-		if (!isArray() && ((JSONObject) value).containsKey(key)){
+	public JSONElement getGet(String key) {
+		if (!isArray() && ((JSONObject) value).containsKey(key)) {
 			return new JSONElement(this, key, ((JSONObject) value).get(key));
 		} else {
 			return null;
@@ -134,15 +134,14 @@ public class JSONElement {
 	}
 
 	// GETS PROPERTIES OF JSON OBJECT
-	public Collection<JSONElement> getProperties(){
-		if (!isArray()){
-			ArrayList<JSONElement> result = new ArrayList<JSONElement>();
+	public Collection<JSONElement> getProperties() {
+		if (!isArray()) {
 			JSONObject jsonObject = (JSONObject) value;
-			Iterator<String> iterator = jsonObject.keySet().iterator();			
-			while (iterator.hasNext()){
-				String key = iterator.next();
+			Collection<?> keySet = jsonObject.keySet();	
+			ArrayList<JSONElement> result = new ArrayList<>(keySet.size());
+			for (Object key : keySet) {
 				Object child = jsonObject.get(key);
-				result.add(new JSONElement(this, key, child));
+				result.add(new JSONElement(this, Objects.toString(key), child));
 			}
 			return Collections.unmodifiableList(result);
 		}
@@ -150,28 +149,29 @@ public class JSONElement {
 	}
 
 	// GETS ELEMENTS OF JSON ARRAY
-	public Collection<JSONElement> getChildren(){
-		List<JSONElement> result = new ArrayList<JSONElement>();
-		if (isArray()){
+	public Collection<JSONElement> getChildren() {
+		ArrayList<JSONElement> result = new ArrayList<>(0);
+		if (isArray()) {
 			JSONArray array = (JSONArray) this.getValue();
-			for (int i = 0; i < array.size(); i++){
+			final int size = array.size();
+			result.ensureCapacity(size);
+			for (int i = 0; i < size; i++) {
 				result.add(new JSONElement(this, this.id + i, array.get(i)));	
 			}			
 		} 
 		return result;
 	}
 
-	public static List<JSONElement> cast(Object array){
-		if (array instanceof JSONArray){
+	public static List<JSONElement> cast(Object array) {
+		if (array instanceof JSONArray) {
 			JSONArray jsonArray = (JSONArray) array;
-			Iterator<?> iterator = jsonArray.iterator();
-			List<JSONElement> result = new ArrayList<JSONElement>();
-			while (iterator.hasNext()){
-				Object element = iterator.next();
+			ArrayList<JSONElement> result = new ArrayList<>(jsonArray.size());
+			for (Object element : jsonArray) {
 				result.add(new JSONElement(element));
 			}
 			return result;
-		} else {
+		}
+		else {
 			return Collections.emptyList();
 		}
 	}

@@ -3,12 +3,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src-gen"/>
-        <dependent-module archiveName="org.eclipse.scava.crossflow.runtime.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/org.eclipse.scava.crossflow.runtime/org.eclipse.scava.crossflow.runtime">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.scava.crossflow.tests.jar" deploy-path="/jars/" handle="module:/resource/org.eclipse.scava.crossflow.tests/org.eclipse.scava.crossflow.tests">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
+        <wb-resource deploy-path="/WebContent/WEB-INF/lib" source-path="/WebContent/WEB-INF/lib"/>
         <property name="context-root" value="org.eclipse.scava.crossflow.web"/>
         <property name="java-output-path" value="/org.eclipse.scava.crossflow.web/build/classes"/>
     </wb-module>

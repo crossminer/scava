@@ -1,8 +1,7 @@
 package org.eclipse.epsilon.emc.json;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
+import java.util.Objects;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -11,23 +10,18 @@ public class JsonUtil {
 	public static void collectChildElements(Object root, ArrayList<Object> elements) {
 		if (root instanceof JSONElement){
 			Object element = ((JSONElement) root).getValue();
-			Iterator<?> iterator;
 			if (element instanceof JSONObject) {
-				elements.add((JSONElement) root);
-				iterator = ((JSONObject) element).keySet().iterator();
-				while (iterator.hasNext()){
-					String key = (String) iterator.next();
-					Object child = ((JSONObject)element).get(key);
-					if (child!=null && child instanceof JSONObject){
-						JSONElement childJsonElement = new JSONElement((JSONElement) root, key, child);
+				elements.add(root);
+				for (Object key : ((JSONObject) element).keySet()) {
+					Object child = ((JSONObject) element).get(key);
+					if (child != null && child instanceof JSONObject){
+						JSONElement childJsonElement = new JSONElement((JSONElement) root, Objects.toString(key), child);
 						collectChildElements(childJsonElement, elements);
 					}
 				}
-			} else if (element instanceof JSONArray){
-				iterator = ((JSONArray) element).iterator();
-				while (iterator.hasNext()){
-					Object child = iterator.next();
-					if (child != null && child instanceof JSONObject){
+			} else if (element instanceof JSONArray) {
+				for (Object child : (JSONArray) element) {
+					if (child != null && child instanceof JSONObject) {
 						JSONElement childJsonElement = new JSONElement((JSONElement) root, child);
 						collectChildElements(childJsonElement, elements);
 					}

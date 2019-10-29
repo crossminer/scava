@@ -11,6 +11,7 @@ import javax.annotation.Generated;
 
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
 import org.eclipse.scava.crossflow.runtime.Serializer;
@@ -22,7 +23,7 @@ import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%for (p in w.parameters) { %]
 	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
@@ -38,8 +39,14 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	
 	// Streams
-	[%for (s in w.streams) { %]
-	protected [%=s.name%] [%=s.name.ftlc()%];
+	[%for (s in w.streams) {
+		var type;
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}%]
+	protected [%=type%] [%=s.name.ftlc()%];
 	[%}%]
 	
 	// Tasks
@@ -91,9 +98,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-		[%for (t in w.getParallelizableTasks()) {%]
-		[%=t.name.ftlc()%]s.init(this);
-		[%}%]
 	
 		this.delay=delay;
 	
@@ -118,12 +122,20 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				}
 			}
 	
-			connect();
-	
 			Thread.sleep(delay);
 		
-			[%for (s in w.streams) { %]
+			[%for (t in w.getParallelizableTasks()) {%]
+			[%=t.name.ftlc()%]s.init(this);
+			[%}%]
+	
+			[%for (s in w.streams) { 
+				if (s.inputOf.isEmpty()) {%]
+			[%=s.name.ftlc()%] = new BuiltinStream<[%=s.type.name%]>(this, "[%=s.name%]", [%=s.isTypeOf(Topic)%]);
+			[%=s.name.ftlc()%].init();
+				[%} else {%]
 			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
+				[%}
+			%]
 			activeStreams.add([%=s.name.ftlc()%]);
 			[%}%]
 		
@@ -132,6 +144,8 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				[%=t.setup()%]
 			[%}%]
 			}
+
+			connect();
 			
 			if (isWorker()) {
 			[%for (t in w.getWorkerTasks()){%]
@@ -144,7 +158,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			if (isMaster()){
 			[%for (t in w.getNonConfigurationSources()){%]
 				// run all sources in parallel threads
-				new Thread(() -> {
+				Thread [%=t.name.ftlc()%]Thread = new Thread(() -> {
 					try {
 						setTaskInProgess([%=t.name.ftlc()%]);
 						[%=t.name.ftlc()%].produce();
@@ -152,19 +166,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 					} catch (Exception ex) {
 						reportInternalException(ex);
 						terminate();
+					}finally {
+						activeSources.remove(Thread.currentThread());
 					}
-				}).start();	
+				});
+				activeSources.add([%=t.name.ftlc()%]Thread);
+				[%=t.name.ftlc()%]Thread.start();	
 			[%}%]
 				sendConfigurations();
 			}
-				
-			// delay non-master connections to allow master to create the relevant listeners
-			// (in a multi-threaded parallel execution) to facilitate termination, by
-			// re-sending worker_added message
-			if (!isMaster()) {
-				Thread.sleep(1000);
-				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
-			}	
 					
 		} catch (Exception e) {
 			log(LogLevel.ERROR, e.getMessage());
@@ -186,8 +196,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	}
 	
-	[%for (s in w.streams) { %]
-	public [%=s.name%] get[%=s.name%]() {
+	[%for (s in w.streams) {
+		var type; 
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}
+	%]
+	public [%=type%] get[%=s.name%]() {
 		return [%=s.name.ftlc()%];
 	}
 	[%}%]
@@ -235,10 +252,10 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	
 	@Override
 	public Serializer setupSerializer() {
-	    Serializer serializer = new Serializer();
-	    [% for (t in w.types) {%]
-        serializer.register([%=t.name%].class);
-        [%}%]
+		Serializer serializer = new Serializer();
+		[% for (t in w.types) {%]
+		serializer.register([%=t.name%].class);
+		[%}%]
 		return serializer;
 	}
 	
@@ -255,22 +272,22 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-	      // Parse all values into an temporary object
-        [%=w.name%] argsHolder = new [%=w.name%]();
-        JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
-        
-        try {
-            jct.parse(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-	    if(argsHolder.isHelp()) {
-            jct.setProgramName("[%=w.name%]");
-            jct.usage();
-            System.exit(0);
-        }
-	
+		// Parse all values into an temporary object
+		[%=w.name%] argsHolder = new [%=w.name%]();
+		JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
+		
+		try {
+			jct.parse(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		if(argsHolder.isHelp()) {
+			jct.setProgramName("[%=w.name%]");
+			jct.usage();
+			System.exit(0);
+			}
+			
 		run(args);
 	}
 	

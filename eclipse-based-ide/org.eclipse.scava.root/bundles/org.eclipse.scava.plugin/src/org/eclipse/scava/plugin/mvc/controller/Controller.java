@@ -13,6 +13,7 @@ package org.eclipse.scava.plugin.mvc.controller;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.scava.plugin.mvc.IInitializable;
 import org.eclipse.scava.plugin.mvc.IMvcComponent;
@@ -48,6 +49,11 @@ public abstract class Controller implements IMvcComponent, IInitializable {
 		return Collections.unmodifiableSet(new HashSet<>(subControllers));
 	}
 
+	public <T extends Controller> Set<T> getSubControllers(Class<T> controllerClass) {
+		return subControllers.stream().filter(controllerClass::isInstance).map(controllerClass::cast)
+				.collect(Collectors.toSet());
+	}
+
 	private void addSubController(Controller controller) {
 		subControllers.add(controller);
 	}
@@ -58,6 +64,7 @@ public abstract class Controller implements IMvcComponent, IInitializable {
 
 	@Override
 	public final void dispose() {
+
 		// this is necessary to prevent concurrent modification
 		Controller[] cachedSubController = subControllers.toArray(new Controller[0]);
 		for (Controller controller : cachedSubController) {
@@ -107,4 +114,5 @@ public abstract class Controller implements IMvcComponent, IInitializable {
 			controller.onReceiveRoutedEventFromParentController(event);
 		}
 	}
+
 }

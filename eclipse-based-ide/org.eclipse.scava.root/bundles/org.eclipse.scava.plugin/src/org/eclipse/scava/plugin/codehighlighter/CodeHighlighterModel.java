@@ -10,26 +10,39 @@
 
 package org.eclipse.scava.plugin.codehighlighter;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.scava.plugin.mvc.model.Model;
 
 public class CodeHighlighterModel extends Model {
-	private final Collection<CodeChunk> codeChunks;
 	private final String markerID;
+	private final Collection<IMarker> markers;
 
-	public CodeHighlighterModel(Collection<CodeChunk> codeChunks, String markerID) {
-		this.codeChunks = codeChunks;
+	public CodeHighlighterModel(String markerID) {
+		super();
 		this.markerID = markerID;
+		markers = new ArrayList<>();
 	}
 
-	public Collection<CodeChunk> getCodeChunks() {
-		return Collections.unmodifiableCollection(codeChunks);
+	public IMarker createMarker(IHighlightDefinition highlightDefinition) throws CoreException {
+		IResource resource = highlightDefinition.getResource();
+		Map<String, Object> attributes = highlightDefinition.getAttributes();
+
+		IMarker marker = resource.createMarker(markerID);
+		marker.setAttributes(attributes);
+		
+		markers.add(marker);
+		return marker;
 	}
 
-	public String getMarkerID() {
-		return markerID;
+	public void removeAllMarkers() throws CoreException {
+		for (IMarker marker : markers) {
+			marker.delete();
+		}
 	}
-
 }

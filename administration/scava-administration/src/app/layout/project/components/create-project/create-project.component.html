@@ -438,49 +438,46 @@
                                             </select>
                                         </div>
                                         <div class="form-group" [hidden]=true>
-                                            <input type="text" class="form-control" id="type" name="type"
-                                                formControlName="type">
+                                            <input type="text" class="form-control" id="type" name="type" formControlName="type">
                                         </div>
                                         <div *ngIf="noLogin == 'option1'">
                                             <div class="form-group">
                                                 <label for="url">Url</label>
-                                                <input type="text" class="form-control" id="url" name="url"
-                                                    formControlName="url">
+                                                <input type="text" class="form-control" id="url" name="url" formControlName="url" required>
                                             </div>
                                             <div class="form-group">
-                                                <label for="executionFrequency">Execution Frequency</label>
-                                                <input type="number" class="form-control" id="executionFrequency"
-                                                    name="executionFrequency" formControlName="executionFrequency">
+                                                <label for="executionFrequency">Execution Frequency <small>(optional)</small></label>
+                                                <input type="number" class="form-control" id="executionFrequency" name="executionFrequency" formControlName="executionFrequency">
                                             </div>
                                         </div>
                                         <div *ngIf="noLogin == 'option2'">
                                             <div class="form-group">
                                                 <label for="url">Url</label>
-                                                <input type="text" class="form-control" id="url" name="url" formControlName="url">
+                                                <input type="text" class="form-control" id="url" name="url" formControlName="url" required>
                                             </div>
                                             <div class="form-group">
-                                                <label for="executionFrequency">Execution Frequency</label>
+                                                <label for="executionFrequency">Execution Frequency <small>(optional)</small></label>
                                                 <input type="number" class="form-control" id="executionFrequency" name="executionFrequency" formControlName="executionFrequency">
                                             </div>
                                             <div class="form-group">
                                                 <label for="loginURL">Login Url</label>
-                                                <input type="text" class="form-control" id="loginURL" name="loginURL" formControlName="loginURL">
+                                                <input type="text" class="form-control" id="loginURL" name="loginURL" formControlName="loginURL" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="username">Username</label>
-                                                <input type="text" class="form-control" id="username" name="username" formControlName="username">
+                                                <input type="text" class="form-control" id="username" name="username" formControlName="username" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="usernameFieldName">Username Field Name</label>
-                                                <input type="text" class="form-control" id="usernameFieldName" name="usernameFieldName" formControlName="usernameFieldName">
+                                                <input type="text" class="form-control" id="usernameFieldName" name="usernameFieldName" formControlName="usernameFieldName" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password" name="password" formControlName="password">
+                                                <input type="text" class="form-control" id="password" name="password" formControlName="password" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="passwordFieldName">Password Field Name</label>
-                                                <input type="text" class="form-control" id="passwordFieldName" name="passwordFieldName" formControlName="passwordFieldName">
+                                                <input type="text" class="form-control" id="passwordFieldName" name="passwordFieldName" formControlName="passwordFieldName" required>
                                             </div>
                                         </div>
                                     </div>

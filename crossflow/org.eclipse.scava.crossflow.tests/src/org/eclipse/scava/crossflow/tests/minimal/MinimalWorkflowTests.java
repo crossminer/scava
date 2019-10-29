@@ -315,7 +315,7 @@ public class MinimalWorkflowTests extends WorkflowTests {
 		workflow2.setName("worker");
 
 		workflow.run();
-		workflow2.run();
+		workflow2.run(500);
 
 		//
 

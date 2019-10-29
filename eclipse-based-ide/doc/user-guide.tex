@@ -12,8 +12,7 @@
 \author{FrontEndART Szoftver Kft.}
 \title{User's Guide of the CROSSMINER Advanced Integrated Development Environments Plug-in}
 
-\date{Version 1.12.0.rev0}
-
+\date{Version 1.15.0.rev0}
 
 \newcommand{\todoi}[1]{\todo[inline]{#1}}
 
@@ -192,6 +191,70 @@ Every time you change the search parameters, so the set of libraries that are us
 \end{figure}
 
 After selecting the set of libraries that you want to use in your project, by clicking on the install button you can add them to your project. They will show up among the dependencies in the project's pom.xml.
+
+\subsection{Updating libraries}
+
+If any of the libraries that are used in your Maven project can be updated to a newer version the CROSSMINER IDE will notify you by putting the "[new lib version available]" label after the project's name. An example can be seen on the Figure~\ref{fig:libraryVersionChecker}. This check is preformed at the start of the Eclipse IDE.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.7\linewidth]{pic/library-version-checker.png}
+	\caption{Library version checker}
+	\label{fig:libraryVersionChecker}
+\end{figure}
+
+
+To update the libraries that are used in your Maven project use the Library version updater feature. For this, first you have to select your project in the Package explorer view, then in the context menu navigate to the CROSSMINER submenu and click on the "search updates for libraries" option. This will open the Library version updater dialog.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/library-version-updater.png}
+	\caption{Library version Updater}
+	\label{fig:libraryVersionUpdater}
+\end{figure}
+
+As it can be seen on the Figure~\ref{fig:libraryVersionUpdater} the libraries that can be updated to a newer version are listed in the center of the dialog. The different versions can be selected from the dropdown menus and the libraries will be updated to the selected versions.
+
+The listed versions can be filtered by creating rules in the Library update version rules property page that can be accessed by opening the context menu over your project, clicking on the Properties option and navigating under the CROSSMINER pages.
+
+Any number of rules can be added, removed or edited in this page. To create a new rule click on the Add new rule button. A box will appear in the center of the page with three text fields. These fields are the Group ID, the Artifact ID and the Version. Each field can be filled with regular expressions and they are interpreted just the same way as in Java. If a text field has been leaved empty it will be interpreted as to match with every value.
+
+The rules can be removed by clicking on the "Delete rule" button in the rule's box.
+
+This property page and an example rule can be seen on the Figure~\ref{fig:libraryVersionRules}. With this one rule we restrict the library version search to care only about the libraries with a group ID that matches with 'junit', an artifact ID, that matches with 'junit' and a version with a '4.' prefix.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/library-version-rules.png}
+	\caption{Library version rules}
+	\label{fig:libraryVersionRules}
+\end{figure}
+
+The interpretation of the rules is the following:
+if there are no rules at all, then no filtering will be applied.
+After adding at least one rule, then the library versions will be tested against every rule until at least one of them is matching. If none of the rules matched a library version, then that one will not be seen among the available library versions. A filtered list of library versions with the previous rules can be seen on the Figure~\ref{fig:libraryVersionUpdater:filtered}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{pic/library-version-updater-filtered.png}
+	\caption{Library version Updater - filtered}
+	\label{fig:libraryVersionUpdater:filtered}
+\end{figure}
+
+In the Library version updater dialog there are three buttons on the bottom, which can be used to quickly select the wanted versions. These buttons provide the functionality to select the currently used, the next available or the latest versions with a click.
+
+After selecting the versions to be installed and accepting the confirmation dialogs, the selected versions of the libraries are going to be installed to your project.
+
+If the upgrade from an older version of a library to a newer one involves some API braking changes, then the CROSSMINER Eclipse-based IDE will try to find the places of usage of the old API in the project and mark them as they are suspicious to be broken after the installation. The markers can be seen on the Figure~\ref{fig:libraryVersionUpdater:apiMigration}.
+
+Hovering you cursor over these markers the quick fix menu can be opened and the following options can be selected: you can choose the Fix option which will try to fix the broken part of the API usage near the marked code chunk. The Fix all and Fix all for API migration from old library to new library options will try to do the same but for every similar case in the whole project and to every similar case in the project, but only for those, that are related to the given API migration, respectively. The Ignore options may be interpreted in the same way, but not changing any part of the code, they are just removing the markers from the suspicious code chunks.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{pic/library-version-updater-api-migration.png}
+\caption{Library version Updater - API Migration}
+\label{fig:libraryVersionUpdater:apiMigration}
+\end{figure}
 
 
 \req[N/A\todo{WEB Dashboard functionality}]{U4}{Able to warn about superfluous dependencies}{\SHOULD}

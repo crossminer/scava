@@ -73,4 +73,8 @@ public class VerticalList extends Composite {
 			}
 		}
 	}
+	
+	public void refreshLayout() {
+		notifyParentScrolledComposite();
+	}
 }

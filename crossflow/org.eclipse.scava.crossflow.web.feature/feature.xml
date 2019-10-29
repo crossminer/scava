@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.scava.crossflow.web.feature"
+      label="Crossflow Web Feature"
+      version="1.0.0.qualifier">
+
+   <description>
+      Contains the crossflow web UI
+   </description>
+
+   <copyright>
+      Copyright (C) 2017-2019 University of York.
+   </copyright>
+
+   <license url="https://www.eclipse.org/legal/epl-2.0/">
+      Eclipse Public License v2.0
+   </license>
+
+   <plugin
+         id="org.eclipse.scava.crossflow.web"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.scava.crossflow.web.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

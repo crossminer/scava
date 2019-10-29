@@ -17,6 +17,8 @@
         eType="#//Field" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="languages" upperBound="-1"
         eType="#//Language" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serialiser" eType="#//Serialiser"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Stream" abstract="true">
     <eAnnotations source="gmf.node">
@@ -181,5 +183,19 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Serialiser">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="figure" value="rectangle"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true">
+      <eAnnotations source="gmf.compartment">
+        <details key="layout" value="list"/>
+        <details key="collapsible" value="false"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

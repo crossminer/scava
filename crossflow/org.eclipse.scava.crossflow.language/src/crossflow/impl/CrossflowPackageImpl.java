@@ -13,6 +13,7 @@ import crossflow.OpinionatedTask;
 import crossflow.Parameter;
 import crossflow.Queue;
 import crossflow.ScriptedTask;
+import crossflow.Serialiser;
 import crossflow.Sink;
 import crossflow.Source;
 import crossflow.Stream;
@@ -148,6 +149,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	private EClass parameterEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass serialiserEClass = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -269,6 +277,15 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 */
 	public EReference getWorkflow_Languages() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getWorkflow_Serialiser() {
+		return (EReference)workflowEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -735,6 +752,33 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getSerialiser() {
+		return serialiserEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getSerialiser_Name() {
+		return (EAttribute)serialiserEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSerialiser_Parameters() {
+		return (EReference)serialiserEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CrossflowFactory getCrossflowFactory() {
 		return (CrossflowFactory)getEFactoryInstance();
 	}
@@ -765,6 +809,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEReference(workflowEClass, WORKFLOW__TYPES);
 		createEReference(workflowEClass, WORKFLOW__PARAMETERS);
 		createEReference(workflowEClass, WORKFLOW__LANGUAGES);
+		createEReference(workflowEClass, WORKFLOW__SERIALISER);
 
 		streamEClass = createEClass(STREAM);
 		createEAttribute(streamEClass, STREAM__NAME);
@@ -831,6 +876,10 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		parameterEClass = createEClass(PARAMETER);
 		createEAttribute(parameterEClass, PARAMETER__NAME);
 		createEAttribute(parameterEClass, PARAMETER__VALUE);
+
+		serialiserEClass = createEClass(SERIALISER);
+		createEAttribute(serialiserEClass, SERIALISER__NAME);
+		createEReference(serialiserEClass, SERIALISER__PARAMETERS);
 	}
 
 	/**
@@ -879,6 +928,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEReference(getWorkflow_Types(), this.getType(), null, "types", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Parameters(), this.getField(), null, "parameters", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Languages(), this.getLanguage(), null, "languages", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorkflow_Serialiser(), this.getSerialiser(), null, "serialiser", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamEClass, Stream.class, "Stream", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStream_Name(), ecorePackage.getEString(), "name", null, 0, 1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -945,6 +995,10 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParameter_Value(), ecorePackage.getEString(), "value", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(serialiserEClass, Serialiser.class, "Serialiser", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSerialiser_Name(), ecorePackage.getEString(), "name", null, 0, 1, Serialiser.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSerialiser_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Serialiser.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -1088,6 +1142,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label.pattern", "{0}:{1}",
 			   "label.icon", "false"
 		   });
+		addAnnotation
+		  (serialiserEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "figure", "rectangle"
+		   });
 	}
 
 	/**
@@ -1162,6 +1223,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   });
 		addAnnotation
 		  (getLanguage_Parameters(),
+		   source,
+		   new String[] {
+			   "layout", "list",
+			   "collapsible", "false"
+		   });
+		addAnnotation
+		  (getSerialiser_Parameters(),
 		   source,
 		   new String[] {
 			   "layout", "list",

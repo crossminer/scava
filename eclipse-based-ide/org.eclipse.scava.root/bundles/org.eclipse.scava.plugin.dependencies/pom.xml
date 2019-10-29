@@ -93,13 +93,6 @@
 	</build>
 	<dependencies>
 	
-		<!-- Rascal -->
-		<dependency>
-			<groupId>org.rascalmpl</groupId>
-			<artifactId>rascal</artifactId>
-			<version>0.12.0-SNAPSHOT</version>
-		</dependency>
-	
 		<!-- swagger-codegen generated client -->
 		<dependency>
 			<groupId>org.eclipse.scava</groupId>

@@ -15,11 +15,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.main.page.PageController;
@@ -72,30 +75,34 @@ public class MainController extends ModelController<MainModel> {
 	}
 
 	private void openHelpMenu() {
+		new Timer().schedule(new TimerTask() {
 
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+			@Override
+			public void run() {
+				Display.getDefault().syncExec(() -> {
+					IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 
-		if (preferenceStore.getBoolean(Preferences.HELP_MENU_OPEN)) {
-			JCheckBox checkbox = new JCheckBox("Do not show this message again.");
-			String message = "Would you like to open the help menu?";
-			Object[] params = { message, checkbox };
-			int option = JOptionPane.showConfirmDialog(null, params, "Help menu", JOptionPane.YES_NO_OPTION);
+					if (preferenceStore.getBoolean(Preferences.HELP_MENU_OPEN)) {
+						MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+								Display.getDefault().getActiveShell(), "Help menu",
+								"Would you like to open the help menu?", "Do not show this message again", false,
+								preferenceStore, "");
 
-			if (option == 0) {
+						preferenceStore.setValue(Preferences.HELP_MENU_OPEN, !dialog.getToggleState());
 
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						PlatformUI.getWorkbench().getHelpSystem().displayHelp();
+						int yes = 2;
+						if (dialog.getReturnCode() == yes) {
+							Display.getDefault().asyncExec(new Runnable() {
+								@Override
+								public void run() {
+									PlatformUI.getWorkbench().getHelpSystem().displayHelp();
+								}
+							});
+						}
 					}
 				});
-
 			}
-
-			boolean dontShow = checkbox.isSelected();
-			preferenceStore.setValue(Preferences.HELP_MENU_OPEN, !dontShow);
-
-		}
+		}, 2000);
 	}
 
 	private PageController getOrCreatePageController(IWorkbenchPage page) {
@@ -115,19 +122,22 @@ public class MainController extends ModelController<MainModel> {
 
 	@Subscribe
 	public void onEclipseInterfaceEvents(EclipseInterfaceEvent interfaceEvent) {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		getOrCreatePageController(page);
+		Display.getDefault().asyncExec(() -> {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			getOrCreatePageController(page);
 
-		try {
-			modifyEventSource(interfaceEvent);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		} finally {
-			routeEventToSubControllers(interfaceEvent);
-		}
+			try {
+				modifyEventSource(interfaceEvent);
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			} finally {
+				routeEventToSubControllers(interfaceEvent);
+			}
+		});
 	}
 
-	private void modifyEventSource(EclipseInterfaceEvent interfaceEvent) throws NoSuchFieldException, IllegalAccessException {
+	private void modifyEventSource(EclipseInterfaceEvent interfaceEvent)
+			throws NoSuchFieldException, IllegalAccessException {
 		Field sourceField = RoutedEvent.class.getDeclaredField("source");
 		sourceField.setAccessible(true);
 		sourceField.set(interfaceEvent, this);
@@ -152,7 +162,8 @@ public class MainController extends ModelController<MainModel> {
 		try {
 			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(url));
 		} catch (MalformedURLException e) {
-			boolean canCopy = MessageDialog.openConfirm(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
+			boolean canCopy = MessageDialog.openConfirm(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+					"Error",
 					"We could not open the requested url.\nThe following will be copied to your clipboard:\n" + url);
 			if (canCopy) {
 				Clipboard clipboard = new Clipboard(Display.getCurrent());
@@ -161,7 +172,8 @@ public class MainController extends ModelController<MainModel> {
 			}
 		} catch (PartInitException e) {
 			e.printStackTrace();
-			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error", "Could not open external browser. Please check the preferences.");
+			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
+					"Could not open external browser. Please check the preferences.");
 		}
 	}
 

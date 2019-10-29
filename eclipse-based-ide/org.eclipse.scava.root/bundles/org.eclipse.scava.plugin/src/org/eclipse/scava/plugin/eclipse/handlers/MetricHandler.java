@@ -10,6 +10,10 @@
 
 package org.eclipse.scava.plugin.eclipse.handlers;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.scava.plugin.ui.metric.MetricDisplay;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -89,7 +93,7 @@ public class MetricHandler extends AbstractHandler {
 
 				Collections.sort(testList);
 
-				monitor.setTaskName("Rendezés");
+				monitor.setTaskName("Rendezï¿½s");
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {

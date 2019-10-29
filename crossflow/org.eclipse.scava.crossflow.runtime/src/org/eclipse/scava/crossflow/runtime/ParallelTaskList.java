@@ -1,28 +1,29 @@
 package org.eclipse.scava.crossflow.runtime;
 
 import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Semaphore;
 
-import org.eclipse.scava.crossflow.runtime.Workflow;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 public class ParallelTaskList<E> extends LinkedList<E> {
 	
 	private static final long serialVersionUID = -7187844983786218545L;
 	
 	private Semaphore semaphore;
-	private ExecutorService executor;
+	private ListeningExecutorService executor;
 
 	public void init(Workflow<?> w) {
 		semaphore = new Semaphore(w.getParallelization());
-		executor = w.newExecutor();
+		// TODO: Guava 29.0-JRE will allow executors without this decorator to be used for timeouts
+		executor = MoreExecutors.listeningDecorator(w.newExecutor());
 	}
 
 	public Semaphore getSemaphore() {
 		return semaphore;
 	}
 
-	public ExecutorService getExecutor() {
+	public ListeningExecutorService getExecutor() {
 		return executor;
 	}
 

@@ -23,5 +23,5 @@ public class ProjectSearchHandler extends AbstractHandler {
 		Activator.getDefault().getEventBus().post(new EclipseInterfaceEvent.ProjectSearchRequestEvent(null));
 		return null;
 	}
-	
+
 }

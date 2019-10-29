@@ -19,7 +19,7 @@ export class ConnectorMgmtAddDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isSaving = true;
+    this.isSaving = false;
     this.repository = new Object();
     this.repository._type = "";
     this.repository._id = "";

@@ -12,22 +12,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Date;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class DayChannel {
 	
 	private Map<String, Message> messages;
-//	private Map<Integer, Action> actions;
 	private String channelName;
 	
-	private static final Pattern msgExp =  Pattern.compile("^\\[(\\d{2}:\\d{2})\\] <.*> .*$");
+	private static final Pattern msgExp = Pattern.compile("^\\[(\\d{2}:\\d{2})\\] <.*> .*$");
+	private static final Pattern chExp = Pattern.compile("(_[^_]+\\.txt)$");
 							   //aka = " is now known as ",
 							   //joined = "  has joined ",
 							   //left = "  has left ";
 	
-	public DayChannel(File file, Date date) {
-		super();
+	private OssmeterLogger logger;
+	
+	public DayChannel(File file, Date date, OssmeterLogger logger) {
 		messages = new HashMap<String, Message>();
-		//actions = new HashMap<Integer, Action>();
+		this.logger=logger;
 		extractChannelName(file);
 		parse(file, date);
 		
@@ -35,8 +37,7 @@ public class DayChannel {
 
 	private void extractChannelName(File file) {
 		String fileName = file.getName();
-		channelName = fileName.substring(0, fileName.length() - 4);
-		System.out.println("channelName: " + channelName + "\n");
+		channelName = chExp.matcher(fileName).replaceAll("");
 	}
 	
 	private void parse(File file, Date date) {
@@ -101,16 +102,16 @@ public class DayChannel {
 		return messages;
 	}
 
-	private static String readFileAsString(File afile) {
+	private String readFileAsString(File afile) {
 	    char[] buffer = new char[(int) afile.length()];
 	    BufferedReader br = null;
 	    try {
-	    		br = new BufferedReader(new InputStreamReader(new FileInputStream(afile), "UTF-8"));
+	    	br = new BufferedReader(new InputStreamReader(new FileInputStream(afile), "UTF-8"));
 	        br.read(buffer);
 	    } catch (FileNotFoundException e) {
-			e.printStackTrace();
+	    	logger.error("File not found: "+e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("IO Exception: "+e);
 		} finally { 
 	    	if (br != null) try { br.close(); } catch (IOException ignored) { }
 	    }

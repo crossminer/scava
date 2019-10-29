@@ -10,6 +10,7 @@ class Workflow {
   val Type[*] types;
   val Field[*] parameters;
   val Language[*] languages;
+  val Serialiser serialiser;
 }
 
 @gmf.node(figure="ellipse", label="name", label.icon="false")
@@ -124,4 +125,12 @@ class Language {
 class Parameter {
   attr String name;
   attr String value;
+}
+
+@gmf.node(label="name", figure ="rectangle")
+class Serialiser {
+  attr String name;
+
+  @gmf.compartment(layout="list",collapsible="false")
+  val Parameter[*] parameters;
 }

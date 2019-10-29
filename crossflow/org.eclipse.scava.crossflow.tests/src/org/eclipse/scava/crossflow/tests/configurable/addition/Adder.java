@@ -31,7 +31,7 @@ public class Adder extends AdderBase {
 	@Override
 	public void consumeOperationConfigTopic(Operation operationConfiguration) throws Exception {
 
-		// System.out.println("config received: " + operationConfiguration);
+		System.out.println("config received ("+workflow.getName()+"): " + operationConfiguration);
 
 		if (operation == null)
 			operation = operationConfiguration.operation;
@@ -41,7 +41,7 @@ public class Adder extends AdderBase {
 	@Override
 	public void consumePostConfigTopic(Post postConfiguration) throws Exception {
 
-		// TODO: handle configuration
+		System.out.println("config received ("+workflow.getName()+"): " + postConfiguration);
 
 	}
 

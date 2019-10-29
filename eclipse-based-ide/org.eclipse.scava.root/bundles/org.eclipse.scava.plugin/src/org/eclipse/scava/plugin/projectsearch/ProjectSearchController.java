@@ -60,7 +60,7 @@ public class ProjectSearchController extends Controller {
 		
 		if (routedEvent instanceof ProjectSearchSearchRequestEvent) {
 			ProjectSearchSearchRequestEvent event = (ProjectSearchSearchRequestEvent) routedEvent;
-			getSubControllers().stream().filter(InstallController.class::isInstance).forEach(Controller::dispose);
+			getSubControllers(InstallController.class).forEach(Controller::dispose);
 			routeEventToSubControllers(new SearchShowRequestEvent(this));
 			return;
 		}

@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.epsilon.emc.json,
  org.eclipse.epsilon.common.dt
 Export-Package: org.eclipse.epsilon.emc.json.dt
+Automatic-Module-Name: org.eclipse.epsilon.emc.json.dt
