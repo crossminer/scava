@@ -32,7 +32,7 @@ public class SerializerTest {
 	public void toString_should_return_short_name_when_given_Job() throws Exception {
 		serializer.register(Job.class);
 		Job job = new Job();
-		job.setId("0");
+		job.setJobId("0");
 		String xml = serializer.toString(job);
 		assertEquals(jobXml, xml);
 	}
@@ -43,7 +43,7 @@ public class SerializerTest {
 		assertTrue(object instanceof Job);
 		Job job = (Job) object;
 		
-		assertEquals("0", job.getId());
+		assertEquals("0", job.getJobId());
 		assertFalse(job.isCached());
 		assertEquals(0, job.getFailures());
 		assertTrue(job.isTransactional());

@@ -33,13 +33,13 @@ public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {
 				if (commitments.contains([%=s.type.name.ftlc()%].getName())) {
 					occurences++;
 					result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>=[%=t.commitAfter%]) {
-					commitments.add([%=s.type.name.ftlc()%].getId());
+				} else if (seen.containsKey([%=s.type.name.ftlc()%].getJobId()) && seen.get([%=s.type.name.ftlc()%].getJobId())>=[%=t.commitAfter%]) {
+					commitments.add([%=s.type.name.ftlc()%].getJobId());
 					result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				} else {
-					if(!seen.containsKey([%=s.type.name.ftlc()%].getId()))
-						seen.put([%=s.type.name.ftlc()%].getId(),1);
-					seen.put([%=s.type.name.ftlc()%].getId(),seen.get([%=s.type.name.ftlc()%].getId())+1);
+					if(!seen.containsKey([%=s.type.name.ftlc()%].getJobId()))
+						seen.put([%=s.type.name.ftlc()%].getJobId(),1);
+					seen.put([%=s.type.name.ftlc()%].getJobId(),seen.get([%=s.type.name.ftlc()%].getJobId())+1);
 					rejections++;
 					workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());
 				}			
@@ -51,13 +51,13 @@ public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {
 				if (commitments.contains([%=s.type.name.ftlc()%].getName())) {
 					occurences++;
 					consume[%=s.name%]([%=s.type.name.ftlc()%]);
-				} else if (seen.containsKey([%=s.type.name.ftlc()%].getId()) && seen.get([%=s.type.name.ftlc()%].getId())>=[%=t.commitAfter%]) {
-					commitments.add([%=s.type.name.ftlc()%].getId());
+				} else if (seen.containsKey([%=s.type.name.ftlc()%].getJobId()) && seen.get([%=s.type.name.ftlc()%].getJobId())>=[%=t.commitAfter%]) {
+					commitments.add([%=s.type.name.ftlc()%].getJobId());
 					consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				} else {
-					if(!seen.containsKey([%=s.type.name.ftlc()%].getId()))
-						seen.put([%=s.type.name.ftlc()%].getId(),1);
-					seen.put([%=s.type.name.ftlc()%].getId(),seen.get([%=s.type.name.ftlc()%].getId())+1);
+					if(!seen.containsKey([%=s.type.name.ftlc()%].getJobId()))
+						seen.put([%=s.type.name.ftlc()%].getJobId(),1);
+					seen.put([%=s.type.name.ftlc()%].getJobId(),seen.get([%=s.type.name.ftlc()%].getJobId())+1);
 					rejections++;
 					workflow.get[%=s.name%]().send([%=s.type.name.ftlc()%],this.getClass().getName());
 				}				

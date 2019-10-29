@@ -30,7 +30,7 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 		[%for (f in t.closure(e|e.extending).fields.flatten) { %]
 		this.[%=f.name%] = [%=f.name%];
 		[%}%]
-		this.correlationId = correlation.getId();
+		this.correlationId = correlation.getJobId();
 	}
 	[%}%]
 		
@@ -58,7 +58,7 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 	public String toString() {
 		[%
 		var fields = t.fields.name;
-		if (t.isJob()) fields = fields.includingAll(Sequence{"id", "correlationId", "destination"});
+		if (t.isJob()) fields = fields.includingAll(Sequence{"jobId", "correlationId", "destination"});
 		%]
 		return "[%=t.name%] (" + [%=fields.collect(f|'" ' + f + '=" + ' + f).concat(" + ")%] + ")";
 	}

@@ -22,7 +22,7 @@ public class Calculator extends CalculatorBase {
 		}
 		
 		CalculationResult calculationResult = new CalculationResult();
-		calculationResult.setCorrelationId(calculation.getId());
+		calculationResult.setCorrelationId(calculation.getJobId());
 		calculationResult.setA(calculation.getA());
 		calculationResult.setB(calculation.getB());
 		calculationResult.setOperator(calculation.getOperator());

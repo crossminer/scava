@@ -173,7 +173,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 				[%=t.output.first.type.name%] result = consume[%=s.name%]([%=s.type.name.ftlc()%]);
 				if(result != null){
 					if(isCacheable())
-						result.setCorrelationId([%=s.type.name.ftlc()%].getId());				
+						result.setCorrelationId([%=s.type.name.ftlc()%].getJobId());				
 					result.setTransactional(false);
 					sendTo[%=t.output.first.name%](result);
 				}
@@ -302,7 +302,7 @@ operation Stream sendConfirmationMessage() {
 		for (s in t.output) { %]
 // Send confirmation to [%=s.name%]
 [%=s.type.name%] confirmation[%=s.name%] = new [%=s.type.name%]();
-confirmation[%=s.name%].setCorrelationId([%=self.type.name.ftlc()%].getId());
+confirmation[%=s.name%].setCorrelationId([%=self.type.name.ftlc()%].getJobId());
 confirmation[%=s.name%].setIsTransactionSuccessMessage(true);
 confirmation[%=s.name%].setTotalOutputs(getTotalOutputs());
 if (hasSentTo[%=s.name%]) {

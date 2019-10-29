@@ -583,44 +583,44 @@ class DirectoryCache(object):
                 jobFolderObject = open(jobFolder)
                 self.jobFolderMap[jobFolderObject.name] = jobFolderObject
 
-    def getCachedOutputs(self, inputJob):
-        if self.hasCachedOutputs(inputJob):
+    def getCachedOutputs(self, input_job: Job):
+        if self.hasCachedOutputs(input_job):
             outputs = []
-            inputFolderObject = self.jobFolderMap.get(inputJob.getHash())
-            for outputFilePath in os.listdir(os.path.realpath(inputFolderObject.name)):
-                outputFile = open(outputFilePath)
-                outputJob = self.workflow.serializer.to_object(outputFile.read())
-                outputFile.close()
-                outputJob.setId(str(uuid.uuid4()))
-                outputJob.setCorrelationId(inputJob.getId())
-                outputJob.setCached(True)
-                outputs.append(outputJob)
+            input_folder = self.jobFolderMap.get(input_job.getHash())
+            for outputFilePath in os.listdir(os.path.realpath(input_folder.name)):
+                output_file = open(outputFilePath)
+                output_job: Job = self.workflow.serializer.to_object(output_file.read())
+                output_file.close()
+                output_job.jobId = str(uuid.uuid4())
+                output_job.correlationId = input_job.jobId
+                output_job.cached = True
+                outputs.append(output_job)
             return outputs
         else:
             return []
 
-    def hasCachedOutputs(self, inputJob):
-        return inputJob.getHash() in self.jobFolderMap.keys()
+    def hasCachedOutputs(self, input_job: Job):
+        return input_job.getHash() in self.jobFolderMap.keys()
 
-    def cache(self, outputJob):
-        if not outputJob.cacheable:
+    def cache(self, output_job):
+        if not output_job.cacheable:
             return
 
-        self.jobMap[outputJob.getId()] = outputJob
-        inputJob = self.jobMap.get(outputJob.getCorrelationId())
+        self.jobMap[output_job.jobId] = output_job
+        input_job = self.jobMap.get(output_job.correlationId)
 
-        if not inputJob == None:
-            streamFolderPath = self.directoryFullpath + "/" + inputJob.getDestination()
+        if input_job is not None:
+            stream_folder = self.directoryFullpath + "/" + input_job.getDestination()
             try:
-                inputFolderPath = streamFolderPath + "/" + inputJob.getHash()
-                os.makedirs(inputFolderPath)
-                with open(inputFolderPath + "/" + outputJob.getHash()) as outputFile:
-                    self.jobFolderMap[inputJob.name] = inputFolderPath
-                    self.save(outputJob, outputFile)
+                input_folder = stream_folder + "/" + input_job.getHash()
+                os.makedirs(input_folder)
+                with open(input_folder + "/" + output_job.getHash()) as outputFile:
+                    self.jobFolderMap[input_job.name] = input_folder
+                    self.save(output_job, outputFile)
             except Exception as ex:
                 self.workflow.local_logger.exception("Error caching Job")
                 self.workflow.report_internal_exception(
-                    ex, "Error caching job " + outputJob.name
+                    ex, "Error caching job " + output_job.jobId
                 )
 
     def getDirectory(self):
@@ -740,9 +740,9 @@ class CacheManagerTask(Task):
         return "CacheManagerTask"
 
 
-class Job(object):
+class Job:
     def __init__(self):
-        self.id = str(uuid.uuid4())
+        self.jobId = str(uuid.uuid4())
         self.correlationId = ""
         self.destination = ""
         self.cached = False
@@ -766,14 +766,22 @@ class Job(object):
     def setTransactional(self, transactional):
         self.transactional = transactional
 
-    def setId(self, id):
-        self.id = id
+    def setId(self, job_id):
+        warnings.warn("deprecated", category=DeprecationWarning, stacklevel=2)
+        self.jobId = job_id
 
     def getId(self):
-        return self.id
+        warnings.warn("deprecated", category=DeprecationWarning, stacklevel=2)
+        return self.jobId
 
-    def setCorrelationId(self, correlationId):
-        self.correlationId = correlationId
+    def getJobId(self):
+        return self.jobId
+
+    def setJobId(self, job_id):
+        self.jobId = job_id
+
+    def setCorrelationId(self, correlation_id):
+        self.correlationId = correlation_id
 
     def getCorrelationId(self):
         return self.correlationId
@@ -808,14 +816,20 @@ class Job(object):
     def setFailures(self, failures):
         self.failures = failures
 
+    def getIsTransactionSuccessMessage(self):
+        return self.isTransactionSuccessMessage
+
+    def setIsTransactionSuccessMessage(self, is_transaction_success_message):
+        self.isTransactionSuccessMessage = is_transaction_success_message
+
     def getPickleBytes(self):
-        id = self.id
+        id = self.jobId
         failures = self.failures
         correlationId = self.correlationId
         cached = self.cached
         cacheable = self.cacheable
 
-        self.id = None
+        self.jobId = None
         self.correlationId = None
         self.failures = 0
         self.cached = False
@@ -837,12 +851,6 @@ class Job(object):
         h = hashlib.md5()
         h.update(self.getPickleBytes())
         return str(h.digest())
-
-    def getIsTransactionSuccessMessage(self):
-        return self.isTransactionSuccessMessage
-
-    def setIsTransactionSuccessMessage(self, isTransactionSuccessMessage):
-        self.isTransactionSuccessMessage = isTransactionSuccessMessage
 
 
 class Stream(ABC):
