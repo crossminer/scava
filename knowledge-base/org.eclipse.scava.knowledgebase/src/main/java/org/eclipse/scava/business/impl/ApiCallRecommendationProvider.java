@@ -70,7 +70,7 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		options.setOption(Option.IGNORE_SUBTYPE_NAMES, true);
 		List<Pattern> patterns = patternRepository.findAll();
 		for (Pattern pattern : patterns) {
-			ApiCallResult k = codeCloneDetector.checkClone(query.getCompilationUnit(), pattern.getPatternCode(), options);
+			ApiCallResult k = codeCloneDetector.checkClone(query.getCompilationUnit()!=null?query.getCompilationUnit():query.getCurrentMethodCode(), pattern.getPatternCode(), options);
 			k.setPattern(pattern.getPatternFileName());
 			if (k.getCodeLines() != null && k.getCodeLines().size() > 0)
 				result.add(k);
