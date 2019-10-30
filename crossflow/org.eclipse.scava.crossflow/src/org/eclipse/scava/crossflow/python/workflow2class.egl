@@ -23,7 +23,7 @@ from crossflow.[%=package%].[%=s.pyVarName()%] import [%=s.name%]
 
 # Utility
 from crossflow.[%=package%].[%=w.pyVarName()%]_tasks import [%=w.name%]Tasks
-from crossflow.runtime import BuiltinStream, Mode, Workflow
+from crossflow.runtime import BuiltinStream, Mode, Serializer, Workflow
 
 
 class [%=w.name%](Workflow):
@@ -56,12 +56,7 @@ class [%=w.name%](Workflow):
                          delete_cache=delete_cache,
                          excluded_tasks=excluded_tasks,
                          enable_prefetch=False)
-        
-        # Register types with serializer
-        [%for (t in w.types) {%]
-        self._serializer.register([%=t.name%])
-        [%}%]
-        
+                         
         # Streams
         [%for (s in w.streams) { %]
         self.[%=s.name.ftlc()%]: [%=s.pyType()%] = None
@@ -145,6 +140,13 @@ class [%=w.name%](Workflow):
         return self.[%=t.name.ftlc()%]
         
     [%}%]
+    def _setup_serializer(self) -> Serializer:
+        s = Serializer()
+        [%for (t in w.types) {%]
+        s.register([%=t.name%])
+        [%}%]
+        return s
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

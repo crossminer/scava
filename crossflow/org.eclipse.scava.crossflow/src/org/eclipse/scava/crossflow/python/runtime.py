@@ -681,7 +681,7 @@ class DirectoryCache(object):
 
 
 class FailedJob(object):
-    def __init__(self, job, exception, worker, task):
+    def __init__(self, job=None, exception=None, worker=None, task=None):
         self.job = job
         self.exception = exception
         self.worker = worker
@@ -712,7 +712,9 @@ class FailedJob(object):
         self.task = task
 
     def __str__(self):
-        return self.job + " | " + self.exception + " " + self.worker + " " + self.task
+        return (
+            str(self.job) + " | " + self.exception + " " + self.worker + " " + self.task
+        )
 
 
 class InternalException(Exception):
@@ -1062,7 +1064,11 @@ class BuiltinStream(Stream):
 
         self._consumers.append(consumer)
         listener = MessageListener(
-            self._connection, consumer, self.workflow, self._destination, True
+            self._connection,
+            consumer,
+            self.workflow,
+            self._destination,
+            consumer.deserialize,
         )
         self._listeners.append(listener)
         self._connection.set_listener(listener.listener_id, listener)
@@ -1082,13 +1088,23 @@ class BuiltinStream(Stream):
 
 
 class BuiltinStreamConsumer:
-    def __init__(self, function):
+    def __init__(self, function, deserialize: bool = True):
+        """Consumer for built in streams
+
+        :param function: the consumer function to call
+        :param deserialize: set to true to enable built-in deserialization of incoming messages
+        """
         self._function = function
+        self._deserialize = deserialize
         self._subscription_id = uuid.uuid4().int
 
     @property
     def subscription_id(self):
         return self._subscription_id
+
+    @property
+    def deserialize(self):
+        return self._deserialize
 
     def consume(self, message, ack_func=None):
         self._function(message) if ack_func is None else self._function(
@@ -1146,10 +1162,7 @@ class Workflow(ABC):
         self._about_to_terminate = False  # TODO: is this needed in workers?
 
         # Init serializer
-        self._serializer = Serializer()
-        self._serializer.register(ControlSignal)
-        self._serializer.register(Job)
-        self._serializer.register(TaskStatus)
+        self._serializer = None
 
         self._input_directory = ""
         self._output_directory = ""
@@ -1301,7 +1314,19 @@ class Workflow(ABC):
 
     @property
     def serializer(self) -> Serializer:
+        if self._serializer is None:
+            self._serializer = self._setup_serializer()
+            self._serializer.register(ControlSignal)
+            self._serializer.register(FailedJob)
+            self._serializer.register(InternalException)
+            self._serializer.register(Job)
+            self._serializer.register(LogMessage)
+            self._serializer.register(TaskStatus)
         return self._serializer
+
+    @abstractmethod
+    def _setup_serializer(self) -> Serializer:
+        raise NotImplementedError
 
     @property
     def broker(self) -> list:
