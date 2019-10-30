@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.NotificationFilter;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
+import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.diagram.core.DiagramEditingDomainFactory;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.AbstractDocumentProvider;
@@ -511,9 +512,16 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 		}
 		super.doSynchronize(element, monitor);
 	}
-
+	
 	/**
-	* @generated
+	* @generated NOT
+	*/
+	private boolean canSave(Resource resource) {
+		return !(resource instanceof FlexmiResource);
+	}
+	
+	/**
+	* @generated NOT
 	*/
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {
@@ -535,7 +543,7 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 							NLS.bind(Messages.CrossflowDocumentProvider_SaveNextResourceTask, nextResource.getURI()));
 					if (nextResource.isLoaded() && !info.getEditingDomain().isReadOnly(nextResource)) {
 						try {
-							nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+							if(canSave(nextResource)) nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 						} catch (IOException e) {
 							fireElementStateChangeFailed(element);
 							throw new CoreException(new Status(IStatus.ERROR, CrossflowDiagramEditorPlugin.ID,
@@ -590,7 +598,7 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 						return CommandResult.newOKCommandResult();
 					}
 				}.execute(monitor, null);
-				newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+				if(canSave(newResource)) newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 			} catch (ExecutionException e) {
 				fireElementStateChangeFailed(element);
 				throw new CoreException(

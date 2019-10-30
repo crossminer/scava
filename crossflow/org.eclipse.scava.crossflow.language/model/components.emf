@@ -1,0 +1,11 @@
+@namespace(uri="org.eclipse.scava.crossflow.components", prefix="cfc")
+package crossflowComponents;
+
+import "platform:/resource/org.eclipse.scava.crossflow.language/model/crossflow.ecore";
+
+class Component {
+  attr String[1] fullyQualifiedName;
+  ref crossflow.Language language;
+  val crossflow.Type[1] consumes;
+  val crossflow.Type[1] produces;
+}

@@ -1301,6 +1301,133 @@ public interface CrossflowPackage extends EPackage {
 	int SCRIPTED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 3;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.ReusableComponentImpl <em>Reusable Component</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.ReusableComponentImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getReusableComponent()
+	 * @generated
+	 */
+	int REUSABLE_COMPONENT = 12;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__NAME = TASK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__INPUT = TASK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__PARALLEL = TASK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__IMPL = TASK__IMPL;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__CONFIGURATIONS = TASK__CONFIGURATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Component</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__COMPONENT = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Reusable Component</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT_FEATURE_COUNT = TASK_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1308,7 +1435,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 12;
+	int TYPE = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1372,7 +1499,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getField()
 	 * @generated
 	 */
-	int FIELD = 13;
+	int FIELD = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1419,7 +1546,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
 	 * @generated
 	 */
-	int LANGUAGE = 14;
+	int LANGUAGE = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1483,7 +1610,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
 	 * @generated
 	 */
-	int PARAMETER = 15;
+	int PARAMETER = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1521,7 +1648,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getSerialiser()
 	 * @generated
 	 */
-	int SERIALISER = 16;
+	int SERIALISER = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1978,6 +2105,27 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getScriptedTask_OutputVariables();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.ReusableComponent <em>Reusable Component</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Reusable Component</em>'.
+	 * @see crossflow.ReusableComponent
+	 * @generated
+	 */
+	EClass getReusableComponent();
+
+	/**
+	 * Returns the meta object for the reference '{@link crossflow.ReusableComponent#getComponent <em>Component</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Component</em>'.
+	 * @see crossflow.ReusableComponent#getComponent()
+	 * @see #getReusableComponent()
+	 * @generated
+	 */
+	EReference getReusableComponent_Component();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Type <em>Type</em>}'.
@@ -2581,6 +2729,24 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SCRIPTED_TASK__OUTPUT_VARIABLES = eINSTANCE.getScriptedTask_OutputVariables();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.ReusableComponentImpl <em>Reusable Component</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.ReusableComponentImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getReusableComponent()
+		 * @generated
+		 */
+		EClass REUSABLE_COMPONENT = eINSTANCE.getReusableComponent();
+
+		/**
+		 * The meta object literal for the '<em><b>Component</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REUSABLE_COMPONENT__COMPONENT = eINSTANCE.getReusableComponent_Component();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.

@@ -17,7 +17,7 @@ rule Workflow2TaskEnum
 
 rule Config2ConfigSource
 	transform t : Type {
-	guard : t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
+	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(Workflow) and t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
 	parameters  {
 		var params = t.getParameters("Config2ConfigSource");
 		params.put("t", t.createSource());
@@ -36,7 +36,7 @@ rule Workflow2Class
 
 rule Type2Class 
 	transform t : Type {
-	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
+	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(Workflow) and t.impl.isUndefined() //and s.csvFile.isUndefined()
 	parameters : t.getParameters("Type2Class")
 	template : "type2class.egl"
 	target : t.getPath() + t.name + ".java"
@@ -88,7 +88,7 @@ rule Task2BaseClass
 @greedy
 rule Task2ImplClass 
 	transform t : Task {
-	guard :	t.isJavaTask() and not t.isTypeOf(ScriptedTask)
+	guard :	not t.isTypeOf(ReusableComponent) and t.isJavaTask() and not t.isTypeOf(ScriptedTask)
 	parameters : t.getParameters("Task2ImplClass")
 	template : "task2implclass.egl"
 	target : t.getImplPath() + t.name + ".java"
@@ -150,10 +150,6 @@ operation Any getImplPath() {
 	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
 
 	return path;
-}
-
-operation Task isJavaTask() {
-	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
 }
 
 @cached

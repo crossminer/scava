@@ -8,7 +8,8 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: crossflow.tests
+Export-Package: crossflow.tests,
+ crossflowComponents.tests
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.crossflow.language;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,

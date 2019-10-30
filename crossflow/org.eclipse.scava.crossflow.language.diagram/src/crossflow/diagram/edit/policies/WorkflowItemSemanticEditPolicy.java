@@ -17,6 +17,7 @@ import crossflow.diagram.edit.commands.FieldCreateCommand;
 import crossflow.diagram.edit.commands.LanguageCreateCommand;
 import crossflow.diagram.edit.commands.OpinionatedTaskCreateCommand;
 import crossflow.diagram.edit.commands.QueueCreateCommand;
+import crossflow.diagram.edit.commands.ReusableComponentCreateCommand;
 import crossflow.diagram.edit.commands.ScriptedTaskCreateCommand;
 import crossflow.diagram.edit.commands.SerialiserCreateCommand;
 import crossflow.diagram.edit.commands.SinkCreateCommand;
@@ -68,6 +69,9 @@ public class WorkflowItemSemanticEditPolicy extends CrossflowBaseItemSemanticEdi
 		}
 		if (CrossflowElementTypes.ScriptedTask_2015 == req.getElementType()) {
 			return getGEFWrapper(new ScriptedTaskCreateCommand(req));
+		}
+		if (CrossflowElementTypes.ReusableComponent_2017 == req.getElementType()) {
+			return getGEFWrapper(new ReusableComponentCreateCommand(req));
 		}
 		if (CrossflowElementTypes.Task_2010 == req.getElementType()) {
 			return getGEFWrapper(new TaskCreateCommand(req));

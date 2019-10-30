@@ -293,10 +293,6 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	
 }	
 [%
-operation Task isJavaTask(){
-	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
-}
-
 operation Workflow getNonConfigurationSources(){
 	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
 	sources.removeAll(w.getConfigurationSources());
