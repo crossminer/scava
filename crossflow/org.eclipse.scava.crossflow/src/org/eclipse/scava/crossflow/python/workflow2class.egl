@@ -184,7 +184,7 @@ operation Task setup() {%]
 @template
 operation Stream genInitStream() {
 	if (self.inputOf.isEmpty()) {%]
-self.[%=self.name.ftlc()%] = BuiltinStream("[%=self.name%]", self[%if (self.isTypeOf(Topic)) {%], False[%}%])
+self.[%=self.name.ftlc()%] = BuiltinStream("[%=self.name%]", self[%if (self.isTypeOf(Topic)) {%], True[%}%])
 self.[%=self.name.ftlc()%].init()
 	[%} else {%]
 self.[%=self.name.ftlc()%] = [%=self.name%](self, self._enable_prefetch)
