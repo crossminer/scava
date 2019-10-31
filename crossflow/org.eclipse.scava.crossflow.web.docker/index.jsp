@@ -1,0 +1,1 @@
+<% response.sendRedirect("/org.eclipse.scava.crossflow.web"); %>
