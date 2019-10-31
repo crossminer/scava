@@ -12,7 +12,7 @@ public class SerializerTest {
 	protected Serializer serializer;
 	
 	protected String jobXml = "<Job>\n" + 
-			"  <id>0</id>\n" + 
+			"  <jobId>0</jobId>\n" + 
 			"  <cached>false</cached>\n" + 
 			"  <failures>0</failures>\n" + 
 			"  <cacheable>true</cacheable>\n" + 
