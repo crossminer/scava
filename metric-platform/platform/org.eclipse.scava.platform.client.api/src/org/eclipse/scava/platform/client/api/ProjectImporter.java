@@ -52,7 +52,7 @@ public class ProjectImporter {
 				EclipseProjectImporter importer = new EclipseProjectImporter();
 				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
 				Properties eclipseClientId = projectRepo.getProperties().findOneByKey("eclipseClientId");
-				Properties eclipseUserSecret = projectRepo.getProperties().findOneByKey("eclipseClientToken");
+				Properties eclipseUserSecret = projectRepo.getProperties().findOneByKey("eclipseClientSecret");
 				if (eclipseClientId != null && eclipseUserSecret!=null) {
 					importer.setCredentials(new Credentials(eclipseUserSecret.getValue(), eclipseClientId.getValue(), ""));
 				} else {
