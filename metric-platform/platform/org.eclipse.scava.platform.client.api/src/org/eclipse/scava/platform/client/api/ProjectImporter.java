@@ -50,6 +50,14 @@ public class ProjectImporter {
 			System.out.println("url to import: " + url);
 			try {
 				EclipseProjectImporter importer = new EclipseProjectImporter();
+				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+				Properties eclipseClientId = projectRepo.getProperties().findOneByKey("eclipseClientId");
+				Properties eclipseUserSecret = projectRepo.getProperties().findOneByKey("eclipseClientToken");
+				if (eclipseClientId != null && eclipseUserSecret!=null) {
+					importer.setCredentials(new Credentials(eclipseUserSecret.getValue(), eclipseClientId.getValue(), ""));
+				} else {
+					importer.setCredentials(new Credentials("", "", ""));
+				}
 				p = importer.importProject(url, platform);
 			} catch (Exception e) {
 				e.printStackTrace(); // FIXME better handling
