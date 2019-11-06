@@ -4,7 +4,6 @@
 
 -->
 <plugin>
-   <extension-point id="org.eclipse.scava.crossflow.ReusableComponentsExtensionPoint" name="org.eclipse.scava.crossflow.ReusableComponentsExtensionPoint.exsd"/>
 
    <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
       <?gmfgen generated="true"?>

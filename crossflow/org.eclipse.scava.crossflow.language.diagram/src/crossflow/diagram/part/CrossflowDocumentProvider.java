@@ -39,7 +39,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.NotificationFilter;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
-import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.diagram.core.DiagramEditingDomainFactory;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.AbstractDocumentProvider;
@@ -57,6 +56,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+
+import crossflowComponents.Component;
 
 /**
  * @generated
@@ -517,7 +518,13 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	* @generated NOT
 	*/
 	private boolean canSave(Resource resource) {
-		return !(resource instanceof FlexmiResource);
+		// TODO is there a better way to identify component models? 
+		//maybe by identifying the diagram model itself and only saving it 
+		//instead of disallowing others explicitly?
+		for (EObject e : resource.getContents())
+			if (e instanceof Component)
+				return false;
+		return true;
 	}
 	
 	/**

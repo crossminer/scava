@@ -39,6 +39,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.scava.crossflow.dt.GenerateImplementationDelegate;
 import org.eclipse.swt.graphics.Color;
 import org.osgi.framework.Bundle;
 
@@ -50,7 +51,6 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
  */
 public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
-	private static final String REUSABLECOMPONENTEXTENSIONPOINT = "org.eclipse.scava.crossflow.ReusableComponentsExtensionPoint";
 
 	/**
 	 * @generated NOT
@@ -73,7 +73,7 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 		// System.err.println("createInMemoryComponentModel");
 
 		List<IConfigurationElement> reusableComponentsCEs = getConfigurationElementsFor(
-				REUSABLECOMPONENTEXTENSIONPOINT);
+				GenerateImplementationDelegate.REUSABLECOMPONENTEXTENSIONPOINT);
 
 		ResourceSet resourceSet = getEditingDomain().getResourceSet();
 
@@ -149,8 +149,7 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ReusableComponentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		// XXX need an SCR to runtime to have another abstract superclass that would let
-		// children add reasonable editpolicies
+		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
 
