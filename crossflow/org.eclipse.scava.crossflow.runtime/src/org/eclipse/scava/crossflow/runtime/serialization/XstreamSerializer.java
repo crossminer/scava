@@ -1,10 +1,8 @@
 package org.eclipse.scava.crossflow.runtime.serialization;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -15,27 +13,19 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class XstreamSerializer implements Serializer {
 
-	protected Set<Class<?>> registeredTypes;
+	protected Map<String, Class<?>> registeredTypes;
 	protected XStream xstream;
 
 	public XstreamSerializer() {
-		this.registeredTypes = new HashSet<Class<?>>();
-		this.xstream = null;
-	}
-
-	@Override
-	public void init() {
+		this.registeredTypes = new HashMap<String, Class<?>>();
 		xstream = new XStream(new DomDriver());
 		XStream.setupDefaultSecurity(xstream);
-		for (Class<?> clazz : registeredTypes) {
-			doXstreamRegisterType(clazz);
-		}
 	}
 
 	@Override
 	public Serializer registerType(Class<?> clazz) {
-		boolean modified = registeredTypes.add(clazz);
-		if (modified && xstream != null) {
+		if (!isRegistered(clazz)) {
+			registeredTypes.put(clazz.getSimpleName(), clazz);
 			doXstreamRegisterType(clazz);
 		}
 		return this;
@@ -43,24 +33,26 @@ public class XstreamSerializer implements Serializer {
 
 	@Override
 	public Collection<Class<?>> getRegisteredTypes() {
-		return registeredTypes;
+		return registeredTypes.values();
+	}
+
+	@Override
+	public boolean isRegistered(String clazz) {
+		return registeredTypes.containsKey(clazz);
 	}
 
 	@Override
 	public <O> String serialize(O input) {
-		if (xstream == null) init();
 		return xstream.toXML((O) input);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <O> O deserialize(String input) {
-		if (xstream == null) init();
 		return (O) xstream.fromXML(input);
 	}
 
 	private void doXstreamRegisterType(Class<?> clazz) {
-		checkNotNull(xstream);
 		xstream.alias(clazz.getSimpleName(), clazz);
 		xstream.allowTypes(new Class[] { clazz });
 	}

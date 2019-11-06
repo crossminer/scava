@@ -3,14 +3,15 @@ package org.eclipse.scava.crossflow.runtime.serializer.tests;
 import java.util.List;
 import java.util.Map;
 
-public class DummyObject {
+public class SerializationTestObject {
 
 	String stringProp = null;
 	int intProp = 0;
 	long longProp = 0;
 	boolean booleanProp = true;
-	List<DummyObject> listProp = null;
-	Map<String, DummyObject> mapProp = null;
+	List<SerializationTestObject> listProp = null;
+	Map<String, SerializationTestObject> mapProp = null;
+	Map<SerializationTestObject, SerializationTestObject> complexMapProp = null;
 
 	@Override
 	public int hashCode() {
@@ -33,7 +34,7 @@ public class DummyObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DummyObject other = (DummyObject) obj;
+		SerializationTestObject other = (SerializationTestObject) obj;
 		if (booleanProp != other.booleanProp)
 			return false;
 		if (intProp != other.intProp)

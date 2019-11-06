@@ -7,6 +7,7 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
@@ -23,7 +24,11 @@ public class JsonSerializer implements Serializer {
 	protected Map<String, Class<?>> registeredTypes;
 
 	public JsonSerializer() {
-		this.gson = new Gson();
+		this(false);
+	}
+
+	public JsonSerializer(boolean pretty) {
+		gson = pretty ? new GsonBuilder().setPrettyPrinting().create() : new Gson();
 		this.registeredTypes = new HashMap<>();
 	}
 
@@ -36,14 +41,7 @@ public class JsonSerializer implements Serializer {
 		return this;
 	}
 
-	public boolean isRegistered(Object o) {
-		return isRegistered(o.getClass().getSimpleName());
-	}
-
-	public boolean isRegistered(Class<?> clazz) {
-		return isRegistered(clazz.getSimpleName());
-	}
-
+	@Override
 	public boolean isRegistered(String clazz) {
 		return registeredTypes.containsKey(clazz);
 	}

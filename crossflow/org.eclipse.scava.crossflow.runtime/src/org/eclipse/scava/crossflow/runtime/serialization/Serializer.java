@@ -39,6 +39,16 @@ public interface Serializer {
 	 * @return all types registered to this {@link Serializer}
 	 */
 	public Collection<Class<?>> getRegisteredTypes();
+	
+	default public boolean isRegistered(Object o) {
+		return isRegistered(o.getClass().getSimpleName());
+	}
+
+	default public boolean isRegistered(Class<?> clazz) {
+		return isRegistered(clazz.getSimpleName());
+	}
+
+	public boolean isRegistered(String clazz);
 
 	/**
 	 * Serialize the given input to a <code>String</code> representation
