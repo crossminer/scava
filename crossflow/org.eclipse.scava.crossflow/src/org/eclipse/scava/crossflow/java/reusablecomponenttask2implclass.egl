@@ -1,0 +1,46 @@
+package [%=package%];
+
+[%
+for(i in imports){%]
+import [%=i.substring(0,i.lastIndexOf("."))%].*;
+[%}
+var definitionName = t.component.fullyQualifiedName.substring(t.component.fullyQualifiedName.lastIndexOf(".")+1);%]
+
+public class [%=t.name%] extends [%if(t.isTypeOf(CrossflowLanguageModel!CommitmentTask)){%]Commitment[%}%][%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask)){%]Opinionated[%}%][%=t.name%]Base {
+
+	private [%=definitionName%] definition = new [%=definitionName%]() {
+
+		@Override
+		public void sendToOutputQueue([%=t.component.produces.name%] [%=t.component.produces.name.ftlc%]) throws Exception {
+			sendTo[%=t.output.first.name%](new [%=package%].Repo([%=t.component.produces.name.ftlc%]));			
+		}
+
+	};
+	
+	[% for (s in t.input) { %]
+	@Override
+	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
+		
+		definition.consumeInputQueue([%=s.type.name.ftlc()%]);
+	
+	}
+	[%}%]
+
+[%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask)){%]
+[%for (s in t.input){%]
+	@Override
+	public boolean acceptInput([%=s.type.name%] input) {
+		// TODO: logic for when to accept tasks for this instance of [%=t.name%] goes here.
+		return true;
+	}
+[%}%]
+[%}%]
+
+}
+[%
+operation CrossflowLanguageModel!Stream isConfigurationChannel() {
+	if(not self.name.endsWith("ConfigTopic"))return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+%]

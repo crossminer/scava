@@ -35,7 +35,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 				preConsumer.setMessageListener(message -> {
 					try {
 						workflow.cancelTermination();
-						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
+						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(CrossflowLanguageModel!Sink));%]
 						[%if (isCached){%]
 						Job job = workflow.getSerializer().<Job>toObject(getMessageText(message));
 						
@@ -150,6 +150,6 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 
 [%
 operation Task isSingletonTask() {
-	return self.isKindOf(Source) or self.isKindOf(Sink);
+	return self.isKindOf(CrossflowLanguageModel!Source) or self.isKindOf(CrossflowLanguageModel!Sink);
 }
 %]

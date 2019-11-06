@@ -131,7 +131,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 
 	public void sendTo[%=o.name%]([%=o.type.name%] [%=o.type.name.ftlc()%]) [%if(o.inputOf.isEmpty()){%]throws Exception [%}%]{
 		[%=o.type.name.ftlc()%].setCacheable(this.cacheable);
-			[%if(t.isTypeOf(Source)){%]
+			[%if(t.isTypeOf(CrossflowLanguageModel!Source)){%]
 		[%=o.type.name.ftlc()%].setTransactional(false);
 			[%}%]
 			[%if(t.multipleOutputs or not (t.output.size==1)) {%]
@@ -144,7 +144,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 	}
 	
 	// If task is a source, needs a produce method
-	if (t.isKindOf(Source)){%]
+	if (t.isKindOf(CrossflowLanguageModel!Source)){%]
 	public abstract void produce() throws Exception;
 	
 	[%}
@@ -192,7 +192,7 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 
 [%
 @template
-operation Stream createStartOfConsumeMethod() {%]
+operation CrossflowLanguageModel!Stream createStartOfConsumeMethod() {%]
 @Override
 public void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.type.name.ftlc()%]) {
 	[%if (t.hasConfiguration() and not self.isConfigurationChannel()){ %]
@@ -235,9 +235,9 @@ public void consume[%=self.name%]WithNotifications([%=self.type.name%] [%=self.t
 [%}
 
 @template
-operation Stream createEndOfConsumeMethod() {%]
+operation CrossflowLanguageModel!Stream createEndOfConsumeMethod() {%]
 
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			try {
 				boolean sendFailed = true;
 				if (ex instanceof InterruptedException) {
@@ -245,14 +245,14 @@ operation Stream createEndOfConsumeMethod() {%]
 				}
 				if (sendFailed) {
 					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
-					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], ex, workflow.getName(), getName()));
+					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], new Exception(ex), workflow.getName(), getName()));
 				}
 			} catch (Exception e) {
 				workflow.reportInternalException(e);
 			}
 		} finally {
 			try {
-				[%if (not (self.isConfigurationChannel() or t.isKindOf(Source) or t.isKindOf(Sink))){%]
+				[%if (not (self.isConfigurationChannel() or t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink))){%]
 				workflow.get[%=t.name%]s().getSemaphore().release();
 				[%}if(self.isConfigurationChannel()){%]
 				hasProcessed[%=self.name%] = true;
@@ -297,7 +297,7 @@ public abstract [%=t.output.first.type.name%] consume[%=self.name%]([%=self.type
 }
 
 @template
-operation Stream sendConfirmationMessage() {
+operation CrossflowLanguageModel!Stream sendConfirmationMessage() {
 	if(not t.isSingleOut()) {
 		for (s in t.output) { %]
 // Send confirmation to [%=s.name%]

@@ -293,39 +293,39 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	
 }	
 [%
-operation Workflow getNonConfigurationSources(){
-	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
+operation CrossflowLanguageModel!Workflow getNonConfigurationSources(){
+	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(CrossflowLanguageModel!Source));
 	sources.removeAll(w.getConfigurationSources());
 	return sources;
 }
 
-operation Workflow getConfigurationSources(){
+operation CrossflowLanguageModel!Workflow getConfigurationSources(){
 	return self.tasks.select(t | 
 		t.isJavaTask() 
-	and t.isKindOf(Source)
+	and t.isKindOf(CrossflowLanguageModel!Source)
 	and t.name.endsWith("ConfigSource") 
 	and t.output.size > 0
 	and t.output.first.name.endsWith("ConfigTopic"));
 }
 
-operation Workflow getParallelizableTasks() {
-	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getParallelizableTasks() {
+	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getSingletonTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getSingletonTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
+operation CrossflowLanguageModel!Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink) or t.masterOnly));
 }
 
-operation Workflow getWorkerTasks() {
+operation CrossflowLanguageModel!Workflow getWorkerTasks() {
 	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isJavaTask());
 }
 
 @template
-operation Task createTask() {
+operation CrossflowLanguageModel!Task createTask() {
 	if(w.getSingletonTasks().contains(self)){
 %]
 	[%=self.name.ftlc()%] = new [%=self.name%]();
@@ -346,7 +346,7 @@ operation Task createTask() {
 }
 
 @template
-operation Task setup() {
+operation CrossflowLanguageModel!Task setup() {
 
 	if(w.getSingletonTasks().contains(self)){
 %]

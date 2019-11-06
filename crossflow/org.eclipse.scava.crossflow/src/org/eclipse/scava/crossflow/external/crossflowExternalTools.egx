@@ -1,7 +1,7 @@
 import "../util.eol";
 
 rule Workflow2AbstractGraph 
-	transform w : Workflow {
+	transform w : CrossflowLanguageModel!Workflow {
 	
 	parameters : Map{"w" = w,"package" = w.getPackageName()}
 	

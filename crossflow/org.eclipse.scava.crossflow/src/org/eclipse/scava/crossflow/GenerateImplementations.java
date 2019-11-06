@@ -63,6 +63,8 @@ public class GenerateImplementations {
 	private final File projectFolder;
 	protected List<Variable> parameters = new ArrayList<>();
 
+	private List<File> reusableComponentModels = new ArrayList<>();
+
 	/**
 	 * Construct a new generator that uses the given project location and model
 	 * path.
@@ -79,12 +81,13 @@ public class GenerateImplementations {
 
 		createParameters();
 		final EmfModel model = getModel();
+		final List<EmfModel> componentModels = loadReusableComponentModels(model);
 		try {
 			model.setStoredOnDisposal(false);
 
 			final Map<String, String[]> scriptLanguages = findScriptingLanguages(model);
 			for (String language : scriptLanguages.keySet()) {
-				generateScriptLanguageCode(model, language);
+				generateScriptLanguageCode(model, componentModels, language);
 			}
 
 			final Map<String, String[]> languages = findLanguages(model);
@@ -94,7 +97,7 @@ public class GenerateImplementations {
 				languages.put("java", new String[] { "src", "src-gen" });
 			//
 			for (String language : languages.keySet()) {
-				generateLanguageCode(model, language);
+				generateLanguageCode(model, componentModels, language);
 			}
 			languages.putAll(scriptLanguages);
 			generateDescriptor(model);
@@ -105,10 +108,13 @@ public class GenerateImplementations {
 
 	}
 
-	private void generateScriptLanguageCode(final EmfModel model, String language)
+	private void generateScriptLanguageCode(final EmfModel model, List<EmfModel> componentModels, String language)
 			throws Exception, URISyntaxException, EolRuntimeException {
+		System.out.println("generateScriptLanguageCode(" + language + ") called");
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
+		for (EmfModel m : componentModels)
+			module.getContext().getModelRepository().addModels(m);
 		module.parse(getFileURI("scripting/" + language + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
@@ -127,15 +133,19 @@ public class GenerateImplementations {
 	 * Run the EGX script that generates the code generators for the
 	 * 
 	 * @param model
+	 * @param componentModels
 	 * @param language
 	 * @throws Exception
 	 * @throws URISyntaxException
 	 * @throws EolRuntimeException
 	 */
-	private void generateLanguageCode(EmfModel model, String language)
+	private void generateLanguageCode(EmfModel model, List<EmfModel> componentModels, String language)
 			throws Exception, URISyntaxException, EolRuntimeException {
+		System.out.println("generateLanguageCode(" + language + ") called");
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
+		for (EmfModel m : componentModels)
+			module.getContext().getModelRepository().addModels(m);
 		module.getContext().getFrameStack().put(parameters);
 		module.parse(getFileURI(language + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
@@ -271,10 +281,27 @@ public class GenerateImplementations {
 
 	public EmfModel getModel() throws Exception {
 		EmfModel model = createAndLoadAnEmfModel(
-				"org.eclipse.scava.crossflow, http://www.eclipse.org/gmf/runtime/1.0.2/notation", modelRelativePath,
-				"CrossflowLanguageModel", true, false, true);
+				"org.eclipse.scava.crossflow, org.eclipse.scava.crossflow.components, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
+				modelRelativePath, "CrossflowLanguageModel", true, false, true);
 
 		return model;
+	}
+
+	public List<EmfModel> loadReusableComponentModels(EmfModel gmfmodel) throws Exception {
+
+		List<EmfModel> models = new ArrayList<>();
+
+		// add all reusable component models to this resource set (if any, either
+		// through platform extension points in eclipse or manually set by the user)
+		for (File f : reusableComponentModels) {
+			EmfModel model = createAndLoadAnEmfModel(
+					"org.eclipse.scava.crossflow, org.eclipse.scava.crossflow.components, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
+					f.getPath(), "RCM-" + f.getName(), true, false, true);
+			models.add(model);
+		}
+		//
+		return models;
+
 	}
 
 	private static EmfModel createAndLoadAnEmfModel(String metamodelURI, String modelFile, String modelName,
@@ -376,6 +403,14 @@ public class GenerateImplementations {
 		} finally {
 			module.getContext().dispose();
 		}
+	}
+
+	public List<File> getReusableComponentModels() {
+		return reusableComponentModels;
+	}
+
+	public void setReusableComponentModels(List<File> reusableComponentModels) {
+		this.reusableComponentModels = reusableComponentModels;
 	}
 
 }
