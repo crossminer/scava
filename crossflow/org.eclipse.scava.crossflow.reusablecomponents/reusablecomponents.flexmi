@@ -1,0 +1,24 @@
+<?nsuri org.eclipse.scava.crossflow.components?>
+
+<_>
+		
+	<!-- comment on component -->
+	<component fullyQualifiedName="org.eclipse.scava.crossflow.reusablecomponents.githubsearch.CodeSearcherTaskDefinition">
+	
+	<consumes>
+	<type name="Technology">
+		<field name="techKey" type="String"/>
+		<field name="fileExt" type="String"/>
+	</type>
+	</consumes>
+	
+	<produces>
+	<type name="Repository">
+		<field name="fullName" type="String"/>
+		<field name="htmlUrl" type="String"/>
+	</type>
+	</produces>
+	
+	</component>
+	
+</_>
