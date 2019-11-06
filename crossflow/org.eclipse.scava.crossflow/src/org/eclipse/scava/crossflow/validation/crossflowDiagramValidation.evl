@@ -1,0 +1,70 @@
+context Workflow {
+	constraint HasName{
+		check : self.name.isDefined() and self.name.trim.length>0
+		message : "Workflow name needs to be set"
+	}	 
+}
+
+context Task {
+	constraint HasName{
+		check : self.name.isDefined() and self.name.trim.length>0
+		message : "Task name needs to be set for: "+self
+	}	 
+}
+
+context Stream {
+	constraint HasName{
+		check : self.name.isDefined() and self.name.trim.length>0
+		message : "Stream name needs to be set for: "+self
+	}	
+	
+	constraint HasType{
+		check : self.type.isDefined()
+		message : "Stream needs to have a type set: "+self
+	}	 
+}
+
+context Type {
+	constraint HasName{
+		check : self.name.isDefined() and self.name.trim.length>0
+		message : "Type name needs to be set for: "+self
+	}	 
+}
+
+context ReusableComponent {
+
+	constraint SingleInputWellFormed {
+		check : self.input.size==1 and self.input.first.type.isCompatibleWith(self.component.consumes)
+		message { 
+			var ret = "ReusableComponent:input size:"+self.input.size;
+			if(self.input.size>0){
+				ret+= " type:";
+				for(input in self.input){
+					ret+= input.type.name+", ";
+				}
+			}
+			ret+= "componentType:"+self.component.consumes.name;
+			return ret;
+		}
+	}
+	
+	constraint SingleOutputWellFormed {
+		check : self.output.size==1 and self.output.first.type.isCompatibleWith(self.component.produces)
+		message { 
+			var ret = "ReusableComponent:output size:"+self.output.size;
+			if(self.output.size>0){
+				ret+= " type:";
+				for(output in self.output){
+					ret+= output.type.name+", ";
+				}
+			}
+			ret+= "componentType:"+self.component.consumes.name;
+			return ret;
+		}
+	}
+	
+}
+
+operation Type isCompatibleWith(type : Type){
+	return self==type or self.closure(t|t.extending).contains(type);
+}
