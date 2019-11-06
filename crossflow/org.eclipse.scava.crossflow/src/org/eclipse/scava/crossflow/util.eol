@@ -38,6 +38,15 @@ operation Any getLanguage(language : String) : CrossflowLanguageModel!Language {
 	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
 }
 
+@cached
+operation Language getLanguageParams() : Map {
+	var m = new Map;
+	for (p in self.`parameters`) {
+		m.put(p.name, p.value);
+	}
+	return m;
+}
+
 // Return EGL parameters for the specified language
 @cached
 operation Any getParameters(ruleName : String, languageName : String) : Map {

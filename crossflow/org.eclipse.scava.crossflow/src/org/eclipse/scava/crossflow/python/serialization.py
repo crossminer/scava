@@ -119,31 +119,3 @@ class JsonSerializer(Serializer):
 
         else:
             return o
-
-
-class DummyObject:
-    def __init__(self):
-        self.stringProp = "default"
-        self.intProp = 123
-        self.floatProp = 321.0
-        self.boolProp = False
-        self.listProp = []
-
-    def test(self):
-        print("sfsf")
-
-
-
-if __name__ == "__main__":
-    j = JsonSerializer()
-    j.register_type(DummyObject)
-    actual = DummyObject()
-    actual.stringProp = "parent"
-    actual.listProp.append(DummyObject())
-
-    serialized = j.serialize(actual)
-    print(f"serialized json:\n{serialized}\n")
-
-    de = j.deserialize(serialized)
-    print(de.__dict__)
-    print(de.listProp[0].__dict__)
