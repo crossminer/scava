@@ -111,7 +111,7 @@ public class ArtifactsRestController {
 			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
 			@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
 					+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
-	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
+	@ApiOperation(value = "This resource is used to retrieve the list of deplovelor acvtivity metrics", response = Iterable.class)
 	@RequestMapping(value = "/m4p/", produces = { "application/json", "application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody Page<MetricsForProject> getAllMetricForProject(Pageable pageable) {
 		return m4pRepository.findAll(pageable);

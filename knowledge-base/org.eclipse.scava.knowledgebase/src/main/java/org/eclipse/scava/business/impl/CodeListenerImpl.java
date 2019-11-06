@@ -21,7 +21,7 @@ import com.harukizaemon.simian.Options;
 import com.harukizaemon.simian.SourceFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-@Service
+
 public class CodeListenerImpl implements AuditListener{
 	ArrayList<String> files=new ArrayList<String>();
 	ArrayList<String> clonedCode =new ArrayList<String>();
