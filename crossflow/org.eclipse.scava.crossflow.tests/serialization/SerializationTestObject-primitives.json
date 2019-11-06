@@ -1,0 +1,7 @@
+{
+  "stringProp": "default",
+  "intProp": 123,
+  "longProp": 123,
+  "booleanProp": true,
+  "_type_": "SerializationTestObject"
+}

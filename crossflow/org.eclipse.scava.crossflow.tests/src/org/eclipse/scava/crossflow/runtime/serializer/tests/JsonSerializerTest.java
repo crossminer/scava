@@ -3,6 +3,9 @@ package org.eclipse.scava.crossflow.runtime.serializer.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +14,8 @@ import org.eclipse.scava.crossflow.runtime.serialization.JsonSerializer;
 import org.eclipse.scava.crossflow.runtime.serialization.Serializer;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.common.io.Files;
 
 public class JsonSerializerTest {
 
@@ -47,13 +52,7 @@ public class JsonSerializerTest {
 		dummy.booleanProp = true;
 		
 		String actual = serializer.serialize(dummy);
-		String expected = "{\n" + 
-				"  \"stringProp\": \"default\",\n" + 
-				"  \"intProp\": 123,\n" + 
-				"  \"longProp\": 123,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";
+		String expected = jsonFromFile("SerializationTestObject-primitives.json");
 		assertEquals(expected, actual);
 	}
 	
@@ -72,29 +71,7 @@ public class JsonSerializerTest {
 		parent.listProp.add(child2);
 		
 		String actual = serializer.serialize(parent);
-		String expected = "{\n" + 
-				"  \"stringProp\": \"parent\",\n" + 
-				"  \"intProp\": 0,\n" + 
-				"  \"longProp\": 0,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"listProp\": [\n" + 
-				"    {\n" + 
-				"      \"stringProp\": \"child1\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"stringProp\": \"child2\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    }\n" + 
-				"  ],\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";
+		String expected = jsonFromFile("SerializationTestObject-list.json");
 		assertEquals(expected, actual);
 	}
 	
@@ -113,40 +90,13 @@ public class JsonSerializerTest {
 		parent.mapProp.put("child2_key", child2);
 		
 		String actual = serializer.serialize(parent);
-		String expected = "{\n" + 
-				"  \"stringProp\": \"parent\",\n" + 
-				"  \"intProp\": 0,\n" + 
-				"  \"longProp\": 0,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"mapProp\": {\n" + 
-				"    \"child1_key\": {\n" + 
-				"      \"stringProp\": \"child2\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    },\n" + 
-				"    \"child2_key\": {\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    }\n" + 
-				"  },\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";
+		String expected = jsonFromFile("SerializationTestObject-map.json");
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void deserialize_should_return_SerializationTestObject_when_given_valid_json() throws Exception {
-		String json = "{\n" + 
-				"  \"stringProp\": \"default\",\n" + 
-				"  \"intProp\": 123,\n" + 
-				"  \"longProp\": 123,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";		
+		String json = jsonFromFile("SerializationTestObject-primitives.json");
 		SerializationTestObject actual = serializer.<SerializationTestObject>deserialize(json);
 		
 		SerializationTestObject expected = new SerializationTestObject();
@@ -160,29 +110,7 @@ public class JsonSerializerTest {
 	
 	@Test
 	public void deserialize_should_return_SerializationTestObject_when_given_valid_json_with_list() throws Exception {
-		String json = "{\n" + 
-				"  \"stringProp\": \"parent\",\n" + 
-				"  \"intProp\": 0,\n" + 
-				"  \"longProp\": 0,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"listProp\": [\n" + 
-				"    {\n" + 
-				"      \"stringProp\": \"child1\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    },\n" + 
-				"    {\n" + 
-				"      \"stringProp\": \"child2\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    }\n" + 
-				"  ],\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";
+		String json = jsonFromFile("SerializationTestObject-list.json");
 		SerializationTestObject actual = serializer.<SerializationTestObject>deserialize(json);
 		
 		SerializationTestObject expected = new SerializationTestObject();
@@ -202,28 +130,7 @@ public class JsonSerializerTest {
 	
 	@Test
 	public void deserialize_should_return_SerializationTestObject_when_given_valid_json_with_map() throws Exception {
-		String json = "{\n" + 
-				"  \"stringProp\": \"parent\",\n" + 
-				"  \"intProp\": 0,\n" + 
-				"  \"longProp\": 0,\n" + 
-				"  \"booleanProp\": true,\n" + 
-				"  \"mapProp\": {\n" + 
-				"    \"child1_key\": {\n" + 
-				"      \"stringProp\": \"child2\",\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    },\n" + 
-				"    \"child2_key\": {\n" + 
-				"      \"intProp\": 0,\n" + 
-				"      \"longProp\": 0,\n" + 
-				"      \"booleanProp\": true,\n" + 
-				"      \"_type_\": \"SerializationTestObject\"\n" + 
-				"    }\n" + 
-				"  },\n" + 
-				"  \"_type_\": \"SerializationTestObject\"\n" + 
-				"}";
+		String json = jsonFromFile("SerializationTestObject-map.json");
 		SerializationTestObject actual = serializer.<SerializationTestObject>deserialize(json);
 
 		SerializationTestObject expected = new SerializationTestObject();
@@ -241,4 +148,8 @@ public class JsonSerializerTest {
 		assertEquals(expected, actual);
 	}
 
+	static String jsonFromFile(String file) throws IOException {
+		return Files.asCharSource(new File("serialization/"+ file), Charset.forName("UTF-8")).read();
+
+	}
 }

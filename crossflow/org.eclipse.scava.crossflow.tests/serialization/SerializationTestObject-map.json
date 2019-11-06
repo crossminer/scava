@@ -1,0 +1,22 @@
+{
+  "stringProp": "parent",
+  "intProp": 0,
+  "longProp": 0,
+  "booleanProp": true,
+  "mapProp": {
+    "child1_key": {
+      "stringProp": "child2",
+      "intProp": 0,
+      "longProp": 0,
+      "booleanProp": true,
+      "_type_": "SerializationTestObject"
+    },
+    "child2_key": {
+      "intProp": 0,
+      "longProp": 0,
+      "booleanProp": true,
+      "_type_": "SerializationTestObject"
+    }
+  },
+  "_type_": "SerializationTestObject"
+}
