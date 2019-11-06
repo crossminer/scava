@@ -133,7 +133,6 @@ class DummyObject:
         print("sfsf")
 
 
-
 if __name__ == "__main__":
     j = JsonSerializer()
     j.register_type(DummyObject)

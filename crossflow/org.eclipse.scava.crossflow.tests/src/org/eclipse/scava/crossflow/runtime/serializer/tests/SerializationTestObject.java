@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime.serializer.tests;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,47 @@ public class SerializationTestObject {
 	List<SerializationTestObject> listProp = null;
 	Map<String, SerializationTestObject> mapProp = null;
 	Map<SerializationTestObject, SerializationTestObject> complexMapProp = null;
+
+	public static SerializationTestObject getPrimitveInstance() {
+		SerializationTestObject sto = new SerializationTestObject();
+		sto.stringProp = "default";
+		sto.intProp = 123;
+		sto.longProp = 123L;
+		sto.booleanProp = true;
+		return sto;
+	}
+
+	public static SerializationTestObject getListInstance() {
+		SerializationTestObject parent = new SerializationTestObject();
+		parent.stringProp = "parent";
+		parent.listProp = new ArrayList<SerializationTestObject>();
+
+		SerializationTestObject child1 = new SerializationTestObject();
+		child1.stringProp = "child1";
+		parent.listProp.add(child1);
+
+		SerializationTestObject child2 = new SerializationTestObject();
+		child2.stringProp = "child2";
+		parent.listProp.add(child2);
+
+		return parent;
+	}
+
+	public static SerializationTestObject getMapInstance() {
+		SerializationTestObject parent = new SerializationTestObject();
+		parent.stringProp = "parent";
+		parent.mapProp = new HashMap<String, SerializationTestObject>();
+
+		SerializationTestObject child1 = new SerializationTestObject();
+		child1.stringProp = "child1";
+		parent.mapProp.put("child1_key", child1);
+
+		SerializationTestObject child2 = new SerializationTestObject();
+		child2.stringProp = "child2";
+		parent.mapProp.put("child2_key", child2);
+
+		return parent;
+	}
 
 	@Override
 	public int hashCode() {

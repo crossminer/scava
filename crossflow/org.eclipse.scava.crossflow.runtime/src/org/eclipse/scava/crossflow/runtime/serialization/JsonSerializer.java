@@ -28,7 +28,8 @@ public class JsonSerializer implements Serializer {
 	}
 
 	public JsonSerializer(boolean pretty) {
-		gson = pretty ? new GsonBuilder().setPrettyPrinting().create() : new Gson();
+		GsonBuilder builder = new GsonBuilder();
+		gson = pretty ? builder.setPrettyPrinting().create() : builder.create();
 		this.registeredTypes = new HashMap<>();
 	}
 
