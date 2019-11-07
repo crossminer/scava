@@ -43,6 +43,16 @@ public class Cache<T, K> {
 		this.provider = provider;
 		this.minUpdateIntervalMillis = minUpdateIntervalSecs * 1000;
 	}
+	
+	public boolean updatedBugTrackingSystem(BugTrackingSystem bugTracker)
+	{
+		if(!this.bugTracker.getDbObject().equals(bugTracker.getDbObject()))
+		{
+			this.bugTracker = bugTracker;
+			return true;
+		}
+		return false;
+	}
 
 	public Iterable<T> getItemsOnDate(Date date) throws Exception {
 		update(date);
