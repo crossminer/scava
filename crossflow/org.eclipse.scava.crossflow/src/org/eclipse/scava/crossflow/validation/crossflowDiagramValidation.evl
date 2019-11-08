@@ -63,6 +63,11 @@ context ReusableComponent {
 		}
 	}
 	
+	constraint matchingMultipleOutput {
+		check : self.multipleOutputs==self.component.multipleOutputs
+		message : "ReusableComponent has mismatching multipleOutputs: "+self.multipleOutputs+", with its definition: "+self.component.multipleOutputs 
+	}
+	
 }
 
 operation Type isCompatibleWith(type : Type){

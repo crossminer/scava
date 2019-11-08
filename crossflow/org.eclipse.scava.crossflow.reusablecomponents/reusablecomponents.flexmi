@@ -3,7 +3,10 @@
 <_>
 		
 	<!-- comment on component -->
-	<component fullyQualifiedName="org.eclipse.scava.crossflow.reusablecomponents.githubsearch.CodeSearcherTaskDefinition">
+	<component 
+	fullyQualifiedName="org.eclipse.scava.crossflow.reusablecomponents.githubsearch.CodeSearcherTaskDefinition"
+	multipleOutputs="true"
+	>
 	
 	<consumes>
 	<type name="Technology">
@@ -16,6 +19,30 @@
 	<type name="Repository">
 		<field name="fullName" type="String"/>
 		<field name="htmlUrl" type="String"/>
+	</type>
+	</produces>
+	
+	</component>
+	
+	<!-- comment on component -->
+	<component 
+	fullyQualifiedName="org.eclipse.scava.crossflow.reusablecomponents.githubsearch.RepositorySearcherTaskDefinition"
+	multipleOutputs="false"
+	componentType="opinionated"
+	>
+	
+	<consumes>
+	<type name="RepoTechPair" extends="Repository">
+		<field name="tech" type="Technology"/>
+	</type>
+	</consumes>
+	
+	<produces>
+	<type name="AnalysisResult">
+		<field name="fileCount" type="int"/>
+		<field name="authorCount" type="int"/>
+		<field name="repository" type="Repository"/>
+		<field name="technology" type="Technology"/>
 	</type>
 	</produces>
 	

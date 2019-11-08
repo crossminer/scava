@@ -12,6 +12,10 @@ import org.eclipse.scava.crossflow.runtime.FailedJob;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public abstract class Commitment[%=t.name%]Base extends [%=t.name%]Base {

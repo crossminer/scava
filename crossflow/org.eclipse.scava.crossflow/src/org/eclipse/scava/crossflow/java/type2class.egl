@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.eclipse.scava.crossflow.runtime.Job;
 [%
 for(i in imports){%]
-import [%=i.substring(0,i.lastIndexOf("."))%].*;
+import [%=i%].*;
 [%}%]
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
@@ -96,4 +96,6 @@ operation CrossflowLanguageModel!Field getJavaType() {
 	else {
 		return self.type;
 	}
-}%]
+}
+
+%]

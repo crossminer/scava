@@ -297,6 +297,7 @@ public class GenerateImplementations {
 			EmfModel model = createAndLoadAnEmfModel(
 					"org.eclipse.scava.crossflow, org.eclipse.scava.crossflow.components, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
 					f.getPath(), "RCM-" + f.getName(), true, false, true);
+			model.getAliases().add("CMS");
 			models.add(model);
 		}
 		//

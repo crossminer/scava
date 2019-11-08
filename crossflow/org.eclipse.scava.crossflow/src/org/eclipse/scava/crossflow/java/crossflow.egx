@@ -19,7 +19,7 @@ rule Config2ConfigSource
 	transform t : CrossflowLanguageModel!Type {
 	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(CrossflowLanguageModel!Workflow) and t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
 	parameters  {
-		var params = t.getParameters("Config2ConfigSource");
+		var params = t.createComponentBasedParameters("Config2ConfigSource");
 		params.put("t", t.createSource());
 		return params;
 	} 
@@ -60,18 +60,24 @@ rule CsvSink2Sink
 
 @greedy
 rule CommitmentTask2BaseClass 
-	transform t : CrossflowLanguageModel!CommitmentTask {
-	guard : t.isJavaTask()
-	parameters : t.getParameters("CommitmentTask2BaseClass")
+	transform t : CrossflowLanguageModel!Task {
+	guard : t.isJavaTask() and (t.isTypeOf(CrossflowLanguageModel!CommitmentTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isCommitmentComponent()))
+	parameters  {
+		var params = t.createComponentBasedParameters("CommitmentTask2BaseClass");
+		return params;
+	} 
 	template : "commitmenttask2baseclass.egl"
 	target : t.getPath() + "Commitment" + t.name + "Base.java"	
 }
 
 @greedy
 rule OpinionatedTask2BaseClass 
-	transform t : CrossflowLanguageModel!OpinionatedTask {
-	guard : t.isJavaTask()
-	parameters : t.getParameters("OpinionatedTask2BaseClass")
+	transform t : CrossflowLanguageModel!Task {
+	guard : t.isJavaTask() and (t.isTypeOf(CrossflowLanguageModel!OpinionatedTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isOpinionatedComponent()))
+	parameters  {
+		var params = t.createComponentBasedParameters("OpinionatedTask2BaseClass");
+		return params;
+	} 
 	template : "opinionatedtask2baseclass.egl"
 	target : t.getPath() + "Opinionated" + t.name + "Base.java"	
 }
@@ -80,7 +86,7 @@ rule OpinionatedTask2BaseClass
 rule Task2BaseClass 
 	transform t : CrossflowLanguageModel!Task {
 	guard : t.isJavaTask()
-	parameters : t.getParameters("Task2BaseClass")
+	parameters : t.createComponentBasedParameters("Task2BaseClass")
 	template : "task2baseclass.egl"
 	target : t.getPath() + t.name + "Base.java"	
 }
@@ -108,7 +114,7 @@ rule ReusableComponentTask2ImplClass
 rule Steam2Class 
 	transform s : CrossflowLanguageModel!Stream {
 	guard : not s.inputOf.isEmpty()
-	parameters : s.getParameters("Steam2Class")
+	parameters : s.createComponentBasedParameters("Steam2Class")
 	template : "stream2class.egl"
 	target : s.getPath() + s.name + ".java"
 }
@@ -116,7 +122,7 @@ rule Steam2Class
 @greedy
 rule Steam2Consumer 
 	transform s : CrossflowLanguageModel!Stream {
-	parameters : s.getParameters("Steam2Consumer")
+	parameters : s.createComponentBasedParameters("Steam2Consumer")
 	template : "stream2consumer.egl"
 	target : s.getPath() + s.name + "Consumer.java"
 }
@@ -132,9 +138,13 @@ operation Any getParameters(ruleName : String) : Map {
 
 operation Any createComponentBasedParameters(name : String) : Map {
 	var params = self.getParameters(name);
-	var imports = new Sequence;
-	for(name in Component.all.fullyQualifiedName){
-		imports.add(name);
+	var imports = new Set;
+	//
+	if(CrossflowLanguageModel!ReusableComponent.all.size>0){
+		for(name in CMS!Component.all.fullyQualifiedName){
+			var package = name.substring(0,name.lastIndexOf("."));
+			imports.add(package);
+		}
 	}
 	//imports.println(name+":imports: ");
 	params.put("imports", imports);

@@ -1,37 +1,37 @@
+[%import "../util.eol";%]
 package [%=package%];
 
 [%
 for(i in imports){%]
-import [%=i.substring(0,i.lastIndexOf("."))%].*;
+import [%=i%].*;
 [%}
 var definitionName = t.component.fullyQualifiedName.substring(t.component.fullyQualifiedName.lastIndexOf(".")+1);%]
 
-public class [%=t.name%] extends [%if(t.isTypeOf(CrossflowLanguageModel!CommitmentTask)){%]Commitment[%}%][%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask)){%]Opinionated[%}%][%=t.name%]Base {
+public class [%=t.name%] extends [%if(t.isTypeOf(CrossflowLanguageModel!CommitmentTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isCommitmentComponent())){%]Commitment[%}%][%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isOpinionatedComponent())){%]Opinionated[%}%][%=t.name%]Base {
 
-	private [%=definitionName%] definition = new [%=definitionName%]() {
+	private [%=definitionName%] definition = new [%=definitionName%]()[%if(t.component.multipleOutputs){%] {
 
 		@Override
 		public void sendToOutputQueue([%=t.component.produces.name%] [%=t.component.produces.name.ftlc%]) throws Exception {
 			sendTo[%=t.output.first.name%](new [%=package%].Repo([%=t.component.produces.name.ftlc%]));			
 		}
 
-	};
+	}[%}%];
 	
 	[% for (s in t.input) { %]
 	@Override
 	public [%if(not s.isConfigurationChannel() and (not t.multipleOutputs and t.output.size==1)) {%][%=t.output.first.type.name%][%}else{%]void[%}%] consume[%=s.name%]([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception {
 		
-		definition.consumeInputQueue([%=s.type.name.ftlc()%]);
+		[%if(not t.component.multipleOutputs){%]		return definition[%}else{%]		definition[%}%].consumeInputQueue([%=s.type.name.ftlc()%]);
 	
 	}
 	[%}%]
 
-[%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask)){%]
+[%if(t.isTypeOf(CrossflowLanguageModel!OpinionatedTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isOpinionatedComponent())){%]
 [%for (s in t.input){%]
 	@Override
 	public boolean acceptInput([%=s.type.name%] input) {
-		// TODO: logic for when to accept tasks for this instance of [%=t.name%] goes here.
-		return true;
+		return definition.acceptInput(input);
 	}
 [%}%]
 [%}%]
