@@ -8,4 +8,14 @@ class Component {
   ref crossflow.Language language;
   val crossflow.Type[1] consumes;
   val crossflow.Type[1] produces;
+  
+  attr boolean multipleOutputs;
+ 
+  attr ComponentTypes componentType;
+}
+
+enum ComponentTypes {
+	none=0;
+	opinionated=1;
+	commitment=2;
 }

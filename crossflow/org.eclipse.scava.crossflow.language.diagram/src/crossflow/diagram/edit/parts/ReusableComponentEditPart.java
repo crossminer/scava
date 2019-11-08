@@ -51,7 +51,6 @@ import crossflow.diagram.part.CrossflowVisualIDRegistry;
  */
 public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
-
 	/**
 	 * @generated NOT
 	 */
@@ -134,7 +133,7 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 	protected IFigure primaryShape;
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	public ReusableComponentEditPart(View view) {
 		super(view);
@@ -339,7 +338,6 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected void handleNotificationEvent(Notification event) {
-		// System.err.println("handleNotificationEvent: " + event);
 		if (event.getNotifier() == getModel()
 				&& EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(event.getFeature())) {
 			handleMajorSemanticChange();

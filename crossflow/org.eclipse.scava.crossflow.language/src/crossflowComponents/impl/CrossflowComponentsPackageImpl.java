@@ -7,11 +7,13 @@ import crossflow.CrossflowPackage;
 import crossflow.impl.CrossflowPackageImpl;
 
 import crossflowComponents.Component;
+import crossflowComponents.ComponentTypes;
 import crossflowComponents.CrossflowComponentsFactory;
 import crossflowComponents.CrossflowComponentsPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -30,6 +32,13 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * @generated
 	 */
 	private EClass componentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum componentTypesEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -148,6 +157,33 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getComponent_MultipleOutputs() {
+		return (EAttribute)componentEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getComponent_ComponentType() {
+		return (EAttribute)componentEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getComponentTypes() {
+		return componentTypesEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CrossflowComponentsFactory getCrossflowComponentsFactory() {
 		return (CrossflowComponentsFactory)getEFactoryInstance();
 	}
@@ -176,6 +212,11 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 		createEReference(componentEClass, COMPONENT__LANGUAGE);
 		createEReference(componentEClass, COMPONENT__CONSUMES);
 		createEReference(componentEClass, COMPONENT__PRODUCES);
+		createEAttribute(componentEClass, COMPONENT__MULTIPLE_OUTPUTS);
+		createEAttribute(componentEClass, COMPONENT__COMPONENT_TYPE);
+
+		// Create enums
+		componentTypesEEnum = createEEnum(COMPONENT_TYPES);
 	}
 
 	/**
@@ -216,6 +257,14 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 		initEReference(getComponent_Language(), theCrossflowPackage.getLanguage(), null, "language", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_Consumes(), theCrossflowPackage.getType(), null, "consumes", null, 1, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getComponent_Produces(), theCrossflowPackage.getType(), null, "produces", null, 1, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getComponent_MultipleOutputs(), ecorePackage.getEBoolean(), "multipleOutputs", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getComponent_ComponentType(), this.getComponentTypes(), "componentType", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(componentTypesEEnum, ComponentTypes.class, "ComponentTypes");
+		addEEnumLiteral(componentTypesEEnum, ComponentTypes.NONE);
+		addEEnumLiteral(componentTypesEEnum, ComponentTypes.OPINIONATED);
+		addEEnumLiteral(componentTypesEEnum, ComponentTypes.COMMITMENT);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -6,6 +6,7 @@ import crossflow.Language;
 import crossflow.Type;
 
 import crossflowComponents.Component;
+import crossflowComponents.ComponentTypes;
 import crossflowComponents.CrossflowComponentsPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -29,6 +30,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link crossflowComponents.impl.ComponentImpl#getLanguage <em>Language</em>}</li>
  *   <li>{@link crossflowComponents.impl.ComponentImpl#getConsumes <em>Consumes</em>}</li>
  *   <li>{@link crossflowComponents.impl.ComponentImpl#getProduces <em>Produces</em>}</li>
+ *   <li>{@link crossflowComponents.impl.ComponentImpl#isMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflowComponents.impl.ComponentImpl#getComponentType <em>Component Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,6 +86,46 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * @ordered
 	 */
 	protected Type produces;
+
+	/**
+	 * The default value of the '{@link #isMultipleOutputs() <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMultipleOutputs()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MULTIPLE_OUTPUTS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMultipleOutputs() <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMultipleOutputs()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean multipleOutputs = MULTIPLE_OUTPUTS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getComponentType() <em>Component Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComponentType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final ComponentTypes COMPONENT_TYPE_EDEFAULT = ComponentTypes.NONE;
+
+	/**
+	 * The cached value of the '{@link #getComponentType() <em>Component Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComponentType()
+	 * @generated
+	 * @ordered
+	 */
+	protected ComponentTypes componentType = COMPONENT_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -253,6 +296,48 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isMultipleOutputs() {
+		return multipleOutputs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMultipleOutputs(boolean newMultipleOutputs) {
+		boolean oldMultipleOutputs = multipleOutputs;
+		multipleOutputs = newMultipleOutputs;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS, oldMultipleOutputs, multipleOutputs));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentTypes getComponentType() {
+		return componentType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setComponentType(ComponentTypes newComponentType) {
+		ComponentTypes oldComponentType = componentType;
+		componentType = newComponentType == null ? COMPONENT_TYPE_EDEFAULT : newComponentType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE, oldComponentType, componentType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -281,6 +366,10 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return getConsumes();
 			case CrossflowComponentsPackage.COMPONENT__PRODUCES:
 				return getProduces();
+			case CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS:
+				return isMultipleOutputs();
+			case CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE:
+				return getComponentType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -304,6 +393,12 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return;
 			case CrossflowComponentsPackage.COMPONENT__PRODUCES:
 				setProduces((Type)newValue);
+				return;
+			case CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS:
+				setMultipleOutputs((Boolean)newValue);
+				return;
+			case CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE:
+				setComponentType((ComponentTypes)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -329,6 +424,12 @@ public class ComponentImpl extends EObjectImpl implements Component {
 			case CrossflowComponentsPackage.COMPONENT__PRODUCES:
 				setProduces((Type)null);
 				return;
+			case CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS:
+				setMultipleOutputs(MULTIPLE_OUTPUTS_EDEFAULT);
+				return;
+			case CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE:
+				setComponentType(COMPONENT_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -349,6 +450,10 @@ public class ComponentImpl extends EObjectImpl implements Component {
 				return consumes != null;
 			case CrossflowComponentsPackage.COMPONENT__PRODUCES:
 				return produces != null;
+			case CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS:
+				return multipleOutputs != MULTIPLE_OUTPUTS_EDEFAULT;
+			case CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE:
+				return componentType != COMPONENT_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -365,6 +470,10 @@ public class ComponentImpl extends EObjectImpl implements Component {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (fullyQualifiedName: ");
 		result.append(fullyQualifiedName);
+		result.append(", multipleOutputs: ");
+		result.append(multipleOutputs);
+		result.append(", componentType: ");
+		result.append(componentType);
 		result.append(')');
 		return result.toString();
 	}

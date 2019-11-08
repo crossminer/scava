@@ -513,7 +513,7 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 		}
 		super.doSynchronize(element, monitor);
 	}
-	
+
 	/**
 	* @generated NOT
 	*/
@@ -526,7 +526,7 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 				return false;
 		return true;
 	}
-	
+
 	/**
 	* @generated NOT
 	*/
@@ -550,7 +550,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 							NLS.bind(Messages.CrossflowDocumentProvider_SaveNextResourceTask, nextResource.getURI()));
 					if (nextResource.isLoaded() && !info.getEditingDomain().isReadOnly(nextResource)) {
 						try {
-							if(canSave(nextResource)) nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+							if (canSave(nextResource))
+								nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 						} catch (IOException e) {
 							fireElementStateChangeFailed(element);
 							throw new CoreException(new Status(IStatus.ERROR, CrossflowDiagramEditorPlugin.ID,
@@ -605,7 +606,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 						return CommandResult.newOKCommandResult();
 					}
 				}.execute(monitor, null);
-				if(canSave(newResource)) newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+				if (canSave(newResource))
+					newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 			} catch (ExecutionException e) {
 				fireElementStateChangeFailed(element);
 				throw new CoreException(

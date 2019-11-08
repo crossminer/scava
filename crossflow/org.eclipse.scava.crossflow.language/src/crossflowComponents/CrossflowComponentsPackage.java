@@ -4,6 +4,7 @@ package crossflowComponents;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -102,13 +103,42 @@ public interface CrossflowComponentsPackage extends EPackage {
 	int COMPONENT__PRODUCES = 3;
 
 	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__MULTIPLE_OUTPUTS = 4;
+
+	/**
+	 * The feature id for the '<em><b>Component Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__COMPONENT_TYPE = 5;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = 4;
+	int COMPONENT_FEATURE_COUNT = 6;
+
+
+	/**
+	 * The meta object id for the '{@link crossflowComponents.ComponentTypes <em>Component Types</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflowComponents.ComponentTypes
+	 * @see crossflowComponents.impl.CrossflowComponentsPackageImpl#getComponentTypes()
+	 * @generated
+	 */
+	int COMPONENT_TYPES = 1;
 
 
 	/**
@@ -164,6 +194,38 @@ public interface CrossflowComponentsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getComponent_Produces();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflowComponents.Component#isMultipleOutputs <em>Multiple Outputs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Multiple Outputs</em>'.
+	 * @see crossflowComponents.Component#isMultipleOutputs()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EAttribute getComponent_MultipleOutputs();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflowComponents.Component#getComponentType <em>Component Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Component Type</em>'.
+	 * @see crossflowComponents.Component#getComponentType()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EAttribute getComponent_ComponentType();
+
+	/**
+	 * Returns the meta object for enum '{@link crossflowComponents.ComponentTypes <em>Component Types</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Component Types</em>'.
+	 * @see crossflowComponents.ComponentTypes
+	 * @generated
+	 */
+	EEnum getComponentTypes();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -228,6 +290,32 @@ public interface CrossflowComponentsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPONENT__PRODUCES = eINSTANCE.getComponent_Produces();
+
+		/**
+		 * The meta object literal for the '<em><b>Multiple Outputs</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT__MULTIPLE_OUTPUTS = eINSTANCE.getComponent_MultipleOutputs();
+
+		/**
+		 * The meta object literal for the '<em><b>Component Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT__COMPONENT_TYPE = eINSTANCE.getComponent_ComponentType();
+
+		/**
+		 * The meta object literal for the '{@link crossflowComponents.ComponentTypes <em>Component Types</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflowComponents.ComponentTypes
+		 * @see crossflowComponents.impl.CrossflowComponentsPackageImpl#getComponentTypes()
+		 * @generated
+		 */
+		EEnum COMPONENT_TYPES = eINSTANCE.getComponentTypes();
 
 	}
 

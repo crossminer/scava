@@ -68,6 +68,8 @@ public class ComponentItemProvider
 
 			addFullyQualifiedNamePropertyDescriptor(object);
 			addLanguagePropertyDescriptor(object);
+			addMultipleOutputsPropertyDescriptor(object);
+			addComponentTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -112,6 +114,50 @@ public class ComponentItemProvider
 				 false,
 				 true,
 				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Multiple Outputs feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMultipleOutputsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Component_multipleOutputs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Component_multipleOutputs_feature", "_UI_Component_type"),
+				 CrossflowComponentsPackage.Literals.COMPONENT__MULTIPLE_OUTPUTS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Component Type feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addComponentTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Component_componentType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Component_componentType_feature", "_UI_Component_type"),
+				 CrossflowComponentsPackage.Literals.COMPONENT__COMPONENT_TYPE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -186,6 +232,8 @@ public class ComponentItemProvider
 
 		switch (notification.getFeatureID(Component.class)) {
 			case CrossflowComponentsPackage.COMPONENT__FULLY_QUALIFIED_NAME:
+			case CrossflowComponentsPackage.COMPONENT__MULTIPLE_OUTPUTS:
+			case CrossflowComponentsPackage.COMPONENT__COMPONENT_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CrossflowComponentsPackage.COMPONENT__CONSUMES:

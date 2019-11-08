@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflowComponents.Component#getLanguage <em>Language</em>}</li>
  *   <li>{@link crossflowComponents.Component#getConsumes <em>Consumes</em>}</li>
  *   <li>{@link crossflowComponents.Component#getProduces <em>Produces</em>}</li>
+ *   <li>{@link crossflowComponents.Component#isMultipleOutputs <em>Multiple Outputs</em>}</li>
+ *   <li>{@link crossflowComponents.Component#getComponentType <em>Component Type</em>}</li>
  * </ul>
  *
  * @see crossflowComponents.CrossflowComponentsPackage#getComponent()
@@ -130,5 +132,60 @@ public interface Component extends EObject {
 	 * @generated
 	 */
 	void setProduces(Type value);
+
+	/**
+	 * Returns the value of the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multiple Outputs</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #setMultipleOutputs(boolean)
+	 * @see crossflowComponents.CrossflowComponentsPackage#getComponent_MultipleOutputs()
+	 * @model
+	 * @generated
+	 */
+	boolean isMultipleOutputs();
+
+	/**
+	 * Sets the value of the '{@link crossflowComponents.Component#isMultipleOutputs <em>Multiple Outputs</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiple Outputs</em>' attribute.
+	 * @see #isMultipleOutputs()
+	 * @generated
+	 */
+	void setMultipleOutputs(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Component Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link crossflowComponents.ComponentTypes}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Component Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Component Type</em>' attribute.
+	 * @see crossflowComponents.ComponentTypes
+	 * @see #setComponentType(ComponentTypes)
+	 * @see crossflowComponents.CrossflowComponentsPackage#getComponent_ComponentType()
+	 * @model
+	 * @generated
+	 */
+	ComponentTypes getComponentType();
+
+	/**
+	 * Sets the value of the '{@link crossflowComponents.Component#getComponentType <em>Component Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Component Type</em>' attribute.
+	 * @see crossflowComponents.ComponentTypes
+	 * @see #getComponentType()
+	 * @generated
+	 */
+	void setComponentType(ComponentTypes value);
 
 } // Component
