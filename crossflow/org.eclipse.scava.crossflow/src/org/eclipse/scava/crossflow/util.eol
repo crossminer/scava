@@ -206,10 +206,10 @@ operation CrossflowLanguageModel!Language isJava() {
 	return self.name.toLowerCase() == "java";
 }
 
-operation CMS!Component isOpinionatedComponent(){
+operation CrossflowLanguageModel!Component isOpinionatedComponent(){
 	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("opinionated") or self.componentType.name.equalsIgnorecase("opinionatedtask");
 }
 
-operation CMS!Component isCommitmentComponent(){
+operation CrossflowLanguageModel!Component isCommitmentComponent(){
 	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("commitment") or self.componentType.name.equalsIgnorecase("commitmenttask");
 }

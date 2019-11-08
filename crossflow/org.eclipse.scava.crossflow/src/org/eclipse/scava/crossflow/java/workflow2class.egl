@@ -22,6 +22,10 @@ import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
@@ -256,6 +260,10 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 		[% for (t in w.types) {%]
 		serializer.register([%=t.name%].class);
 		[%}%]
+		[%if(CrossflowLanguageModel!ReusableComponent.all.size>0){
+			for (t in CMS!Type.all) {%]
+		serializer.register([%=t.name%].class);
+		[%}}%]
 		return serializer;
 	}
 	

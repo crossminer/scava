@@ -78,17 +78,9 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
 		for (IConfigurationElement ice : reusableComponentsCEs) {
 			Bundle bundle = Platform.getBundle(ice.getDeclaringExtension().getContributor().getName());
+	
 			URL model = bundle.getEntry(ice.getAttribute("definition"));
 			// System.out.println(model);
-			URL resolved = null;
-			try {
-				resolved = FileLocator.resolve(model);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// System.out.println(resolved);
-			// System.out.println(resolved.getFile());
-			// File modelFile = new File(resolved.getFile());
 
 			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("flexmi",
 					new FlexmiResourceFactory());
@@ -97,11 +89,11 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
 			//System.out.println(resourceSet.getResources());
 
-			URI uri = URI.createFileURI(resolved.getFile());
+			URI uri = URI.createPlatformPluginURI(ice.getContributor().getName()+"/"+ice.getAttribute("definition"),true);
 
 			if (!resourceSet.getResources().stream().map(r -> r.getURI()).anyMatch(r -> r.equals(uri))) {
 
-				Resource r = resourceSet.createResource(URI.createFileURI(resolved.getFile()));
+				Resource r = resourceSet.createResource(uri);
 				try {
 					r.load(null);
 				} catch (IOException e) {

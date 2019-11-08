@@ -29,7 +29,10 @@ rule Config2ConfigSource
 
 rule Workflow2Class 
 	transform w : CrossflowLanguageModel!Workflow {
-	parameters : w.getParameters("Workflow2Class")
+	parameters {
+		var params = w.createComponentBasedParameters("Workflow2Class");
+		return params;	
+	}
 	template : "workflow2class.egl"
 	target : w.getPath() + w.name + ".java"
 }
@@ -141,7 +144,8 @@ operation Any createComponentBasedParameters(name : String) : Map {
 	var imports = new Set;
 	//
 	if(CrossflowLanguageModel!ReusableComponent.all.size>0){
-		for(name in CMS!Component.all.fullyQualifiedName){
+		for(cmp in CMS!Component.all){
+		    var name = cmp.fullyQualifiedName;
 			var package = name.substring(0,name.lastIndexOf("."));
 			imports.add(package);
 		}

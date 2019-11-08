@@ -283,7 +283,7 @@ public class GenerateImplementations {
 		EmfModel model = createAndLoadAnEmfModel(
 				"org.eclipse.scava.crossflow, org.eclipse.scava.crossflow.components, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
 				modelRelativePath, "CrossflowLanguageModel", true, false, true);
-
+		model.getAliases().add("Global");
 		return model;
 	}
 
@@ -298,6 +298,7 @@ public class GenerateImplementations {
 					"org.eclipse.scava.crossflow, org.eclipse.scava.crossflow.components, http://www.eclipse.org/gmf/runtime/1.0.2/notation",
 					f.getPath(), "RCM-" + f.getName(), true, false, true);
 			model.getAliases().add("CMS");
+			model.getAliases().add("Global");
 			models.add(model);
 		}
 		//
@@ -323,6 +324,7 @@ public class GenerateImplementations {
 		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
 		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
 		properties.put(EmfModel.PROPERTY_CACHED, isCached + "");
+		properties.put(EmfModel.PROPERTY_EXPAND, "false");
 		theModel.load(properties, (IRelativePathResolver) null);
 		return theModel;
 	}
