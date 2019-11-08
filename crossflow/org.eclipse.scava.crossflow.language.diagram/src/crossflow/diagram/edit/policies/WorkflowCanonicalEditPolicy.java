@@ -43,9 +43,11 @@ import crossflow.diagram.edit.parts.Field3EditPart;
 import crossflow.diagram.edit.parts.FieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
+import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
+import crossflow.diagram.edit.parts.SerialiserEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
@@ -90,6 +92,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Languages());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Serialiser());
 		}
 		return myFeaturesToSynchronize;
 	}
@@ -139,6 +142,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
 		case LanguageEditPart.VISUAL_ID:
+		case SerialiserEditPart.VISUAL_ID:
 			return true;
 		}
 		return false;
@@ -389,6 +393,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
+		case SerialiserEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getSerialiser_2016ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
 		case Field2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getField_3003ContainedLinks(view));
@@ -406,6 +417,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case ParameterEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getParameter_3002ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case Parameter2EditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getParameter_3004ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

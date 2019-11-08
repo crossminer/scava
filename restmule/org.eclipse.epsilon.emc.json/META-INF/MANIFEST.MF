@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.epsilon.eol.engine,
  org.apache.commons.codec,
  org.eclipse.epsilon.emc.plainxml
 Export-Package: org.eclipse.epsilon.emc.json
+Automatic-Module-Name: org.eclipse.epsilon.emc.json

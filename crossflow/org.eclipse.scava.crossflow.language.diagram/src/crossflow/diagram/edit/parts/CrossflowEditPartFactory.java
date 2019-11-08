@@ -106,6 +106,12 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case LanguageNameEditPart.VISUAL_ID:
 				return new LanguageNameEditPart(view);
 
+			case SerialiserEditPart.VISUAL_ID:
+				return new SerialiserEditPart(view);
+
+			case SerialiserNameEditPart.VISUAL_ID:
+				return new SerialiserNameEditPart(view);
+
 			case Field2EditPart.VISUAL_ID:
 				return new Field2EditPart(view);
 
@@ -124,6 +130,12 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case ParameterNameValueEditPart.VISUAL_ID:
 				return new ParameterNameValueEditPart(view);
 
+			case Parameter2EditPart.VISUAL_ID:
+				return new Parameter2EditPart(view);
+
+			case ParameterNameValue2EditPart.VISUAL_ID:
+				return new ParameterNameValue2EditPart(view);
+
 			case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 				return new ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart(view);
 
@@ -132,6 +144,9 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 
 			case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 				return new LanguageLanguageParametersCompartmentEditPart(view);
+
+			case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+				return new SerialiserSerialiserParametersCompartmentEditPart(view);
 
 			case StreamTypeEditPart.VISUAL_ID:
 				return new StreamTypeEditPart(view);

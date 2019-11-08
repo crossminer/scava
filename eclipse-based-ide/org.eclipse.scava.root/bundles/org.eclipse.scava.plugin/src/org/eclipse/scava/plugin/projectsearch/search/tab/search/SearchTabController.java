@@ -11,6 +11,7 @@
 package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.eclipse.scava.plugin.mvc.controller.Controller;
@@ -29,7 +30,8 @@ import org.eclipse.scava.plugin.usermonitoring.ErrorType;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.Artifact;
 
-public class SearchTabController extends ModelViewController<SearchTabModel, SearchTabView> implements ISearchTabViewEventListener {
+public class SearchTabController extends ModelViewController<SearchTabModel, SearchTabView>
+		implements ISearchTabViewEventListener {
 
 	public SearchTabController(Controller parent, SearchTabModel model, SearchTabView view) {
 		super(parent, model, view);
@@ -44,13 +46,10 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 
 	private void loadNextPage() {
 		try {
-			
-		
+
 			List<Artifact> results = getModel().getNextPageResults();
 
-			
-			
-			List<SearchResultView> resultViews = results.stream().map(a -> {
+			List<SearchResultView> resultViews = results.stream().filter(Objects::nonNull).map(a -> {
 
 				SearchResultModel model = new SearchResultModel(a);
 				SearchResultView view = new SearchResultView();
@@ -62,26 +61,24 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 
 			getView().showResults(resultViews);
 			getView().setDescription(getModel().getDescription());
-			
-			if( getModel().hasNextPage() ) {
+
+			if (getModel().hasNextPage()) {
 				getView().showShowMoreButton();
-			}else {
+			} else {
 				getView().hideShowMoreButton();
 			}
-			
+
 			routeEventToParentController(new FilterAlreadySelectedProjectsRequestEvent(this, results));
-		}
-		 catch (ApiException e) {
+		} catch (ApiException e) {
 			e.printStackTrace();
-			ErrorHandler.handle(getView().getShell(), e);
+			ErrorHandler.logAndShowErrorMessage(getView().getShell(), e);
+			dispose();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			ErrorHandler.handle(getView().getShell(), e, ErrorType.ILLEGAL_ARGUMENT);
 			dispose();
 		}
-		catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			ErrorHandler.handle(getView().getShell(),e, ErrorType.ILLEGAL_ARGUMENT);
-			dispose();
-		}
-		
+
 	}
 
 	@Override
@@ -93,8 +90,10 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 	protected void onReceiveRoutedEventFromSubController(IRoutedEvent routedEvent, Controller forwarderController) {
 
 		if (routedEvent instanceof ShowDetailsRequestEvent) {
+			
 			ShowDetailsRequestEvent event = (ShowDetailsRequestEvent) routedEvent;
-
+			routeEventToSubControllers(event);
+			
 			DetailsModel model = new DetailsModel(event.getProject());
 			DetailsView view = new DetailsView();
 			DetailsController controller = new DetailsController(this, model, view);
@@ -102,7 +101,8 @@ public class SearchTabController extends ModelViewController<SearchTabModel, Sea
 
 			getView().setDetails(view);
 
-			getSubControllers().stream().filter(c -> c instanceof DetailsController && c != controller).forEach(c -> c.dispose());
+			getSubControllers(DetailsController.class).stream().filter(c -> c != controller)
+					.forEach(Controller::dispose);
 
 			return;
 		}

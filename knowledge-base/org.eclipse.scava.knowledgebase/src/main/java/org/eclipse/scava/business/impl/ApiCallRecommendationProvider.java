@@ -42,10 +42,9 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(ApiCallRecommendationProvider.class);
 
-	
 	@Autowired
 	private PatternRepository patternRepository;
-	
+
 	@Autowired
 	private ICodeCloneDetector codeCloneDetector;
 
@@ -55,7 +54,6 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		List<ApiCallResult> result = new ArrayList<>();
 		long start = System.currentTimeMillis();
 
-		
 		Options options = new Options();
 		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);
@@ -67,13 +65,18 @@ public class ApiCallRecommendationProvider implements IRecommendationProvider {
 		options.setOption(Option.IGNORE_MODIFIERS, true);
 		options.setOption(Option.IGNORE_LITERALS, true);
 		options.setOption(Option.LANGUAGE, Language.JAVA);
+		options.setOption(Option.BALANCE_PARENTHESES, true);
 		options.setOption(Option.IGNORE_SUBTYPE_NAMES, true);
 		List<Pattern> patterns = patternRepository.findAll();
 		for (Pattern pattern : patterns) {
-			ApiCallResult k = codeCloneDetector.checkClone(query.getCurrentMethodCode(), pattern.getPatternCode(), options);
-			k.setPattern(pattern.getPatternFileName());
-			if (k.getCodeLines() != null && k.getCodeLines().size() > 0)
-				result.add(k);
+			ApiCallResult k = codeCloneDetector.checkClone(
+					query.getCompilationUnit() != null ? query.getCompilationUnit() : query.getCurrentMethodCode(),
+					pattern.getPatternCode(), options);
+			if (k != null) {
+				k.setPattern(pattern.getPatternFileName());
+				if (k.getCodeLines() != null && k.getCodeLines().size() > 0)
+					result.add(k);
+			}
 		}
 		long end = System.currentTimeMillis();
 		long elapse = end - start;

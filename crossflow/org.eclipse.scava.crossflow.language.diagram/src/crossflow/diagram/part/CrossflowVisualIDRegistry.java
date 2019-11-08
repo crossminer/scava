@@ -29,13 +29,18 @@ import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPar
 import crossflow.diagram.edit.parts.LanguageNameEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
+import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
+import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
+import crossflow.diagram.edit.parts.SerialiserEditPart;
+import crossflow.diagram.edit.parts.SerialiserNameEditPart;
+import crossflow.diagram.edit.parts.SerialiserSerialiserParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -198,6 +203,9 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getLanguage().isSuperTypeOf(domainElement.eClass())) {
 				return LanguageEditPart.VISUAL_ID;
 			}
+			if (CrossflowPackage.eINSTANCE.getSerialiser().isSuperTypeOf(domainElement.eClass())) {
+				return SerialiserEditPart.VISUAL_ID;
+			}
 			break;
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
@@ -212,6 +220,11 @@ public class CrossflowVisualIDRegistry {
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 			if (CrossflowPackage.eINSTANCE.getParameter().isSuperTypeOf(domainElement.eClass())) {
 				return ParameterEditPart.VISUAL_ID;
+			}
+			break;
+		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+			if (CrossflowPackage.eINSTANCE.getParameter().isSuperTypeOf(domainElement.eClass())) {
+				return Parameter2EditPart.VISUAL_ID;
 			}
 			break;
 		}
@@ -275,6 +288,9 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			if (LanguageEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (SerialiserEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -352,6 +368,14 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
+		case SerialiserEditPart.VISUAL_ID:
+			if (SerialiserNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case Field2EditPart.VISUAL_ID:
 			if (FieldNameType2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -367,6 +391,11 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
+		case Parameter2EditPart.VISUAL_ID:
+			if (ParameterNameValue2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 			if (Field2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -379,6 +408,11 @@ public class CrossflowVisualIDRegistry {
 			break;
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 			if (ParameterEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+			if (Parameter2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -446,6 +480,7 @@ public class CrossflowVisualIDRegistry {
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
+		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
@@ -473,6 +508,7 @@ public class CrossflowVisualIDRegistry {
 		case Field3EditPart.VISUAL_ID:
 		case ParameterEditPart.VISUAL_ID:
 		case Field2EditPart.VISUAL_ID:
+		case Parameter2EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

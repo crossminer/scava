@@ -232,7 +232,12 @@ public class BugMetadataTransMetricProvider implements ITransientMetricProvider<
 				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));
 		} else if(bug instanceof GitLabIssue) {
 			GitLabIssue issue = (GitLabIssue) bug;
-			closingDate=issue.getClosed_at();
+			if(issue.getStatus().equalsIgnoreCase("closed"))
+			{
+				closingDate=issue.getClosed_at();
+				if(closingDate==null)	//Old versions of gitlab do not have the getClosed_at field
+					closingDate=issue.getUpdated_at();		
+			}
 			bugData.getResolution().clear();
 			for(String label : issue.getLabels())
 				bugData.getResolution().add(label.toLowerCase(Locale.ENGLISH));

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -33,7 +32,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-public class JsonModel extends CachedModel<Object>{
+public class JsonModel extends CachedModel<Object> {
 
 	/** CONSTANTS */
 	
@@ -110,18 +109,20 @@ public class JsonModel extends CachedModel<Object>{
 			throw new EolModelElementTypeNotFoundException(this.getName(), type);
 		}
 		String endType = jsonType.getTagName();
-		List<Object> allOfType = new ArrayList<Object>();
+		ArrayList<Object> allOfType = new ArrayList<>();
 		for (Object o : allContents()) {
 			JSONElement element = (JSONElement) o;
 			String tmpType = element.getTag();
-			if (tmpType.equalsIgnoreCase(endType)){
+			if (tmpType.equalsIgnoreCase(endType)) {
 				allOfType.add(element);
 			} else if (
 				tmpType.length()-1==endType.length() 
 				&& tmpType.endsWith("s")
 				&& tmpType.substring(0, tmpType.length()-1).equalsIgnoreCase(endType))
 			{
-				for (JSONElement child : element.getChildren()){
+				Collection<? extends JSONElement> children = element.getChildren();
+				allOfType.ensureCapacity(allOfType.size() + children.size());
+				for (JSONElement child : children) {
 					allOfType.add(child);
 				}
 			}
@@ -137,7 +138,7 @@ public class JsonModel extends CachedModel<Object>{
 
 	@Override // FIXME
 	protected Collection<Object> allContentsFromModel() { 
-		ArrayList<Object> elements = new ArrayList<Object>();
+		ArrayList<Object> elements = new ArrayList<>();
 		JsonUtil.collectChildElements(root, elements);
 		return elements;		
 	}
@@ -232,6 +233,14 @@ public class JsonModel extends CachedModel<Object>{
 	}
 
 	/** GETTERS & SETTERS */
+	
+	/**
+	 * @since 1.6
+	 */
+	@Override
+	public boolean isLoaded() {
+		return root != null;
+	}
 	
 	@Override
 	public IPropertyGetter getPropertyGetter() {

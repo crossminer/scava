@@ -15,6 +15,7 @@ import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.ApiClient;
+import io.swagger.client.api.ApiMigrationRestControllerApi;
 import io.swagger.client.api.ArtifactsRestControllerApi;
 import io.swagger.client.api.RecommenderRestControllerApi;
 
@@ -47,5 +48,9 @@ public class KnowledgeBaseAccess {
 
 	public RecommenderRestControllerApi getRecommenderRestController() {
 		return new RecommenderRestControllerApi(apiClient);
+	}
+	
+	public ApiMigrationRestControllerApi getApiMigrationRestController() {
+		return new ApiMigrationRestControllerApi(apiClient);
 	}
 }

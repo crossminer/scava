@@ -54,7 +54,7 @@
 				 "strokeColor=black;" + "endArrow=" + e.endArrow + ";");
 		 }
 	 }
-	 return model.auto.toLowerCase()=="true";
+	 return model.auto==true || model.auto=="true";
  }
 
 /**

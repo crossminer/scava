@@ -2,12 +2,14 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.util.*;
 import javax.jms.*;
+import javax.jms.IllegalStateException;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 import org.apache.activemq.command.ActiveMQDestination;
 
 public abstract class JobStream<T extends Job> implements Stream {
-	
+
 	protected Map<String, ActiveMQDestination> destination;
 	protected Map<String, ActiveMQDestination> pre;
 	protected Map<String, ActiveMQDestination> post;
@@ -16,18 +18,23 @@ public abstract class JobStream<T extends Job> implements Stream {
 	protected Workflow<?> workflow;
 	protected List<MessageConsumer> consumers = new LinkedList<>();
 	protected Task cacheManagerTask = new Task() {
-		
+
 		@Override
 		public Workflow<?> getWorkflow() {
 			return workflow;
 		}
-		
+
 		@Override
 		public String getId() {
 			return "CacheManager";
 		}
+
+		@Override
+		public String getName() {
+			return "CacheManager";
+		}
 	};
-	
+
 	public JobStream(Workflow<?> workflow) throws Exception {
 		this.workflow = workflow;
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(workflow.getBroker());
@@ -35,12 +42,14 @@ public abstract class JobStream<T extends Job> implements Stream {
 		connection = connectionFactory.createConnection();
 		connection.start();
 		session = connection.createSession(false, ActiveMQSession.INDIVIDUAL_ACKNOWLEDGE);
-				
+
 		destination = new HashMap<>();
 		pre = new HashMap<>();
 		post = new HashMap<>();
 	}
-	
+
+	private Long lastIllegalStateException = 0L;
+
 	public void send(T job, String taskId) {
 		try {
 			ActiveMQDestination d = null;
@@ -52,11 +61,10 @@ public abstract class JobStream<T extends Job> implements Stream {
 				job.setDestination(getClass().getSimpleName());
 				producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
 				producer.close();
-			}
-			else {
+			} else {
 				// otherwise the sender must be the source of this stream so intends to
 				// propagate its messages to all the physical queues
-				for (Destination dest : pre.values()) {			
+				for (Destination dest : pre.values()) {
 					MessageProducer producer = session.createProducer(dest);
 					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 					job.setDestination(this.getClass().getSimpleName());
@@ -64,12 +72,19 @@ public abstract class JobStream<T extends Job> implements Stream {
 					producer.close();
 				}
 			}
-		}
-		catch (Exception ex) {
-			workflow.reportInternalException(ex);
+		} catch (Exception ex) {
+			if (!(ex instanceof IllegalStateException))
+				workflow.reportInternalException(ex);
+			else {
+				Long currentTime = System.currentTimeMillis();
+				if (currentTime - lastIllegalStateException > 1000) {
+					System.err.println(ex.getMessage() + ", suppressing similar errors for 1 second.");
+					lastIllegalStateException = currentTime;
+				}
+			}
 		}
 	}
-	
+
 	@Override
 	public Collection<String> getDestinationNames() {
 		List<String> ret = new ArrayList<>(pre.size() + destination.size() + post.size());
@@ -81,7 +96,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 			ret.add(d.getPhysicalName());
 		return ret;
 	}
-	
+
 	@Override
 	public void stop() throws JMSException {
 		for (MessageConsumer c : consumers) {
@@ -98,7 +113,8 @@ public abstract class JobStream<T extends Job> implements Stream {
 
 	/**
 	 * 
-	 * @return A set containing all ActiveMQDestination objects used by this JobStream 
+	 * @return A set containing all ActiveMQDestination objects used by this
+	 *         JobStream
 	 */
 	protected Set<ActiveMQDestination> getAllQueues() {
 		Set<ActiveMQDestination> ret = new HashSet<>();

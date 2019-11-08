@@ -5,6 +5,7 @@ package crossflow.impl;
 import crossflow.CrossflowPackage;
 import crossflow.Field;
 import crossflow.Language;
+import crossflow.Serialiser;
 import crossflow.Stream;
 import crossflow.Task;
 import crossflow.Type;
@@ -40,6 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.WorkflowImpl#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getLanguages <em>Languages</em>}</li>
+ *   <li>{@link crossflow.impl.WorkflowImpl#getSerialiser <em>Serialiser</em>}</li>
  * </ul>
  *
  * @generated
@@ -114,6 +116,16 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * @ordered
 	 */
 	protected EList<Language> languages;
+
+	/**
+	 * The cached value of the '{@link #getSerialiser() <em>Serialiser</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSerialiser()
+	 * @generated
+	 * @ordered
+	 */
+	protected Serialiser serialiser;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -220,6 +232,49 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Serialiser getSerialiser() {
+		return serialiser;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSerialiser(Serialiser newSerialiser, NotificationChain msgs) {
+		Serialiser oldSerialiser = serialiser;
+		serialiser = newSerialiser;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALISER, oldSerialiser, newSerialiser);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSerialiser(Serialiser newSerialiser) {
+		if (newSerialiser != serialiser) {
+			NotificationChain msgs = null;
+			if (serialiser != null)
+				msgs = ((InternalEObject)serialiser).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALISER, null, msgs);
+			if (newSerialiser != null)
+				msgs = ((InternalEObject)newSerialiser).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALISER, null, msgs);
+			msgs = basicSetSerialiser(newSerialiser, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALISER, newSerialiser, newSerialiser));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -233,6 +288,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return ((InternalEList<?>)getLanguages()).basicRemove(otherEnd, msgs);
+			case CrossflowPackage.WORKFLOW__SERIALISER:
+				return basicSetSerialiser(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -257,6 +314,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return getParameters();
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return getLanguages();
+			case CrossflowPackage.WORKFLOW__SERIALISER:
+				return getSerialiser();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -293,6 +352,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				getLanguages().clear();
 				getLanguages().addAll((Collection<? extends Language>)newValue);
 				return;
+			case CrossflowPackage.WORKFLOW__SERIALISER:
+				setSerialiser((Serialiser)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -323,6 +385,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				getLanguages().clear();
 				return;
+			case CrossflowPackage.WORKFLOW__SERIALISER:
+				setSerialiser((Serialiser)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -347,6 +412,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return parameters != null && !parameters.isEmpty();
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return languages != null && !languages.isEmpty();
+			case CrossflowPackage.WORKFLOW__SERIALISER:
+				return serialiser != null;
 		}
 		return super.eIsSet(featureID);
 	}

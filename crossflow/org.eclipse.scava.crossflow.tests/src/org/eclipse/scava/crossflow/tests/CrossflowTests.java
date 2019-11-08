@@ -14,6 +14,7 @@ import org.eclipse.scava.crossflow.tests.matrix.MatrixWorkflowTests;
 import org.eclipse.scava.crossflow.tests.minimal.MinimalWorkflowTests;
 import org.eclipse.scava.crossflow.tests.multiflow.MultiflowTests;
 import org.eclipse.scava.crossflow.tests.opinionated.OccurencesWorkflowTests;
+import org.eclipse.scava.crossflow.tests.optionalbuiltinstream.OptionalBuiltinStreamTests;
 import org.eclipse.scava.crossflow.tests.parallel.ParallelWorkflowTests;
 import org.eclipse.scava.crossflow.tests.transactionalcaching.TransactionalCachingTests;
 import org.junit.runner.RunWith;
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelWorkflowTests.class,
 	TransactionalCachingTests.class,
 	ConfigurableWorkflowTests.class,
-	RuntimeTests.class
+	RuntimeTests.class,
+	OptionalBuiltinStreamTests.class
 })
 public class CrossflowTests {
 

@@ -16,6 +16,7 @@ public class SerializerTest {
 			"  <cached>false</cached>\n" + 
 			"  <failures>0</failures>\n" + 
 			"  <cacheable>true</cacheable>\n" + 
+			"  <timeout>0</timeout>\n" +
 			"  <transactional>true</transactional>\n" + 
 			"  <isTransactionSuccessMessage>false</isTransactionSuccessMessage>\n" + 
 			"  <totalOutputs>0</totalOutputs>\n" + 

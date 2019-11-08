@@ -3,25 +3,25 @@ from crossflow import CSVWriter
 import traceback
 
 class [%=t.name%]([%=t.name%]Base):
-	
-	def __init__(self):
-		# CSV file writer(s)
-		[% for (s in t.input) {%]
-		self.writer_[%=loopCount%] = None
-		[%}%]
-	
-	[%for (s in t.input) {%]
-	def consume_[%=s.name%](self, [%=s.type.name.ftlc()%]):
-		try:
-			[% for (s in t.input) {%]
-			if (self.writer_[%=loopCount%] == None ) {
-				self.writer_[%=loopCount%] = CSVWriter('[%=t.fileName%]', [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] 'cached')
-			[%}%]
-		
-			self.writer_[%=loopCount%].write_record( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].is_cached() )
-			self.writer_[%=loopCount%].flush()
-		except Exception as ex:
-			traceback.print_exc()
-	
-	[%}%]
+
+    def __init__(self):
+        # CSV file writer(s)
+        [% for (s in t.input) {%]
+        self.writer_[%=loopCount%] = None
+        [%}%]
+
+    [%for (s in t.input) {%]
+    def consume_[%=s.name%](self, [%=s.type.name.ftlc()%]):
+        try:
+            [% for (s in t.input) {%]
+            if (self.writer_[%=loopCount%] == None ) {
+                self.writer_[%=loopCount%] = CSVWriter('[%=t.fileName%]', [%for (f in s.type.fields) { %]"[%=f.name%]", [%}%] 'cached')
+            [%}%]
+
+            self.writer_[%=loopCount%].write_record( [%for (f in s.type.fields) { %][%=s.type.name.ftlc()%].get[%=f.name.ftuc()%](), [%}%] [%=s.type.name.ftlc()%].is_cached() )
+            self.writer_[%=loopCount%].flush()
+        except Exception as ex:
+            traceback.print_exc()
+
+    [%}%]
 

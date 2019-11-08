@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.scava.repository.model.eclipse,
  org.eclipse.scava.repository.model.vcs.cvs,
  org.eclipse.scava.repository.model,
  org.apache.log4j,
- org.eclipse.scava.repository.model.importer
+ org.eclipse.scava.repository.model.importer,
+ org.eclipse.scava.repository.model.cc.eclipseforums
 Export-Package: org.eclipse.scava.repository.model.eclipse.importer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

@@ -49,7 +49,7 @@ public class CommitmentWorkflowTests extends WorkflowTests {
 		// initialised
 		workers.parallelStream().forEach(w -> {
 			try {
-				w.run();
+				w.run(500);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

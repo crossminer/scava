@@ -103,6 +103,16 @@
         visualID="7003"
         queryText="true"/>
   </nodeTraces>
+  <nodeTraces
+      visualID="2016"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Serialiser') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Workflow') and _containmentMF_.name = 'serialiser')">
+    <nodeLabelTraces
+        visualID="5020"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7004"
+        queryText="true"/>
+  </nodeTraces>
   <childNodeTraces
       visualID="3001"
       queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Field') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Type') and _containmentMF_.name = 'fields')">
@@ -122,6 +132,13 @@
       queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Field') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'ScriptedTask') and _containmentMF_.name = 'outputVariables')">
     <nodeLabelTraces
         visualID="5018"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3004"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Parameter') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'org.eclipse.scava.crossflow' and _eClass_.name = 'Serialiser') and _containmentMF_.name = 'parameters')">
+    <nodeLabelTraces
+        visualID="5019"
         queryText="true"/>
   </childNodeTraces>
   <linkTraces

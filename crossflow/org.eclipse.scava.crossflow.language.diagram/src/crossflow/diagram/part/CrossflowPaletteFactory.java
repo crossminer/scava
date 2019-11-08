@@ -46,11 +46,12 @@ public class CrossflowPaletteFactory {
 		paletteContainer.add(createParameter7CreationTool());
 		paletteContainer.add(createQueue8CreationTool());
 		paletteContainer.add(createScriptedTask9CreationTool());
-		paletteContainer.add(createSink10CreationTool());
-		paletteContainer.add(createSource11CreationTool());
-		paletteContainer.add(createTask12CreationTool());
-		paletteContainer.add(createTopic13CreationTool());
-		paletteContainer.add(createType14CreationTool());
+		paletteContainer.add(createSerialiser10CreationTool());
+		paletteContainer.add(createSink11CreationTool());
+		paletteContainer.add(createSource12CreationTool());
+		paletteContainer.add(createTask13CreationTool());
+		paletteContainer.add(createTopic14CreationTool());
+		paletteContainer.add(createType15CreationTool());
 		return paletteContainer;
 	}
 
@@ -150,8 +151,11 @@ public class CrossflowPaletteFactory {
 	* @generated
 	*/
 	private ToolEntry createParameter7CreationTool() {
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(CrossflowElementTypes.Parameter_3002);
+		types.add(CrossflowElementTypes.Parameter_3004);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Parameter7CreationTool_title,
-				Messages.Parameter7CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Parameter_3002));
+				Messages.Parameter7CreationTool_desc, types);
 		entry.setId("createParameter7CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Parameter_3002));
 		entry.setLargeIcon(entry.getSmallIcon());
@@ -186,10 +190,23 @@ public class CrossflowPaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createSink10CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Sink10CreationTool_title,
-				Messages.Sink10CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Sink_2006));
-		entry.setId("createSink10CreationTool"); //$NON-NLS-1$
+	private ToolEntry createSerialiser10CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Serialiser10CreationTool_title,
+				Messages.Serialiser10CreationTool_desc,
+				Collections.singletonList(CrossflowElementTypes.Serialiser_2016));
+		entry.setId("createSerialiser10CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Serialiser_2016));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createSink11CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Sink11CreationTool_title,
+				Messages.Sink11CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Sink_2006));
+		entry.setId("createSink11CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Sink_2006));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -198,10 +215,10 @@ public class CrossflowPaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createSource11CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Source11CreationTool_title,
-				Messages.Source11CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Source_2005));
-		entry.setId("createSource11CreationTool"); //$NON-NLS-1$
+	private ToolEntry createSource12CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Source12CreationTool_title,
+				Messages.Source12CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Source_2005));
+		entry.setId("createSource12CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Source_2005));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -210,10 +227,10 @@ public class CrossflowPaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createTask12CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Task12CreationTool_title,
-				Messages.Task12CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Task_2010));
-		entry.setId("createTask12CreationTool"); //$NON-NLS-1$
+	private ToolEntry createTask13CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Task13CreationTool_title,
+				Messages.Task13CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Task_2010));
+		entry.setId("createTask13CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Task_2010));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -222,10 +239,10 @@ public class CrossflowPaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createTopic13CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Topic13CreationTool_title,
-				Messages.Topic13CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Topic_2003));
-		entry.setId("createTopic13CreationTool"); //$NON-NLS-1$
+	private ToolEntry createTopic14CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Topic14CreationTool_title,
+				Messages.Topic14CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Topic_2003));
+		entry.setId("createTopic14CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Topic_2003));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -234,10 +251,10 @@ public class CrossflowPaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createType14CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Type14CreationTool_title,
-				Messages.Type14CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Type_2011));
-		entry.setId("createType14CreationTool"); //$NON-NLS-1$
+	private ToolEntry createType15CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Type15CreationTool_title,
+				Messages.Type15CreationTool_desc, Collections.singletonList(CrossflowElementTypes.Type_2011));
+		entry.setId("createType15CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(CrossflowElementTypes.getImageDescriptor(CrossflowElementTypes.Type_2011));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;

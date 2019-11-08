@@ -71,6 +71,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.FIELD: return createField();
 			case CrossflowPackage.LANGUAGE: return createLanguage();
 			case CrossflowPackage.PARAMETER: return createParameter();
+			case CrossflowPackage.SERIALISER: return createSerialiser();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -224,6 +225,16 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	public Parameter createParameter() {
 		ParameterImpl parameter = new ParameterImpl();
 		return parameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Serialiser createSerialiser() {
+		SerialiserImpl serialiser = new SerialiserImpl();
+		return serialiser;
 	}
 
 	/**

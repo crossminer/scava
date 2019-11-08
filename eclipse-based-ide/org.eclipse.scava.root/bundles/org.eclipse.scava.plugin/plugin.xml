@@ -39,6 +39,15 @@
             class="org.eclipse.scava.plugin.eclipse.handlers.ProjectSearchHandler"
             commandId="org.eclipse.scava.plugin.commands.projectsearch">
       </handler>
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.LibraryVersionUpdaterHandler"
+            commandId="org.eclipse.scava.plugin.commands.libraryversionupdater">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
+            </reference>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -56,13 +65,25 @@
             </command>
             <command
                   commandId="org.eclipse.scava.plugin.commands.librarysearch"
-                  label="Search library for this project"
+                  label="Search libraries for this project"
                   icon="icons/features/crossminer_library_search_16x16.png"
                   mnemonic="L"
                   style="push">
                <visibleWhen>
                   <reference
                         definitionId="org.eclipse.scava.plugin.definitions.librarysearch.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.libraryversionupdater"
+                  label="Search updates for libraries"
+                  icon="icons/features/new_library_available_16x16.png"
+                  mnemonic="u"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
                   </reference>
                </visibleWhen>
             </command>
@@ -143,6 +164,18 @@
                </visibleWhen>
             </command>
             <command
+                  commandId="org.eclipse.scava.plugin.commands.libraryversionupdater"
+                  icon="icons/features/new_library_available_16x16.png"
+                  label="Search updates for libraries"
+                  mnemonic="u"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
                   commandId="org.eclipse.scava.plugin.commands.projectsearch"
                   icon="icons/features/crossminer_project_search_16x16.png"
                   label="Project search"
@@ -171,6 +204,18 @@
                </visibleWhen>
             </command>
             <command
+                  commandId="org.eclipse.scava.plugin.commands.libraryversionupdater"
+                  icon="icons/features/new_library_available_16x16.png"
+                  label="Search updates for libraries"
+                  mnemonic="u"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
                   commandId="org.eclipse.scava.plugin.commands.projectsearch"
                   icon="icons/features/crossminer_project_search_16x16.png"
                   label="Project search"
@@ -193,6 +238,18 @@
                <visibleWhen>
                   <reference
                         definitionId="org.eclipse.scava.plugin.definitions.librarysearch.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.libraryversionupdater"
+                  icon="icons/features/new_library_available_16x16.png"
+                  label="Library version updater"
+                  mnemonic="u"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
                   </reference>
                </visibleWhen>
             </command>
@@ -238,35 +295,76 @@
       </super>
    </extension>
    <extension
+         id="org.eclipse.scava.plugin.markers.apimigrationdetection"
+         name="API migration code element"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <attribute
+            name="org.eclipse.scava.plugin.markers.apimigrationdetection.detectiondata">
+      </attribute>
+   </extension>
+   <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationType="org.eclipse.scava.plugin.annotations.sourcecodehighlight"
             colorPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.color"
             colorPreferenceValue="255,108,211"
-            contributesToHeader="false"
+            contributesToHeader="true"
             highlightPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.highlight"
             highlightPreferenceValue="true"
-            icon="icons/cm.gif"
+            icon="icons/icon-16-white.png"
             includeOnPreferencePage="true"
             label="CROSSMINER Source Code Highlight"
             overviewRulerPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.overview"
             overviewRulerPreferenceValue="true"
             presentationLayer="10000"
-            quickFixIcon="icons/cm.gif"
+            quickFixIcon="icons/icon-16-white.png"
+            showInNextPrevDropdownToolbarActionKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.nextprev"
             textPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.text"
             textPreferenceValue="true"
             textStylePreferenceValue="BOX"
             verticalRulerPreferenceKey="org.eclipse.scava.plugin.annotations.sourcecodehighlight.ruler"
-            verticalRulerPreferenceValue="false">
+            verticalRulerPreferenceValue="true">
+      </specification>
+      <specification
+            annotationType="org.eclipse.scava.plugin.annotations.apimigrationdetection"
+            colorPreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.color"
+            colorPreferenceValue="255,108,211"
+            contributesToHeader="true"
+            highlightPreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.highlight"
+            highlightPreferenceValue="true"
+            icon="icons/icon-16-white.png"
+            includeOnPreferencePage="true"
+            isGoToNextNavigationTarget="true"
+            isGoToNextNavigationTargetKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.gotonext"
+            isGoToPreviousNavigationTarget="true"
+            isGoToPreviousNavigationTargetKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.gotoprevious"
+            label="CROSSMINER API Migration Detection"
+            overviewRulerPreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.overview"
+            overviewRulerPreferenceValue="true"
+            presentationLayer="10000"
+            quickFixIcon="icons/icon-16-white.png"
+            showInNextPrevDropdownToolbarAction="true"
+            showInNextPrevDropdownToolbarActionKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.nextprev"
+            textPreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.text"
+            textPreferenceValue="true"
+            textStylePreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.textstyle"
+            textStylePreferenceValue="BOX"
+            verticalRulerPreferenceKey="org.eclipse.scava.plugin.annotations.apimigrationdetection.ruler"
+            verticalRulerPreferenceValue="true">
       </specification>
    </extension>
    <extension
          point="org.eclipse.ui.editors.annotationTypes">
       <type
-            markerSeverity="2"
             markerType="org.eclipse.scava.plugin.markers.sourcecodehighlight"
-            name="org.eclipse.scava.plugin.annotations.sourcecodehighlight"
-            super="org.eclipse.ui.workbench.texteditor.error">
+            name="org.eclipse.scava.plugin.annotations.sourcecodehighlight">
+      </type>
+      <type
+            markerType="org.eclipse.scava.plugin.markers.apimigrationdetection"
+            name="org.eclipse.scava.plugin.annotations.apimigrationdetection">
       </type>
       </extension>
 
@@ -299,6 +397,19 @@
         <enablement>
            <objectClass
                  name="org.eclipse.core.resources.IResource">
+           </objectClass>
+        </enablement>
+     </decorator>
+     <decorator
+           adaptable="true"
+           class="org.eclipse.scava.plugin.eclipse.decorator.LibraryUpdateAvailableDecorator"
+           id="org.eclipse.scava.plugin.decorators.libraryupdate.available"
+           label="CROSSMINER Library Update Available"
+           lightweight="true"
+           state="true">
+        <enablement>
+           <objectClass
+                 name="org.eclipse.core.resources.IProject">
            </objectClass>
         </enablement>
      </decorator>
@@ -353,6 +464,14 @@
            name="API documentation and Q&amp;A posts"
            restorable="false">
      </view>
+     <view
+           allowMultiple="false"
+           class="org.eclipse.scava.plugin.libraryversions.apimigration.ApiMigrationCenterView"
+           icon="icons/bulb.png"
+           id="org.eclipse.scava.plugin.apimigration.ApiMigration"
+           name="API Migration"
+           restorable="false">
+     </view>
   </extension>
   <extension
         point="org.eclipse.ui.commands">
@@ -385,6 +504,11 @@
            categoryId="org.eclipse.scava.plugin.commands.category"
            id="org.eclipse.scava.plugin.commands.projectsearch"
            name="Open project search">
+     </command>
+     <command
+           categoryId="org.eclipse.scava.plugin.commands.category"
+           id="org.eclipse.scava.plugin.commands.libraryversionupdater"
+           name="Open Library Version Updater">
      </command>
   </extension>
   <extension
@@ -422,6 +546,41 @@
               </equals>
            </with>
         </and>
+     </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
+        <and>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.libraryversionupdater.visible">
+           </reference>
+           <test
+                 property="org.eclipse.scava.plugin.testers.resource.hasPom"
+                 value="true">
+           </test>
+        </and>
+     </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.libraryversionupdater.visible">
+       <and>
+   		<count
+             value="1">
+       </count>
+       <iterate
+             ifEmpty="false"
+             operator="and">
+          <or>
+             <instanceof
+                   value="org.eclipse.core.resources.IResource">
+             </instanceof>
+             <instanceof
+                   value="org.eclipse.jdt.core.IJavaElement">
+             </instanceof>
+             <instanceof
+                   value="org.eclipse.jdt.internal.ui.packageview.PackageFragmentRootContainer">
+             </instanceof>
+          </or>
+       </iterate>
+       </and>
      </definition>
      <definition
            id="org.eclipse.scava.plugin.definitions.librarysearch.enabled">
@@ -494,7 +653,7 @@
            sequence="M1+M2+X C">
      </key>
   </extension>
-   <extension
+  <extension
         point="org.eclipse.ui.propertyPages">
      <page
            category="org.eclipse.scava.plugin.propertypages.main"
@@ -515,6 +674,30 @@
                  value="org.eclipse.jdt.core.IJavaProject">
            </instanceof></enabledWhen>
      </page>
+     <page
+           category="org.eclipse.scava.plugin.propertypages.main"
+           class="org.eclipse.scava.plugin.properties.LibraryUpdateVersionRules"
+           id="org.eclipse.scava.plugin.propertypages.libraryupdateversionrules"
+           name="Library update version rules">
+        <enabledWhen>
+           <instanceof
+                 value="org.eclipse.jdt.core.IJavaProject">
+           </instanceof>
+        </enabledWhen>
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.startup">
+     <startup
+           class="org.eclipse.scava.plugin.eclipse.startup.Startup">
+     </startup>
+  </extension>
+  <extension
+        point="org.eclipse.ui.ide.markerResolution">
+     <markerResolutionGenerator
+           class="org.eclipse.scava.plugin.eclipse.markerresolution.apimigration.ApiMigrationDetectionMarkerResolutionGenerator"
+           markerType="org.eclipse.scava.plugin.markers.apimigrationdetection">
+     </markerResolutionGenerator>
   </extension>
    <extension
          point="org.eclipse.help.toc">
@@ -526,6 +709,4 @@
             primary="true">
       </toc>
    </extension>
-  
-  
 </plugin>
