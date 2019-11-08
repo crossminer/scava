@@ -22,5 +22,11 @@ public class Repository extends Job {
 	public void setHtmlUrl(String htmlUrl) {
 		this.htmlUrl = htmlUrl;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Techs (" + " fullName=" + fullName + " htmlUrl=" + htmlUrl + " jobId=" + jobId + " correlationId="
+				+ correlationId + " destination=" + destination + ")";
+	}
+
 }

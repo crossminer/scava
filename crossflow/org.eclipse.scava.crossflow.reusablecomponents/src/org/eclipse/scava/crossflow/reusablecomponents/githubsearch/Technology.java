@@ -23,4 +23,10 @@ public class Technology extends Job {
 		this.fileExt = fileExt;
 	}
 
+	@Override
+	public String toString() {
+		return "Techs (" + " techKey=" + techKey + " fileExt=" + fileExt + " jobId=" + jobId + " correlationId="
+				+ correlationId + " destination=" + destination + ")";
+	}
+
 }

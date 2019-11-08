@@ -77,6 +77,8 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 	public String toString() {
 		[%
 		var fields = t.fields.name;
+		for(n in t.closure(e|e.extending).fields.flatten.name)
+			fields = fields.including("get"+n.ftuc+"()");
 		if (t.isJob()) fields = fields.includingAll(Sequence{"jobId", "correlationId", "destination"});
 		%]
 		return "[%=t.name%] (" + [%=fields.collect(f|'" ' + f + '=" + ' + f).concat(" + ")%] + ")";
