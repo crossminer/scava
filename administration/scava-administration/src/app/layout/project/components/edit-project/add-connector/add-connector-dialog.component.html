@@ -456,13 +456,8 @@
                     </div>
                 </div>
                 <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" name="username" [(ngModel)]="repository.username" #usernameInput="ngModel" required>
-                    <div *ngIf="usernameInput.dirty && usernameInput.invalid">
-                        <small class="form-text text-danger" *ngIf="usernameInput.errors.required">
-                            This field is required.
-                        </small>
-                    </div>
+                    <label for="username">Username <small>(optional)</small></label>
+                    <input type="text" class="form-control" name="username" [(ngModel)]="repository.username">
                 </div>
                 <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
                     <label for="usernameFieldName">Username Field Name</label>
@@ -474,13 +469,8 @@
                     </div>
                 </div>
                 <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
-                    <label for="password">Password</label>
-                    <input type="text" class="form-control" name="password" [(ngModel)]="repository.password" #passwordInput="ngModel" required>
-                    <div *ngIf="passwordInput.dirty && passwordInput.invalid">
-                        <small class="form-text text-danger" *ngIf="passwordInput.errors.required">
-                            This field is required.
-                        </small>
-                    </div>
+                    <label for="password">Password <small>(optional)</small></label>
+                    <input type="text" class="form-control" name="password" [(ngModel)]="repository.password">
                 </div>
                 <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic'">
                     <label for="passwordFieldName">Password Field Name</label>
