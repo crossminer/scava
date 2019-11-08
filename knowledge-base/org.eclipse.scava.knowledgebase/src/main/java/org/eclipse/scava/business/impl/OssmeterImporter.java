@@ -82,6 +82,8 @@ public class OssmeterImporter implements IImporter {
 			result.setClone_url((String) obj.get("clone_url"));
 		if (obj.get("full_name") != null)
 			result.setFullName((String) obj.get("full_name"));
+		
+			
 		if (obj.get("fork") != null)
 			result.setFork((boolean) obj.get("fork"));
 		if (obj.get("git_url") != null)
@@ -105,6 +107,8 @@ public class OssmeterImporter implements IImporter {
 		if (obj.get("descritpion") != null)
 			result.setReadmeText((String) obj.get("description"));
 		result.setMetricPlatformId(result.getShortName());
+		if (result.getFullName() == null || result.getFullName().isEmpty())
+			result.setFullName(result.getShortName());
 		return result;
 	}
 
