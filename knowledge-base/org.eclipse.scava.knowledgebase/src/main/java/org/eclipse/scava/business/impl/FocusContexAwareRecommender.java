@@ -267,13 +267,13 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		return rec;
 	}
 
-	public double getJaccardSmilarity(List<String> query, List<String> project) {
-		int leftLength = query.size();
-		int rightLength = project.size();
+	public double getJaccardSmilarity(List<String> methodInvolcationsQuery, List<String> methodInvocationProject) {
+		int leftLength = methodInvolcationsQuery.size();
+		int rightLength = methodInvocationProject.size();
 		if (leftLength == 0 || rightLength == 0)
 			return 0d;
-		Set<String> querySet = Sets.newHashSet(query);
-		Set<String> projectSet = Sets.newHashSet(project);
+		Set<String> querySet = Sets.newHashSet(methodInvolcationsQuery);
+		Set<String> projectSet = Sets.newHashSet(methodInvocationProject);
 		SetView<String> intersect = Sets.intersection(querySet, projectSet);
 		SetView<String> union = Sets.union(querySet, projectSet);
 		return (2.0 * intersect.size()) / union.size();
@@ -287,14 +287,14 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 
 	}
 
-	public Map<Artifact, Double> getSimilarProjects(List<String> query) {
+	public Map<Artifact, Double> getSimilarProjects(List<String> methodInvolcationsQuery) {
 		List<Artifact> arts = simManger.appliableProjects(fsc);
 		Map<Artifact, Double> result = Maps.newHashMap();
 		for (Artifact artifact : arts) {
 			double res = 0d;
 			for (MethodDeclaration mDs : artifact.getMethodDeclarations()) {
 				if (!mDs.getName().endsWith("$initializer")) {
-					double sim = getJaccardSmilarity(query, mDs.getMethodInvocations());
+					double sim = getJaccardSmilarity(methodInvolcationsQuery, mDs.getMethodInvocations());
 					if (sim > res)
 						res = sim;
 				}
@@ -317,24 +317,71 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		return md;
 	}
 
+	/**
+		 *  GET SIMILAR PROJECT AND MAP THE BEST METHOD
+		 */
+	private Map<Artifact, String> getBestMethodFromSimilarPriojects(List<String> queryMIs) {
+		
+		Map<Artifact, Double> simArts = getTopNSimilarProjects(queryMIs, _numOfCodeSnippetResult);
+		Map<Artifact, String> clientMethodMap = Maps.newHashMap();
+		log.info("======================================");
+		for (Entry<Artifact, Double> art_simEntry : simArts.entrySet()) {
+			Artifact art = art_simEntry.getKey();
+			String method0 = getBestMethodDeclaration(art, queryMIs);
+			if (!method0.endsWith("$initializer")) {
+				clientMethodMap.put(art, method0);
+				log.info("{} - {} - {} ", art_simEntry.getValue(), art.getName(), method0);
+			}
+		}
+		return clientMethodMap;
+	}
+
+	private List<String> getCodeSnippetFromRecommendation(Map<Artifact, String> clientMethodMap) {
+		List<String> result = Lists.newArrayList();
+		log.info("======================================");
+		for (Entry<Artifact, String> ent : clientMethodMap.entrySet()) {
+			try {
+				String name = ent.getKey().getName().replace("g_", "").replace(".focus", "").replace(".jar",
+						"-sources.jar");
+				log.info("___________{}_____________", name);
+				String value = ent.getValue().replace("%5B%5D", "[]");
+				String methodQuery = "|java+method:///" + value + "|";
+				log.info("looking for {}", methodQuery);
+				String s = getCode(Paths.get(jarPath, name).toString(), methodQuery);
+				if (s == null || s.isEmpty()) {
+					methodQuery = "|java+constructor:///" + value + "|";
+					log.info("looking for {}", methodQuery);
+					s = getCode(Paths.get(jarPath, name).toString(), methodQuery);
+				}
+				log.info("{} {}", methodQuery, !s.isEmpty());
+				if (s != null && !s.isEmpty())
+					result.add(s);
+			} catch (Exception e) {
+				log.error("Extracting code error {}: {}", ent.getKey().getName(), e.getMessage());
+			}
+		}
+		return result;
+	}
+
 	private static int _numOfApiFunctionCalls = 25;
 	private static int _numOfCodeSnippetResult = 10;
 	private final String jarPath = "/Users/juri/Desktop/intiJars";
 	Maracas maracas = new Maracas();
 
-	public void jurissimo(Query query) throws Exception {
+	public List<String> focusCodeSmippetRecommender(Query query) throws Exception {
 		Artifact a = new Artifact();
 		a.setMethodDeclarations(query.getFocusInput().getMethodDeclarations());
 		a.setName("INPUTPROJECT");
 		List<Artifact> arts = simManger.appliableProjects(fsc);
 		Map<String, Float> apiFunctionCalls = recommends(arts, a, query.getFocusInput().getActiveDeclaration());
-		Optional<MethodDeclaration> myAM = query.getFocusInput().getMethodDeclarations().stream()
+		Optional<MethodDeclaration> myActiveMethod = query.getFocusInput().getMethodDeclarations().stream()
 				.filter(z -> z.getName().equals(query.getFocusInput().getActiveDeclaration())).findFirst();
-		if (myAM.isPresent()) {
+		if (myActiveMethod.isPresent()) {
 			int i = 0;
+
 			// CREATE METHODO API FUNCTION CALLS TO SEARCH
 			List<String> queryMIs = Lists.newArrayList();
-			queryMIs.addAll(myAM.get().getMethodInvocations());
+			queryMIs.addAll(myActiveMethod.get().getMethodInvocations());
 			for (Entry<String, Float> artifact : apiFunctionCalls.entrySet())
 				if (i < _numOfApiFunctionCalls) {
 					queryMIs.add(artifact.getKey());
@@ -343,45 +390,13 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 					break;
 
 			// GET SIMILAR PROJECT AND MAP THE BEST METHOD
-			Map<Artifact, Double> simArts = getTopNSimilarProjects(queryMIs, _numOfCodeSnippetResult);
-			List<Artifact> artToRec = Lists.newArrayList();
-			Map<Artifact, String> clientMethodMap = Maps.newHashMap();
-			log.info("======================================");
-			for (Entry<Artifact, Double> art_simEntry : simArts.entrySet()) {
-				Artifact art = art_simEntry.getKey();
-				String method0 = getBestMethodDeclaration(art, queryMIs);
-				if (!method0.endsWith("$initializer"))
-					clientMethodMap.put(art, method0);
-				log.info("{} - {} - {} ", art_simEntry.getValue(), art.getName(), method0);
-				artToRec.add(art);
-			}
-
+			Map<Artifact, String> clientMethodMap = getBestMethodFromSimilarPriojects(queryMIs);
 			// EXTRACT CODE FROM
-
-			List<String> result = Lists.newArrayList();
-			log.info("======================================");
-			for (Entry<Artifact, String> ent : clientMethodMap.entrySet()) {
-				try {
-					String name = ent.getKey().getName().replace("g_", "").replace(".focus", "").replace(".jar",
-							"-sources.jar");
-					log.info("___________{}_____________", name);
-					String value = ent.getValue().replace("%5B%5D", "[]");
-					String methodQuery = "|java+method:///" + value + "|";
-					log.info("looking for {}", methodQuery);
-					String s = getCode(Paths.get(jarPath, name).toString(), methodQuery);
-					if (s == null || s.isEmpty()) {
-						methodQuery = "|java+constructor:///" + value + "|";
-						log.info("looking for {}", methodQuery);
-						s = getCode(Paths.get(jarPath, name).toString(), methodQuery);
-					}
-					log.info("{} {}", methodQuery, !s.isEmpty());
-					if(s!=null && !s.isEmpty()) result.add(s);
-				} catch (Exception e) {
-					log.error("Extracting code error {}: {}", ent.getKey().getName(), e.getMessage());
-				}
-			}
+			List<String> result = getCodeSnippetFromRecommendation(clientMethodMap);
 			result.forEach(z -> log.info(z));
+			return result;
 		}
+		return Lists.newArrayList();
 	}
 
 	private String getSources(String coord) throws Exception {
