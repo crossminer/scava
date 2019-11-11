@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -33,11 +35,9 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
-import org.eclipse.scava.repository.model.cc.forum.Forum;
-import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.wiki.Wiki;
 import org.eclipse.scava.repository.model.eclipse.Documentation;
-import org.eclipse.scava.repository.model.eclipse.EclipsePlatform;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.eclipse.MailingList;
 import org.eclipse.scava.repository.model.importer.IImporter;
@@ -56,6 +56,10 @@ import org.jsoup.select.Elements;
 
 public class EclipseProjectImporter implements IImporter {
 	protected OssmeterLogger logger;
+	
+	private Pattern forumIdParser=Pattern.compile("frm_id=(\\d+)$");
+	private String clientSecret;
+	private String clientId;
 
 	public EclipseProjectImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.eclipse ");
@@ -273,39 +277,39 @@ public class EclipseProjectImporter implements IImporter {
 			}
 			if ((isNotNull(currentProg, "forums"))) {
 				JSONArray forums = (JSONArray) currentProg.get("forums");
+				@SuppressWarnings("unchecked")
 				Iterator<JSONObject> iter = forums.iterator();
-				Forum forum = null;
-				ArrayList<NntpNewsGroup> tempNntp = new ArrayList<NntpNewsGroup>();
-				String[] projectNameSplit = projectId.split("\\.");
-				String projectEffective = projectNameSplit[projectNameSplit.length - 1];
-				boolean nntpflag = false;
+				
+				EclipseForum eclipseForum=null;
+				URL FORUM_URL;
+				URLConnection connForum;
+				String forumStatus;
+				Matcher forumIdMatch;
+
 				while (iter.hasNext()) {
 					JSONObject entry = (JSONObject) iter.next();
-					forum = new Forum();
-					forum.setName((String) entry.get("name"));
-					forum.setUrl((String) entry.get("url"));
-					forum.setNonProcessable(true);
-					NntpNewsGroup NNTPuRL = new NntpNewsGroup();
-					NNTPuRL.setUsername("exquisitus");
-					NNTPuRL.setPassword("flinder1f7");
-					NNTPuRL.setPort(119);
-					NNTPuRL.setNewsGroupName((String) entry.get("name"));
-					NNTPuRL.setUrl("news.eclipse.org/");
-					NNTPuRL.setAuthenticationRequired(true);
-					NNTPuRL.setNonProcessable(false);
-					forum.setDescription((String) entry.get("description"));
-					String[] lastUrlSplit = ((String) entry.get("name")).split("\\.");
-					String lastUrl = lastUrlSplit[lastUrlSplit.length - 1];
-					if (projectEffective.toLowerCase().contains(lastUrl.toLowerCase())
-							|| lastUrl.toLowerCase().contains(projectEffective.toLowerCase())) {
-//						project.getCommunicationChannels().add(NNTPuRL);
-						nntpflag = true;
-					} else
-						tempNntp.add(NNTPuRL);
-					project.getCommunicationChannels().add(forum);
+					FORUM_URL = new URL((String) entry.get("url"));
+					connForum = FORUM_URL.openConnection();
+					forumStatus = connForum.getHeaderField("STATUS");
+					if (forumStatus != null && forumStatus.startsWith("404"))
+						logger.info("The project " + projectId + " does not seem to have a forum");
+					else
+					{
+						forumIdMatch=forumIdParser.matcher(connForum.getURL().getQuery());
+						if(!forumIdMatch.find())
+							logger.info("The project " + projectId + " does not seem to have a forum");
+						else
+						{
+							eclipseForum = new EclipseForum();
+							eclipseForum.setForum_id(forumIdMatch.group(1));
+							eclipseForum.setForum_name((String) entry.get("name"));
+							eclipseForum.setUrl((String) entry.get("url"));
+							eclipseForum.setClient_secret(clientSecret);
+							eclipseForum.setClient_id(clientId);
+							project.getCommunicationChannels().add(eclipseForum);
+						}
+					}
 				}
-				if (!nntpflag)
-					project.getCommunicationChannels().addAll(tempNntp);
 			}
 			if ((isNotNull(currentProg, "bugzilla"))) {
 				JSONArray bugzillaJsonArray = (JSONArray) currentProg.get("bugzilla");
@@ -619,5 +623,9 @@ public class EclipseProjectImporter implements IImporter {
 
 	@Override
 	public void setCredentials(Credentials credentials) {
+		if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+			clientSecret=credentials.getAuthToken();
+		if(!credentials.getUsername().equals("") || credentials.getUsername()!=null)
+			clientId=credentials.getUsername();
 	}
 }

@@ -1,9 +1,6 @@
 package org.eclipse.scava.business.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -50,19 +47,20 @@ import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
 import org.eclipse.scava.business.dto.RecommendationItem;
+import org.eclipse.scava.business.integration.LibBoostRepository;
+import org.eclipse.scava.business.model.LibBoost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
-import com.google.common.collect.Lists;
 
 @Service
 @Qualifier("SORecommender")
 public class SORecommender implements IRecommendationProvider {
+	@Autowired
+	private LibBoostRepository libBoostRepo;
 
 	@Value("${sorecommender.titleBoostValue}")
 	private double titleBoostValue;
@@ -77,8 +75,6 @@ public class SORecommender implements IRecommendationProvider {
 	@Value("${sorecommender.luceneTreshold}")
 	private double luceneTreshold;
 
-	@Value("${sorecommender.importerBoostLibrariesPath}")
-	private String importerBoostValue;
 	@Value("${sorecommender.INDEX_DIRECTORY}")
 	private String INDEX_DIRECTORY;
 	private static final Logger logger = LoggerFactory.getLogger(SORecommender.class);
@@ -254,7 +250,7 @@ public class SORecommender implements IRecommendationProvider {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("IO error on {} {}",INDEX_DIRECTORY,e.getMessage());
+			logger.error("IO error on {} {}", INDEX_DIRECTORY, e.getMessage());
 		} catch (ParseException e) {
 			logger.error("Error {} {} parsing query {}", v1, v2, e.getMessage());
 		}
@@ -359,33 +355,23 @@ public class SORecommender implements IRecommendationProvider {
 		return imports;
 	}
 
-	private ArrayList<String> getBoostImport(HashMap<String, HashSet<String>> tokens) {
-		Resource resource = new ClassPathResource(importerBoostValue);
-		ArrayList<String> importedTokens = new ArrayList<String>();
-		try {
-			File source = resource.getFile();
-			BufferedReader reader;
-			reader = new BufferedReader(new FileReader(source));
-			String text = null;
 
-			while ((text = reader.readLine()) != null)
-				if (text.length() >= 5) {
-					text = text.substring(0, text.length() - 1);
-					if (tokens.containsKey("ImportDeclaration"))
-						for (String txt : tokens.get("ImportDeclaration"))
-							if (txt.toLowerCase().contains(text.toLowerCase()))
-								importedTokens.add(txt);
-				}
-			Set<String> set = new HashSet<String>();
-			set.addAll(importedTokens);
-			importedTokens.clear();
-			importedTokens.addAll(set);
-			reader.close();
-		} catch (FileNotFoundException e) {
-			logger.error(e.getMessage());
-		} catch (IOException e) {
-			logger.error(e.getMessage());
+	private ArrayList<String> getBoostImport(HashMap<String, HashSet<String>> tokens) {
+		ArrayList<String> importedTokens = new ArrayList<String>();
+		for (LibBoost boost : libBoostRepo.findAll()) {
+			String text = boost.getName();
+			if (text.length() >= 5) {
+				text = text.substring(0, text.length() - 1);
+				if (tokens.containsKey("ImportDeclaration"))
+					for (String txt : tokens.get("ImportDeclaration"))
+						if (txt.toLowerCase().contains(text.toLowerCase()))
+							importedTokens.add(txt);
+			}
 		}
+		Set<String> set = new HashSet<String>();
+		set.addAll(importedTokens);
+		importedTokens.clear();
+		importedTokens.addAll(set);
 		return importedTokens;
 
 	}
@@ -425,7 +411,7 @@ public class SORecommender implements IRecommendationProvider {
 		query = query.substring(0, query.length() - 3);
 		return query;
 	}
-	
+
 	private String getAnswer(ArrayList<String> vars, String query, boolean overallGuard) {
 		if (overallGuard == true)
 			for (String var : vars)

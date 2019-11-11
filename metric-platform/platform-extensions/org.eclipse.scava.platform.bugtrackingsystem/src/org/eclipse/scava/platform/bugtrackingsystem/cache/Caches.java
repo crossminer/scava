@@ -18,7 +18,8 @@ public class Caches<T, K> {
     private Map<String, Cache<T, K>> map = new HashMap<String, Cache<T, K>>();
     private CacheProvider<T, K> provider;
 
-    public Caches(CacheProvider<T, K> provider) {
+    public Caches(CacheProvider<T, K> provider)
+    {
         if (null == provider) {
             throw new IllegalArgumentException("provider cannot be null");
         }
@@ -26,15 +27,19 @@ public class Caches<T, K> {
         this.provider = provider;
     }
 
-    public Cache<T, K> getCache(BugTrackingSystem bugTracker,
-            boolean createIfNotExists) {
+    public Cache<T, K> getCache(BugTrackingSystem bugTracker, boolean createIfNotExists)
+    {
         String id = bugTracker.getOSSMeterId();
 
-        Cache<T, K> cache = null;
+        Cache<T, K> cache =  map.get(id);
 
-        cache = map.get(id);
-
-        if (null == cache && createIfNotExists) {
+        //This adds the support for bug trackers were the password and username can change
+        if(cache!=null)
+        {
+        	if(cache.updatedBugTrackingSystem(bugTracker))
+        		map.replace(id, cache);
+        }
+        else if (createIfNotExists) {
             cache = new Cache<T, K>(bugTracker, provider);
             map.put(id, cache);
         }

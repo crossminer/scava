@@ -65,6 +65,7 @@ public class CROSSRECTest {
 	@Before
 	public void testCreateAndStoreDistanceMatrix() throws IOException {
 		crossRecGraphRepository.deleteAll();
+		artifactRepository.deleteAll();
 		ObjectMapper mapper = new ObjectMapper();
 		Resource resource = new ClassPathResource("artifacts.json");
 		InputStream resourceInputStream = resource.getInputStream();
