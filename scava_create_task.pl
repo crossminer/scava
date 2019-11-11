@@ -38,9 +38,22 @@ my $a_stop = shift;
 my $a_type = shift;
 
 my @metric_providers = (
+    "org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider",
+    "trans.rascal.dependency.osgi.unusedOSGiImportedPackages",
+    "trans.rascal.dependency.osgi.allOSGiBundleDependencies",
+    "trans.rascal.dependency.osgi.allOSGiDynamicImportedPackages",
+    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies",
+    "trans.rascal.dependency.osgi.numberOSGiPackageDependencies",
+    "org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider",
+    "trans.rascal.dependency.osgi.allOSGiPackageDependencies",
+    "trans.rascal.dependency.maven.numberMavenDependencies.historic",
+    "trans.rascal.dependency.maven.numberMavenDependencies",
+    "trans.rascal.dependency.maven.numberMavenDependencies.historic",
+    "trans.rascal.dependency.maven.allMavenDependencies",
     "trans.rascal.api.changedMethods",
     "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
     "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
+    "trans.rascal.dependency.maven.numberMavenDependencies.historic",
     "trans.rascal.dependency.maven.numberUniqueMavenDependencies",
     "trans.rascal.dependency.maven.allOptionalMavenDependencies",
     "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
