@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
 import org.eclipse.scava.plugin.mvc.event.direct.IEventInvoker;
 import org.eclipse.scava.plugin.mvc.view.CompositeView;
@@ -63,8 +64,6 @@ public class DetailsView extends CompositeView<IDetailsViewEventListener> {
 	private Text txtAsd;
 	private StyledText styledText;
 	
-	private static final String NO_DATA = "n/a";
-
 	/**
 	 * Create the composite.
 	 * 
@@ -287,34 +286,34 @@ public class DetailsView extends CompositeView<IDetailsViewEventListener> {
 	}
 	
 	public void setProject(Artifact project) {
-		lblName.setText(Optional.ofNullable(project.getFullName()).orElse(NO_DATA));
+		lblName.setText(Optional.ofNullable(project.getFullName()).orElse(Constants.NO_DATA));
 				
 		insertRows(parametersComposite,
-				new Row("ID", Optional.ofNullable(project.getId()).orElse(NO_DATA)),
-				new Row("Tags", Optional.ofNullable(project.getTags()).map(l -> l.stream().map(Tag::getTag).collect(Collectors.joining("; "))).orElse(NO_DATA)),
-				new Row("Name", Optional.ofNullable(project.getName()).orElse(NO_DATA)),
-				new Row("Short name", Optional.ofNullable(project.getShortName()).orElse(NO_DATA)),
-				new Row("Year", Optional.ofNullable(project.getYear()).filter(y -> y != 0).map(y -> Integer.toString(y)).orElse(NO_DATA)),
-				new Row("Active", Optional.ofNullable(project.isActive()).map(a -> a ? "yes" : "no").orElse(NO_DATA)),
-				new Row("Homepage", Optional.ofNullable(project.getHomePage()).orElse(NO_DATA)),
-				new Row("Type", Optional.ofNullable(project.getType()).map(ArtifactType::getName).orElse(NO_DATA)),
-				new Row("Is it private?", Optional.ofNullable(project.isPrivate_()).map(p -> p ? "yes" : "no").orElse(NO_DATA)),
-				new Row("Is it a fork?", Optional.ofNullable(project.isFork()).map(f -> f ? "yes" : "no").orElse(NO_DATA)),
-				new Row("HTML URL", Optional.ofNullable(project.getHtmlUrl()).orElse(NO_DATA)),
-				new Row("Clone URL", Optional.ofNullable(project.getCloneUrl()).orElse(NO_DATA)),
-				new Row("Git URL", Optional.ofNullable(project.getGitUrl()).orElse(NO_DATA)),
-				new Row("SSH url", Optional.ofNullable(project.getSshUrl()).orElse(NO_DATA)),
-				new Row("SVN url", Optional.ofNullable(project.getSvnUrl()).orElse(NO_DATA)),
-				new Row("Mirror url", Optional.ofNullable(project.getMirrorUrl()).orElse(NO_DATA)),
-				new Row("Size", Optional.ofNullable(project.getSize()).filter(s -> s != 0).map(s -> Long.toString(s)).orElse(NO_DATA)),
-				new Row("Master branch", Optional.ofNullable(project.getMasterBranch()).orElse(NO_DATA)),
-				new Row("Web dashboard ID", Optional.ofNullable(project.getWebDashboardId()).orElse(NO_DATA)),
-				new Row("Metric platform ID", Optional.ofNullable(project.getMetricPlatformId()).orElse(NO_DATA)),
+				new Row("ID", Optional.ofNullable(project.getId()).orElse(Constants.NO_DATA)),
+				new Row("Tags", Optional.ofNullable(project.getTags()).map(l -> l.stream().map(Tag::getTag).collect(Collectors.joining("; "))).orElse(Constants.NO_DATA)),
+				new Row("Name", Optional.ofNullable(project.getName()).orElse(Constants.NO_DATA)),
+				new Row("Short name", Optional.ofNullable(project.getShortName()).orElse(Constants.NO_DATA)),
+				new Row("Year", Optional.ofNullable(project.getYear()).filter(y -> y != 0).map(y -> Integer.toString(y)).orElse(Constants.NO_DATA)),
+				new Row("Active", Optional.ofNullable(project.isActive()).map(a -> a ? "yes" : "no").orElse(Constants.NO_DATA)),
+				new Row("Homepage", Optional.ofNullable(project.getHomePage()).orElse(Constants.NO_DATA)),
+				new Row("Type", Optional.ofNullable(project.getType()).map(ArtifactType::getName).orElse(Constants.NO_DATA)),
+				new Row("Is it private?", Optional.ofNullable(project.isPrivate_()).map(p -> p ? "yes" : "no").orElse(Constants.NO_DATA)),
+				new Row("Is it a fork?", Optional.ofNullable(project.isFork()).map(f -> f ? "yes" : "no").orElse(Constants.NO_DATA)),
+				new Row("HTML URL", Optional.ofNullable(project.getHtmlUrl()).orElse(Constants.NO_DATA)),
+				new Row("Clone URL", Optional.ofNullable(project.getCloneUrl()).orElse(Constants.NO_DATA)),
+				new Row("Git URL", Optional.ofNullable(project.getGitUrl()).orElse(Constants.NO_DATA)),
+				new Row("SSH url", Optional.ofNullable(project.getSshUrl()).orElse(Constants.NO_DATA)),
+				new Row("SVN url", Optional.ofNullable(project.getSvnUrl()).orElse(Constants.NO_DATA)),
+				new Row("Mirror url", Optional.ofNullable(project.getMirrorUrl()).orElse(Constants.NO_DATA)),
+				new Row("Size", Optional.ofNullable(project.getSize()).filter(s -> s != 0).map(s -> Long.toString(s)).orElse(Constants.NO_DATA)),
+				new Row("Master branch", Optional.ofNullable(project.getMasterBranch()).orElse(Constants.NO_DATA)),
+				new Row("Web dashboard ID", Optional.ofNullable(project.getWebDashboardId()).orElse(Constants.NO_DATA)),
+				new Row("Metric platform ID", Optional.ofNullable(project.getMetricPlatformId()).orElse(Constants.NO_DATA)),
 				new Row("List of committers", "currently not supported on client side"));
 				
 		List<String> dependencies = project.getDependencies();
 		if( dependencies == null ) {
-			insertRows(dependenciesComposite, new Row(NO_DATA));
+			insertRows(dependenciesComposite, new Row(Constants.NO_DATA));
 		}else {
 			insertRows(dependenciesComposite, dependencies.stream().map(d -> new Row(d)).collect(Collectors.toList()));
 		}

@@ -15,6 +15,7 @@ import org.eclipse.scava.plugin.projectsearch.search.ProjectSelectedEvent;
 import java.util.Collections;
 import java.util.Optional;
 
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -35,7 +36,7 @@ public class SearchResultController extends ModelViewController<SearchResultMode
 		
 		Artifact project = getModel().getProject();
 		
-		getView().setName(Optional.ofNullable(project.getFullName()).orElse("n/a"));
+		getView().setName(Optional.ofNullable(project.getFullName()).orElse(Constants.NO_DATA));
 		getView().setStarred(Optional.ofNullable(project.getStarred()).orElse(Collections.emptyList()).size());
 		getView().setDependencies(Optional.ofNullable(project.getDependencies()).orElse(Collections.emptyList()).size());
 		getView().setActive(Optional.ofNullable(project.isActive()).orElse(false));

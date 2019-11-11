@@ -425,15 +425,22 @@ public class ProjectEditionResource extends ServerResource {
 							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						if (ccJson.has("executionFrequency")) {
-							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 						}
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:
@@ -809,15 +816,22 @@ public class ProjectEditionResource extends ServerResource {
 							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						if (ccJson.has("executionFrequency")) {
-							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 						}
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:
@@ -1180,15 +1194,22 @@ public class ProjectEditionResource extends ServerResource {
 							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						if (ccJson.has("executionFrequency")) {
-							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 						}
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:
@@ -1543,15 +1564,22 @@ public class ProjectEditionResource extends ServerResource {
 							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
 						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						if (ccJson.has("executionFrequency")) {
-							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 						}
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
 					}
 					break;
 				default:

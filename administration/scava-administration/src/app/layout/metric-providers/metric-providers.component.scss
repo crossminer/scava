@@ -1,5 +1,10 @@
+.example-container{
+    overflow: auto;
+}
+
 table.mat-table {
     width: 100%;
+    overflow: auto;
 }
 
 .example-header {

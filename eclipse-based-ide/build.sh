@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WORKDIR="./developmentTools/modules/openApiClientBuilding"
-CLIENTDIR="$WORKDIR/client"
+WORKDIR="./developmentTools2/openApi"
+CLIENTDIR="$WORKDIR/projects/client"
 
 java -jar "$WORKDIR/swagger-codegen-cli-2.3.1.jar" generate -i "$WORKDIR/openapi.json" -l java -o "$CLIENTDIR" -c "$WORKDIR/codegen-java-config.json"
 
