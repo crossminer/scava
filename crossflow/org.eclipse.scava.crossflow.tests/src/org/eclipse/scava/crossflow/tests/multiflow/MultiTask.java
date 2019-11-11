@@ -23,12 +23,12 @@ public class MultiTask extends MultiTaskBase {
 
 		Number1 out1 = new Number1(number.getN1() + number.getN1());
 		if (cache)
-			out1.setCorrelationId(number.getId());
+			out1.setCorrelationId(number.getJobId());
 		sendToOut1(out1);
 
 		Number2 out2 = new Number2(number.getN1() * number.getN1());
 		if (cache)
-			out2.setCorrelationId(number.getId());
+			out2.setCorrelationId(number.getJobId());
 		sendToOut2(out2);
 	}
 
@@ -39,12 +39,12 @@ public class MultiTask extends MultiTaskBase {
 
 		Number1 out1 = new Number1(number.getN2() + number.getN2());
 		if (cache)
-			out1.setCorrelationId(number.getId());
+			out1.setCorrelationId(number.getJobId());
 		sendToOut1(out1);
 
 		Number2 out2 = new Number2(number.getN2() * number.getN2());
 		if (cache)
-			out2.setCorrelationId(number.getId());
+			out2.setCorrelationId(number.getJobId());
 		sendToOut2(out2);
 	}
 

@@ -46,7 +46,7 @@ class [%=t.name%] [%if(t.isJob()){%](Job):[%}else{%](object):[%}%]
     def __str__(self, *args, **kwargs):
         [%
         var fields = t.fields.name;
-        if (t.isJob()) fields = fields.includingAll(Sequence{"id", "correlationId", "destination"});
+        if (t.isJob()) fields = fields.includingAll(Sequence{"jobId", "correlationId", "destination"});
         %]
         return '[%=t.name%] (' + [%=fields.collect(f|'" ' + f + '=" + str(self.' + f).concat(') + ')%]) + ")"
 

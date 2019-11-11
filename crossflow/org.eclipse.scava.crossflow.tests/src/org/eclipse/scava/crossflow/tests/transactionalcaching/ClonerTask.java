@@ -26,14 +26,14 @@ public class ClonerTask extends ClonerTaskBase {
 
 		Element output = new Element();
 		output.setS(element.getS());
-		output.setCorrelationId(element.getId());
+		output.setCorrelationId(element.getJobId());
 
 		sendToOutput(output);
 
 		if (!fail) {
 			output = new Element();
 			output.setS(element.getS() + "c");
-			output.setCorrelationId(element.getId());
+			output.setCorrelationId(element.getJobId());
 			sendToOutput(output);
 		} else
 			throw new Exception("Cannot clone element: " + element.getS());

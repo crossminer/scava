@@ -46,6 +46,7 @@ import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SerialiserEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
@@ -138,6 +139,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case CommitmentTaskEditPart.VISUAL_ID:
 		case OpinionatedTaskEditPart.VISUAL_ID:
 		case ScriptedTaskEditPart.VISUAL_ID:
+		case ReusableComponentEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
@@ -361,6 +363,13 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case ScriptedTaskEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(CrossflowDiagramUpdater.getScriptedTask_2015ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case ReusableComponentEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(CrossflowDiagramUpdater.getReusableComponent_2017ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

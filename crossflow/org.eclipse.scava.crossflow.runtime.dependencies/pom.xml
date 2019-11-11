@@ -16,26 +16,22 @@
 
   <build>
     <plugins>
+    <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+            <filesets>
+                <fileset>
+                    <directory>${basedir}/lib</directory>
+                </fileset>
+            </filesets>
+        </configuration>
+    </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.8</version>
         <executions>
-          <execution>
-            <id>clean-lib-folder</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <delete>
-                  <fileset dir="lib" includes="*/" />
-                </delete>
-                <echo>Deleted lib folder</echo>
-              </target>
-            </configuration>            
-          </execution>      
           <execution>
             <id>clean-ivy</id>
             <phase>clean</phase>

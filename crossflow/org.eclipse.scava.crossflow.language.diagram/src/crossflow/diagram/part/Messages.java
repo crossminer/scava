@@ -326,72 +326,82 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String ScriptedTask9CreationTool_title;
+	public static String ReusableComponent9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String ScriptedTask9CreationTool_desc;
+	public static String ReusableComponent9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Serialiser10CreationTool_title;
+	public static String ScriptedTask10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Serialiser10CreationTool_desc;
+	public static String ScriptedTask10CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Sink11CreationTool_title;
+	public static String Serialiser11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Sink11CreationTool_desc;
+	public static String Serialiser11CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Source12CreationTool_title;
+	public static String Sink12CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Source12CreationTool_desc;
+	public static String Sink12CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Task13CreationTool_title;
+	public static String Source13CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Task13CreationTool_desc;
+	public static String Source13CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Topic14CreationTool_title;
+	public static String Task14CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Topic14CreationTool_desc;
+	public static String Task14CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String Type15CreationTool_title;
+	public static String Topic15CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Type15CreationTool_desc;
+	public static String Topic15CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type16CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type16CreationTool_desc;
 
 	/**
 	* @generated
@@ -572,6 +582,16 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String NavigatorGroupName_ScriptedTask_2015_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ReusableComponent_2017_incominglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ReusableComponent_2017_outgoinglinks;
 
 	/**
 	* @generated

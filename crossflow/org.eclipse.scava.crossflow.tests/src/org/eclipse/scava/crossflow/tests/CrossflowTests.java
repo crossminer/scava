@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.tests;
 
+import org.eclipse.scava.crossflow.runtime.serializer.tests.RuntimeSerializationTests;
 import org.eclipse.scava.crossflow.runtime.tests.RuntimeTests;
 import org.eclipse.scava.crossflow.tests.ack.AckWorkflowTests;
 import org.eclipse.scava.crossflow.tests.addition.AdditionWorkflowCommandLineTests;
@@ -39,6 +40,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	TransactionalCachingTests.class,
 	ConfigurableWorkflowTests.class,
 	RuntimeTests.class,
+	RuntimeSerializationTests.class,
 	OptionalBuiltinStreamTests.class
 })
 public class CrossflowTests {

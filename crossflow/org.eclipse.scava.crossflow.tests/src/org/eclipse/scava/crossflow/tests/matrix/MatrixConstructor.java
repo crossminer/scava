@@ -10,7 +10,7 @@ public class MatrixConstructor extends MatrixConstructorBase {
 		executions++;
 
 		Matrix matrix = new Matrix();
-		matrix.setCorrelationId(matrixConfiguration.getId());
+		matrix.setCorrelationId(matrixConfiguration.getJobId());
 
 		for (int i = 0; i < matrixConfiguration.getRows(); i++) {
 			Row row = new Row();

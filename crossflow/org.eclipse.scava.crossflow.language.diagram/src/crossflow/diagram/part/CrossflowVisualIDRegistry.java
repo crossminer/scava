@@ -35,6 +35,8 @@ import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
@@ -191,6 +193,9 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getScriptedTask().isSuperTypeOf(domainElement.eClass())) {
 				return ScriptedTaskEditPart.VISUAL_ID;
 			}
+			if (CrossflowPackage.eINSTANCE.getReusableComponent().isSuperTypeOf(domainElement.eClass())) {
+				return ReusableComponentEditPart.VISUAL_ID;
+			}
 			if (CrossflowPackage.eINSTANCE.getTask().isSuperTypeOf(domainElement.eClass())) {
 				return TaskEditPart.VISUAL_ID;
 			}
@@ -278,6 +283,9 @@ public class CrossflowVisualIDRegistry {
 			if (ScriptedTaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (ReusableComponentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (TaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -339,6 +347,11 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			if (ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ReusableComponentEditPart.VISUAL_ID:
+			if (ReusableComponentNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -505,6 +518,7 @@ public class CrossflowVisualIDRegistry {
 		case OpinionatedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
+		case ReusableComponentEditPart.VISUAL_ID:
 		case Field3EditPart.VISUAL_ID:
 		case ParameterEditPart.VISUAL_ID:
 		case Field2EditPart.VISUAL_ID:

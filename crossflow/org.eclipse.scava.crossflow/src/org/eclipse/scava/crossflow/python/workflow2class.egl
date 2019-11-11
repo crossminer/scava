@@ -1,25 +1,29 @@
-[%import "../util.eol";%]
+[%import "../util.eol";
+import "pythonUtil.eol";%]
 import argparse
 import sys
 import time
-import traceback
 
-[% var imports = new Sequence; 
-imports.addAll(w.getMasterTasks().collect(t|t.name));
-imports.addAll(w.getWorkerTasks().collect(t|t.name));
-imports = imports.sortBy(i|i);
-for (i in imports) {%]
-from [%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+# Tasks
+[%for (t in w.getPyTasks()) {%]
+from [%=package%].[%=t.pyVarName()%] import [%=t.name%]
 [%}%]
-[% imports = new Sequence;
-imports.addAll(w.streams.collect(s|s.name));
-imports.addAll(w.types.collect(t|t.name));
-imports.add(w.name + "Tasks");
-imports = imports.sortBy(i|i);
-for (i in imports) {%]
-from crossflow.[%=package%].[%=i.toSnakeCaseLower()%] import [%=i%]
+
+# Types
+[%for (t in w.types) {%]
+from crossflow.[%=package%].[%=t.pyVarName()%] import [%=t.name%]
 [%}%]
-from crossflow.runtime import ControlSignal, ControlSignals, Mode, Workflow
+
+# Streams
+[%for (s in w.streams) {
+	if(not s.inputOf.isEmpty()) {%]
+from crossflow.[%=package%].[%=s.pyVarName()%] import [%=s.name%]
+[%	}
+}%]
+
+# Utility
+from crossflow.[%=package%].[%=w.pyVarName()%]_tasks import [%=w.name%]Tasks
+from crossflow.runtime import BuiltinStream, Mode, Serializer, Workflow
 
 
 class [%=w.name%](Workflow):
@@ -28,56 +32,60 @@ class [%=w.name%](Workflow):
     Do not edit this class manually
     """
 
-    def __init__(self,
-                 name='',
-                 cache=None,
-                 brokerHost='localhost',
-                 stompPort=61613,
-                 instanceId=None,
-                 mode=Mode.WORKER,
-                 cacheEnabled=True,
-                 deleteCache=None,
-                 excluded_tasks=[]):
+    def __init__(
+        self,
+        name="",
+        instance=None,
+        broker_host="localhost",
+        stomp_port=61613,
+        mode=Mode.WORKER,
+        cache=None,
+        cache_enabled=True,
+        delete_cache=None,
+        excluded_tasks=None,
+        enable_prefetch=False
+    ):
                  
         super().__init__(name=name,
-                         cache=cache,
-                         brokerHost=brokerHost,
-                         stompPort=stompPort,
-                         instanceId=instanceId,
+                         instance=instance,
+                         broker_host=broker_host,
+                         stomp_port=stomp_port,
                          mode=mode,
-                         cacheEnabled=cacheEnabled,
-                         deleteCache=deleteCache,
-                         excluded_tasks=excluded_tasks)
-        
-        # Register types with serializer
-        [%for (t in w.types) {%]
-        self.serializer.register([%=t.name%])
-        [%}%]
-        
+                         cache=cache,
+                         cache_enabled=cache_enabled,
+                         delete_cache=delete_cache,
+                         excluded_tasks=excluded_tasks,
+                         enable_prefetch=False)
+                         
         # Streams
         [%for (s in w.streams) { %]
-        self.[%=s.name.ftlc()%] = None
+        self.[%=s.name.ftlc()%]: [%=s.pyType()%] = None
         [%}%]
 
         # Tasks
         [%for (t in w.tasks) {%]
-        [%if (t.isPythonTask()) {%]
+        [%if (t.isPyTask()) {%]
         self.[%=t.name.ftlc()%] = None
         [%}%]
         [%}%]
         
         # Task creation
         self.tasks = []
-        [%for (t in w.getWorkerTasks()){%]
-        if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+        [%for (t in w.getPyTasks()){%]
+        if [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] not in self._excluded_tasks:
             self.[%=t.name.ftlc()%] = [%=t.name%]()
-            self.[%=t.name.ftlc()%].setWorkflow(self)
+            self.[%=t.name.ftlc()%].workflow = self
             self.tasks.append(self.[%=t.name.ftlc()%])
         [%}%]
 
+    def excluded_tasks(self, tasks=[]):
+        assert isinstance(tasks, list)
+        assert not tasks or [t for t in tasks if isinstance(t, [%=w.name%]Tasks)]
+        self._excluded_tasks = tasks
+
     def createWorker(self):
         worker = [%=w.name%](Mode.WORKER)
-        worker.setInstanceId(self.instanceId)
+        worker.instance(self._instance)
         return worker
 
     [%for (p in w.parameters) { %]
@@ -101,20 +109,21 @@ class [%=w.name%](Workflow):
         :param delay: delay in ms before this worker will start running. Defaults to 0
         :type delay: int
         """
-        self.delay=delay
+        self._delay=delay
 
         try:
             time.sleep(delay)
             self.connect()
-
-            [%for (s in w.streams) { %]
-            self.[%=s.name.ftlc()%] = [%=s.name%](self, self.enablePrefetch)
-            self.activeStreams.append(self.[%=s.name.ftlc()%])
+            
+            # Initialise Streams
+            [%for (s in w.streams) {%]
+            [%=s.genInitStream()%]
+            
             [%}%]
 
             if (self.is_worker()):
-            [%for (t in w.getWorkerTasks()){%]
-                if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self.excluded_tasks:
+            [%for (t in w.getPyTasks()){%]
+                if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self._excluded_tasks:
                     [%=t.setup()%]
             [%}%]
 
@@ -122,7 +131,7 @@ class [%=w.name%](Workflow):
             self.local_logger.exception("")
 
     [%for (s in w.streams) { %]
-    def get[%=s.name%](self):
+    def get[%=s.name%](self) -> [%=s.pyType()%]:
         return self.[%=s.name.ftlc()%]
         
     [%}%]
@@ -131,19 +140,13 @@ class [%=w.name%](Workflow):
         return self.[%=t.name.ftlc()%]
         
     [%}%]
-    def isEnablePrefetch(self):
-        """Are tasks allowed to obtain more jobs while already executing
-        :rtype: boolean
-        """
-        return self.enablePrefetch
+    def _setup_serializer(self) -> Serializer:
+        s = Serializer()
+        [%for (t in w.types) {%]
+        s.register([%=t.name%])
+        [%}%]
+        return s
 
-    def setEnablePrefetch(self, enablePrefetch):
-        self.enablePrefetch = enablePrefetch
-        
-    def excluded_tasks(self, tasks=[]):
-        assert isinstance(tasks, list)
-        assert not tasks or [t for t in tasks if isinstance(t, [%=w.name%]Tasks)]
-        self.excluded_tasks = tasks
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -156,33 +159,35 @@ if __name__ == '__main__':
     parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
     
     app = [%=w.name%](name=parsedArgs.name,
-                      brokerHost=parsedArgs.brokerHost,
-                      stompPort=parsedArgs.stompPort,
-                      instanceId=parsedArgs.instance,
+                      instance=parsedArgs.instance,
+                      broker_host=parsedArgs.brokerHost,
+                      stomp_port=parsedArgs.stompPort,
                       mode=Mode.enum_from_name(parsedArgs.mode))
                       
-    app.run();
+    app.run()
+
+    while (not app.terminated):
+        time.sleep(0.1)
+    print("terminated")
     
 [%
-operation Task isPythonTask(){
-    return self.languages.exists(l | l.name.toLowerCase()== "python");
-}
-
-operation Workflow getMasterTasks() {
-    return self.tasks.select(t | t.isPythonTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
-}
-
-operation Workflow getWorkerTasks() {
-    return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isPythonTask());
-}
-
 @template
 operation Task setup() {%]
     [%for (i in self.input) { %]
-    self.[%=i.name.ftlc()%].addConsumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
+    self.[%=i.name.ftlc()%].add_consumer(self.[%=self.name.ftlc()%], "[%=self.name%]");            
     [%}%]
     [%for (o in self.output) { %]
     self.[%=self.name.ftlc()%].set[%=o.name%](self.[%=o.name.ftlc%]);
     [%}%]
 [%}
-%]
+
+@template
+operation Stream genInitStream() {
+	if (self.inputOf.isEmpty()) {%]
+self.[%=self.name.ftlc()%] = BuiltinStream("[%=self.name%]", self[%if (self.isTypeOf(Topic)) {%], True[%}%])
+self.[%=self.name.ftlc()%].init()
+	[%} else {%]
+self.[%=self.name.ftlc()%] = [%=self.name%](self, self._enable_prefetch)
+	[%}%]
+self._active_streams.append(self.[%=self.name.ftlc()%])
+[%}%]

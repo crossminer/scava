@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.4"?>
 <!--
 
 -->
@@ -258,7 +258,7 @@
          </object>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" containerViews="referencing-diagrams"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Crossflow"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013,2016,3003,3001,3002,3004"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2016,3003,3001,3002,3004"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4005,4003,4004"/>
       </viewProvider>
    </extension>
@@ -271,13 +271,13 @@
             <method name="getType()" value="Crossflow"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013,2016,3003,3001,3002,3004"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2016,3003,3001,3002,3004"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4005,4003,4004"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5017,5010,5012,5016,5015,5020,5018,5011,5014,5019"/>
+            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5017,5021,5010,5012,5016,5015,5020,5018,5011,5014,5019"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
             <method name="getType()" value="7003,7001,7002,7004"/>
@@ -338,6 +338,11 @@
          <Priority name="Lowest"/>
          <object class="crossflow.diagram.edit.parts.ScriptedTaskEditPart" id="ScriptedTask_2015"/>
          <context elements="ScriptedTask_2015"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfReusableComponentEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.ReusableComponentEditPart" id="ReusableComponent_2017"/>
+         <context elements="ReusableComponent_2017"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfTaskEditPart">
          <Priority name="Lowest"/>
@@ -407,7 +412,7 @@
       <decoratorProvider class="crossflow.diagram.providers.CrossflowShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
          <object class="org.eclipse.gmf.runtime.notation.Node(org.eclipse.gmf.runtime.notation)" id="generated-top-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2010,2011,2014,2013,2016"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2016"/>
          </object>
          <context decoratorTargets="generated-top-nodes"/>
       </decoratorProvider>
@@ -513,6 +518,16 @@
                eclass="ScriptedTask"
                edithelper="crossflow.diagram.edit.helpers.ScriptedTaskEditHelper">
             <param name="semanticHint" value="2015"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <metamodelType
+               id="org.eclipse.scava.crossflow.language.diagram.ReusableComponent_2017"
+               name="%metatype.name.ReusableComponent_2017"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ReusableComponent"
+               edithelper="crossflow.diagram.edit.helpers.ReusableComponentEditHelper">
+            <param name="semanticHint" value="2017"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
@@ -660,6 +675,7 @@
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.CommitmentTask_2007"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.OpinionatedTask_2008"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.ReusableComponent_2017"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Task_2010"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Type_2011"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_2014"/>
