@@ -10,6 +10,9 @@
 
 package org.eclipse.scava.plugin.projectsearch.search.selectedResult;
 
+import java.util.Optional;
+
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -19,7 +22,7 @@ import org.eclipse.scava.plugin.projectsearch.search.searchresult.ShowDetailsReq
 import io.swagger.client.model.Artifact;
 
 public class SelectedResultController extends ModelViewController<SelectedResultModel, SelectedResultView> implements ISelectedResultViewEventListener {
-
+	
 	public SelectedResultController(Controller parent, SelectedResultModel model, SelectedResultView view) {
 		super(parent, model, view);
 	}
@@ -30,7 +33,7 @@ public class SelectedResultController extends ModelViewController<SelectedResult
 		
 		Artifact project = getModel().getProject();
 		
-		getView().setName(project.getFullName());
+		getView().setName(Optional.ofNullable(project.getFullName()).orElse(Constants.NO_DATA));
 	}
 
 	@Override

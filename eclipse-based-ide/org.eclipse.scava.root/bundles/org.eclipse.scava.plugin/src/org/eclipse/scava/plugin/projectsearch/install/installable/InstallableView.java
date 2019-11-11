@@ -13,6 +13,7 @@ package org.eclipse.scava.plugin.projectsearch.install.installable;
 import java.io.File;
 import java.util.Optional;
 
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.view.CompositeView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -199,9 +200,9 @@ public class InstallableView extends CompositeView<IInstallableViewEventListener
 	}
 
 	public void setProject(Artifact project) {
-		lblName.setText(Optional.ofNullable(project.getFullName()).orElse("-"));
-		lblGitCloneUrlValue.setText(Optional.ofNullable(project.getCloneUrl()).orElse("-"));
-		lblBranchValue.setText(Optional.ofNullable(project.getMasterBranch()).orElse("-"));
+		lblName.setText(Optional.ofNullable(project.getFullName()).orElse(Constants.NO_DATA));
+		lblGitCloneUrlValue.setText(Optional.ofNullable(project.getCloneUrl()).orElse(Constants.NO_DATA));
+		lblBranchValue.setText(Optional.ofNullable(project.getMasterBranch()).orElse(Constants.NO_DATA));
 	}
 
 	public void setDestinationPath(String path) {

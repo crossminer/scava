@@ -7,21 +7,21 @@ pipeline {
   stages {
   	stage('Generating Swagger API') {
   		steps {
-  			dir(path: 'eclipse-based-ide/developmentTools/modules/openApiClientBuilding') {
-  				sh 'java -jar swagger-codegen-cli-3.0.7.jar generate -i openapi.json -l java -o client -c codegen-java-config.json'
+  			dir(path: 'eclipse-based-ide/developmentTools2/openApi') {
+  				sh 'java -jar swagger-codegen-cli-3.0.7.jar generate -i openapi.json -l java -o ./projects/client -c codegen-java-config.json'
   			}
   		}
   	}
   	stage('Building Swagger API') {
   		steps {
-  			dir(path: 'eclipse-based-ide/developmentTools/modules/openApiClientBuilding/client') {
+  			dir(path: 'eclipse-based-ide/developmentTools2/openApi/projects/client') {
   				sh 'mvn clean install -DskipTests'
   			}
   		}
   	}
   	stage('Testing Swagger API') {
   		steps {
-  			dir(path: 'eclipse-based-ide/developmentTools/modules/openApiClientBuilding/client') {
+  			dir(path: 'eclipse-based-ide/developmentTools2/openApi/projects/client') {
   				sh 'mvn test integration-test'
   			}
   		}

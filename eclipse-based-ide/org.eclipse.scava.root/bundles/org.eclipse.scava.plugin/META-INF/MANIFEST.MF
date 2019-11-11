@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CROSSMINER Eclipse-based IDE plug-in
 Bundle-SymbolicName: org.eclipse.scava.plugin;singleton:=true
-Bundle-Version: 1.15.0.rev0
+Bundle-Version: 1.15.275.rev0
 Bundle-Activator: org.eclipse.scava.plugin.Activator
 Bundle-Vendor: FrontEndART
 Require-Bundle: org.eclipse.ui,
