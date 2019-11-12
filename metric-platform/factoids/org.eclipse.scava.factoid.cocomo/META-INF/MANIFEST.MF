@@ -6,5 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.scava.platform,
  com.googlecode.pongo.runtime,
- org.eclipse.scava.repository.model
+ org.eclipse.scava.repository.model,
+ org.eclipse.scava.metricprovider.rascal,
+ rascal_eclipse
 Export-Package: org.eclipse.scava.factoid.cocomo
