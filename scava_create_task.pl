@@ -50,7 +50,9 @@ my @metric_providers = (
     "trans.rascal.dependency.maven.numberMavenDependencies",
     "trans.rascal.dependency.maven.numberMavenDependencies.historic",
     "trans.rascal.dependency.maven.allMavenDependencies",
-    "trans.rascal.api.changedMethods",
+#    "trans.rascal.api.changedMethods",
+    "trans.rascal.api.numberOfChanges",
+    "trans.rascal.api.numberOfBreakingChanges", 
     "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
     "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
     "trans.rascal.dependency.maven.numberMavenDependencies.historic",
@@ -68,6 +70,13 @@ my @metric_providers = (
     "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.SeveritySentimentHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.newbugs.NewBugsHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.comments.CommentsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.emotions",
+    "org.eclipse.scava.factoid.bugs.channelusage",
+    "org.eclipse.scava.factoid.bugs.responsetime",
+    "org.eclipse.scava.factoid.bugs.sentiment",
+    "org.eclipse.scava.factoid.bugs.emotion",
+    "org.eclipse.scava.factoid.bugs.severity",
+
     );
 
 my $url_auth = $base_url . ":8086/api/authentication";
