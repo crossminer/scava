@@ -72,7 +72,7 @@ data MetricException
   
 real historicalSlope(rel[datetime day, num amount] history, int monthsAgo) {
   if (history == {}) {
-    throw undefined("No history available for slope computation.", |unknown:///|);
+    return 0.0;
   }
 
   sorted = sort(history, bool(tuple[datetime, num] a, tuple[datetime, num] b) { return a[0] < b[0]; });
