@@ -14,7 +14,7 @@ import java.io.IOException;
 import org.eclipse.scava.business.dto.FocusInput;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.impl.DataReader;
-import org.eclipse.scava.business.impl.FocusContexAwareRecommender;
+import org.eclipse.scava.business.impl.FocusCodeSnippetRecommender;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class FocusTest2 {
 	private DataReader dr;
 
 	@Autowired
-	private FocusContexAwareRecommender car;
+	private FocusCodeSnippetRecommender car;
 	
 	private static final Logger logger = LoggerFactory.getLogger(FocusTest2.class);
 	
@@ -56,7 +56,7 @@ public class FocusTest2 {
 	}
 
 
-    
+	
     @Test
     public void testRecommendationWithMockito() throws Exception{
     	Query q = new Query();
@@ -64,8 +64,14 @@ public class FocusTest2 {
     	String va = "org/exolab/castor/xml/dtd/Converter/main(java.lang.String%5B%5D)";//testing.getMethodDeclarations().stream().filter(z -> z.getMethodInvocations().size() >4).collect(Collectors.toList()).get(15).getName();//findFirst().get().getName();
     	q.getFocusInput().setActiveDeclaration(va);
     	q.getFocusInput().setMethodDeclarations(testing.getMethodDeclarations());
-    	car.jurissimo(q);
+    	car.focusCodeSmippetRecommender(q);
     	
     }
+    
+    
+//    @Test
+//    public void test() throws Exception {
+//    	logger.debug(car.getCode("/Users/juri/Desktop/intiJars/castor-xml-schema-1.3.3-rc1-sources.jar", "|java+method:///org/exolab/castor/xml/schema/reader/SchemaUnmarshaller/endElement(java.lang.String,java.lang.String)|"));
+//    }
     	
 }

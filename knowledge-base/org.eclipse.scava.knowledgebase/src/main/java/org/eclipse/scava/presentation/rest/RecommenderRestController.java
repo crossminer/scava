@@ -106,6 +106,12 @@ public class RecommenderRestController {
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
 		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS);
 	}
+	@ApiOperation(value = "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.")
+	@RequestMapping(value = "focus-code-snippet/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
+	public @ResponseBody Recommendation getFocusCodeSnippetRecommendation(
+			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
+		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS_CODE_SNIPPET);
+	}
 	
 
 	@ApiOperation(value = "This resource lists plugin versions for each dependecies")
