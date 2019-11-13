@@ -16,6 +16,7 @@ import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.ISimilarityManager;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
+import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.model.Artifact;
 import org.eclipse.scava.business.model.MethodDeclaration;
 import org.maracas.Maracas;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
@@ -40,7 +42,9 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 	private ISimilarityManager simManger;
 	private static int _numOfApiFunctionCalls = 25;
 	private static int _numOfCodeSnippetResult = 10;
-	private final String jarPath = "/Users/juri/Desktop/intiJars";
+	
+	@Value("${focus.code.snippet.path}")	
+	private final String jarPath = "/home/juri/Desktop/sourcesJar2";
 	Maracas maracas = new Maracas();
 
 	private static final Logger log = LoggerFactory.getLogger(FocusCodeSnippetRecommender.class);
@@ -119,8 +123,7 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 		log.info("======================================");
 		for (Entry<Artifact, String> ent : clientMethodMap.entrySet()) {
 			try {
-				String name = ent.getKey().getName().replace("g_", "").replace(".focus", "").replace(".jar",
-						"-sources.jar");
+				String name = ent.getKey().getName().replace("g_", "").replace(".focus", "");
 				log.debug("___________{}_____________", name);
 				String value = ent.getValue().replace("%5B%5D", "[]");
 				String methodQuery = "|java+method:///" + value + "|";
@@ -162,14 +165,13 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 					break;
 			Map<Artifact, String> clientMethodMap = getBestMethodFromSimilarPriojects(queryMIs);
 			List<String> result = getCodeSnippetFromRecommendation(clientMethodMap);
-			result.forEach(z -> log.info(z));
 			return result;
 		}
 		return Lists.newArrayList();
 	}
 
 	private String getSources(String coord) throws Exception {
-		String libM3 = coord + "_src.m3";
+		String libM3 = coord;
 		if (!Files.exists(Paths.get(libM3), new LinkOption[] { LinkOption.NOFOLLOW_LINKS })) {
 			String jarDir = libM3 + "_dir";
 			maracas.unzipJar(coord, jarDir);
@@ -191,8 +193,15 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 
 	@Override
 	public Recommendation getRecommendation(Query query) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> v = focusCodeSmippetRecommender(query);
+		Recommendation r = new Recommendation();
+		r.setRecommendationItems(Lists.newArrayList());
+		for (String snippet : v) {
+			RecommendationItem ri = new RecommendationItem();
+			ri.setCodeSnippet(snippet);
+			r.getRecommendationItems().add(ri);
+		}
+		return r;
 	}
 
 }

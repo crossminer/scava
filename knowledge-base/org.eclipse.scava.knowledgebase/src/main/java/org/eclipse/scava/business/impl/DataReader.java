@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
@@ -37,7 +39,7 @@ public class DataReader {
 
 		try {
 			Files.list(Paths.get(focucFilesFolder)).filter(Files::isRegularFile)
-					.filter(z -> !z.getFileName().endsWith("List.txt")).forEach(z -> {
+				.filter(z -> z.toString().endsWith(".m3.focus")).forEach(z -> {
 						results.add(readArtifactFromFile(z.toString()));
 					});
 		} catch (IOException e) {
