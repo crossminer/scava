@@ -28,6 +28,7 @@ import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
 import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
 import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
 import crossflow.diagram.edit.parts.SerialiserNameEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
@@ -194,6 +195,23 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 			scriptedTaskName_5017Parser = parser;
 		}
 		return scriptedTaskName_5017Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser reusableComponentName_5021Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getReusableComponentName_5021Parser() {
+		if (reusableComponentName_5021Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getTask_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			reusableComponentName_5021Parser = parser;
+		}
+		return reusableComponentName_5021Parser;
 	}
 
 	/**
@@ -392,6 +410,8 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 			return getOpinionatedTaskName_5008Parser();
 		case ScriptedTaskNameEditPart.VISUAL_ID:
 			return getScriptedTaskName_5017Parser();
+		case ReusableComponentNameEditPart.VISUAL_ID:
+			return getReusableComponentName_5021Parser();
 		case TaskNameEditPart.VISUAL_ID:
 			return getTaskName_5010Parser();
 		case TypeNameEditPart.VISUAL_ID:

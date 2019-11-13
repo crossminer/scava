@@ -157,6 +157,7 @@ import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
 import crossflow.provider.CrossflowItemProviderAdapterFactory;
 
+import crossflowComponents.provider.CrossflowComponentsItemProviderAdapterFactory;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
 
@@ -701,6 +702,7 @@ public class CrossflowEditor
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new CrossflowItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new CrossflowComponentsItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.

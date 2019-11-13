@@ -155,15 +155,22 @@ public class ProjectCreationResource extends ServerResource {
 								systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
 							}
 						} else if (cc.get("loginOption").asText().equals("option2")) {
-							systematic.setUrl(cc.get("url").asText());
-							if (cc.get("executionFrequency").asText() != null && !cc.get("executionFrequency").asText().equals("")) {
-								systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+							if (cc.get("username").asText().equals("") || cc.get("password").asText().equals("")) {
+								systematic.setUrl(cc.get("url").asText());
+								if (cc.get("executionFrequency").asText() != null && !cc.get("executionFrequency").asText().equals("")) {
+									systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+								}
+							} else {
+								systematic.setUrl(cc.get("url").asText());
+								if (cc.get("executionFrequency").asText() != null && !cc.get("executionFrequency").asText().equals("")) {
+									systematic.setExecutionFrequency(Integer.parseInt(cc.get("executionFrequency").asText()));
+								}
+								systematic.setLoginURL(cc.get("loginURL").asText());
+								systematic.setUsername(cc.get("username").asText());
+								systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
+								systematic.setPassword(cc.get("password").asText());
+								systematic.setPasswordFieldName(cc.get("passwordFieldName").asText());
 							}
-							systematic.setLoginURL(cc.get("loginURL").asText());
-							systematic.setUsername(cc.get("username").asText());
-							systematic.setUsernameFieldName(cc.get("usernameFieldName").asText());
-							systematic.setPassword(cc.get("password").asText());
-							systematic.setPasswordFieldName(cc.get("passwordFieldName").asText());
 						}
 						channel = systematic;
 						break;

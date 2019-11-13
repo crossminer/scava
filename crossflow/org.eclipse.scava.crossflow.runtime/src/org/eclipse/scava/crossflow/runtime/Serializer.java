@@ -7,6 +7,7 @@ import java.util.Set;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+@Deprecated
 public class Serializer {
 
 	protected Set<Class<?>> registeredTypes;

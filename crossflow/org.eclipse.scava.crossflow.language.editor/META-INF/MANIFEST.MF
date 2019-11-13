@@ -9,7 +9,8 @@ Bundle-Activator: crossflow.presentation.CrossflowEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: crossflow.presentation
+Export-Package: crossflow.presentation,
+ crossflowComponents.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.scava.crossflow.language.edit;visibility:=reexport,

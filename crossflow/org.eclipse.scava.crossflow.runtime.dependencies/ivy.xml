@@ -6,6 +6,7 @@
 	<dependencies>
 		<dependency org="org.apache.activemq" name="activemq-all" rev="5.15.8"/>
 		<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.4.11.1"/>
+		<dependency org="com.google.code.gson" name="gson" rev="2.8.5"/>
 		<dependency org="com.beust" name="jcommander" rev="1.72"/>
 		<dependency org="org.apache.commons" name="commons-csv" rev="1.6"/>
 		<dependency org="commons-codec" name="commons-codec" rev="1.11"/>

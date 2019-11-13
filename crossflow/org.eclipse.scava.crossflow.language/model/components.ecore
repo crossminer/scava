@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="crossflowComponents" nsURI="org.eclipse.scava.crossflow.components"
+    nsPrefix="cfc">
+  <eClassifiers xsi:type="ecore:EClass" name="Component">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullyQualifiedName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="language" eType="ecore:EClass crossflow.ecore#//Language"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="consumes" lowerBound="1"
+        eType="ecore:EClass crossflow.ecore#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="produces" lowerBound="1"
+        eType="ecore:EClass crossflow.ecore#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multipleOutputs" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="componentType" eType="#//ComponentTypes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ComponentTypes">
+    <eLiterals name="none"/>
+    <eLiterals name="opinionated" value="1"/>
+    <eLiterals name="commitment" value="2"/>
+  </eClassifiers>
+</ecore:EPackage>

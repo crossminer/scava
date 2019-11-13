@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pre-Built Crossflow Tasks
+Bundle-SymbolicName: org.eclipse.scava.crossflow.reusablecomponents;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.scava.crossflow.tasks
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.crossflow.runtime;bundle-version="1.0.0",
+ org.eclipse.scava.crossflow.restmule.client.github;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.scava.crossflow.restmule.core;bundle-version="0.0.1";visibility:=reexport,
+ org.eclipse.scava.crossflow.language.diagram,
+ org.eclipse.scava.crossflow.restmule.dependencies;bundle-version="1.0.0";visibility:=reexport
+Export-Package: org.eclipse.scava.crossflow.reusablecomponents.githubsearch

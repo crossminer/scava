@@ -121,6 +121,15 @@ public interface CrossflowFactory extends EFactory {
 	ScriptedTask createScriptedTask();
 
 	/**
+	 * Returns a new object of class '<em>Reusable Component</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Reusable Component</em>'.
+	 * @generated
+	 */
+	ReusableComponent createReusableComponent();
+
+	/**
 	 * Returns a new object of class '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

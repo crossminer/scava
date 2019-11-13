@@ -42,6 +42,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.validation;visibility:=reexport,
  org.eclipse.gef;visibility:=reexport,
  org.eclipse.scava.crossflow.dt,
- org.eclipse.scava.crossflow
+ org.eclipse.scava.crossflow,
+ org.eclipse.epsilon.flexmi
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

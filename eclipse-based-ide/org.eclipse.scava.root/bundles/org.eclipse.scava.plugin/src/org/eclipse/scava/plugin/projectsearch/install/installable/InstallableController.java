@@ -13,10 +13,12 @@ package org.eclipse.scava.plugin.projectsearch.install.installable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -28,7 +30,7 @@ public class InstallableController extends ModelViewController<InstallableModel,
 		implements IInstallableViewEventListener {
 	private CancellableTextProgressMonitor progressMonitor;
 	private boolean installed;
-
+	
 	public InstallableController(Controller parent, InstallableModel model, InstallableView view) {
 		super(parent, model, view);
 	}
@@ -40,8 +42,9 @@ public class InstallableController extends ModelViewController<InstallableModel,
 		Artifact project = getModel().getProject();
 		getView().setProject(project);
 
-		String fullName = getModel().getProject().getFullName();
-		String destinationProjectFolder = fullName.replaceAll("/", "\\\\");
+		String fullName = Optional.ofNullable(project.getFullName()).orElse(Optional.ofNullable(project.getName()).orElse(Constants.NO_DATA));
+		String destinationProjectFolder = fullName.replaceAll("/", "__");
+		
 		getView().setDestinationProjectFolder(destinationProjectFolder);
 
 		String path = getModel().getDestination();
@@ -62,8 +65,10 @@ public class InstallableController extends ModelViewController<InstallableModel,
 			NewBaseDestinationPathGivenEvent event = (NewBaseDestinationPathGivenEvent) routedEvent;
 
 			if (!getModel().isCustomDestinationUsed()) {
-				String fullName = getModel().getProject().getFullName();
-				fullName = fullName.replaceAll("/", "\\\\");
+				Artifact project = getModel().getProject();
+				String fullName = Optional.ofNullable(project.getFullName()).orElse(Optional.ofNullable(project.getName()).orElse(Constants.NO_DATA));
+				fullName = fullName.replaceAll("/", "__");
+				
 				String newPath = event.getPath() + File.separator + fullName;
 
 				onDestinationChanged(newPath);
@@ -109,13 +114,13 @@ public class InstallableController extends ModelViewController<InstallableModel,
 		// url
 		String cloneUrl = getModel().getProject().getCloneUrl();
 		if (cloneUrl == null || cloneUrl.isEmpty()) {
-			throw new ConditionFailException("Clone URL is not found or empty.");
+			throw new ConditionFailException("Clone URL is not provided or empty.");
 		}
 
 		// branch
 		String masterBranch = getModel().getProject().getMasterBranch();
 		if (masterBranch == null || masterBranch.isEmpty()) {
-			throw new ConditionFailException("Master branch is not found or empty.");
+			throw new ConditionFailException("Master branch is not provided or empty.");
 		}
 
 		// destination path

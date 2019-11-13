@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -117,7 +118,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			controller.init();
 
 			getView().addSearchTab(
-					"Details of \"" + Optional.ofNullable(event.getProject().getFullName()).orElse("-") + "\"", view);
+					"Details of \"" + Optional.ofNullable(event.getProject().getFullName()).orElse(Constants.NO_DATA) + "\"", view);
 
 			return;
 		}

@@ -15,9 +15,6 @@ param (
     [Parameter(HelpMessage="Ignore if the HEAD is diverged from the upstream")]
     [switch]
     $ignoreHeadDiverge,
-    [Parameter(HelpMessage="The documentation will not be built and copied and it's version is ignored")]
-    [switch]
-    $noDoc = $false,
     [Parameter(HelpMessage="Set the release version by hand")]
     [string]
     $releaseVersion,
@@ -38,7 +35,6 @@ param (
 # Config
 # Path are relative to the eclipse-based-ide directory
 $versionPattern = "(\d+)\.(\d+)\.(\d+)\.rev(\d+)";
-$docPdfFilePath = "./doc/user-guide.pdf"
 $updateSitePomPath = "./org.eclipse.scava.root/pom.xml"
 $eclipsePackagesPath = "$PSScriptRoot/eclipsePackages"
 $preparedTestProjects = "$PSScriptRoot/preparedTestProjects"
@@ -90,7 +86,7 @@ try {
         "Checking component versions"
 
         # Get versions
-        $pluginVersion = & "$PSScriptRoot/../common/version/getVersion.ps1" -print -noDoc:$noDoc
+        $pluginVersion = & "$PSScriptRoot/../common/version/getVersion.ps1" -print
 
         # Increase the version of the package programmatically
         if( $increaseVersions ) {
@@ -154,7 +150,7 @@ try {
 
             # Write new versions
             try{
-                & "$PSScriptRoot/../common/version/setVersion.ps1" -createBackup -version $releaseVersion -noDoc:$noDoc
+                & "$PSScriptRoot/../common/version/setVersion.ps1" -createBackup -version $releaseVersion
                 
                 $createdVersionBackups = $true
                 Write-host "Versions have been updated to " -NoNewline
@@ -166,7 +162,7 @@ try {
             # check if the number of modified files is the expected
             if( !$ignoreNumberOfModifications ) {
                 $numberOfModifiedFiles = (git status --porcelain | Where-Object { $_ -match "^[ M]M" } | Measure-Object ).Count
-                $expectedNumberOfModifiedFiles = if(!$noDoc) {5} else {3}
+                $expectedNumberOfModifiedFiles = 3
                 if( $numberOfModifiedFiles -ne $expectedNumberOfModifiedFiles ) {
                     "Modified files:"
                     ( git status --porcelain ) | ForEach-Object { Write-Host $_ -ForegroundColor Yellow }
@@ -302,11 +298,6 @@ try {
             "Install plug-in"
             Copy-Item -Path "$builtPluginLocation/*" -Destination "$packagePath/plugins" -Filter "*.jar"
 
-            if( !$noDoc ) {
-                "Copy documentation"
-                Copy-Item -Path $docPdfFilePath -Destination "$packagePath/user-guide.pdf"
-            }
-
             # Test run
             if( $testRun ) {
                 if( $platform.os -eq "win" ) {
@@ -426,7 +417,7 @@ try {
 
 ## Description
 
-$(if( $noDoc ) { "You can download a portable eclipse with preinstalled plugin." } else { "You can download a portable eclipse with preinstalled plugin and the user guide." })
+You can download a portable eclipse with preinstalled plugin.
 " | Set-Content "$tmpPath/tagDescription.txt"
                 . "$tmpPath/tagDescription.txt"
             }
@@ -436,7 +427,7 @@ $(if( $noDoc ) { "You can download a portable eclipse with preinstalled plugin."
     if( $createdVersionBackups ) {
         # reset versions
         "Reset versions"
-        & "$PSScriptRoot/../common/version/setVersion.ps1" -restoreBackup -noDoc:$noDoc
+        & "$PSScriptRoot/../common/version/setVersion.ps1" -restoreBackup
     }
     throw $_
 }finally{
