@@ -79,7 +79,7 @@ public class FocusTest {
         Resource resource = new ClassPathResource("FOCUS/");
         trainings = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
         logger.info("ARTIFACTS: " + trainings.size());
-        resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.txt");
+        resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.m3.focus");
         testing = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
 		
 		 
