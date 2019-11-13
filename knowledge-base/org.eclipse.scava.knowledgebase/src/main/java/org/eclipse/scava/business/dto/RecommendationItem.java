@@ -32,6 +32,7 @@ public class RecommendationItem {
 	private Object relatedTo;
 	private String recommendationType;
 	private Map<String, Float> apiFunctionCallFOCUS;
+	private String codeSnippet;
 	public String getRecommendationType() {
 		return recommendationType;
 	}
@@ -79,6 +80,12 @@ public class RecommendationItem {
 	}
 	public void setApiFunctionCallFOCUS(Map<String, Float> apiFunctionCallFOCUS) {
 		this.apiFunctionCallFOCUS = apiFunctionCallFOCUS;
+	}
+	public String getCodeSnippet() {
+		return codeSnippet;
+	}
+	public void setCodeSnippet(String codeSnippet) {
+		this.codeSnippet = codeSnippet;
 	}
 	
 }
