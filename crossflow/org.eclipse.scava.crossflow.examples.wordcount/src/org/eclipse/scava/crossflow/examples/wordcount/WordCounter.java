@@ -30,7 +30,7 @@ public class WordCounter extends WordCounterBase {
 		
 		for (String word : frequencies.keySet()) {
 			WordFrequency frequency = new WordFrequency(word, frequencies.get(word));
-			frequency.setCorrelationId(line.getId());
+			frequency.setCorrelationId(line.getJobId());
 			sendToWordFrequencies(frequency);
 		}
 
