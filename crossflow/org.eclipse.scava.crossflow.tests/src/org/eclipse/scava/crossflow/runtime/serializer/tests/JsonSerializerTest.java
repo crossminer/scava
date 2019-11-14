@@ -21,14 +21,20 @@ public class JsonSerializerTest {
 
 	@BeforeClass
 	public static void before() {
-		serializer = new JsonSerializer(true);
+		serializer = new JsonSerializer(true, true);
 		serializer.registerType(SerializationTestObject.class);
+		serializer.registerType(SerializationTestEnum.class);
 		assertTrue(serializer.getRegisteredTypes().contains(SerializationTestObject.class));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void serialize_should_throw_iae_when_given_non_registered_object() throws Exception {
 		serializer.serialize(new Job());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void serialize_should_throw_iae_when_given_non_registered_enum() throws Exception {
+		serializer.serialize(BadEnum.ERROR);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -62,6 +68,15 @@ public class JsonSerializerTest {
 		String expected = jsonFromFile("SerializationTestObject-map.json");
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void serialize_should_return_correct_json_string_when_given_object_with_enum() throws Exception {
+		SerializationTestObject obj = SerializationTestObject.getPrimitveInstance();
+		obj.enumProp = SerializationTestEnum.VALUE_B;
+		String actual = serializer.serialize(obj);
+		String expected = jsonFromFile("SerializationTestObject-withEnum.json");
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	public void deserialize_should_return_SerializationTestObject_when_given_valid_json() throws Exception {
@@ -86,8 +101,21 @@ public class JsonSerializerTest {
 		SerializationTestObject expected = SerializationTestObject.getMapInstance();
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void deserialize_should_return_SerializationTestObject_when_given_valid_json_with_enum() throws Exception {
+		String json = jsonFromFile("SerializationTestObject-withEnum.json");
+		SerializationTestObject actual = serializer.<SerializationTestObject>deserialize(json);
+		SerializationTestObject expected = SerializationTestObject.getPrimitveInstance();
+		expected.enumProp = SerializationTestEnum.VALUE_B;
+		assertEquals(expected, actual);
+	}
 
 	String jsonFromFile(String file) throws IOException {
 		return Files.asCharSource(new File("serialization/" + file), Charset.forName("UTF-8")).read();
+	}
+	
+	enum BadEnum {
+		ERROR;
 	}
 }

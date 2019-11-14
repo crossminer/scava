@@ -10,13 +10,28 @@ import java.util.stream.Stream;
 public interface Serializer {
 
 	/**
+	 * Whether this {@link Serializer} will only attempt to de/serialize classes
+	 * registered via the {@link #registerType(Class)} method
+	 * 
+	 * @return {@code true} if strict mode enabled
+	 */
+	public boolean isStrict();
+
+	/**
+	 * Set strict mode
+	 * 
+	 * @param isStrict new mode
+	 * @return This serializer for fluent API
+	 */
+	public Serializer setStrict(boolean isStrict);
+
+	/**
 	 * Initialise the {@link Serializer}.
 	 * <p>
 	 * Implementations should implement this method if any setup is required that
 	 * cannot be safely performed in the constructor
 	 */
-	default public void init() {
-	}
+	public void init();
 
 	/**
 	 * Register a type that can be used with this {@link Serializer}.
@@ -39,14 +54,10 @@ public interface Serializer {
 	 * @return all types registered to this {@link Serializer}
 	 */
 	public Collection<Class<?>> getRegisteredTypes();
-	
-	default public boolean isRegistered(Object o) {
-		return isRegistered(o.getClass().getSimpleName());
-	}
 
-	default public boolean isRegistered(Class<?> clazz) {
-		return isRegistered(clazz.getSimpleName());
-	}
+	public boolean isRegistered(Object o);
+
+	public boolean isRegistered(Class<?> clazz);
 
 	public boolean isRegistered(String clazz);
 

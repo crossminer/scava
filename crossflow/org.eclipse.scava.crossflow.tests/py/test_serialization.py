@@ -1,12 +1,19 @@
 import json
 import os
 import unittest
+from enum import Enum, auto
 
 from crossflow import serialization
 
 
 def json_from_file(file: str) -> str:
-    return open(os.path.join(os.getcwd(), "..", "serialization", file)).read()
+    with open(os.path.join(os.getcwd(), "..", "serialization", file)) as f:
+        return f.read()
+
+
+class SerializationTestEnum(Enum):
+    VALUE_A = auto()
+    VALUE_B = auto()
 
 
 class SerializationTestObject:
@@ -17,16 +24,18 @@ class SerializationTestObject:
         self.booleanProp: bool = True
         self.listProp: list = []
         self.mapProp: dict = {}
+        self.enumProp: SerializationTestEnum = None
 
     def __eq__(self, other):
         return (
             (
-                self.stringProp == other.stringProp
-                and self.intProp == other.intProp
-                and self.longProp == other.longProp
-                and self.booleanProp == other.booleanProp
-                and self.listProp == other.listProp
-                and self.mapProp == other.mapProp
+                    self.stringProp == other.stringProp
+                    and self.intProp == other.intProp
+                    and self.longProp == other.longProp
+                    and self.booleanProp == other.booleanProp
+                    and self.listProp == other.listProp
+                    and self.mapProp == other.mapProp
+                    and self.enumProp == other.enumProp
             )
             if isinstance(other, SerializationTestObject)
             else False
@@ -91,10 +100,12 @@ class TestJsonSerializer(unittest.TestCase):
     def setUp(self):
         self.serializer = serialization.JsonSerializer()
         self.serializer.register_type(SerializationTestObject)
+        self.serializer.register_type(SerializationTestEnum)
         self.assertTrue(self.serializer.is_registered(SerializationTestObject))
+        self.assertTrue(self.serializer.is_registered(SerializationTestEnum))
 
     def test_serialize_should_return_correct_json_string_when_given_registered_type_with_just_primitives(
-        self
+            self
     ):
         actual = self.serializer.serialize(
             SerializationTestObject.get_primitive_instance()
@@ -103,39 +114,53 @@ class TestJsonSerializer(unittest.TestCase):
         self.assertJsonEqual(actual, expected)
 
     def test_serialize_should_return_correct_json_string_when_given_object_with_list(
-        self
+            self
     ):
         actual = self.serializer.serialize(SerializationTestObject.get_list_instance())
         expected = json_from_file("SerializationTestObject-list.json")
         self.assertJsonEqual(actual, expected)
 
     def test_serialize_should_return_correct_json_string_when_given_object_with_map(
-        self
+            self
     ):
         actual = self.serializer.serialize(SerializationTestObject.get_map_instance())
         expected = json_from_file("SerializationTestObject-map.json")
         self.assertJsonEqual(actual, expected)
 
+    def test_serialize_should_return_correct_json_string_when_given_object_with_enum(self):
+        obj = SerializationTestObject.get_primitive_instance()
+        obj.enumProp = SerializationTestEnum.VALUE_B
+        actual = self.serializer.serialize(obj)
+        expected = json_from_file("SerializationTestObject-withEnum.json")
+        self.assertJsonEqual(actual, expected)
+
     def test_deserialize_should_return_SerializationTestObject_when_given_valid_json(
-        self
+            self
     ):
-        json = json_from_file("SerializationTestObject-primitives.json")
-        actual = self.serializer.deserialize(json)
+        json_str = json_from_file("SerializationTestObject-primitives.json")
+        actual = self.serializer.deserialize(json_str)
         expected = SerializationTestObject.get_primitive_instance()
         self.assertEqual(actual, expected)
 
     def test_deserialize_should_return_SerializationTestObject_when_given_valid_json_with_list(
-        self
+            self
     ):
-        json = json_from_file("SerializationTestObject-list.json")
-        actual = self.serializer.deserialize(json)
+        json_str = json_from_file("SerializationTestObject-list.json")
+        actual = self.serializer.deserialize(json_str)
         expected = SerializationTestObject.get_list_instance()
         self.assertEqual(actual, expected)
 
     def test_deserialize_should_return_SerializationTestObject_when_given_valid_json_with_map(
-        self
+            self
     ):
-        json = json_from_file("SerializationTestObject-map.json")
-        actual = self.serializer.deserialize(json)
+        json_str = json_from_file("SerializationTestObject-map.json")
+        actual = self.serializer.deserialize(json_str)
         expected = SerializationTestObject.get_map_instance()
+        self.assertEqual(actual, expected)
+
+    def test_deserialize_should_return_SerializationTestObject_when_given_valid_json_with_enum(self):
+        json_str = json_from_file("SerializationTestObject-withEnum.json")
+        actual = self.serializer.deserialize(json_str)
+        expected = SerializationTestObject.get_primitive_instance()
+        expected.enumProp = SerializationTestEnum.VALUE_B
         self.assertEqual(actual, expected)

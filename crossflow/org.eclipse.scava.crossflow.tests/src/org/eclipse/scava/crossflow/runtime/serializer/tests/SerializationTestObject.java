@@ -13,7 +13,7 @@ public class SerializationTestObject {
 	boolean booleanProp = true;
 	List<SerializationTestObject> listProp = null;
 	Map<String, SerializationTestObject> mapProp = null;
-	Map<SerializationTestObject, SerializationTestObject> complexMapProp = null;
+	SerializationTestEnum enumProp = null;
 
 	public static SerializationTestObject getPrimitveInstance() {
 		SerializationTestObject sto = new SerializationTestObject();
