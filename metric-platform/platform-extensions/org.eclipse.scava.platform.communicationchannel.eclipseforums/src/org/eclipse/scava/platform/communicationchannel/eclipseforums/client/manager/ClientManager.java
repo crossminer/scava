@@ -54,7 +54,9 @@ public class ClientManager {
 			ClientData data = new ClientData();
 			data.setOssmeterID(eclipseForum.getOSSMeterId());
 
-			if (!((eclipseForum.getClient_id().equals("null")) && (eclipseForum.getClient_secret().equals("null")))) {
+			if (eclipseForum.getClient_id()!=null && !eclipseForum.getClient_id().isEmpty()
+					&& eclipseForum.getClient_secret()!=null && !eclipseForum.getClient_secret().isEmpty())
+			{
 
 				data.setClientId(eclipseForum.getClient_id());
 				data.setClientSecret(eclipseForum.getClient_secret());
