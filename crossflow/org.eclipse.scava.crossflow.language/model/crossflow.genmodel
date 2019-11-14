@@ -52,6 +52,9 @@
       <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute crossflow.ecore#//ScriptedTask/script"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//ScriptedTask/outputVariables"/>
     </genClasses>
+    <genClasses ecoreClass="crossflow.ecore#//ReusableComponent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//ReusableComponent/component"/>
+    </genClasses>
     <genClasses ecoreClass="crossflow.ecore#//Type">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/impl"/>

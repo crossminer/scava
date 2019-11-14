@@ -1,18 +1,19 @@
-package org.eclipse.scava.crossflow.runtime.tests;
+package org.eclipse.scava.crossflow.runtime.serializer.tests;
 
 import static org.junit.Assert.*;
 
 import org.eclipse.scava.crossflow.runtime.Job;
-import org.eclipse.scava.crossflow.runtime.Serializer;
+import org.eclipse.scava.crossflow.runtime.serialization.Serializer;
+import org.eclipse.scava.crossflow.runtime.serialization.XstreamSerializer;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SerializerTest {
+public class XstreamSerializerTest {
 	
 	protected Serializer serializer;
 	
 	protected String jobXml = "<Job>\n" + 
-			"  <id>0</id>\n" + 
+			"  <jobId>0</jobId>\n" + 
 			"  <cached>false</cached>\n" + 
 			"  <failures>0</failures>\n" + 
 			"  <cacheable>true</cacheable>\n" + 
@@ -24,26 +25,26 @@ public class SerializerTest {
 
 	@Before
 	public void before() {
-		serializer = new Serializer();
-		serializer.register(Job.class);
+		serializer = new XstreamSerializer();
+		serializer.registerType(Job.class);
 	}
 
 	@Test
-	public void toString_should_return_short_name_when_given_Job() throws Exception {
-		serializer.register(Job.class);
+	public void serialize_should_return_short_name_when_given_Job() throws Exception {
+		serializer.registerType(Job.class);
 		Job job = new Job();
-		job.setId("0");
-		String xml = serializer.toString(job);
+		job.setJobId("0");
+		String xml = serializer.serialize(job);
 		assertEquals(jobXml, xml);
 	}
 	
 	@Test
-	public void toObject_should_return_correct_Job_when_given_aliased_output() throws Exception {
-		Object object = serializer.toObject(jobXml);
+	public void deserialize_should_return_correct_Job_when_given_aliased_output() throws Exception {
+		Object object = serializer.deserialize(jobXml);
 		assertTrue(object instanceof Job);
 		Job job = (Job) object;
 		
-		assertEquals("0", job.getId());
+		assertEquals("0", job.getJobId());
 		assertFalse(job.isCached());
 		assertEquals(0, job.getFailures());
 		assertTrue(job.isTransactional());

@@ -34,4 +34,32 @@
       </editor>
    </extension>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated crossflow -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="crossflowComponents.presentation.CrossflowComponentsModelWizardID"
+            name="%_UI_CrossflowComponentsModelWizard_label"
+            class="crossflowComponents.presentation.CrossflowComponentsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CrossflowComponentsModelFile.gif">
+         <description>%_UI_CrossflowComponentsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated crossflow -->
+      <editor
+            id="crossflowComponents.presentation.CrossflowComponentsEditorID"
+            name="%_UI_CrossflowComponentsEditor_label"
+            icon="icons/full/obj16/CrossflowComponentsModelFile.gif"
+            extensions="crossflowcomponents"
+            class="crossflowComponents.presentation.CrossflowComponentsEditor"
+            contributorClass="crossflowComponents.presentation.CrossflowComponentsActionBarContributor">
+      </editor>
+   </extension>
+
 </plugin>

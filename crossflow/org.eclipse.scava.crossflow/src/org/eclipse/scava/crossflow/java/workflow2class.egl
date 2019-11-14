@@ -22,6 +22,10 @@ import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
@@ -256,6 +260,10 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 		[% for (t in w.types) {%]
 		serializer.register([%=t.name%].class);
 		[%}%]
+		[%if(CrossflowLanguageModel!ReusableComponent.all.size>0){
+			for (t in CMS!Type.all) {%]
+		serializer.register([%=t.name%].class);
+		[%}}%]
 		return serializer;
 	}
 	
@@ -293,43 +301,39 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	
 }	
 [%
-operation Task isJavaTask(){
-	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
-}
-
-operation Workflow getNonConfigurationSources(){
-	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
+operation CrossflowLanguageModel!Workflow getNonConfigurationSources(){
+	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(CrossflowLanguageModel!Source));
 	sources.removeAll(w.getConfigurationSources());
 	return sources;
 }
 
-operation Workflow getConfigurationSources(){
+operation CrossflowLanguageModel!Workflow getConfigurationSources(){
 	return self.tasks.select(t | 
 		t.isJavaTask() 
-	and t.isKindOf(Source)
+	and t.isKindOf(CrossflowLanguageModel!Source)
 	and t.name.endsWith("ConfigSource") 
 	and t.output.size > 0
 	and t.output.first.name.endsWith("ConfigTopic"));
 }
 
-operation Workflow getParallelizableTasks() {
-	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getParallelizableTasks() {
+	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getSingletonTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getSingletonTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
+operation CrossflowLanguageModel!Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink) or t.masterOnly));
 }
 
-operation Workflow getWorkerTasks() {
+operation CrossflowLanguageModel!Workflow getWorkerTasks() {
 	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isJavaTask());
 }
 
 @template
-operation Task createTask() {
+operation CrossflowLanguageModel!Task createTask() {
 	if(w.getSingletonTasks().contains(self)){
 %]
 	[%=self.name.ftlc()%] = new [%=self.name%]();
@@ -350,7 +354,7 @@ operation Task createTask() {
 }
 
 @template
-operation Task setup() {
+operation CrossflowLanguageModel!Task setup() {
 
 	if(w.getSingletonTasks().contains(self)){
 %]

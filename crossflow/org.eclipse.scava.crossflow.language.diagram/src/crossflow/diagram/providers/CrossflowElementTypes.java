@@ -29,6 +29,7 @@ import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SerialiserEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
@@ -120,6 +121,12 @@ public class CrossflowElementTypes {
 	*/
 	public static final IElementType ScriptedTask_2015 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType ReusableComponent_2017 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.ReusableComponent_2017"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -251,6 +258,8 @@ public class CrossflowElementTypes {
 
 			elements.put(ScriptedTask_2015, CrossflowPackage.eINSTANCE.getScriptedTask());
 
+			elements.put(ReusableComponent_2017, CrossflowPackage.eINSTANCE.getReusableComponent());
+
 			elements.put(Task_2010, CrossflowPackage.eINSTANCE.getTask());
 
 			elements.put(Type_2011, CrossflowPackage.eINSTANCE.getType());
@@ -303,6 +312,7 @@ public class CrossflowElementTypes {
 			KNOWN_ELEMENT_TYPES.add(CommitmentTask_2007);
 			KNOWN_ELEMENT_TYPES.add(OpinionatedTask_2008);
 			KNOWN_ELEMENT_TYPES.add(ScriptedTask_2015);
+			KNOWN_ELEMENT_TYPES.add(ReusableComponent_2017);
 			KNOWN_ELEMENT_TYPES.add(Task_2010);
 			KNOWN_ELEMENT_TYPES.add(Type_2011);
 			KNOWN_ELEMENT_TYPES.add(Field_2014);
@@ -345,6 +355,8 @@ public class CrossflowElementTypes {
 			return OpinionatedTask_2008;
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return ScriptedTask_2015;
+		case ReusableComponentEditPart.VISUAL_ID:
+			return ReusableComponent_2017;
 		case TaskEditPart.VISUAL_ID:
 			return Task_2010;
 		case TypeEditPart.VISUAL_ID:

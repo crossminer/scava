@@ -29,7 +29,7 @@ public class CopierTask extends CopierTaskBase {
 
 		Number output = new Number();
 		output.setN(number.getN());
-		output.setCorrelationId(number.getId());
+		output.setCorrelationId(number.getJobId());
 		return output;
 
 	}

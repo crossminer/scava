@@ -2,8 +2,8 @@
  * GENERAL
  */
 @cached
-operation Any getWorkflow() : Workflow {
-	if (self.isTypeOf(Workflow)) {
+operation Any getWorkflow() : CrossflowLanguageModel!Workflow {
+	if (self.isTypeOf(CrossflowLanguageModel!Workflow)) {
 		return self;
 	}
 	return self.eContainer().getWorkflow();
@@ -25,7 +25,7 @@ operation String toSnakeCaseLower() : String {
  * LANGUAGES AND CONFIGURATION
  */
 @cached
-operation Workflow hasLanguage(language : String) : Language {
+operation CrossflowLanguageModel!Workflow hasLanguage(language : String) : CrossflowLanguageModel!Language {
 	return self.getLanguage(language).isDefined();
 }
 
@@ -34,7 +34,7 @@ operation Workflow hasLanguage(language : String) : Language {
  */
 // Return the language with the give name, ignoring case
 @cached
-operation Any getLanguage(language : String) : Language {
+operation Any getLanguage(language : String) : CrossflowLanguageModel!Language {
 	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
 }
 
@@ -75,7 +75,7 @@ operation getGenTime() : String {
 
 // Returns whether the language parameter 'genDate' is set to true. Defaults to true
 @cached
-operation Language hasGenDate() : Boolean {
+operation CrossflowLanguageModel!Language hasGenDate() : Boolean {
 	var genDate = self.parameters.selectOne(p|p.name == "genDate");
 	if (param.isDefined()) {
 		return param.name == "true";
@@ -87,32 +87,32 @@ operation Language hasGenDate() : Boolean {
  * TASKS
  */
 @cached
-operation Task isJavaTask() {
+operation CrossflowLanguageModel!Task isJavaTask() {
 	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
 }
  
 @cached
-operation Task hasLanguage(language : String) : Boolean {
+operation CrossflowLanguageModel!Task hasLanguage(language : String) : Boolean {
 	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
 }
 
 @cached
-operation Task isSingleOut() : Boolean {
+operation CrossflowLanguageModel!Task isSingleOut() : Boolean {
 	return not self.multipleOutputs and self.output.size==1;
 }
 
 @cached
-operation Task isSource() : Boolean {
-	return self.isKindOf(Source);
+operation CrossflowLanguageModel!Task isSource() : Boolean {
+	return self.isKindOf(CrossflowLanguageModel!Source);
 }
 
 @cached
-operation Task isSink() : Boolean {
-	return self.isKindOf(Sink);
+operation CrossflowLanguageModel!Task isSink() : Boolean {
+	return self.isKindOf(CrossflowLanguageModel!Sink);
 }
 
 @cached
-operation Task hasConfiguration() : Boolean {
+operation CrossflowLanguageModel!Task hasConfiguration() : Boolean {
 	return self.input.exists(c|c.isConfigurationChannel());
 }
 
@@ -120,7 +120,7 @@ operation Task hasConfiguration() : Boolean {
  * STREAMS
  */
 @cached
-operation Stream isConfigurationChannel() {
+operation CrossflowLanguageModel!Stream isConfigurationChannel() {
 	if(not self.name.endsWith("ConfigTopic")) return false;
 	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
 	return t.configurations.exists(c|c.name=configurationName);
@@ -129,12 +129,12 @@ operation Stream isConfigurationChannel() {
 /**
  * TYPES
  */
-operation Type createSource(){
-	var source = new Source;
+operation CrossflowLanguageModel!Type createSource(){
+	var source = new CrossflowLanguageModel!Source;
 	self.eContainer.tasks.add(source);
 	self.eContainer.types.add(self);
 	source.name = self.name+"ConfigSource";
-	var configTopic = new Topic;
+	var configTopic = new CrossflowLanguageModel!Topic;
 	self.eContainer.streams.add(configTopic);
 	configTopic.name = self.name+"ConfigTopic";
 	configTopic.type = self;
@@ -146,8 +146,8 @@ operation Type createSource(){
 	return source;  
 }
 
-operation Type findEligibleConfigurableTasks(){
-	return Task.all.select(t|t.configurations.exists(c|c=self));
+operation CrossflowLanguageModel!Type findEligibleConfigurableTasks(){
+	return CrossflowLanguageModel!Task.all.select(t|t.configurations.exists(c|c=self));
 }
 
 /**
@@ -156,7 +156,7 @@ operation Type findEligibleConfigurableTasks(){
  */
 operation Any getPath() {
 	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	if (not self.isTypeOf(CrossflowLanguageModel!Workflow)) workflow = self.eContainer();
 	
 	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
@@ -174,7 +174,7 @@ operation Any getPath() {
 
 operation Any getImplPath() {
 	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
+	if (not self.isTypeOf(CrossflowLanguageModel!Workflow)) workflow = self.eContainer();
 	
 	var lang = workflow.languages.select(l|l.isJava());
 	var langExists = not lang.isEmpty;
@@ -190,7 +190,7 @@ operation Any getImplPath() {
 	return path;
 }
 
-operation Workflow getPackageName() {
+operation CrossflowLanguageModel!Workflow getPackageName() {
 	var lang = self.languages.select(l | l.isJava());
 	var package;
 	if (not lang.isEmpty) {
@@ -202,6 +202,14 @@ operation Workflow getPackageName() {
 	return package;
 }
 
-operation Language isJava() {
+operation CrossflowLanguageModel!Language isJava() {
 	return self.name.toLowerCase() == "java";
+}
+
+operation CrossflowLanguageModel!Component isOpinionatedComponent(){
+	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("opinionated") or self.componentType.name.equalsIgnorecase("opinionatedtask");
+}
+
+operation CrossflowLanguageModel!Component isCommitmentComponent(){
+	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("commitment") or self.componentType.name.equalsIgnorecase("commitmenttask");
 }

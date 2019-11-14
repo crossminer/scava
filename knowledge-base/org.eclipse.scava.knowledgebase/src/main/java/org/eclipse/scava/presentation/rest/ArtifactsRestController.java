@@ -100,7 +100,7 @@ public class ArtifactsRestController {
 	}
 
 	@ApiOperation(value = "Get metrics by user id")
-	@RequestMapping(value = "/m4p/pid//{user_id}", produces = { "application/json",
+	@RequestMapping(value = "/m4p/uid//{user_id}", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByUserId(@PathVariable("user_id") String userId) {
 		return m4pRepository.findByUserId(userId);
@@ -118,7 +118,7 @@ public class ArtifactsRestController {
 	}
 
 	@ApiOperation(value = "Get metrics by projectID id")
-	@RequestMapping(value = "/m4p/uid/{project_id}", produces = { "application/json",
+	@RequestMapping(value = "/m4p/pid/{project_id}", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByProjectId(@PathVariable("project_id") String id) {
 		return m4pRepository.findByProjectId(id);

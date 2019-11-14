@@ -15,7 +15,7 @@ public class DirectoryCacheTests {
 		NumberPair input = new NumberPair(1, 2);
 		input.setDestination("Additions");
 		NumberPair output = new NumberPair(2, 4);
-		output.setCorrelationId(input.getId());
+		output.setCorrelationId(input.getJobId());
 
 		DirectoryCache cache = new DirectoryCache();
 		MinimalWorkflow cacheWorkflow = new MinimalWorkflow();
@@ -55,7 +55,7 @@ public class DirectoryCacheTests {
 		NumberPair input = new NumberPair(1, 2);
 		input.setDestination("Additions");
 		NumberPair output = new NumberPair(2, 4);
-		output.setCorrelationId(input.getId());
+		output.setCorrelationId(input.getJobId());
 
 		DirectoryCache cache = new DirectoryCache();
 		cache.setWorkflow(new MinimalWorkflow());

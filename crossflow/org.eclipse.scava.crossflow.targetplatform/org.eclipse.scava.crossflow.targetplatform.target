@@ -71,6 +71,7 @@
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 		<unit id="org.eclipse.epsilon.core.feature.feature.group" version="0.0.0"/>
+		<unit id="org.eclipse.epsilon.evl.emf.validation.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.emf.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.eugenia.feature.feature.group" version="0.0.0"/>
 		<repository location="http://download.eclipse.org/epsilon/interim/"/>

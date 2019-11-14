@@ -31,12 +31,14 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 	private ISimilarityManager simManger;
 
 	private static final Logger log = LoggerFactory.getLogger(FocusContexAwareRecommender.class);
+
 	public FocusContexAwareRecommender() {
 	}
 
-	public Map<String, Float> recommends(List<Artifact> trainingProjects, Artifact testingProject, String activeDeclaration)
-			throws ActiveDeclarationNotFoundException {
-		log.info(String.format("FOCUS is computing recomendation for {} project with {} as active declaraion", testingProject.getName(), activeDeclaration));
+	public Map<String, Float> recommends(List<Artifact> trainingProjects, Artifact testingProject,
+			String activeDeclaration) throws ActiveDeclarationNotFoundException {
+		log.info(String.format("FOCUS is computing recomendation for {} project with {} as active declaraion",
+				testingProject.getName(), activeDeclaration));
 		Map<String, Float> recommendations = new HashMap<>();
 		List<Artifact> listOfPRs = new ArrayList<>();
 		List<String> listOfMIs = new ArrayList<>();
@@ -108,7 +110,8 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		StringComparator bvc2 = new StringComparator(recommendations);
 		TreeMap<String, Float> recSortedMap = new TreeMap<>(bvc2);
 		recSortedMap.putAll(recommendations);
-		log.info(String.format("FOCUS computed recomendation for {} project with {} as active declaraion", testingProject.getName(), activeDeclaration));
+		log.info(String.format("FOCUS computed recomendation for {} project with {} as active declaraion",
+				testingProject.getName(), activeDeclaration));
 		return recSortedMap;
 	}
 
@@ -240,7 +243,7 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		Artifact a = new Artifact();
 		a.setMethodDeclarations(query.getFocusInput().getMethodDeclarations());
 		a.setName("INPUTPROJECT");
-		List <Artifact> arts = simManger.appliableProjects(fsc);
+		List<Artifact> arts = simManger.appliableProjects(fsc);
 		Map<String, Float> ret = recommends(arts, a, query.getFocusInput().getActiveDeclaration());
 		Recommendation rec = new Recommendation();
 		rec.setRecommendationItems(new ArrayList<RecommendationItem>());
@@ -249,7 +252,6 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		recItm.setRecommendationType("FOCUS");
 		rec.getRecommendationItems().add(recItm);
 		return rec;
-		
 	}
 
 }

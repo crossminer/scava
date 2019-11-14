@@ -25,6 +25,7 @@ import crossflow.Language;
 import crossflow.OpinionatedTask;
 import crossflow.Parameter;
 import crossflow.Queue;
+import crossflow.ReusableComponent;
 import crossflow.ScriptedTask;
 import crossflow.Serialiser;
 import crossflow.Sink;
@@ -46,6 +47,7 @@ import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.Parameter2EditPart;
 import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.SerialiserEditPart;
@@ -131,6 +133,10 @@ public class CrossflowDiagramUpdater {
 				continue;
 			}
 			if (visualID == ScriptedTaskEditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == ReusableComponentEditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -309,6 +315,8 @@ public class CrossflowDiagramUpdater {
 			return getOpinionatedTask_2008ContainedLinks(view);
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getScriptedTask_2015ContainedLinks(view);
+		case ReusableComponentEditPart.VISUAL_ID:
+			return getReusableComponent_2017ContainedLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010ContainedLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -354,6 +362,8 @@ public class CrossflowDiagramUpdater {
 			return getOpinionatedTask_2008IncomingLinks(view);
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getScriptedTask_2015IncomingLinks(view);
+		case ReusableComponentEditPart.VISUAL_ID:
+			return getReusableComponent_2017IncomingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010IncomingLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -399,6 +409,8 @@ public class CrossflowDiagramUpdater {
 			return getOpinionatedTask_2008OutgoingLinks(view);
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getScriptedTask_2015OutgoingLinks(view);
+		case ReusableComponentEditPart.VISUAL_ID:
+			return getReusableComponent_2017OutgoingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010OutgoingLinks(view);
 		case TypeEditPart.VISUAL_ID:
@@ -515,6 +527,16 @@ public class CrossflowDiagramUpdater {
 	 */
 	public static List<CrossflowLinkDescriptor> getScriptedTask_2015ContainedLinks(View view) {
 		ScriptedTask modelElement = (ScriptedTask) view.getElement();
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
+		return result;
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getReusableComponent_2017ContainedLinks(View view) {
+		ReusableComponent modelElement = (ReusableComponent) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
 		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
 		return result;
@@ -698,6 +720,18 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getReusableComponent_2017IncomingLinks(View view) {
+		ReusableComponent modelElement = (ReusableComponent) view.getElement();
+		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
+				.find(view.eResource().getResourceSet().getResources());
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getIncomingFeatureModelFacetLinks_Stream_InputOf_4005(modelElement, crossReferences));
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<CrossflowLinkDescriptor> getTask_2010IncomingLinks(View view) {
@@ -858,6 +892,16 @@ public class CrossflowDiagramUpdater {
 	 */
 	public static List<CrossflowLinkDescriptor> getScriptedTask_2015OutgoingLinks(View view) {
 		ScriptedTask modelElement = (ScriptedTask) view.getElement();
+		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
+		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
+		return result;
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<CrossflowLinkDescriptor> getReusableComponent_2017OutgoingLinks(View view) {
+		ReusableComponent modelElement = (ReusableComponent) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
 		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
 		return result;

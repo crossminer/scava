@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gmfgraph:Canvas xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmfgraph="http://www.eclipse.org/gmf/2006/GraphicalDefinition" name="crossflowComponents">
+  <figures name="Default">
+    <figures xsi:type="gmfgraph:PolygonDecoration" name="FilledClosedArrow">
+      <template/>
+      <template x="-2" y="2"/>
+      <template x="-2" y="-2"/>
+      <template/>
+    </figures>
+    <figures xsi:type="gmfgraph:PolygonDecoration" name="FilledClosedArrow">
+      <template/>
+      <template x="-2" y="2"/>
+      <template x="-2" y="-2"/>
+      <template/>
+    </figures>
+    <descriptors name="TopicFigure">
+      <actualFigure xsi:type="gmfgraph:Ellipse" name="TopicFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="TopicLabelFigure" text="Topic">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureTopicLabelFigure" figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="QueueFigure">
+      <actualFigure xsi:type="gmfgraph:Ellipse" name="QueueFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="QueueLabelFigure" text="Queue">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureQueueLabelFigure" figure="//@figures.0/@descriptors.1/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="TaskFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="TaskFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="TaskLabelFigure" text="Task">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureTaskLabelFigure" figure="//@figures.0/@descriptors.2/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="SourceFigure">
+      <actualFigure xsi:type="gmfgraph:ScalablePolygon" name="SourceFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="SourceLabelFigure" text="Source">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+        <template/>
+        <template x="10"/>
+        <template x="11" y="2"/>
+        <template x="10" y="4"/>
+        <template y="4"/>
+      </actualFigure>
+      <accessors accessor="getFigureSourceLabelFigure" figure="//@figures.0/@descriptors.3/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="CsvSourceFigure">
+      <actualFigure xsi:type="gmfgraph:ScalablePolygon" name="CsvSourceFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="CsvSourceLabelFigure" text="CsvSource">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+        <template/>
+        <template x="10"/>
+        <template x="11" y="2"/>
+        <template x="10" y="4"/>
+        <template y="4"/>
+      </actualFigure>
+      <accessors accessor="getFigureCsvSourceLabelFigure" figure="//@figures.0/@descriptors.4/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="SinkFigure">
+      <actualFigure xsi:type="gmfgraph:ScalablePolygon" name="SinkFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="SinkLabelFigure" text="Sink">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+        <template/>
+        <template x="10"/>
+        <template x="10" y="4"/>
+        <template x="5" y="6"/>
+        <template y="4"/>
+      </actualFigure>
+      <accessors accessor="getFigureSinkLabelFigure" figure="//@figures.0/@descriptors.5/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="CsvSinkFigure">
+      <actualFigure xsi:type="gmfgraph:ScalablePolygon" name="CsvSinkFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="CsvSinkLabelFigure" text="CsvSink">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+        <template/>
+        <template x="10"/>
+        <template x="10" y="4"/>
+        <template x="5" y="6"/>
+        <template y="4"/>
+      </actualFigure>
+      <accessors accessor="getFigureCsvSinkLabelFigure" figure="//@figures.0/@descriptors.6/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="CommitmentTaskFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="CommitmentTaskFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="CommitmentTaskLabelFigure" text="CommitmentTask">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureCommitmentTaskLabelFigure" figure="//@figures.0/@descriptors.7/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="OpinionatedTaskFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="OpinionatedTaskFigure">
+        <layout xsi:type="gmfgraph:GridLayout"/>
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="OpinionatedTaskLabelFigure" text="OpinionatedTask">
+          <layoutData xsi:type="gmfgraph:GridLayoutData" grabExcessHorizontalSpace="true" grabExcessVerticalSpace="true"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureOpinionatedTaskLabelFigure" figure="//@figures.0/@descriptors.8/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="ScriptedTaskFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="ScriptedTaskFigure">
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="ScriptedTaskLabelFigure" text="ScriptedTask">
+          <maximumSize dx="10000" dy="50"/>
+        </children>
+        <children xsi:type="gmfgraph:Rectangle" name="ScriptedTaskOutputVariablesCompartmentFigure" outline="false"/>
+      </actualFigure>
+      <accessors accessor="getFigureScriptedTaskLabelFigure" figure="//@figures.0/@descriptors.9/@actualFigure/@children.0"/>
+      <accessors accessor="getScriptedTaskOutputVariablesCompartmentFigure" figure="//@figures.0/@descriptors.9/@actualFigure/@children.1"/>
+    </descriptors>
+    <descriptors name="ReusableComponentFigure">
+      <actualFigure xsi:type="gmfgraph:RoundedRectangle" name="ReusableComponentFigure">
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="ReusableComponentLabelFigure" text="ReusableComponent"/>
+      </actualFigure>
+      <accessors accessor="getFigureReusableComponentLabelFigure" figure="//@figures.0/@descriptors.10/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="TypeFigure">
+      <actualFigure xsi:type="gmfgraph:Rectangle" name="TypeFigure">
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="TypeLabelFigure" text="Type">
+          <maximumSize dx="10000" dy="50"/>
+        </children>
+        <children xsi:type="gmfgraph:Rectangle" name="TypeFieldsCompartmentFigure" outline="false">
+          <layout xsi:type="gmfgraph:StackLayout"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureTypeLabelFigure" figure="//@figures.0/@descriptors.11/@actualFigure/@children.0"/>
+      <accessors accessor="getTypeFieldsCompartmentFigure" figure="//@figures.0/@descriptors.11/@actualFigure/@children.1"/>
+    </descriptors>
+    <descriptors name="FieldFigure">
+      <actualFigure xsi:type="gmfgraph:Rectangle" name="FieldFigure" outline="false">
+        <preferredSize dx="100" dy="20"/>
+        <children xsi:type="gmfgraph:Label" name="FieldLabelFigure" text="Field"/>
+      </actualFigure>
+      <accessors accessor="getFigureFieldLabelFigure" figure="//@figures.0/@descriptors.12/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="LanguageFigure">
+      <actualFigure xsi:type="gmfgraph:Rectangle" name="LanguageFigure">
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="LanguageLabelFigure" text="Language">
+          <maximumSize dx="10000" dy="50"/>
+        </children>
+        <children xsi:type="gmfgraph:Rectangle" name="LanguageParametersCompartmentFigure" outline="false">
+          <layout xsi:type="gmfgraph:StackLayout"/>
+        </children>
+      </actualFigure>
+      <accessors accessor="getFigureLanguageLabelFigure" figure="//@figures.0/@descriptors.13/@actualFigure/@children.0"/>
+      <accessors accessor="getLanguageParametersCompartmentFigure" figure="//@figures.0/@descriptors.13/@actualFigure/@children.1"/>
+    </descriptors>
+    <descriptors name="ParameterFigure">
+      <actualFigure xsi:type="gmfgraph:Rectangle" name="ParameterFigure" outline="false">
+        <preferredSize dx="100" dy="20"/>
+        <children xsi:type="gmfgraph:Label" name="ParameterLabelFigure" text="Parameter"/>
+      </actualFigure>
+      <accessors accessor="getFigureParameterLabelFigure" figure="//@figures.0/@descriptors.14/@actualFigure/@children.0"/>
+    </descriptors>
+    <descriptors name="SerialiserFigure">
+      <actualFigure xsi:type="gmfgraph:Rectangle" name="SerialiserFigure">
+        <border xsi:type="gmfgraph:MarginBorder">
+          <insets top="5" left="5" bottom="5" right="5"/>
+        </border>
+        <children xsi:type="gmfgraph:Label" name="SerialiserLabelFigure" text="Serialiser">
+          <maximumSize dx="10000" dy="50"/>
+        </children>
+        <children xsi:type="gmfgraph:Rectangle" name="SerialiserParametersCompartmentFigure" outline="false"/>
+      </actualFigure>
+      <accessors accessor="getFigureSerialiserLabelFigure" figure="//@figures.0/@descriptors.15/@actualFigure/@children.0"/>
+      <accessors accessor="getSerialiserParametersCompartmentFigure" figure="//@figures.0/@descriptors.15/@actualFigure/@children.1"/>
+    </descriptors>
+    <descriptors name="StreamTypeFigure">
+      <actualFigure xsi:type="gmfgraph:PolylineConnection" name="StreamTypeFigure"/>
+    </descriptors>
+    <descriptors name="StreamTypeExternalLabelFigure">
+      <actualFigure xsi:type="gmfgraph:Label" name="StreamTypeExternalLabel"/>
+    </descriptors>
+    <descriptors name="StreamInputOfFigure">
+      <actualFigure xsi:type="gmfgraph:PolylineConnection" name="StreamInputOfFigure" targetDecoration="//@figures.0/@figures.0"/>
+    </descriptors>
+    <descriptors name="StreamInputOfExternalLabelFigure">
+      <actualFigure xsi:type="gmfgraph:Label" name="StreamInputOfExternalLabel"/>
+    </descriptors>
+    <descriptors name="TaskOutputFigure">
+      <actualFigure xsi:type="gmfgraph:PolylineConnection" name="TaskOutputFigure" targetDecoration="//@figures.0/@figures.1"/>
+    </descriptors>
+    <descriptors name="TaskOutputExternalLabelFigure">
+      <actualFigure xsi:type="gmfgraph:Label" name="TaskOutputExternalLabel"/>
+    </descriptors>
+    <descriptors name="TypeExtendingFigure">
+      <actualFigure xsi:type="gmfgraph:PolylineConnection" name="TypeExtendingFigure"/>
+    </descriptors>
+    <descriptors name="TypeExtendingExternalLabelFigure">
+      <actualFigure xsi:type="gmfgraph:Label" name="TypeExtendingExternalLabel"/>
+    </descriptors>
+  </figures>
+  <nodes name="Topic" figure="TopicFigure"/>
+  <nodes name="Queue" figure="QueueFigure"/>
+  <nodes name="Task" figure="TaskFigure"/>
+  <nodes name="Source" figure="SourceFigure"/>
+  <nodes name="CsvSource" figure="CsvSourceFigure"/>
+  <nodes name="Sink" figure="SinkFigure"/>
+  <nodes name="CsvSink" figure="CsvSinkFigure"/>
+  <nodes name="CommitmentTask" figure="CommitmentTaskFigure"/>
+  <nodes name="OpinionatedTask" figure="OpinionatedTaskFigure"/>
+  <nodes name="ScriptedTask" figure="ScriptedTaskFigure"/>
+  <nodes name="ReusableComponent" figure="ReusableComponentFigure"/>
+  <nodes name="Type" figure="TypeFigure"/>
+  <nodes name="Field" figure="FieldFigure"/>
+  <nodes name="Language" figure="LanguageFigure"/>
+  <nodes name="Parameter" figure="ParameterFigure"/>
+  <nodes name="Serialiser" figure="SerialiserFigure"/>
+  <connections name="StreamType" figure="StreamTypeFigure"/>
+  <connections name="StreamInputOf" figure="StreamInputOfFigure"/>
+  <connections name="TaskOutput" figure="TaskOutputFigure"/>
+  <connections name="TypeExtending" figure="TypeExtendingFigure"/>
+  <compartments name="ScriptedTaskOutputVariablesCompartment" figure="ScriptedTaskFigure" accessor="//@figures.0/@descriptors.9/@accessors.1"/>
+  <compartments name="TypeFieldsCompartment" figure="TypeFigure" accessor="//@figures.0/@descriptors.11/@accessors.1"/>
+  <compartments name="LanguageParametersCompartment" figure="LanguageFigure" accessor="//@figures.0/@descriptors.13/@accessors.1"/>
+  <compartments name="SerialiserParametersCompartment" figure="SerialiserFigure" accessor="//@figures.0/@descriptors.15/@accessors.1"/>
+  <labels name="TopicLabel" figure="TopicFigure" elementIcon="false" accessor="//@figures.0/@descriptors.0/@accessors.0"/>
+  <labels name="QueueLabel" figure="QueueFigure" elementIcon="false" accessor="//@figures.0/@descriptors.1/@accessors.0"/>
+  <labels name="TaskLabel" figure="TaskFigure" elementIcon="false" accessor="//@figures.0/@descriptors.2/@accessors.0"/>
+  <labels name="SourceLabel" figure="SourceFigure" elementIcon="false" accessor="//@figures.0/@descriptors.3/@accessors.0"/>
+  <labels name="CsvSourceLabel" figure="CsvSourceFigure" elementIcon="false" accessor="//@figures.0/@descriptors.4/@accessors.0"/>
+  <labels name="SinkLabel" figure="SinkFigure" elementIcon="false" accessor="//@figures.0/@descriptors.5/@accessors.0"/>
+  <labels name="CsvSinkLabel" figure="CsvSinkFigure" elementIcon="false" accessor="//@figures.0/@descriptors.6/@accessors.0"/>
+  <labels name="CommitmentTaskLabel" figure="CommitmentTaskFigure" elementIcon="false" accessor="//@figures.0/@descriptors.7/@accessors.0"/>
+  <labels name="OpinionatedTaskLabel" figure="OpinionatedTaskFigure" elementIcon="false" accessor="//@figures.0/@descriptors.8/@accessors.0"/>
+  <labels name="ScriptedTaskLabel" figure="ScriptedTaskFigure" elementIcon="false" accessor="//@figures.0/@descriptors.9/@accessors.0"/>
+  <labels name="ReusableComponentLabel" figure="ReusableComponentFigure" elementIcon="false" accessor="//@figures.0/@descriptors.10/@accessors.0"/>
+  <labels name="TypeLabel" figure="TypeFigure" accessor="//@figures.0/@descriptors.11/@accessors.0"/>
+  <labels name="FieldLabel" figure="FieldFigure" elementIcon="false" accessor="//@figures.0/@descriptors.12/@accessors.0"/>
+  <labels name="LanguageLabel" figure="LanguageFigure" accessor="//@figures.0/@descriptors.13/@accessors.0"/>
+  <labels name="ParameterLabel" figure="ParameterFigure" elementIcon="false" accessor="//@figures.0/@descriptors.14/@accessors.0"/>
+  <labels name="SerialiserLabel" figure="SerialiserFigure" accessor="//@figures.0/@descriptors.15/@accessors.0"/>
+  <labels name="StreamTypeExternalLabel" figure="StreamTypeExternalLabelFigure" elementIcon="false"/>
+  <labels name="StreamInputOfExternalLabel" figure="StreamInputOfExternalLabelFigure" elementIcon="false"/>
+  <labels name="TaskOutputExternalLabel" figure="TaskOutputExternalLabelFigure" elementIcon="false"/>
+  <labels name="TypeExtendingExternalLabel" figure="TypeExtendingExternalLabelFigure" elementIcon="false"/>
+</gmfgraph:Canvas>
