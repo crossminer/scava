@@ -74,11 +74,11 @@ public class ReusableComponentItemProvider extends TaskItemProvider {
 	 * This returns ReusableComponent.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ReusableComponent"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ReusableComponent.png"));
 	}
 
 	/**

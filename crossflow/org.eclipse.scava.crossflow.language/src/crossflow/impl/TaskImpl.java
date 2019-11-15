@@ -7,8 +7,8 @@ import crossflow.Field;
 import crossflow.Language;
 import crossflow.Stream;
 import crossflow.Task;
-
 import crossflow.Type;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;

@@ -31,7 +31,7 @@ import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
@@ -121,13 +121,11 @@ public class CrossflowElementTypes {
 	*/
 	public static final IElementType ScriptedTask_2015 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
 	public static final IElementType ReusableComponent_2017 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.ReusableComponent_2017"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
@@ -143,25 +141,21 @@ public class CrossflowElementTypes {
 	*/
 	public static final IElementType Field_2014 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Field_2014"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
 	public static final IElementType Language_2013 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Language_2013"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
-	public static final IElementType Serialiser_2016 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Serialiser_2016"); //$NON-NLS-1$
-
+	public static final IElementType Serializer_2018 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Serializer_2018"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
 	public static final IElementType Field_3003 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Field_3003"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
@@ -172,13 +166,11 @@ public class CrossflowElementTypes {
 	*/
 	public static final IElementType Parameter_3002 = getElementType(
 			"org.eclipse.scava.crossflow.language.diagram.Parameter_3002"); //$NON-NLS-1$
-
 	/**
 	* @generated
 	*/
-	public static final IElementType Parameter_3004 = getElementType(
-			"org.eclipse.scava.crossflow.language.diagram.Parameter_3004"); //$NON-NLS-1$
-
+	public static final IElementType Parameter_3005 = getElementType(
+			"org.eclipse.scava.crossflow.language.diagram.Parameter_3005"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
@@ -268,7 +260,7 @@ public class CrossflowElementTypes {
 
 			elements.put(Language_2013, CrossflowPackage.eINSTANCE.getLanguage());
 
-			elements.put(Serialiser_2016, CrossflowPackage.eINSTANCE.getSerialiser());
+			elements.put(Serializer_2018, CrossflowPackage.eINSTANCE.getSerializer());
 
 			elements.put(Field_3003, CrossflowPackage.eINSTANCE.getField());
 
@@ -276,7 +268,7 @@ public class CrossflowElementTypes {
 
 			elements.put(Parameter_3002, CrossflowPackage.eINSTANCE.getParameter());
 
-			elements.put(Parameter_3004, CrossflowPackage.eINSTANCE.getParameter());
+			elements.put(Parameter_3005, CrossflowPackage.eINSTANCE.getParameter());
 
 			elements.put(StreamType_4001, CrossflowPackage.eINSTANCE.getStream_Type());
 
@@ -317,11 +309,11 @@ public class CrossflowElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Type_2011);
 			KNOWN_ELEMENT_TYPES.add(Field_2014);
 			KNOWN_ELEMENT_TYPES.add(Language_2013);
-			KNOWN_ELEMENT_TYPES.add(Serialiser_2016);
+			KNOWN_ELEMENT_TYPES.add(Serializer_2018);
 			KNOWN_ELEMENT_TYPES.add(Field_3003);
 			KNOWN_ELEMENT_TYPES.add(Field_3001);
 			KNOWN_ELEMENT_TYPES.add(Parameter_3002);
-			KNOWN_ELEMENT_TYPES.add(Parameter_3004);
+			KNOWN_ELEMENT_TYPES.add(Parameter_3005);
 			KNOWN_ELEMENT_TYPES.add(StreamType_4001);
 			KNOWN_ELEMENT_TYPES.add(StreamInputOf_4005);
 			KNOWN_ELEMENT_TYPES.add(TaskOutput_4003);
@@ -365,8 +357,8 @@ public class CrossflowElementTypes {
 			return Field_2014;
 		case LanguageEditPart.VISUAL_ID:
 			return Language_2013;
-		case SerialiserEditPart.VISUAL_ID:
-			return Serialiser_2016;
+		case SerializerEditPart.VISUAL_ID:
+			return Serializer_2018;
 		case Field2EditPart.VISUAL_ID:
 			return Field_3003;
 		case Field3EditPart.VISUAL_ID:
@@ -374,7 +366,7 @@ public class CrossflowElementTypes {
 		case ParameterEditPart.VISUAL_ID:
 			return Parameter_3002;
 		case Parameter2EditPart.VISUAL_ID:
-			return Parameter_3004;
+			return Parameter_3005;
 		case StreamTypeEditPart.VISUAL_ID:
 			return StreamType_4001;
 		case StreamInputOfEditPart.VISUAL_ID:

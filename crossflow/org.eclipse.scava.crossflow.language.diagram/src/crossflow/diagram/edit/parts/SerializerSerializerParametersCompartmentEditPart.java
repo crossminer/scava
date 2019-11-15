@@ -19,8 +19,8 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import crossflow.diagram.edit.policies.SerialiserSerialiserParametersCompartmentCanonicalEditPolicy;
-import crossflow.diagram.edit.policies.SerialiserSerialiserParametersCompartmentItemSemanticEditPolicy;
+import crossflow.diagram.edit.policies.SerializerSerializerParametersCompartmentCanonicalEditPolicy;
+import crossflow.diagram.edit.policies.SerializerSerializerParametersCompartmentItemSemanticEditPolicy;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 import crossflow.diagram.part.Messages;
 import crossflow.diagram.providers.CrossflowElementTypes;
@@ -28,17 +28,17 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 /**
  * @generated
  */
-public class SerialiserSerialiserParametersCompartmentEditPart extends ListCompartmentEditPart {
+public class SerializerSerializerParametersCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7004;
+	public static final int VISUAL_ID = 7005;
 
 	/**
 	* @generated
 	*/
-	public SerialiserSerialiserParametersCompartmentEditPart(View view) {
+	public SerializerSerializerParametersCompartmentEditPart(View view) {
 		super(view);
 	}
 
@@ -53,7 +53,7 @@ public class SerialiserSerialiserParametersCompartmentEditPart extends ListCompa
 	* @generated
 	*/
 	public String getCompartmentName() {
-		return Messages.SerialiserSerialiserParametersCompartmentEditPart_title;
+		return Messages.SerializerSerializerParametersCompartmentEditPart_title;
 	}
 
 	/**
@@ -71,12 +71,12 @@ public class SerialiserSerialiserParametersCompartmentEditPart extends ListCompa
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new SerialiserSerialiserParametersCompartmentItemSemanticEditPolicy());
+				new SerializerSerializerParametersCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(CrossflowVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new SerialiserSerialiserParametersCompartmentCanonicalEditPolicy());
+				new SerializerSerializerParametersCompartmentCanonicalEditPolicy());
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class SerialiserSerialiserParametersCompartmentEditPart extends ListCompa
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == CrossflowElementTypes.Parameter_3004) {
+			if (type == CrossflowElementTypes.Parameter_3005) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

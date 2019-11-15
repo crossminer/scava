@@ -16,20 +16,20 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.diagram.edit.parts.Parameter2EditPart;
-import crossflow.diagram.edit.parts.SerialiserSerialiserParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.SerializerSerializerParametersCompartmentEditPart;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 import crossflow.diagram.providers.CrossflowElementTypes;
 
 /**
  * @generated
  */
-public class SerialiserItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
+public class SerializerItemSemanticEditPolicy extends CrossflowBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public SerialiserItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Serialiser_2016);
+	public SerializerItemSemanticEditPolicy() {
+		super(CrossflowElementTypes.Serializer_2018);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class SerialiserItemSemanticEditPolicy extends CrossflowBaseItemSemanticE
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (CrossflowVisualIDRegistry.getVisualID(node)) {
-			case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+			case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (CrossflowVisualIDRegistry.getVisualID(cnode)) {

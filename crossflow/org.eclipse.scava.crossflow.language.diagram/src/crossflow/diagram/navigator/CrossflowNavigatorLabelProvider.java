@@ -48,8 +48,8 @@ import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
-import crossflow.diagram.edit.parts.SerialiserNameEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
+import crossflow.diagram.edit.parts.SerializerNameEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -170,12 +170,12 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?ScriptedTask", //$NON-NLS-1$
 					CrossflowElementTypes.ScriptedTask_2015);
-		case SerialiserEditPart.VISUAL_ID:
-			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?Serialiser", //$NON-NLS-1$
-					CrossflowElementTypes.Serialiser_2016);
 		case ReusableComponentEditPart.VISUAL_ID:
 			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?ReusableComponent", //$NON-NLS-1$
 					CrossflowElementTypes.ReusableComponent_2017);
+		case SerializerEditPart.VISUAL_ID:
+			return getImage("Navigator?TopLevelNode?org.eclipse.scava.crossflow?Serializer", //$NON-NLS-1$
+					CrossflowElementTypes.Serializer_2018);
 		case Field3EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Field", CrossflowElementTypes.Field_3001); //$NON-NLS-1$
 		case ParameterEditPart.VISUAL_ID:
@@ -185,7 +185,7 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Field", CrossflowElementTypes.Field_3003); //$NON-NLS-1$
 		case Parameter2EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?org.eclipse.scava.crossflow?Parameter", //$NON-NLS-1$
-					CrossflowElementTypes.Parameter_3004);
+					CrossflowElementTypes.Parameter_3005);
 		case StreamTypeEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?org.eclipse.scava.crossflow?Stream?type", //$NON-NLS-1$
 					CrossflowElementTypes.StreamType_4001);
@@ -284,10 +284,10 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 			return getField_2014Text(view);
 		case ScriptedTaskEditPart.VISUAL_ID:
 			return getScriptedTask_2015Text(view);
-		case SerialiserEditPart.VISUAL_ID:
-			return getSerialiser_2016Text(view);
 		case ReusableComponentEditPart.VISUAL_ID:
 			return getReusableComponent_2017Text(view);
+		case SerializerEditPart.VISUAL_ID:
+			return getSerializer_2018Text(view);
 		case Field3EditPart.VISUAL_ID:
 			return getField_3001Text(view);
 		case ParameterEditPart.VISUAL_ID:
@@ -295,7 +295,7 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 		case Field2EditPart.VISUAL_ID:
 			return getField_3003Text(view);
 		case Parameter2EditPart.VISUAL_ID:
-			return getParameter_3004Text(view);
+			return getParameter_3005Text(view);
 		case StreamTypeEditPart.VISUAL_ID:
 			return getStreamType_4001Text(view);
 		case TaskOutputEditPart.VISUAL_ID:
@@ -532,22 +532,6 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 	/**
 	* @generated
 	*/
-	private String getSerialiser_2016Text(View view) {
-		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Serialiser_2016,
-				view.getElement() != null ? view.getElement() : view,
-				CrossflowVisualIDRegistry.getType(SerialiserNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5020); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	* @generated
-	*/
 	private String getReusableComponent_2017Text(View view) {
 		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.ReusableComponent_2017,
 				view.getElement() != null ? view.getElement() : view,
@@ -557,6 +541,22 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5021); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getSerializer_2018Text(View view) {
+		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Serializer_2018,
+				view.getElement() != null ? view.getElement() : view,
+				CrossflowVisualIDRegistry.getType(SerializerNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5023); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -612,15 +612,15 @@ public class CrossflowNavigatorLabelProvider extends LabelProvider
 	/**
 	* @generated
 	*/
-	private String getParameter_3004Text(View view) {
-		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Parameter_3004,
+	private String getParameter_3005Text(View view) {
+		IParser parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Parameter_3005,
 				view.getElement() != null ? view.getElement() : view,
 				CrossflowVisualIDRegistry.getType(ParameterNameValue2EditPart.VISUAL_ID));
 		if (parser != null) {
 			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
 					ParserOptions.NONE.intValue());
 		} else {
-			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5019); //$NON-NLS-1$
+			CrossflowDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5022); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

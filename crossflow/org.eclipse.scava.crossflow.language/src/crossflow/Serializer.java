@@ -8,22 +8,22 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Serialiser</b></em>'.
+ * A representation of the model object '<em><b>Serializer</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link crossflow.Serialiser#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.Serialiser#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.Serializer#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.Serializer#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
- * @see crossflow.CrossflowPackage#getSerialiser()
- * @model annotation="gmf.node label='name' figure='rectangle'"
+ * @see crossflow.CrossflowPackage#getSerializer()
+ * @model annotation="gmf.node label='name' figure='rectangle' label.icon='false' color='204,204,255'"
  * @generated
  */
-public interface Serialiser extends EObject {
+public interface Serializer extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -34,14 +34,14 @@ public interface Serialiser extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see crossflow.CrossflowPackage#getSerialiser_Name()
+	 * @see crossflow.CrossflowPackage#getSerializer_Name()
 	 * @model
 	 * @generated
 	 */
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link crossflow.Serialiser#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link crossflow.Serializer#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -60,11 +60,11 @@ public interface Serialiser extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameters</em>' containment reference list.
-	 * @see crossflow.CrossflowPackage#getSerialiser_Parameters()
+	 * @see crossflow.CrossflowPackage#getSerializer_Parameters()
 	 * @model containment="true"
 	 *        annotation="gmf.compartment layout='list' collapsible='false'"
 	 * @generated
 	 */
 	EList<Parameter> getParameters();
 
-} // Serialiser
+} // Serializer

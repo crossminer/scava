@@ -120,13 +120,13 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW__LANGUAGES = 5;
 
 	/**
-	 * The feature id for the '<em><b>Serialiser</b></em>' containment reference.
+	 * The feature id for the '<em><b>Serializer</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW__SERIALISER = 6;
+	int WORKFLOW__SERIALIZER = 6;
 
 	/**
 	 * The number of structural features of the '<em>Workflow</em>' class.
@@ -1537,7 +1537,6 @@ public interface CrossflowPackage extends EPackage {
 	 */
 	int FIELD_FEATURE_COUNT = 3;
 
-
 	/**
 	 * The meta object id for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1639,16 +1638,15 @@ public interface CrossflowPackage extends EPackage {
 	 */
 	int PARAMETER_FEATURE_COUNT = 2;
 
-
 	/**
-	 * The meta object id for the '{@link crossflow.impl.SerialiserImpl <em>Serialiser</em>}' class.
+	 * The meta object id for the '{@link crossflow.impl.SerializerImpl <em>Serializer</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see crossflow.impl.SerialiserImpl
-	 * @see crossflow.impl.CrossflowPackageImpl#getSerialiser()
+	 * @see crossflow.impl.SerializerImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getSerializer()
 	 * @generated
 	 */
-	int SERIALISER = 17;
+	int SERIALIZER = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1657,7 +1655,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERIALISER__NAME = 0;
+	int SERIALIZER__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -1666,16 +1664,16 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERIALISER__PARAMETERS = 1;
+	int SERIALIZER__PARAMETERS = 1;
 
 	/**
-	 * The number of structural features of the '<em>Serialiser</em>' class.
+	 * The number of structural features of the '<em>Serializer</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SERIALISER_FEATURE_COUNT = 2;
+	int SERIALIZER_FEATURE_COUNT = 2;
 
 
 	/**
@@ -1755,15 +1753,15 @@ public interface CrossflowPackage extends EPackage {
 	EReference getWorkflow_Languages();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link crossflow.Workflow#getSerialiser <em>Serialiser</em>}'.
+	 * Returns the meta object for the containment reference '{@link crossflow.Workflow#getSerializer <em>Serializer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Serialiser</em>'.
-	 * @see crossflow.Workflow#getSerialiser()
+	 * @return the meta object for the containment reference '<em>Serializer</em>'.
+	 * @see crossflow.Workflow#getSerializer()
 	 * @see #getWorkflow()
 	 * @generated
 	 */
-	EReference getWorkflow_Serialiser();
+	EReference getWorkflow_Serializer();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Stream <em>Stream</em>}'.
@@ -2333,36 +2331,36 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getParameter_Value();
 
 	/**
-	 * Returns the meta object for class '{@link crossflow.Serialiser <em>Serialiser</em>}'.
+	 * Returns the meta object for class '{@link crossflow.Serializer <em>Serializer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Serialiser</em>'.
-	 * @see crossflow.Serialiser
+	 * @return the meta object for class '<em>Serializer</em>'.
+	 * @see crossflow.Serializer
 	 * @generated
 	 */
-	EClass getSerialiser();
+	EClass getSerializer();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Serialiser#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link crossflow.Serializer#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see crossflow.Serialiser#getName()
-	 * @see #getSerialiser()
+	 * @see crossflow.Serializer#getName()
+	 * @see #getSerializer()
 	 * @generated
 	 */
-	EAttribute getSerialiser_Name();
+	EAttribute getSerializer_Name();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link crossflow.Serialiser#getParameters <em>Parameters</em>}'.
+	 * Returns the meta object for the containment reference list '{@link crossflow.Serializer#getParameters <em>Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
-	 * @see crossflow.Serialiser#getParameters()
-	 * @see #getSerialiser()
+	 * @see crossflow.Serializer#getParameters()
+	 * @see #getSerializer()
 	 * @generated
 	 */
-	EReference getSerialiser_Parameters();
+	EReference getSerializer_Parameters();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -2445,12 +2443,12 @@ public interface CrossflowPackage extends EPackage {
 		EReference WORKFLOW__LANGUAGES = eINSTANCE.getWorkflow_Languages();
 
 		/**
-		 * The meta object literal for the '<em><b>Serialiser</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Serializer</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference WORKFLOW__SERIALISER = eINSTANCE.getWorkflow_Serialiser();
+		EReference WORKFLOW__SERIALIZER = eINSTANCE.getWorkflow_Serializer();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -2909,14 +2907,14 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute PARAMETER__VALUE = eINSTANCE.getParameter_Value();
 
 		/**
-		 * The meta object literal for the '{@link crossflow.impl.SerialiserImpl <em>Serialiser</em>}' class.
+		 * The meta object literal for the '{@link crossflow.impl.SerializerImpl <em>Serializer</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see crossflow.impl.SerialiserImpl
-		 * @see crossflow.impl.CrossflowPackageImpl#getSerialiser()
+		 * @see crossflow.impl.SerializerImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getSerializer()
 		 * @generated
 		 */
-		EClass SERIALISER = eINSTANCE.getSerialiser();
+		EClass SERIALIZER = eINSTANCE.getSerializer();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2924,7 +2922,7 @@ public interface CrossflowPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute SERIALISER__NAME = eINSTANCE.getSerialiser_Name();
+		EAttribute SERIALIZER__NAME = eINSTANCE.getSerializer_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
@@ -2932,7 +2930,7 @@ public interface CrossflowPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SERIALISER__PARAMETERS = eINSTANCE.getSerialiser_Parameters();
+		EReference SERIALIZER__PARAMETERS = eINSTANCE.getSerializer_Parameters();
 
 	}
 

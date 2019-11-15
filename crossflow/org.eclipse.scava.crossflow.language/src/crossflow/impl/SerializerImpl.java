@@ -4,7 +4,7 @@ package crossflow.impl;
 
 import crossflow.CrossflowPackage;
 import crossflow.Parameter;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 
 import java.util.Collection;
 
@@ -24,19 +24,19 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Serialiser</b></em>'.
+ * An implementation of the model object '<em><b>Serializer</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link crossflow.impl.SerialiserImpl#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.impl.SerialiserImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link crossflow.impl.SerializerImpl#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.impl.SerializerImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class SerialiserImpl extends EObjectImpl implements Serialiser {
+public class SerializerImpl extends EObjectImpl implements Serializer {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -72,7 +72,7 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected SerialiserImpl() {
+	protected SerializerImpl() {
 		super();
 	}
 
@@ -83,7 +83,7 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return CrossflowPackage.Literals.SERIALISER;
+		return CrossflowPackage.Literals.SERIALIZER;
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.SERIALISER__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.SERIALIZER__NAME, oldName, name));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	 */
 	public EList<Parameter> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, CrossflowPackage.SERIALISER__PARAMETERS);
+			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, CrossflowPackage.SERIALIZER__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -127,7 +127,7 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -141,9 +141,9 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CrossflowPackage.SERIALISER__NAME:
+			case CrossflowPackage.SERIALIZER__NAME:
 				return getName();
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				return getParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -158,10 +158,10 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CrossflowPackage.SERIALISER__NAME:
+			case CrossflowPackage.SERIALIZER__NAME:
 				setName((String)newValue);
 				return;
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				getParameters().clear();
 				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
@@ -177,10 +177,10 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.SERIALISER__NAME:
+			case CrossflowPackage.SERIALIZER__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				getParameters().clear();
 				return;
 		}
@@ -195,9 +195,9 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CrossflowPackage.SERIALISER__NAME:
+			case CrossflowPackage.SERIALIZER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
@@ -219,4 +219,4 @@ public class SerialiserImpl extends EObjectImpl implements Serialiser {
 		return result.toString();
 	}
 
-} //SerialiserImpl
+} //SerializerImpl

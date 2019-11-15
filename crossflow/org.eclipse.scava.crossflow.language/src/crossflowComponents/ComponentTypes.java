@@ -26,7 +26,9 @@ public enum ComponentTypes implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	NONE(0, "none", "none"), /**
+	NONE(0, "none", "none"),
+
+	/**
 	 * The '<em><b>Opinionated</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -48,7 +48,7 @@ import crossflow.diagram.edit.parts.ParameterEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.TaskEditPart;
@@ -93,7 +93,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Types());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Parameters());
 			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Languages());
-			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Serialiser());
+			myFeaturesToSynchronize.add(CrossflowPackage.eINSTANCE.getWorkflow_Serializer());
 		}
 		return myFeaturesToSynchronize;
 	}
@@ -144,7 +144,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		case TypeEditPart.VISUAL_ID:
 		case FieldEditPart.VISUAL_ID:
 		case LanguageEditPart.VISUAL_ID:
-		case SerialiserEditPart.VISUAL_ID:
+		case SerializerEditPart.VISUAL_ID:
 			return true;
 		}
 		return false;
@@ -402,9 +402,9 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case SerialiserEditPart.VISUAL_ID: {
+		case SerializerEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getSerialiser_2016ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getSerializer_2018ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -432,7 +432,7 @@ public class WorkflowCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case Parameter2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(CrossflowDiagramUpdater.getParameter_3004ContainedLinks(view));
+				result.addAll(CrossflowDiagramUpdater.getParameter_3005ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

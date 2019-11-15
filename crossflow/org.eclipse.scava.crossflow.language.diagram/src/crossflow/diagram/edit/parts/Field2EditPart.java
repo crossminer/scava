@@ -157,7 +157,7 @@ public class Field2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(100, 20);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(200, 20);
 		return result;
 	}
 
@@ -261,7 +261,8 @@ public class Field2EditPart extends ShapeNodeEditPart {
 		 */
 		public FieldFigure() {
 			this.setOutline(false);
-			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(100), getMapMode().DPtoLP(20)));
+			this.setBackgroundColor(THIS_BACK);
+			this.setPreferredSize(new Dimension(getMapMode().DPtoLP(200), getMapMode().DPtoLP(20)));
 			createContents();
 		}
 
@@ -286,5 +287,10 @@ public class Field2EditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	* @generated
+	*/
+	static final Color THIS_BACK = new Color(null, 181, 255, 255);
 
 }

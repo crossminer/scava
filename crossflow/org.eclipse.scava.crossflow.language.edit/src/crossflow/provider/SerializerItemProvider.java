@@ -5,7 +5,7 @@ package crossflow.provider;
 
 import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link crossflow.Serialiser} object.
+ * This is the item provider adapter for a {@link crossflow.Serializer} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class SerialiserItemProvider 
+public class SerializerItemProvider 
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -48,7 +48,7 @@ public class SerialiserItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SerialiserItemProvider(AdapterFactory adapterFactory) {
+	public SerializerItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -79,9 +79,9 @@ public class SerialiserItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Serialiser_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Serialiser_name_feature", "_UI_Serialiser_type"),
-				 CrossflowPackage.Literals.SERIALISER__NAME,
+				 getString("_UI_Serializer_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Serializer_name_feature", "_UI_Serializer_type"),
+				 CrossflowPackage.Literals.SERIALIZER__NAME,
 				 true,
 				 false,
 				 false,
@@ -102,7 +102,7 @@ public class SerialiserItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(CrossflowPackage.Literals.SERIALISER__PARAMETERS);
+			childrenFeatures.add(CrossflowPackage.Literals.SERIALIZER__PARAMETERS);
 		}
 		return childrenFeatures;
 	}
@@ -121,14 +121,14 @@ public class SerialiserItemProvider
 	}
 
 	/**
-	 * This returns Serialiser.gif.
+	 * This returns Serializer.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Serialiser"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Serializer.png"));
 	}
 
 	/**
@@ -139,10 +139,10 @@ public class SerialiserItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Serialiser)object).getName();
+		String label = ((Serializer)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Serialiser_type") :
-			getString("_UI_Serialiser_type") + " " + label;
+			getString("_UI_Serializer_type") :
+			getString("_UI_Serializer_type") + " " + label;
 	}
 
 
@@ -157,11 +157,11 @@ public class SerialiserItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Serialiser.class)) {
-			case CrossflowPackage.SERIALISER__NAME:
+		switch (notification.getFeatureID(Serializer.class)) {
+			case CrossflowPackage.SERIALIZER__NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case CrossflowPackage.SERIALISER__PARAMETERS:
+			case CrossflowPackage.SERIALIZER__PARAMETERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -181,7 +181,7 @@ public class SerialiserItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CrossflowPackage.Literals.SERIALISER__PARAMETERS,
+				(CrossflowPackage.Literals.SERIALIZER__PARAMETERS,
 				 CrossflowFactory.eINSTANCE.createParameter()));
 	}
 

@@ -440,26 +440,26 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Serialiser} instances.
+	 * This keeps track of the one adapter used for all {@link crossflow.Serializer} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected SerialiserItemProvider serialiserItemProvider;
+	protected SerializerItemProvider serializerItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link crossflow.Serialiser}.
+	 * This creates an adapter for a {@link crossflow.Serializer}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createSerialiserAdapter() {
-		if (serialiserItemProvider == null) {
-			serialiserItemProvider = new SerialiserItemProvider(this);
+	public Adapter createSerializerAdapter() {
+		if (serializerItemProvider == null) {
+			serializerItemProvider = new SerializerItemProvider(this);
 		}
 
-		return serialiserItemProvider;
+		return serializerItemProvider;
 	}
 
 	/**
@@ -577,7 +577,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (fieldItemProvider != null) fieldItemProvider.dispose();
 		if (languageItemProvider != null) languageItemProvider.dispose();
 		if (parameterItemProvider != null) parameterItemProvider.dispose();
-		if (serialiserItemProvider != null) serialiserItemProvider.dispose();
+		if (serializerItemProvider != null) serializerItemProvider.dispose();
 	}
 
 }

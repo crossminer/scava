@@ -11,6 +11,8 @@ elementsToCenter.add('CommitmentTaskFigure');
 elementsToCenter.add('OpinionatedTaskFigure');
 elementsToCenter.add('CsvSourceFigure');
 elementsToCenter.add('CsvSinkFigure');
+elementsToCenter.add('ScriptedTaskFigure');
+elementsToCenter.add('ReusableComponentFigure');
 
 //elementsToCenter.add('TypeFigure');
 //elementsToCenter.add('FieldFigure');
@@ -18,7 +20,7 @@ elementsToCenter.add('CsvSinkFigure');
 for(element in elementsToCenter)
 	center(findShape(element));
 
---
+-- edit Type compartments:
 
 -- Find the compartment figure
 var typeFieldsCompartmentFigure = GmfGraph!Rectangle.all.
@@ -39,7 +41,7 @@ fieldFigure.outline = false;
 
 -- ... and add a preferred size to it
 var preferredSize = new GmfGraph!Dimension;
-preferredSize.dx = 100;
+preferredSize.dx = 200;
 preferredSize.dy = 20;
 fieldFigure.preferredSize = preferredSize;
 //parameterFigure.preferredSize = preferredSize;
@@ -54,9 +56,124 @@ var parameterFigure = GmfGraph!Rectangle.all.
 delete parameterFigure.border;
 parameterFigure.outline = false;
 var preferredSize = new GmfGraph!Dimension;
-preferredSize.dx = 100;
+preferredSize.dx = 200;
 preferredSize.dy = 20;
 parameterFigure.preferredSize = preferredSize;
+
+--
+
+-- Update palette providing it with categories:
+
+var palette = GmfTool!Palette.all.first;
+
+var objects = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Objects');
+var connections = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Connections');
+
+var sourcesandsinks;
+if(not GmfTool!ToolGroup.all.exists(r|r.title = 'Sources and Sinks')){
+sourcesandsinks = new GmfTool!ToolGroup;
+sourcesandsinks.title="Sources and Sinks";
+sourcesandsinks.collapsible=true;
+sourcesandsinks.stack=true;
+--
+var s = GmfTool!CreationTool.all.selectOne(r|r.title = 'Source');
+var si = GmfTool!CreationTool.all.selectOne(r|r.title = 'Sink');
+var csvs = GmfTool!CreationTool.all.selectOne(r|r.title = 'CsvSource');
+var csvsi = GmfTool!CreationTool.all.selectOne(r|r.title = 'CsvSink');
+sourcesandsinks.tools.add(s);
+sourcesandsinks.tools.add(si);
+sourcesandsinks.tools.add(csvs);
+sourcesandsinks.tools.add(csvsi);
+--
+}else{
+sourcesandsinks = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Sources and Sinks');
+}
+
+var tasks;
+if(not GmfTool!ToolGroup.all.exists(r|r.title = 'Tasks')){
+tasks = new GmfTool!ToolGroup;
+tasks.title="Tasks";
+tasks.collapsible=true;
+tasks.stack=true;
+--
+var t = GmfTool!CreationTool.all.selectOne(r|r.title = 'Task');
+var ct = GmfTool!CreationTool.all.selectOne(r|r.title = 'CommitmentTask');
+var ot = GmfTool!CreationTool.all.selectOne(r|r.title = 'OpinionatedTask');
+var st = GmfTool!CreationTool.all.selectOne(r|r.title = 'ScriptedTask');
+var rc = GmfTool!CreationTool.all.selectOne(r|r.title = 'ReusableComponent');
+tasks.tools.add(t);
+tasks.tools.add(ct);
+tasks.tools.add(ot);
+tasks.tools.add(st);
+tasks.tools.add(rc);
+--
+}else{
+datatypes = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Tasks');
+}
+
+var streams;
+if(not GmfTool!ToolGroup.all.exists(r|r.title = 'Streams')){
+streams = new GmfTool!ToolGroup;
+streams.title="Streams";
+streams.collapsible=true;
+streams.stack=true;
+--
+var qu = GmfTool!CreationTool.all.selectOne(r|r.title = 'Queue');
+var to = GmfTool!CreationTool.all.selectOne(r|r.title = 'Topic');
+streams.tools.add(qu);
+streams.tools.add(to);
+--
+}else{
+datatypes = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Streams');
+}
+
+var datatypes;
+if(not GmfTool!ToolGroup.all.exists(r|r.title = 'Datatypes')){
+datatypes = new GmfTool!ToolGroup;
+datatypes.title="Datatypes";
+datatypes.collapsible=true;
+datatypes.stack=true;
+--
+var ty = GmfTool!CreationTool.all.selectOne(r|r.title = 'Type');
+var f = GmfTool!CreationTool.all.selectOne(r|r.title = 'Field');
+datatypes.tools.add(ty);
+datatypes.tools.add(f);
+--
+}else{
+datatypes = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Datatypes');
+}
+
+var other;
+if(not GmfTool!ToolGroup.all.exists(r|r.title = 'Other')){
+other = new GmfTool!ToolGroup;
+other.title="Other";
+other.collapsible=true;
+other.stack=true;
+--
+var l = GmfTool!CreationTool.all.selectOne(r|r.title = 'Language');
+var p = GmfTool!CreationTool.all.selectOne(r|r.title = 'Parameter');
+var se = GmfTool!CreationTool.all.selectOne(r|r.title = 'Serializer');
+other.tools.add(l);
+other.tools.add(p);
+other.tools.add(se);
+--
+}else{
+other = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Other');
+}
+
+if(objects.tools.size>0){
+	objects.tools.println("warning, some tools left in 'Objects': ");
+}
+
+palette.tools.remove(objects);
+palette.tools.remove(connections);
+
+palette.tools.add(sourcesandsinks);
+palette.tools.add(tasks);
+palette.tools.add(streams);
+palette.tools.add(datatypes);
+palette.tools.add(other);
+palette.tools.add(connections);
 
 --
 

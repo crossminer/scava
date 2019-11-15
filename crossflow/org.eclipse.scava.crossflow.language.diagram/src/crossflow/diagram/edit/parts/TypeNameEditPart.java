@@ -195,11 +195,7 @@ public class TypeNameEditPart extends CompartmentEditPart implements ITextAwareE
 	* @generated
 	*/
 	protected Image getLabelIcon() {
-		EObject parserElement = getParserElement();
-		if (parserElement == null) {
-			return null;
-		}
-		return CrossflowElementTypes.getImage(parserElement.eClass());
+		return null;
 	}
 
 	/**

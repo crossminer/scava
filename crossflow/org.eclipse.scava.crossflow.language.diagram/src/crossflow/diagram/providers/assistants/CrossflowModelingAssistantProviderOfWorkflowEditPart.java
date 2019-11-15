@@ -38,7 +38,7 @@ public class CrossflowModelingAssistantProviderOfWorkflowEditPart extends Crossf
 		types.add(CrossflowElementTypes.Type_2011);
 		types.add(CrossflowElementTypes.Field_2014);
 		types.add(CrossflowElementTypes.Language_2013);
-		types.add(CrossflowElementTypes.Serialiser_2016);
+		types.add(CrossflowElementTypes.Serializer_2018);
 		return types;
 	}
 

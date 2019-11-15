@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getType()
- * @model annotation="gmf.node label='name' figure='rectangle'"
+ * @model annotation="gmf.node label='name' figure='rectangle' label.icon='false' color='181,255,255'"
  * @generated
  */
 public interface Type extends EObject {

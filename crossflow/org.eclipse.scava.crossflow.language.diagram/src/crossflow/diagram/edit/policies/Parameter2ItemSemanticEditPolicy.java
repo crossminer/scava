@@ -22,7 +22,7 @@ public class Parameter2ItemSemanticEditPolicy extends CrossflowBaseItemSemanticE
 	* @generated
 	*/
 	public Parameter2ItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Parameter_3004);
+		super(CrossflowElementTypes.Parameter_3005);
 	}
 
 	/**

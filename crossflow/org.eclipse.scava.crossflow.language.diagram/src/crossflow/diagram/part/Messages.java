@@ -236,172 +236,32 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Objects1Group_title;
+	public static String SourcesandSinks1Group_title;
 
 	/**
 	* @generated
 	*/
-	public static String Connections2Group_title;
+	public static String Tasks2Group_title;
 
 	/**
 	* @generated
 	*/
-	public static String CommitmentTask1CreationTool_title;
+	public static String Streams3Group_title;
 
 	/**
 	* @generated
 	*/
-	public static String CommitmentTask1CreationTool_desc;
+	public static String Datatypes4Group_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink2CreationTool_title;
+	public static String Other5Group_title;
 
 	/**
 	* @generated
 	*/
-	public static String CsvSink2CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String CsvSource3CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String CsvSource3CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Field4CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Field4CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Language5CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Language5CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String OpinionatedTask6CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String OpinionatedTask6CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Parameter7CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Parameter7CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Queue8CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Queue8CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String ReusableComponent9CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String ReusableComponent9CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String ScriptedTask10CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String ScriptedTask10CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Serialiser11CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Serialiser11CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Sink12CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Sink12CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Source13CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Source13CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Task14CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Task14CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Topic15CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Topic15CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Type16CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Type16CreationTool_desc;
+	public static String Connections6Group_title;
 
 	/**
 	* @generated
@@ -446,6 +306,166 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String Source1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Source1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Sink2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Sink2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String CsvSource3CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String CsvSource3CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String CsvSink4CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String CsvSink4CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Task1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Task1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String CommitmentTask2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String CommitmentTask2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String OpinionatedTask3CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String OpinionatedTask3CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ScriptedTask4CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ScriptedTask4CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ReusableComponent5CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ReusableComponent5CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Queue1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Queue1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Topic2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Topic2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Field2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Field2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Language1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Language1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Parameter2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Parameter2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Serializer3CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Serializer3CreationTool_desc;
+
+	/**
+	* @generated
+	*/
 	public static String ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart_title;
 
 	/**
@@ -461,7 +481,7 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String SerialiserSerialiserParametersCompartmentEditPart_title;
+	public static String SerializerSerializerParametersCompartmentEditPart_title;
 
 	/**
 	* @generated

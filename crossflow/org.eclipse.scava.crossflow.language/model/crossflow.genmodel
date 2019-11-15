@@ -12,7 +12,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/types"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/languages"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/serialiser"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Workflow/serializer"/>
     </genClasses>
     <genClasses image="false" ecoreClass="crossflow.ecore#//Stream">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Stream/name"/>
@@ -78,9 +78,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Parameter/value"/>
     </genClasses>
-    <genClasses ecoreClass="crossflow.ecore#//Serialiser">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Serialiser/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Serialiser/parameters"/>
+    <genClasses ecoreClass="crossflow.ecore#//Serializer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Serializer/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Serializer/parameters"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

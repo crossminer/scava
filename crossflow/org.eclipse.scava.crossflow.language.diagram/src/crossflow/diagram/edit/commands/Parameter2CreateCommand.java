@@ -17,7 +17,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowFactory;
 import crossflow.Parameter;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 
 /**
  * @generated
@@ -57,7 +57,7 @@ public class Parameter2CreateCommand extends EditElementCommand {
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		Parameter newElement = CrossflowFactory.eINSTANCE.createParameter();
 
-		Serialiser owner = (Serialiser) getElementToEdit();
+		Serializer owner = (Serializer) getElementToEdit();
 		owner.getParameters().add(newElement);
 
 		doConfigure(newElement, monitor, info);

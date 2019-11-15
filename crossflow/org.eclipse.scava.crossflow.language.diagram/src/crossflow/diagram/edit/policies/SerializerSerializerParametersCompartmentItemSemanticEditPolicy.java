@@ -12,21 +12,21 @@ import crossflow.diagram.providers.CrossflowElementTypes;
 /**
  * @generated
  */
-public class SerialiserSerialiserParametersCompartmentItemSemanticEditPolicy
+public class SerializerSerializerParametersCompartmentItemSemanticEditPolicy
 		extends CrossflowBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public SerialiserSerialiserParametersCompartmentItemSemanticEditPolicy() {
-		super(CrossflowElementTypes.Serialiser_2016);
+	public SerializerSerializerParametersCompartmentItemSemanticEditPolicy() {
+		super(CrossflowElementTypes.Serializer_2018);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (CrossflowElementTypes.Parameter_3004 == req.getElementType()) {
+		if (CrossflowElementTypes.Parameter_3005 == req.getElementType()) {
 			return getGEFWrapper(new Parameter2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

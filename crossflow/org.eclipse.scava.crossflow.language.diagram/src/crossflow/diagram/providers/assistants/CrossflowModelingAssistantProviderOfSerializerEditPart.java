@@ -15,7 +15,7 @@ import crossflow.diagram.providers.CrossflowModelingAssistantProvider;
 /**
  * @generated
  */
-public class CrossflowModelingAssistantProviderOfSerialiserEditPart extends CrossflowModelingAssistantProvider {
+public class CrossflowModelingAssistantProviderOfSerializerEditPart extends CrossflowModelingAssistantProvider {
 
 	/**
 	* @generated
@@ -24,7 +24,7 @@ public class CrossflowModelingAssistantProviderOfSerialiserEditPart extends Cros
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(CrossflowElementTypes.Parameter_3004);
+		types.add(CrossflowElementTypes.Parameter_3005);
 		return types;
 	}
 

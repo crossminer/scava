@@ -40,9 +40,9 @@ import crossflow.diagram.edit.parts.ReusableComponentNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
-import crossflow.diagram.edit.parts.SerialiserNameEditPart;
-import crossflow.diagram.edit.parts.SerialiserSerialiserParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
+import crossflow.diagram.edit.parts.SerializerNameEditPart;
+import crossflow.diagram.edit.parts.SerializerSerializerParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -208,8 +208,8 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getLanguage().isSuperTypeOf(domainElement.eClass())) {
 				return LanguageEditPart.VISUAL_ID;
 			}
-			if (CrossflowPackage.eINSTANCE.getSerialiser().isSuperTypeOf(domainElement.eClass())) {
-				return SerialiserEditPart.VISUAL_ID;
+			if (CrossflowPackage.eINSTANCE.getSerializer().isSuperTypeOf(domainElement.eClass())) {
+				return SerializerEditPart.VISUAL_ID;
 			}
 			break;
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
@@ -227,7 +227,7 @@ public class CrossflowVisualIDRegistry {
 				return ParameterEditPart.VISUAL_ID;
 			}
 			break;
-		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+		case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
 			if (CrossflowPackage.eINSTANCE.getParameter().isSuperTypeOf(domainElement.eClass())) {
 				return Parameter2EditPart.VISUAL_ID;
 			}
@@ -298,7 +298,7 @@ public class CrossflowVisualIDRegistry {
 			if (LanguageEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (SerialiserEditPart.VISUAL_ID == nodeVisualID) {
+			if (SerializerEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -381,11 +381,11 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SerialiserEditPart.VISUAL_ID:
-			if (SerialiserNameEditPart.VISUAL_ID == nodeVisualID) {
+		case SerializerEditPart.VISUAL_ID:
+			if (SerializerNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (SerializerSerializerParametersCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -424,7 +424,7 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+		case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
 			if (Parameter2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -493,7 +493,7 @@ public class CrossflowVisualIDRegistry {
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
-		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
+		case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

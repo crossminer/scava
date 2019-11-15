@@ -166,13 +166,13 @@ public interface CrossflowFactory extends EFactory {
 	Parameter createParameter();
 
 	/**
-	 * Returns a new object of class '<em>Serialiser</em>'.
+	 * Returns a new object of class '<em>Serializer</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Serialiser</em>'.
+	 * @return a new object of class '<em>Serializer</em>'.
 	 * @generated
 	 */
-	Serialiser createSerialiser();
+	Serializer createSerializer();
 
 	/**
 	 * Returns the package supported by this factory.

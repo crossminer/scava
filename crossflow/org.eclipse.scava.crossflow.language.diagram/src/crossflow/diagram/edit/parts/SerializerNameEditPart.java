@@ -55,12 +55,12 @@ import crossflow.diagram.providers.CrossflowParserProvider;
 /**
  * @generated
  */
-public class SerialiserNameEditPart extends CompartmentEditPart implements ITextAwareEditPart {
+public class SerializerNameEditPart extends CompartmentEditPart implements ITextAwareEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5020;
+	public static final int VISUAL_ID = 5023;
 
 	/**
 	* @generated
@@ -90,7 +90,7 @@ public class SerialiserNameEditPart extends CompartmentEditPart implements IText
 	/**
 	* @generated
 	*/
-	public SerialiserNameEditPart(View view) {
+	public SerializerNameEditPart(View view) {
 		super(view);
 	}
 
@@ -195,11 +195,7 @@ public class SerialiserNameEditPart extends CompartmentEditPart implements IText
 	* @generated
 	*/
 	protected Image getLabelIcon() {
-		EObject parserElement = getParserElement();
-		if (parserElement == null) {
-			return null;
-		}
-		return CrossflowElementTypes.getImage(parserElement.eClass());
+		return null;
 	}
 
 	/**
@@ -295,8 +291,8 @@ public class SerialiserNameEditPart extends CompartmentEditPart implements IText
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Serialiser_2016, getParserElement(),
-					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.SerialiserNameEditPart.VISUAL_ID));
+			parser = CrossflowParserProvider.getParser(CrossflowElementTypes.Serializer_2018, getParserElement(),
+					CrossflowVisualIDRegistry.getType(crossflow.diagram.edit.parts.SerializerNameEditPart.VISUAL_ID));
 		}
 		return parser;
 	}

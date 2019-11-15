@@ -3,6 +3,8 @@
  */
 package crossflow.diagram.edit.parts;
 
+import org.eclipse.draw2d.GridData;
+import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.RectangleFigure;
@@ -319,7 +321,14 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 				 * @generated
 				 */
 		public ScriptedTaskFigure() {
+
+			GridLayout layoutThis = new GridLayout();
+			layoutThis.numColumns = 1;
+			layoutThis.makeColumnsEqualWidth = true;
+			this.setLayoutManager(layoutThis);
+
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setBackgroundColor(THIS_BACK);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -336,7 +345,15 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 			fFigureScriptedTaskLabelFigure
 					.setMaximumSize(new Dimension(getMapMode().DPtoLP(10000), getMapMode().DPtoLP(50)));
 
-			this.add(fFigureScriptedTaskLabelFigure);
+			GridData constraintFFigureScriptedTaskLabelFigure = new GridData();
+			constraintFFigureScriptedTaskLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureScriptedTaskLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureScriptedTaskLabelFigure.horizontalIndent = 0;
+			constraintFFigureScriptedTaskLabelFigure.horizontalSpan = 1;
+			constraintFFigureScriptedTaskLabelFigure.verticalSpan = 1;
+			constraintFFigureScriptedTaskLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureScriptedTaskLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureScriptedTaskLabelFigure, constraintFFigureScriptedTaskLabelFigure);
 
 			fScriptedTaskOutputVariablesCompartmentFigure = new RectangleFigure();
 
@@ -361,5 +378,10 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	* @generated
+	*/
+	static final Color THIS_BACK = new Color(null, 245, 222, 170);
 
 }

@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getTask()
- * @model annotation="gmf.node label='name' label.icon='false'"
+ * @model annotation="gmf.node label='name' label.icon='false' color='255,255,181'"
  * @generated
  */
 public interface Task extends EObject {

@@ -3,7 +3,7 @@
 package crossflow.tests;
 
 import crossflow.CrossflowFactory;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 
 import junit.framework.TestCase;
 
@@ -11,19 +11,19 @@ import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Serialiser</b></em>'.
+ * A test case for the model object '<em><b>Serializer</b></em>'.
  * <!-- end-user-doc -->
  * @generated
  */
-public class SerialiserTest extends TestCase {
+public class SerializerTest extends TestCase {
 
 	/**
-	 * The fixture for this Serialiser test case.
+	 * The fixture for this Serializer test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Serialiser fixture = null;
+	protected Serializer fixture = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -31,36 +31,36 @@ public class SerialiserTest extends TestCase {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(SerialiserTest.class);
+		TestRunner.run(SerializerTest.class);
 	}
 
 	/**
-	 * Constructs a new Serialiser test case with the given name.
+	 * Constructs a new Serializer test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SerialiserTest(String name) {
+	public SerializerTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this Serialiser test case.
+	 * Sets the fixture for this Serializer test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(Serialiser fixture) {
+	protected void setFixture(Serializer fixture) {
 		this.fixture = fixture;
 	}
 
 	/**
-	 * Returns the fixture for this Serialiser test case.
+	 * Returns the fixture for this Serializer test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Serialiser getFixture() {
+	protected Serializer getFixture() {
 		return fixture;
 	}
 
@@ -72,7 +72,7 @@ public class SerialiserTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(CrossflowFactory.eINSTANCE.createSerialiser());
+		setFixture(CrossflowFactory.eINSTANCE.createSerializer());
 	}
 
 	/**
@@ -86,4 +86,4 @@ public class SerialiserTest extends TestCase {
 		setFixture(null);
 	}
 
-} //SerialiserTest
+} //SerializerTest

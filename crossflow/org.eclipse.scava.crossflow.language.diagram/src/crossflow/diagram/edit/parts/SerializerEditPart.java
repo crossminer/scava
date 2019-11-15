@@ -33,19 +33,19 @@ import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicy
 import org.eclipse.swt.graphics.Color;
 
 import crossflow.diagram.edit.policies.OpenDiagramEditPolicy;
-import crossflow.diagram.edit.policies.SerialiserItemSemanticEditPolicy;
+import crossflow.diagram.edit.policies.SerializerItemSemanticEditPolicy;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 import crossflow.diagram.providers.CrossflowElementTypes;
 
 /**
  * @generated
  */
-public class SerialiserEditPart extends ShapeNodeEditPart {
+public class SerializerEditPart extends ShapeNodeEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2016;
+	public static final int VISUAL_ID = 2018;
 
 	/**
 	* @generated
@@ -60,7 +60,7 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public SerialiserEditPart(View view) {
+	public SerializerEditPart(View view) {
 		super(view);
 	}
 
@@ -71,7 +71,7 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(CrossflowVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new SerialiserItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new SerializerItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		installEditPolicy(EditPolicyRoles.OPEN_ROLE, new OpenDiagramEditPolicy()); // XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -106,28 +106,28 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new SerialiserFigure();
+		return primaryShape = new SerializerFigure();
 	}
 
 	/**
 	* @generated
 	*/
-	public SerialiserFigure getPrimaryShape() {
-		return (SerialiserFigure) primaryShape;
+	public SerializerFigure getPrimaryShape() {
+		return (SerializerFigure) primaryShape;
 	}
 
 	/**
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof SerialiserNameEditPart) {
-			((SerialiserNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureSerialiserLabelFigure());
+		if (childEditPart instanceof SerializerNameEditPart) {
+			((SerializerNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureSerializerLabelFigure());
 			return true;
 		}
-		if (childEditPart instanceof SerialiserSerialiserParametersCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getSerialiserParametersCompartmentFigure();
+		if (childEditPart instanceof SerializerSerializerParametersCompartmentEditPart) {
+			IFigure pane = getPrimaryShape().getSerializerParametersCompartmentFigure();
 			setupContentPane(pane); // FIXME each comparment should handle his content pane in his own way 
-			pane.add(((SerialiserSerialiserParametersCompartmentEditPart) childEditPart).getFigure());
+			pane.add(((SerializerSerializerParametersCompartmentEditPart) childEditPart).getFigure());
 			return true;
 		}
 		return false;
@@ -137,12 +137,12 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof SerialiserNameEditPart) {
+		if (childEditPart instanceof SerializerNameEditPart) {
 			return true;
 		}
-		if (childEditPart instanceof SerialiserSerialiserParametersCompartmentEditPart) {
-			IFigure pane = getPrimaryShape().getSerialiserParametersCompartmentFigure();
-			pane.remove(((SerialiserSerialiserParametersCompartmentEditPart) childEditPart).getFigure());
+		if (childEditPart instanceof SerializerSerializerParametersCompartmentEditPart) {
+			IFigure pane = getPrimaryShape().getSerializerParametersCompartmentFigure();
+			pane.remove(((SerializerSerializerParametersCompartmentEditPart) childEditPart).getFigure());
 			return true;
 		}
 		return false;
@@ -172,8 +172,8 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
-		if (editPart instanceof SerialiserSerialiserParametersCompartmentEditPart) {
-			return getPrimaryShape().getSerialiserParametersCompartmentFigure();
+		if (editPart instanceof SerializerSerializerParametersCompartmentEditPart) {
+			return getPrimaryShape().getSerializerParametersCompartmentFigure();
 		}
 		return getContentPane();
 	}
@@ -268,7 +268,7 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(SerialiserNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(CrossflowVisualIDRegistry.getType(SerializerNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -279,9 +279,9 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == CrossflowElementTypes.Parameter_3004) {
+			if (type == CrossflowElementTypes.Parameter_3005) {
 				return getChildBySemanticHint(
-						CrossflowVisualIDRegistry.getType(SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID));
+						CrossflowVisualIDRegistry.getType(SerializerSerializerParametersCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -302,21 +302,22 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class SerialiserFigure extends RectangleFigure {
+	public class SerializerFigure extends RectangleFigure {
 
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureSerialiserLabelFigure;
+		private WrappingLabel fFigureSerializerLabelFigure;
 		/**
 		 * @generated
 		 */
-		private RectangleFigure fSerialiserParametersCompartmentFigure;
+		private RectangleFigure fSerializerParametersCompartmentFigure;
 
 		/**
 		 * @generated
 		 */
-		public SerialiserFigure() {
+		public SerializerFigure() {
+			this.setBackgroundColor(THIS_BACK);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -327,36 +328,41 @@ public class SerialiserEditPart extends ShapeNodeEditPart {
 		 */
 		private void createContents() {
 
-			fFigureSerialiserLabelFigure = new WrappingLabel();
+			fFigureSerializerLabelFigure = new WrappingLabel();
 
-			fFigureSerialiserLabelFigure.setText("Serialiser");
-			fFigureSerialiserLabelFigure
+			fFigureSerializerLabelFigure.setText("Serializer");
+			fFigureSerializerLabelFigure
 					.setMaximumSize(new Dimension(getMapMode().DPtoLP(10000), getMapMode().DPtoLP(50)));
 
-			this.add(fFigureSerialiserLabelFigure);
+			this.add(fFigureSerializerLabelFigure);
 
-			fSerialiserParametersCompartmentFigure = new RectangleFigure();
+			fSerializerParametersCompartmentFigure = new RectangleFigure();
 
-			fSerialiserParametersCompartmentFigure.setOutline(false);
+			fSerializerParametersCompartmentFigure.setOutline(false);
 
-			this.add(fSerialiserParametersCompartmentFigure);
+			this.add(fSerializerParametersCompartmentFigure);
 
 		}
 
 		/**
 		 * @generated
 		 */
-		public WrappingLabel getFigureSerialiserLabelFigure() {
-			return fFigureSerialiserLabelFigure;
+		public WrappingLabel getFigureSerializerLabelFigure() {
+			return fFigureSerializerLabelFigure;
 		}
 
 		/**
 		 * @generated
 		 */
-		public RectangleFigure getSerialiserParametersCompartmentFigure() {
-			return fSerialiserParametersCompartmentFigure;
+		public RectangleFigure getSerializerParametersCompartmentFigure() {
+			return fSerializerParametersCompartmentFigure;
 		}
 
 	}
+
+	/**
+	 * @generated
+	 */
+	static final Color THIS_BACK = new Color(null, 204, 204, 255);
 
 }

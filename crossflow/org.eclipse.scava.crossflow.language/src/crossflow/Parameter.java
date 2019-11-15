@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getParameter()
- * @model annotation="gmf.node label='name,value' figure='rectangle' label.pattern='{0}:{1}' label.icon='false'"
+ * @model annotation="gmf.node label='name,value' figure='rectangle' label.pattern='{0}:{1}' label.icon='false' color='204,204,255'"
  * @generated
  */
 public interface Parameter extends EObject {

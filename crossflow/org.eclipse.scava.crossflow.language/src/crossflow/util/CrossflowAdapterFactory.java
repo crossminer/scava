@@ -136,8 +136,8 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createParameterAdapter();
 			}
 			@Override
-			public Adapter caseSerialiser(Serialiser object) {
-				return createSerialiserAdapter();
+			public Adapter caseSerializer(Serializer object) {
+				return createSerializerAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -398,16 +398,16 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link crossflow.Serialiser <em>Serialiser</em>}'.
+	 * Creates a new adapter for an object of class '{@link crossflow.Serializer <em>Serializer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see crossflow.Serialiser
+	 * @see crossflow.Serializer
 	 * @generated
 	 */
-	public Adapter createSerialiserAdapter() {
+	public Adapter createSerializerAdapter() {
 		return null;
 	}
 

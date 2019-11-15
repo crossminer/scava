@@ -197,7 +197,7 @@ public class TypeItemProvider
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/struct"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Type.png"));
 	}
 
 	/**

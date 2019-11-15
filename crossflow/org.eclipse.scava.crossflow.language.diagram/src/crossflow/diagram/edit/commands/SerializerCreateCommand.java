@@ -16,18 +16,18 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
 import crossflow.CrossflowFactory;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 import crossflow.Workflow;
 
 /**
  * @generated
  */
-public class SerialiserCreateCommand extends EditElementCommand {
+public class SerializerCreateCommand extends EditElementCommand {
 
 	/**
 	* @generated
 	*/
-	public SerialiserCreateCommand(CreateElementRequest req) {
+	public SerializerCreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
@@ -48,7 +48,7 @@ public class SerialiserCreateCommand extends EditElementCommand {
 	*/
 	public boolean canExecute() {
 		Workflow container = (Workflow) getElementToEdit();
-		if (container.getSerialiser() != null) {
+		if (container.getSerializer() != null) {
 			return false;
 		}
 		return true;
@@ -59,10 +59,10 @@ public class SerialiserCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		Serialiser newElement = CrossflowFactory.eINSTANCE.createSerialiser();
+		Serializer newElement = CrossflowFactory.eINSTANCE.createSerializer();
 
 		Workflow owner = (Workflow) getElementToEdit();
-		owner.setSerialiser(newElement);
+		owner.setSerializer(newElement);
 
 		doConfigure(newElement, monitor, info);
 
@@ -73,7 +73,7 @@ public class SerialiserCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected void doConfigure(Serialiser newElement, IProgressMonitor monitor, IAdaptable info)
+	protected void doConfigure(Serializer newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
