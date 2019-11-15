@@ -2,6 +2,9 @@ package org.eclipse.scava.crossflow.runtime.serialization;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import com.google.common.collect.BiMap;
@@ -52,11 +55,27 @@ public class JsonSerializer extends AbstractSerializer {
 		return gson.toJson(input);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <O> O deserialize(String input) {
 		JsonObject jsonObject = gson.fromJson(input, JsonObject.class);
-		checkArgument(jsonObject.has(TYPE_PROPERTY_KEY), "Missing %s key. Received: ", TYPE_PROPERTY_KEY, input);
+		return doDeserialize(jsonObject);
+	}
+	
+	@Override
+	public <O> O deserialize(File input) {
+		try (JsonReader reader = new JsonReader(new FileReader(input))) {
+			return doDeserialize(gson.fromJson(reader, JsonObject.class));
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e); // Is this the correct rethrow to do?
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <O> O doDeserialize(JsonObject jsonObject) {
+		checkArgument(jsonObject.has(TYPE_PROPERTY_KEY),
+				"Missing %s key. Received: ", TYPE_PROPERTY_KEY, jsonObject.toString());
 		String type = jsonObject.get(TYPE_PROPERTY_KEY).getAsString();
 		if (isStrict) {
 			checkArgument(isRegistered(type),

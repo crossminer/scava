@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime.serialization;
 
+import java.io.File;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -31,6 +33,12 @@ public class XstreamSerializer extends AbstractSerializer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <O> O deserialize(String input) {
+		return (O) xstream.fromXML(input);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <O> O deserialize(File input) {
 		return (O) xstream.fromXML(input);
 	}
 

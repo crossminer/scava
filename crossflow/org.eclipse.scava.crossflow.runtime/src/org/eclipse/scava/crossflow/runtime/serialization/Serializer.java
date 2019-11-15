@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.runtime.serialization;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -78,5 +79,7 @@ public interface Serializer {
 	 * @return the deserialized object of type <code>O</code>
 	 */
 	public <O> O deserialize(String input);
+	
+	public <O> O deserialize(File input);
 
 }
