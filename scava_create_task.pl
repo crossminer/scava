@@ -26,9 +26,9 @@ if ( exists( $ENV{'SCAVA_HOST'} ) ) {
 }
 
 if ( scalar(@ARGV) != 4 ) {
-    print "Usage: $0 project\n";
+    print "Usage: $0 project start_date stop_date type\n";
     print "Example: \n";
-    print "    $0 modeling.sirius \n";
+    print "    $0 modeling.sirius 01/01/2018 31/12/2019 CONTINUOUS_MONITORING\n";
     exit;
 }
 
@@ -38,39 +38,65 @@ my $a_stop = shift;
 my $a_type = shift;
 
 my @metric_providers = (
+#    "trans.rascal.api.changedMethods",
+    "trans.rascal.api.numberOfChanges",
+    "trans.rascal.api.numberOfBreakingChanges", 
+    "trans.rascal.api.numberOfBreakingChanges.historic",
+
+    "rascal.generic.churn.commitsToday.historic",
+    "rascal.generic.churn.churnToday.historic",
+
     "org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider",
     "trans.rascal.dependency.osgi.unusedOSGiImportedPackages",
     "trans.rascal.dependency.osgi.allOSGiBundleDependencies",
     "trans.rascal.dependency.osgi.allOSGiDynamicImportedPackages",
-    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies",
-    "trans.rascal.dependency.osgi.numberOSGiPackageDependencies",
-    "org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider",
     "trans.rascal.dependency.osgi.allOSGiPackageDependencies",
-    "trans.rascal.dependency.maven.numberMavenDependencies.historic",
+    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies",
+    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
+    "trans.rascal.dependency.osgi.numberOSGiPackageDependencies",
+
+    "org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider",
     "trans.rascal.dependency.maven.numberMavenDependencies",
     "trans.rascal.dependency.maven.numberMavenDependencies.historic",
-    "trans.rascal.dependency.maven.allMavenDependencies",
-#    "trans.rascal.api.changedMethods",
-    "trans.rascal.api.numberOfChanges",
-    "trans.rascal.api.numberOfBreakingChanges", 
-    "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
-    "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
-    "trans.rascal.dependency.maven.numberMavenDependencies.historic",
     "trans.rascal.dependency.maven.numberUniqueMavenDependencies",
+    "trans.rascal.dependency.maven.allMavenDependencies",
     "trans.rascal.dependency.maven.allOptionalMavenDependencies",
-    "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
-    "org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider",
+    "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
+
+    "trans.rascal.OO.java.MHF-Java.historic",
+    "trans.rascal.OO.java.AIF-Java-Quartiles.historic",
+    "trans.rascal.OO.java.DIT-Java-Quartiles.historic",
+    "trans.rascal.OO.java.LCC-Java-Quartiles.historic",
+    "trans.rascal.OO.java.PF-Java.historic", 
+  
+    "org.eclipse.scava.metricprovider.historic.commitsovertime.CommitsOverTimeHistoricMetricProvider",
+
     "org.eclipse.scava.metricprovider.historic.configuration.docker.smells",
     "org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies",
-    "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies",
+    "org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells",
+    
+    "org.eclipse.scava.metricprovider.historic.bugs.bugs.BugsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.comments.CommentsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.emotions",
+    "org.eclipse.scava.metricprovider.historic.bugs.emotions.EmotionsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.newbugs.NewBugsHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.patches.PatchesHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.severity.SeverityHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.SeverityBugStatusHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.SeveritySentimentHistoricMetricProvider",
-    "org.eclipse.scava.metricprovider.historic.bugs.newbugs.NewBugsHistoricMetricProvider",
-    "org.eclipse.scava.metricprovider.historic.bugs.comments.CommentsHistoricMetricProvider",
-    "org.eclipse.scava.metricprovider.historic.bugs.emotions",
+    "org.eclipse.scava.metricprovider.historic.bugs.status.StatusHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.users.UsersHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.bugs.newusers.NewUsersHistoricMetricProvider",
+
+    "org.eclipse.scava.metricprovider.historic.documentation.sentiment.DocumentationSentimentHistoricMetricProvider",
+    
+    "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
+    "org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.SeveritySentimentHistoricMetricProvider",
+
     "org.eclipse.scava.factoid.bugs.channelusage",
     "org.eclipse.scava.factoid.bugs.responsetime",
     "org.eclipse.scava.factoid.bugs.sentiment",
