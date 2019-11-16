@@ -93,7 +93,9 @@ public class ClientManager {
 			ClientData td = clientMap.get(eclipseForum.getOSSMeterId());
 
 			// only enters if the the user wants to use OAuth
-			if (!((eclipseForum.getClient_id().equals("null")) && (eclipseForum.getClient_secret().equals("null")))) {
+			if (eclipseForum.getClient_id()!=null && !eclipseForum.getClient_id().isEmpty()
+					&& eclipseForum.getClient_secret()!=null && !eclipseForum.getClient_secret().isEmpty())
+			{
 
 				if (checkTime(td.getGeneratedAt(), td.getExpiresIn()) == true) {
 					// THIS SHOULD BE REFRESEH TOKEN BUT ECLIPSE DOESNT INCLUDE IT
