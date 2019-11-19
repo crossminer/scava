@@ -9,11 +9,11 @@
     <tasks xmi:type="cf:Task" xmi:id="_xIGrsAeXEeqzCd7R-ogdnA" name="WordCounter" input="_LL-78AemEeqIQrwdYv7_kQ" output="_EMHvMAeYEeqzCd7R-ogdnA" multipleOutputs="true"/>
     <tasks xmi:type="cf:Task" xmi:id="_Gn_7wAeYEeqzCd7R-ogdnA" name="Filter" input="_EMHvMAeYEeqzCd7R-ogdnA" output="_K8i6IAeYEeqzCd7R-ogdnA" languages="_aQLcQAeYEeqzCd7R-ogdnA"/>
     <types xmi:type="cf:Type" xmi:id="_6tFT0AeVEeq2HOg7jSFDEg" name="Line" impl="">
-      <fields xmi:type="cf:Field" xmi:id="_67aqwAeVEeq2HOg7jSFDEg" name="text"/>
+      <fields xmi:type="cf:DataField" xmi:id="_67aqwAeVEeq2HOg7jSFDEg" name="text"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_3TYiMAeXEeqzCd7R-ogdnA" name="WordFrequency">
-      <fields xmi:type="cf:Field" xmi:id="_48OIQweXEeqzCd7R-ogdnA" name="word"/>
-      <fields xmi:type="cf:Field" xmi:id="_5ubBRAeXEeqzCd7R-ogdnA" name="frequency" type="int"/>
+      <fields xmi:type="cf:DataField" xmi:id="_48OIQweXEeqzCd7R-ogdnA" name="word"/>
+      <fields xmi:type="cf:DataField" xmi:id="_5ubBRAeXEeqzCd7R-ogdnA" name="frequency" type="int"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_UwxNQAeYEeqzCd7R-ogdnA" name="Java" package="org.eclipse.scava.crossflow.examples.wordcount" outputFolder="src" genOutputFolder="src-gen"/>
     <languages xmi:type="cf:Language" xmi:id="_aQLcQAeYEeqzCd7R-ogdnA" name="Python" package="wordcount" outputFolder="py" genOutputFolder="py-gen"/>
@@ -36,13 +36,6 @@
     <children xmi:type="notation:Node" xmi:id="_6tLacAeVEeq2HOg7jSFDEg" type="2011" element="_6tFT0AeVEeq2HOg7jSFDEg">
       <children xmi:type="notation:DecorationNode" xmi:id="_6tOdwAeVEeq2HOg7jSFDEg" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_6tOdwQeVEeq2HOg7jSFDEg" type="7001">
-        <children xmi:type="notation:Node" xmi:id="_67duEAeVEeq2HOg7jSFDEg" type="3001" element="_67aqwAeVEeq2HOg7jSFDEg">
-          <children xmi:type="notation:DecorationNode" xmi:id="_67eVJAeVEeq2HOg7jSFDEg" type="5011"/>
-          <styles xmi:type="notation:DescriptionStyle" xmi:id="_67eVIAeVEeq2HOg7jSFDEg"/>
-          <styles xmi:type="notation:FontStyle" xmi:id="_67eVIQeVEeq2HOg7jSFDEg" fontName="Segoe UI"/>
-          <styles xmi:type="notation:LineStyle" xmi:id="_67eVIgeVEeq2HOg7jSFDEg"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_67eVIweVEeq2HOg7jSFDEg"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_6tOdwgeVEeq2HOg7jSFDEg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_6tOdwweVEeq2HOg7jSFDEg"/>
       </children>
@@ -62,20 +55,6 @@
     <children xmi:type="notation:Node" xmi:id="_3TblgAeXEeqzCd7R-ogdnA" type="2011" element="_3TYiMAeXEeqzCd7R-ogdnA">
       <children xmi:type="notation:DecorationNode" xmi:id="_3TblhgeXEeqzCd7R-ogdnA" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_3TblhweXEeqzCd7R-ogdnA" type="7001">
-        <children xmi:type="notation:Node" xmi:id="_48TAwAeXEeqzCd7R-ogdnA" type="3001" element="_48OIQweXEeqzCd7R-ogdnA">
-          <children xmi:type="notation:DecorationNode" xmi:id="_5P__5QeXEeqzCd7R-ogdnA" type="5011"/>
-          <styles xmi:type="notation:DescriptionStyle" xmi:id="_5P__4QeXEeqzCd7R-ogdnA"/>
-          <styles xmi:type="notation:FontStyle" xmi:id="_5P__4geXEeqzCd7R-ogdnA" fontName="Segoe UI"/>
-          <styles xmi:type="notation:LineStyle" xmi:id="_5P__4weXEeqzCd7R-ogdnA"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_48TAxAeXEeqzCd7R-ogdnA" x="404" y="266"/>
-        </children>
-        <children xmi:type="notation:Node" xmi:id="_5ucPYAeXEeqzCd7R-ogdnA" type="3001" element="_5ubBRAeXEeqzCd7R-ogdnA">
-          <children xmi:type="notation:DecorationNode" xmi:id="_6Ba1xAeXEeqzCd7R-ogdnA" type="5011"/>
-          <styles xmi:type="notation:DescriptionStyle" xmi:id="_6Ba1wAeXEeqzCd7R-ogdnA"/>
-          <styles xmi:type="notation:FontStyle" xmi:id="_6Ba1wQeXEeqzCd7R-ogdnA" fontName="Segoe UI"/>
-          <styles xmi:type="notation:LineStyle" xmi:id="_6Ba1wgeXEeqzCd7R-ogdnA"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5ucPZAeXEeqzCd7R-ogdnA" x="404" y="266"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_3TbliAeXEeqzCd7R-ogdnA"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_3TbliQeXEeqzCd7R-ogdnA"/>
       </children>

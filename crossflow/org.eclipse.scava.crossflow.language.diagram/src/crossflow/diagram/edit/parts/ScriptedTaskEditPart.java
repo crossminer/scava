@@ -282,7 +282,11 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == CrossflowElementTypes.Field_3003) {
+			if (type == CrossflowElementTypes.DataField_3006) {
+				return getChildBySemanticHint(CrossflowVisualIDRegistry
+						.getType(ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID));
+			}
+			if (type == CrossflowElementTypes.EnumField_3007) {
 				return getChildBySemanticHint(CrossflowVisualIDRegistry
 						.getType(ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID));
 			}
@@ -311,15 +315,14 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		private WrappingLabel fFigureScriptedTaskLabelFigure;
-
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		private RectangleFigure fScriptedTaskOutputVariablesCompartmentFigure;
 
 		/**
-				 * @generated
-				 */
+		 * @generated
+		 */
 		public ScriptedTaskFigure() {
 
 			GridLayout layoutThis = new GridLayout();
@@ -371,8 +374,8 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 		}
 
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		public RectangleFigure getScriptedTaskOutputVariablesCompartmentFigure() {
 			return fScriptedTaskOutputVariablesCompartmentFigure;
 		}
@@ -380,8 +383,8 @@ public class ScriptedTaskEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	static final Color THIS_BACK = new Color(null, 245, 222, 170);
 
 }

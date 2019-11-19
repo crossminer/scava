@@ -10,17 +10,17 @@
 		<simple-sink name="MatrixSink"/>
 		
 		<type name="MatrixConfiguration">
-			<field name="rows" type="int"/>
-			<field name="columns" type="int"/>
-			<field name="initialValue" type="int"/>
+			<datafield name="rows" type="int"/>
+			<datafield name="columns" type="int"/>
+			<datafield name="initialValue" type="int"/>
 		</type>
 		
 		<type name="Matrix">
-			<field name="rows" type="Row" many="true"/>
+			<datafield name="rows" type="Row" many="true"/>
 		</type>
 		
 		<type name="Row">
-			<field name="cells" type="Integer" many="true"/>
+			<datafield name="cells" type="Integer" many="true"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.matrix" genOutputFolder="src-gen" outputFolder="src"/>

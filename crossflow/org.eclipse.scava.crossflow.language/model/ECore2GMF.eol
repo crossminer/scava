@@ -29,22 +29,36 @@ var typeFieldsCompartmentFigure = GmfGraph!Rectangle.all.
 -- ... and add a stack layout to it
 typeFieldsCompartmentFigure.layout = new GmfGraph!StackLayout;
 
--- Find the attribute figure
-var fieldFigure = GmfGraph!Rectangle.all.
-    selectOne(r|r.name = 'FieldFigure');
+-- Find the datafield figure
+var dataFieldFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'DataFieldFigure');
 
 -- ... delete its border
-delete fieldFigure.border;
+delete dataFieldFigure.border;
 
 -- ... set its outline to false
-fieldFigure.outline = false;
+dataFieldFigure.outline = false;
 
--- ... and add a preferred size to it
+-- Find the datafield figure
+var enumFieldFigure = GmfGraph!Rectangle.all.
+    selectOne(r|r.name = 'EnumFieldFigure');
+
+-- ... delete its border
+delete enumFieldFigure.border;
+
+-- ... set its outline to false
+enumFieldFigure.outline = false;
+
+-- ... and add a preferred size to them
 var preferredSize = new GmfGraph!Dimension;
 preferredSize.dx = 200;
 preferredSize.dy = 20;
-fieldFigure.preferredSize = preferredSize;
-//parameterFigure.preferredSize = preferredSize;
+dataFieldFigure.preferredSize = preferredSize;
+
+preferredSize = new GmfGraph!Dimension;
+preferredSize.dx = 200;
+preferredSize.dy = 20;
+enumFieldFigure.preferredSize = preferredSize;
 
 --
 
@@ -55,7 +69,7 @@ var parameterFigure = GmfGraph!Rectangle.all.
     selectOne(r|r.name = 'ParameterFigure');
 delete parameterFigure.border;
 parameterFigure.outline = false;
-var preferredSize = new GmfGraph!Dimension;
+preferredSize = new GmfGraph!Dimension;
 preferredSize.dx = 200;
 preferredSize.dy = 20;
 parameterFigure.preferredSize = preferredSize;
@@ -135,9 +149,11 @@ datatypes.collapsible=true;
 datatypes.stack=true;
 --
 var ty = GmfTool!CreationTool.all.selectOne(r|r.title = 'Type');
-var f = GmfTool!CreationTool.all.selectOne(r|r.title = 'Field');
+var df = GmfTool!CreationTool.all.selectOne(r|r.title = 'DataField');
+var ef = GmfTool!CreationTool.all.selectOne(r|r.title = 'EnumField');
 datatypes.tools.add(ty);
-datatypes.tools.add(f);
+datatypes.tools.add(df);
+datatypes.tools.add(ef);
 --
 }else{
 datatypes = GmfTool!ToolGroup.all.selectOne(r|r.title = 'Datatypes');

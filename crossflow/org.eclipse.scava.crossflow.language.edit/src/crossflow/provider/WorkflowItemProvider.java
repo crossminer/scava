@@ -252,7 +252,12 @@ public class WorkflowItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CrossflowPackage.Literals.WORKFLOW__PARAMETERS,
-				 CrossflowFactory.eINSTANCE.createField()));
+				 CrossflowFactory.eINSTANCE.createDataField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.WORKFLOW__PARAMETERS,
+				 CrossflowFactory.eINSTANCE.createEnumField()));
 
 		newChildDescriptors.add
 			(createChildParameter

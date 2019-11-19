@@ -110,12 +110,21 @@ class Type {
   val Field[*] fields;
 }
 
-@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false", color="181,255,255")
-class Field {
+abstract class Field {
   attr String name;
+}
+
+@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false", color="181,255,255")
+class DataField extends Field {
   attr String type = "String";
   attr boolean many = false;
 }
+
+@gmf.node(label="name", figure="rectangle", label.icon="false", color="181,255,255")
+class EnumField extends Field {
+  attr String[*] values;
+}
+
 
 @gmf.node(label="name", figure ="rectangle", label.icon="false", color="204,204,255")
 class Language {

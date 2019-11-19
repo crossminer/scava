@@ -139,13 +139,22 @@ public interface CrossflowFactory extends EFactory {
 	Type createType();
 
 	/**
-	 * Returns a new object of class '<em>Field</em>'.
+	 * Returns a new object of class '<em>Data Field</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Field</em>'.
+	 * @return a new object of class '<em>Data Field</em>'.
 	 * @generated
 	 */
-	Field createField();
+	DataField createDataField();
+
+	/**
+	 * Returns a new object of class '<em>Enum Field</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Enum Field</em>'.
+	 * @generated
+	 */
+	EnumField createEnumField();
 
 	/**
 	 * Returns a new object of class '<em>Language</em>'.

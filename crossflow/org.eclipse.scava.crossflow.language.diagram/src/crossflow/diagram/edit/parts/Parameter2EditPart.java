@@ -289,8 +289,8 @@ public class Parameter2EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	static final Color THIS_BACK = new Color(null, 204, 204, 255);
 
 }

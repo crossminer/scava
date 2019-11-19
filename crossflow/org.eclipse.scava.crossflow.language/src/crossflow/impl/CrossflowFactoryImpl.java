@@ -69,7 +69,8 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.SCRIPTED_TASK: return createScriptedTask();
 			case CrossflowPackage.REUSABLE_COMPONENT: return createReusableComponent();
 			case CrossflowPackage.TYPE: return createType();
-			case CrossflowPackage.FIELD: return createField();
+			case CrossflowPackage.DATA_FIELD: return createDataField();
+			case CrossflowPackage.ENUM_FIELD: return createEnumField();
 			case CrossflowPackage.LANGUAGE: return createLanguage();
 			case CrossflowPackage.PARAMETER: return createParameter();
 			case CrossflowPackage.SERIALIZER: return createSerializer();
@@ -213,9 +214,19 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Field createField() {
-		FieldImpl field = new FieldImpl();
-		return field;
+	public DataField createDataField() {
+		DataFieldImpl dataField = new DataFieldImpl();
+		return dataField;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EnumField createEnumField() {
+		EnumFieldImpl enumField = new EnumFieldImpl();
+		return enumField;
 	}
 
 	/**

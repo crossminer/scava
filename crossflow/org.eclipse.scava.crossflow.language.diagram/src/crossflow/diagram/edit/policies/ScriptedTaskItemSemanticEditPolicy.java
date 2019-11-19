@@ -24,7 +24,8 @@ import crossflow.diagram.edit.commands.StreamInputOfCreateCommand;
 import crossflow.diagram.edit.commands.StreamInputOfReorientCommand;
 import crossflow.diagram.edit.commands.TaskOutputCreateCommand;
 import crossflow.diagram.edit.commands.TaskOutputReorientCommand;
-import crossflow.diagram.edit.parts.Field2EditPart;
+import crossflow.diagram.edit.parts.DataField2EditPart;
+import crossflow.diagram.edit.parts.EnumField2EditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
 import crossflow.diagram.edit.parts.TaskOutputEditPart;
@@ -95,7 +96,13 @@ public class ScriptedTaskItemSemanticEditPolicy extends CrossflowBaseItemSemanti
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (CrossflowVisualIDRegistry.getVisualID(cnode)) {
-					case Field2EditPart.VISUAL_ID:
+					case DataField2EditPart.VISUAL_ID:
+						cmd.add(new DestroyElementCommand(
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
+						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
+						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
+						break;
+					case EnumField2EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

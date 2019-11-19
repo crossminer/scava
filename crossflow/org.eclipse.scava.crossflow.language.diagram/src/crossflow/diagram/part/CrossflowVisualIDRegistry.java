@@ -18,12 +18,18 @@ import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
-import crossflow.diagram.edit.parts.Field2EditPart;
-import crossflow.diagram.edit.parts.Field3EditPart;
-import crossflow.diagram.edit.parts.FieldEditPart;
-import crossflow.diagram.edit.parts.FieldNameType2EditPart;
-import crossflow.diagram.edit.parts.FieldNameType3EditPart;
-import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.DataField2EditPart;
+import crossflow.diagram.edit.parts.DataField3EditPart;
+import crossflow.diagram.edit.parts.DataFieldEditPart;
+import crossflow.diagram.edit.parts.DataFieldNameType2EditPart;
+import crossflow.diagram.edit.parts.DataFieldNameType3EditPart;
+import crossflow.diagram.edit.parts.DataFieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.EnumField2EditPart;
+import crossflow.diagram.edit.parts.EnumField3EditPart;
+import crossflow.diagram.edit.parts.EnumFieldEditPart;
+import crossflow.diagram.edit.parts.EnumFieldName2EditPart;
+import crossflow.diagram.edit.parts.EnumFieldName3EditPart;
+import crossflow.diagram.edit.parts.EnumFieldNameEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.LanguageNameEditPart;
@@ -196,14 +202,17 @@ public class CrossflowVisualIDRegistry {
 			if (CrossflowPackage.eINSTANCE.getReusableComponent().isSuperTypeOf(domainElement.eClass())) {
 				return ReusableComponentEditPart.VISUAL_ID;
 			}
+			if (CrossflowPackage.eINSTANCE.getDataField().isSuperTypeOf(domainElement.eClass())) {
+				return DataFieldEditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getEnumField().isSuperTypeOf(domainElement.eClass())) {
+				return EnumFieldEditPart.VISUAL_ID;
+			}
 			if (CrossflowPackage.eINSTANCE.getTask().isSuperTypeOf(domainElement.eClass())) {
 				return TaskEditPart.VISUAL_ID;
 			}
 			if (CrossflowPackage.eINSTANCE.getType().isSuperTypeOf(domainElement.eClass())) {
 				return TypeEditPart.VISUAL_ID;
-			}
-			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
-				return FieldEditPart.VISUAL_ID;
 			}
 			if (CrossflowPackage.eINSTANCE.getLanguage().isSuperTypeOf(domainElement.eClass())) {
 				return LanguageEditPart.VISUAL_ID;
@@ -213,13 +222,19 @@ public class CrossflowVisualIDRegistry {
 			}
 			break;
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
-			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
-				return Field2EditPart.VISUAL_ID;
+			if (CrossflowPackage.eINSTANCE.getDataField().isSuperTypeOf(domainElement.eClass())) {
+				return DataField2EditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getEnumField().isSuperTypeOf(domainElement.eClass())) {
+				return EnumField2EditPart.VISUAL_ID;
 			}
 			break;
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
-			if (CrossflowPackage.eINSTANCE.getField().isSuperTypeOf(domainElement.eClass())) {
-				return Field3EditPart.VISUAL_ID;
+			if (CrossflowPackage.eINSTANCE.getDataField().isSuperTypeOf(domainElement.eClass())) {
+				return DataField3EditPart.VISUAL_ID;
+			}
+			if (CrossflowPackage.eINSTANCE.getEnumField().isSuperTypeOf(domainElement.eClass())) {
+				return EnumField3EditPart.VISUAL_ID;
 			}
 			break;
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
@@ -286,13 +301,16 @@ public class CrossflowVisualIDRegistry {
 			if (ReusableComponentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (DataFieldEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (EnumFieldEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (TaskEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (TypeEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (FieldEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (LanguageEditPart.VISUAL_ID == nodeVisualID) {
@@ -355,6 +373,16 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
+		case DataFieldEditPart.VISUAL_ID:
+			if (DataFieldNameTypeEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case EnumFieldEditPart.VISUAL_ID:
+			if (EnumFieldNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case TaskEditPart.VISUAL_ID:
 			if (TaskNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -365,11 +393,6 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			if (TypeTypeFieldsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case FieldEditPart.VISUAL_ID:
-			if (FieldNameTypeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -389,13 +412,23 @@ public class CrossflowVisualIDRegistry {
 				return true;
 			}
 			break;
-		case Field2EditPart.VISUAL_ID:
-			if (FieldNameType2EditPart.VISUAL_ID == nodeVisualID) {
+		case DataField2EditPart.VISUAL_ID:
+			if (DataFieldNameType2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case Field3EditPart.VISUAL_ID:
-			if (FieldNameType3EditPart.VISUAL_ID == nodeVisualID) {
+		case EnumField2EditPart.VISUAL_ID:
+			if (EnumFieldName2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case DataField3EditPart.VISUAL_ID:
+			if (DataFieldNameType3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case EnumField3EditPart.VISUAL_ID:
+			if (EnumFieldName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -410,12 +443,18 @@ public class CrossflowVisualIDRegistry {
 			}
 			break;
 		case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
-			if (Field2EditPart.VISUAL_ID == nodeVisualID) {
+			if (DataField2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (EnumField2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case TypeTypeFieldsCompartmentEditPart.VISUAL_ID:
-			if (Field3EditPart.VISUAL_ID == nodeVisualID) {
+			if (DataField3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (EnumField3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -517,12 +556,15 @@ public class CrossflowVisualIDRegistry {
 		case CommitmentTaskEditPart.VISUAL_ID:
 		case OpinionatedTaskEditPart.VISUAL_ID:
 		case TaskEditPart.VISUAL_ID:
-		case FieldEditPart.VISUAL_ID:
 		case ReusableComponentEditPart.VISUAL_ID:
-		case Field3EditPart.VISUAL_ID:
+		case DataFieldEditPart.VISUAL_ID:
+		case EnumFieldEditPart.VISUAL_ID:
 		case ParameterEditPart.VISUAL_ID:
-		case Field2EditPart.VISUAL_ID:
 		case Parameter2EditPart.VISUAL_ID:
+		case DataField2EditPart.VISUAL_ID:
+		case EnumField2EditPart.VISUAL_ID:
+		case DataField3EditPart.VISUAL_ID:
+		case EnumField3EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

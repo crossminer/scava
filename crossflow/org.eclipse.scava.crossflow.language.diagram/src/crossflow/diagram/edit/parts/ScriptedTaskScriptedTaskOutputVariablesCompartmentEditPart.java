@@ -96,7 +96,10 @@ public class ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart extends 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == CrossflowElementTypes.Field_3003) {
+			if (type == CrossflowElementTypes.DataField_3006) {
+				return this;
+			}
+			if (type == CrossflowElementTypes.EnumField_3007) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

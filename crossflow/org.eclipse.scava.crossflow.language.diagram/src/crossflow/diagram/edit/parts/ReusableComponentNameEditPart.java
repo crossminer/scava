@@ -5,6 +5,7 @@ package crossflow.diagram.edit.parts;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Point;
@@ -45,6 +46,7 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+
 import crossflow.diagram.edit.policies.CrossflowTextSelectionEditPolicy;
 import crossflow.diagram.part.CrossflowVisualIDRegistry;
 import crossflow.diagram.providers.CrossflowElementTypes;

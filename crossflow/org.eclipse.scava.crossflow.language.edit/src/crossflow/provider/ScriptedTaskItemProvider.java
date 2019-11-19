@@ -190,7 +190,12 @@ public class ScriptedTaskItemProvider extends TaskItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(CrossflowPackage.Literals.SCRIPTED_TASK__OUTPUT_VARIABLES,
-				 CrossflowFactory.eINSTANCE.createField()));
+				 CrossflowFactory.eINSTANCE.createDataField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.SCRIPTED_TASK__OUTPUT_VARIABLES,
+				 CrossflowFactory.eINSTANCE.createEnumField()));
 	}
 
 }

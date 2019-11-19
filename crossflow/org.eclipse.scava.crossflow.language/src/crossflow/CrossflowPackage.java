@@ -1511,13 +1511,41 @@ public interface CrossflowPackage extends EPackage {
 	int FIELD__NAME = 0;
 
 	/**
+	 * The number of structural features of the '<em>Field</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.DataFieldImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getDataField()
+	 * @generated
+	 */
+	int DATA_FIELD = 15;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD__NAME = FIELD__NAME;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD__TYPE = 1;
+	int DATA_FIELD__TYPE = FIELD_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Many</b></em>' attribute.
@@ -1526,16 +1554,53 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD__MANY = 2;
+	int DATA_FIELD__MANY = FIELD_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>Field</em>' class.
+	 * The number of structural features of the '<em>Data Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = 3;
+	int DATA_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.EnumFieldImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getEnumField()
+	 * @generated
+	 */
+	int ENUM_FIELD = 16;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__NAME = FIELD__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Values</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__VALUES = FIELD_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Enum Field</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
@@ -1545,7 +1610,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
 	 * @generated
 	 */
-	int LANGUAGE = 15;
+	int LANGUAGE = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1609,7 +1674,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
 	 * @generated
 	 */
-	int PARAMETER = 16;
+	int PARAMETER = 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1646,7 +1711,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getSerializer()
 	 * @generated
 	 */
-	int SERIALIZER = 17;
+	int SERIALIZER = 19;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2212,26 +2277,57 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getField_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Field#getType <em>Type</em>}'.
+	 * Returns the meta object for class '{@link crossflow.DataField <em>Data Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Data Field</em>'.
+	 * @see crossflow.DataField
+	 * @generated
+	 */
+	EClass getDataField();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.DataField#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see crossflow.Field#getType()
-	 * @see #getField()
+	 * @see crossflow.DataField#getType()
+	 * @see #getDataField()
 	 * @generated
 	 */
-	EAttribute getField_Type();
+	EAttribute getDataField_Type();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Field#isMany <em>Many</em>}'.
+	 * Returns the meta object for the attribute '{@link crossflow.DataField#isMany <em>Many</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Many</em>'.
-	 * @see crossflow.Field#isMany()
-	 * @see #getField()
+	 * @see crossflow.DataField#isMany()
+	 * @see #getDataField()
 	 * @generated
 	 */
-	EAttribute getField_Many();
+	EAttribute getDataField_Many();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.EnumField <em>Enum Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Enum Field</em>'.
+	 * @see crossflow.EnumField
+	 * @generated
+	 */
+	EClass getEnumField();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link crossflow.EnumField#getValues <em>Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Values</em>'.
+	 * @see crossflow.EnumField#getValues()
+	 * @see #getEnumField()
+	 * @generated
+	 */
+	EAttribute getEnumField_Values();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Language <em>Language</em>}'.
@@ -2815,12 +2911,22 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute FIELD__NAME = eINSTANCE.getField_Name();
 
 		/**
+		 * The meta object literal for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.DataFieldImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getDataField()
+		 * @generated
+		 */
+		EClass DATA_FIELD = eINSTANCE.getDataField();
+
+		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FIELD__TYPE = eINSTANCE.getField_Type();
+		EAttribute DATA_FIELD__TYPE = eINSTANCE.getDataField_Type();
 
 		/**
 		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
@@ -2828,7 +2934,25 @@ public interface CrossflowPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
+		EAttribute DATA_FIELD__MANY = eINSTANCE.getDataField_Many();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.EnumFieldImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getEnumField()
+		 * @generated
+		 */
+		EClass ENUM_FIELD = eINSTANCE.getEnumField();
+
+		/**
+		 * The meta object literal for the '<em><b>Values</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ENUM_FIELD__VALUES = eINSTANCE.getEnumField_Values();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.

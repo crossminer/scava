@@ -326,8 +326,8 @@ public class CsvSinkEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	static final Color THIS_BACK = new Color(null, 201, 231, 183);
 
 }

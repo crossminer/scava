@@ -253,7 +253,12 @@ public class TypeItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CrossflowPackage.Literals.TYPE__FIELDS,
-				 CrossflowFactory.eINSTANCE.createField()));
+				 CrossflowFactory.eINSTANCE.createDataField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CrossflowPackage.Literals.TYPE__FIELDS,
+				 CrossflowFactory.eINSTANCE.createEnumField()));
 	}
 
 	/**

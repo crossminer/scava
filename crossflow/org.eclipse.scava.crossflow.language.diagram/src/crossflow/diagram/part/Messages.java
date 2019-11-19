@@ -266,46 +266,6 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Extending1CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Extending1CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String InputOf2CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String InputOf2CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Output3CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Output3CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String Type4CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String Type4CreationTool_desc;
-
-	/**
-	* @generated
-	*/
 	public static String Source1CreationTool_title;
 
 	/**
@@ -426,12 +386,22 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String Field2CreationTool_title;
+	public static String DataField2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String Field2CreationTool_desc;
+	public static String DataField2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String EnumField3CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String EnumField3CreationTool_desc;
 
 	/**
 	* @generated
@@ -462,6 +432,46 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String Serializer3CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Extending1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Extending1CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String InputOf2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String InputOf2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Output3CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Output3CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String Type4CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Type4CreationTool_desc;
 
 	/**
 	* @generated

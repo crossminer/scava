@@ -128,6 +128,14 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createFieldAdapter();
 			}
 			@Override
+			public Adapter caseDataField(DataField object) {
+				return createDataFieldAdapter();
+			}
+			@Override
+			public Adapter caseEnumField(EnumField object) {
+				return createEnumFieldAdapter();
+			}
+			@Override
 			public Adapter caseLanguage(Language object) {
 				return createLanguageAdapter();
 			}
@@ -366,6 +374,34 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createFieldAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.DataField <em>Data Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.DataField
+	 * @generated
+	 */
+	public Adapter createDataFieldAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.EnumField <em>Enum Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.EnumField
+	 * @generated
+	 */
+	public Adapter createEnumFieldAdapter() {
 		return null;
 	}
 

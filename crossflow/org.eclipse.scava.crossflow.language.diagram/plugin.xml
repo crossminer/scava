@@ -258,7 +258,7 @@
          </object>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" containerViews="referencing-diagrams"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Crossflow"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2018,3003,3001,3002,3005"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2019,2020,2010,2011,2013,2018,3006,3007,3008,3009,3002,3005"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4005,4003,4004"/>
       </viewProvider>
    </extension>
@@ -271,13 +271,13 @@
             <method name="getType()" value="Crossflow"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2018,3003,3001,3002,3005"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2019,2020,2010,2011,2013,2018,3006,3007,3008,3009,3002,3005"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4005,4003,4004"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5017,5021,5010,5012,5016,5015,5023,5018,5011,5014,5022"/>
+            <method name="getType()" value="5001,5002,5003,5004,5005,5006,5007,5008,5017,5021,5026,5027,5010,5012,5015,5023,5024,5025,5028,5029,5014,5022"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
             <method name="getType()" value="7003,7001,7002,7005"/>
@@ -344,6 +344,16 @@
          <object class="crossflow.diagram.edit.parts.ReusableComponentEditPart" id="ReusableComponent_2017"/>
          <context elements="ReusableComponent_2017"/>
       </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfDataFieldEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.DataFieldEditPart" id="DataField_2019"/>
+         <context elements="DataField_2019"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfEnumFieldEditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.EnumFieldEditPart" id="EnumField_2020"/>
+         <context elements="EnumField_2020"/>
+      </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfTaskEditPart">
          <Priority name="Lowest"/>
          <object class="crossflow.diagram.edit.parts.TaskEditPart" id="Task_2010"/>
@@ -353,11 +363,6 @@
          <Priority name="Lowest"/>
          <object class="crossflow.diagram.edit.parts.TypeEditPart" id="Type_2011"/>
          <context elements="Type_2011"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfFieldEditPart">
-         <Priority name="Lowest"/>
-         <object class="crossflow.diagram.edit.parts.FieldEditPart" id="Field_2014"/>
-         <context elements="Field_2014"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfLanguageEditPart">
          <Priority name="Lowest"/>
@@ -369,15 +374,25 @@
          <object class="crossflow.diagram.edit.parts.SerializerEditPart" id="Serializer_2018"/>
          <context elements="Serializer_2018"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfField2EditPart">
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfDataField2EditPart">
          <Priority name="Lowest"/>
-         <object class="crossflow.diagram.edit.parts.Field2EditPart" id="Field_3003"/>
-         <context elements="Field_3003"/>
+         <object class="crossflow.diagram.edit.parts.DataField2EditPart" id="DataField_3006"/>
+         <context elements="DataField_3006"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfField3EditPart">
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfEnumField2EditPart">
          <Priority name="Lowest"/>
-         <object class="crossflow.diagram.edit.parts.Field3EditPart" id="Field_3001"/>
-         <context elements="Field_3001"/>
+         <object class="crossflow.diagram.edit.parts.EnumField2EditPart" id="EnumField_3007"/>
+         <context elements="EnumField_3007"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfDataField3EditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.DataField3EditPart" id="DataField_3008"/>
+         <context elements="DataField_3008"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfEnumField3EditPart">
+         <Priority name="Lowest"/>
+         <object class="crossflow.diagram.edit.parts.EnumField3EditPart" id="EnumField_3009"/>
+         <context elements="EnumField_3009"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="crossflow.diagram.providers.assistants.CrossflowModelingAssistantProviderOfParameterEditPart">
          <Priority name="Lowest"/>
@@ -412,7 +427,7 @@
       <decoratorProvider class="crossflow.diagram.providers.CrossflowShortcutsDecoratorProvider">
          <Priority name="Lowest"/>
          <object class="org.eclipse.gmf.runtime.notation.Node(org.eclipse.gmf.runtime.notation)" id="generated-top-nodes">
-            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2010,2011,2014,2013,2018"/>
+            <method name="getType()" value="2001,2002,2003,2004,2005,2006,2007,2008,2015,2017,2019,2020,2010,2011,2013,2018"/>
          </object>
          <context decoratorTargets="generated-top-nodes"/>
       </decoratorProvider>
@@ -531,6 +546,24 @@
          </metamodelType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
+         <specializationType
+               id="org.eclipse.scava.crossflow.language.diagram.DataField_2019"
+               name="%metatype.name.DataField_2019"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.DataField_3006"/>
+            <param name="semanticHint" value="2019"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <specializationType
+               id="org.eclipse.scava.crossflow.language.diagram.EnumField_2020"
+               name="%metatype.name.EnumField_2020"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.EnumField_3007"/>
+            <param name="semanticHint" value="2020"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
                id="org.eclipse.scava.crossflow.language.diagram.Task_2010"
                name="%metatype.name.Task_2010"
@@ -549,15 +582,6 @@
                edithelper="crossflow.diagram.edit.helpers.TypeEditHelper">
             <param name="semanticHint" value="2011"/>
          </metamodelType>
-      </metamodel>
-      <metamodel nsURI="org.eclipse.scava.crossflow">
-         <specializationType
-               id="org.eclipse.scava.crossflow.language.diagram.Field_2014"
-               name="%metatype.name.Field_2014"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
-            <param name="semanticHint" value="2014"/>
-         </specializationType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
@@ -581,21 +605,40 @@
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <metamodelType
-               id="org.eclipse.scava.crossflow.language.diagram.Field_3003"
-               name="%metatype.name.Field_3003"
+               id="org.eclipse.scava.crossflow.language.diagram.DataField_3006"
+               name="%metatype.name.DataField_3006"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="Field"
-               edithelper="crossflow.diagram.edit.helpers.FieldEditHelper">
-            <param name="semanticHint" value="3003"/>
+               eclass="DataField"
+               edithelper="crossflow.diagram.edit.helpers.DataFieldEditHelper">
+            <param name="semanticHint" value="3006"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <metamodelType
+               id="org.eclipse.scava.crossflow.language.diagram.EnumField_3007"
+               name="%metatype.name.EnumField_3007"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="EnumField"
+               edithelper="crossflow.diagram.edit.helpers.EnumFieldEditHelper">
+            <param name="semanticHint" value="3007"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
          <specializationType
-               id="org.eclipse.scava.crossflow.language.diagram.Field_3001"
-               name="%metatype.name.Field_3001"
+               id="org.eclipse.scava.crossflow.language.diagram.DataField_3008"
+               name="%metatype.name.DataField_3008"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
-            <param name="semanticHint" value="3001"/>
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.DataField_3006"/>
+            <param name="semanticHint" value="3008"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="org.eclipse.scava.crossflow">
+         <specializationType
+               id="org.eclipse.scava.crossflow.language.diagram.EnumField_3009"
+               name="%metatype.name.EnumField_3009"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="org.eclipse.scava.crossflow.language.diagram.EnumField_3007"/>
+            <param name="semanticHint" value="3009"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="org.eclipse.scava.crossflow">
@@ -676,13 +719,16 @@
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.OpinionatedTask_2008"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.ScriptedTask_2015"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.ReusableComponent_2017"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.DataField_2019"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.EnumField_2020"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Task_2010"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Type_2011"/>
-         <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_2014"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Language_2013"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Serializer_2018"/>
-         <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_3003"/>
-         <elementType ref="org.eclipse.scava.crossflow.language.diagram.Field_3001"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.DataField_3006"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.EnumField_3007"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.DataField_3008"/>
+         <elementType ref="org.eclipse.scava.crossflow.language.diagram.EnumField_3009"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Parameter_3002"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.Parameter_3005"/>
          <elementType ref="org.eclipse.scava.crossflow.language.diagram.StreamType_4001"/>

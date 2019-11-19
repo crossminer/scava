@@ -7,6 +7,8 @@ import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 import crossflow.CsvSink;
 import crossflow.CsvSource;
+import crossflow.DataField;
+import crossflow.EnumField;
 import crossflow.Field;
 import crossflow.Language;
 import crossflow.OpinionatedTask;
@@ -145,6 +147,20 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * @generated
 	 */
 	private EClass fieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass dataFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass enumFieldEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -689,8 +705,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getField_Type() {
-		return (EAttribute)fieldEClass.getEStructuralFeatures().get(1);
+	public EClass getDataField() {
+		return dataFieldEClass;
 	}
 
 	/**
@@ -698,8 +714,35 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getField_Many() {
-		return (EAttribute)fieldEClass.getEStructuralFeatures().get(2);
+	public EAttribute getDataField_Type() {
+		return (EAttribute)dataFieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDataField_Many() {
+		return (EAttribute)dataFieldEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getEnumField() {
+		return enumFieldEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getEnumField_Values() {
+		return (EAttribute)enumFieldEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -902,8 +945,13 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 
 		fieldEClass = createEClass(FIELD);
 		createEAttribute(fieldEClass, FIELD__NAME);
-		createEAttribute(fieldEClass, FIELD__TYPE);
-		createEAttribute(fieldEClass, FIELD__MANY);
+
+		dataFieldEClass = createEClass(DATA_FIELD);
+		createEAttribute(dataFieldEClass, DATA_FIELD__TYPE);
+		createEAttribute(dataFieldEClass, DATA_FIELD__MANY);
+
+		enumFieldEClass = createEClass(ENUM_FIELD);
+		createEAttribute(enumFieldEClass, ENUM_FIELD__VALUES);
 
 		languageEClass = createEClass(LANGUAGE);
 		createEAttribute(languageEClass, LANGUAGE__NAME);
@@ -962,6 +1010,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		opinionatedTaskEClass.getESuperTypes().add(this.getTask());
 		scriptedTaskEClass.getESuperTypes().add(this.getTask());
 		reusableComponentEClass.getESuperTypes().add(this.getTask());
+		dataFieldEClass.getESuperTypes().add(this.getField());
+		enumFieldEClass.getESuperTypes().add(this.getField());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(workflowEClass, Workflow.class, "Workflow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1026,10 +1076,15 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEReference(getType_Extending(), this.getType(), null, "extending", null, 0, -1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getType_Fields(), this.getField(), null, "fields", null, 0, -1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(fieldEClass, Field.class, "Field", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(fieldEClass, Field.class, "Field", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getField_Name(), ecorePackage.getEString(), "name", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(dataFieldEClass, DataField.class, "DataField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDataField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, DataField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDataField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, DataField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(enumFieldEClass, EnumField.class, "EnumField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEnumField_Values(), ecorePackage.getEString(), "values", null, 0, -1, EnumField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(languageEClass, Language.class, "Language", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLanguage_Name(), ecorePackage.getEString(), "name", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1177,12 +1232,21 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "color", "181,255,255"
 		   });
 		addAnnotation
-		  (fieldEClass,
+		  (dataFieldEClass,
 		   source,
 		   new String[] {
 			   "label", "name,type",
 			   "figure", "rectangle",
 			   "label.pattern", "{0}:{1}",
+			   "label.icon", "false",
+			   "color", "181,255,255"
+		   });
+		addAnnotation
+		  (enumFieldEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "figure", "rectangle",
 			   "label.icon", "false",
 			   "color", "181,255,255"
 		   });

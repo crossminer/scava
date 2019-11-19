@@ -371,26 +371,49 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Field} instances.
+	 * This keeps track of the one adapter used for all {@link crossflow.DataField} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FieldItemProvider fieldItemProvider;
+	protected DataFieldItemProvider dataFieldItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link crossflow.Field}.
+	 * This creates an adapter for a {@link crossflow.DataField}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createFieldAdapter() {
-		if (fieldItemProvider == null) {
-			fieldItemProvider = new FieldItemProvider(this);
+	public Adapter createDataFieldAdapter() {
+		if (dataFieldItemProvider == null) {
+			dataFieldItemProvider = new DataFieldItemProvider(this);
 		}
 
-		return fieldItemProvider;
+		return dataFieldItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.EnumField} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EnumFieldItemProvider enumFieldItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.EnumField}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEnumFieldAdapter() {
+		if (enumFieldItemProvider == null) {
+			enumFieldItemProvider = new EnumFieldItemProvider(this);
+		}
+
+		return enumFieldItemProvider;
 	}
 
 	/**
@@ -574,7 +597,8 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (scriptedTaskItemProvider != null) scriptedTaskItemProvider.dispose();
 		if (reusableComponentItemProvider != null) reusableComponentItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
-		if (fieldItemProvider != null) fieldItemProvider.dispose();
+		if (dataFieldItemProvider != null) dataFieldItemProvider.dispose();
+		if (enumFieldItemProvider != null) enumFieldItemProvider.dispose();
 		if (languageItemProvider != null) languageItemProvider.dispose();
 		if (parameterItemProvider != null) parameterItemProvider.dispose();
 		if (serializerItemProvider != null) serializerItemProvider.dispose();

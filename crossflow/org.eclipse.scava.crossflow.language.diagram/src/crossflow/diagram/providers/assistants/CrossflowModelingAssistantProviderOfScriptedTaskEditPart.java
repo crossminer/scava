@@ -28,8 +28,9 @@ public class CrossflowModelingAssistantProviderOfScriptedTaskEditPart extends Cr
 	@Override
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(CrossflowElementTypes.Field_3003);
+		List<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(CrossflowElementTypes.DataField_3006);
+		types.add(CrossflowElementTypes.EnumField_3007);
 		return types;
 	}
 
