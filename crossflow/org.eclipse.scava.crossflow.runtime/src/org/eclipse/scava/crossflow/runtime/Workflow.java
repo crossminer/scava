@@ -1,5 +1,7 @@
 package org.eclipse.scava.crossflow.runtime;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.jmx.DestinationViewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.eclipse.scava.crossflow.runtime.serialization.Serializer;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.CrossflowLogger;
@@ -1178,28 +1181,51 @@ public abstract class Workflow<E extends Enum<E>> {
 
 	public Serializer getSerializer() {
 		if (serializer == null) {
-			serializer = setupSerializer();
-			serializer.register(ControlSignal.class);
-			serializer.register(FailedJob.class);
-			serializer.register(InternalException.class);
-			serializer.register(Job.class);
-			serializer.register(LogMessage.class);
-			serializer.register(StreamMetadata.class);
-			serializer.register(StreamMetadataSnapshot.class);
-			serializer.register(TaskStatus.class);
+			serializer = createSerializer();
+			registerDefaultSerializationTypes(serializer);
+			registerCustomSerializationTypes(getSerializer());
 		}
 		return serializer;
 	}
 
 	/**
-	 * Retrieve the Serializer used in this Workflow
+	 * Construct a new Serializer for this workflow
 	 * <p>
-	 * Implementing classes should lazily initialise an instance of the serializer
-	 * to use and register all classes that should be serializable in this workflow
+	 * Implementation will be auto-genned base on the serialiser defined in the
+	 * workflow model
 	 * 
-	 * @return an instance of serializer
+	 * @return a new instance of Serializer
 	 */
-	public abstract Serializer setupSerializer();
+	protected abstract Serializer createSerializer();
+
+	/**
+	 * Register all workflow specific types
+	 * <p>
+	 * Implementation will be auto-genned
+	 * 
+	 * @param serializer the serializer to register types
+	 */
+	protected abstract void registerCustomSerializationTypes(Serializer serializer);
+	
+	protected void registerDefaultSerializationTypes(Serializer serializer) {
+		checkNotNull(serializer);
+		// o.e.s.c.runtime.*
+		serializer.registerType(FailedJob.class);
+		serializer.registerType(InternalException.class);
+		serializer.registerType(Job.class);
+		serializer.registerType(LoggingStrategy.class);
+		serializer.registerType(Mode.class);
+		
+		// o.e.s.c.runtime.utils.*
+		serializer.registerType(ControlSignal.class);
+		serializer.registerType(ControlSignals.class);
+		serializer.registerType(LogLevel.class);
+		serializer.registerType(LogMessage.class);
+		serializer.registerType(StreamMetadata.class);
+		serializer.registerType(StreamMetadataSnapshot.class);
+		serializer.registerType(TaskStatus.class);
+		serializer.registerType(TaskStatuses.class);
+	}
 
 	/*
 	 * LOGGING

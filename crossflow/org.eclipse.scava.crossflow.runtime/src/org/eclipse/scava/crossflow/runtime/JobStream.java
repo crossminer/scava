@@ -59,7 +59,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 				MessageProducer producer = session.createProducer(d);
 				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 				job.setDestination(getClass().getSimpleName());
-				producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
+				producer.send(session.createTextMessage(workflow.getSerializer().serialize(job)));
 				producer.close();
 			} else {
 				// otherwise the sender must be the source of this stream so intends to
@@ -68,7 +68,7 @@ public abstract class JobStream<T extends Job> implements Stream {
 					MessageProducer producer = session.createProducer(dest);
 					producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 					job.setDestination(this.getClass().getSimpleName());
-					producer.send(session.createTextMessage(workflow.getSerializer().toString(job)));
+					producer.send(session.createTextMessage(workflow.getSerializer().serialize(job)));
 					producer.close();
 				}
 			}

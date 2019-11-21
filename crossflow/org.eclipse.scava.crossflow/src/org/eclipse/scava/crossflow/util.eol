@@ -39,7 +39,7 @@ operation Any getLanguage(language : String) : CrossflowLanguageModel!Language {
 }
 
 @cached
-operation Language getLanguageParams() : Map {
+operation CrossflowLanguageModel!Language getLanguageParams() : Map {
 	var m = new Map;
 	for (p in self.`parameters`) {
 		m.put(p.name, p.value);
@@ -212,7 +212,11 @@ operation CrossflowLanguageModel!Workflow getPackageName() {
 }
 
 operation CrossflowLanguageModel!Language isJava() {
-	return self.name.toLowerCase() == "java";
+	return self.name.equalsIgnoreCase("java");
+}
+
+operation CrossflowLanguageModel!Language isPython() {
+	return self.name.equalsIgnoreCase("python");
 }
 
 operation CrossflowLanguageModel!Component isOpinionatedComponent(){
@@ -222,3 +226,4 @@ operation CrossflowLanguageModel!Component isOpinionatedComponent(){
 operation CrossflowLanguageModel!Component isCommitmentComponent(){
 	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("commitment") or self.componentType.name.equalsIgnorecase("commitmenttask");
 }
+

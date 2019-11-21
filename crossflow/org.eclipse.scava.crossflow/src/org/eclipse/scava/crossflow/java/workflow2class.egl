@@ -2,6 +2,8 @@
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.net.URI;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -14,8 +16,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
-import org.eclipse.scava.crossflow.runtime.Serializer;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.serialization.Serializer;
+[%if (w.getSerializer().~implClass <> null) {%]import org.eclipse.scava.crossflow.runtime.serialization.[%=w.getSerializer().~implClass%];[%}%]
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
@@ -102,7 +105,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-	
+		this.getSerializer();
 		this.delay=delay;
 	
 		try {
@@ -255,16 +258,24 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	@Override
-	public Serializer setupSerializer() {
-		Serializer serializer = new Serializer();
+	protected Serializer createSerializer() {
+		[%if (w.getSerializer().~implClass == null) {%]
+		throw new IllegalStateException();
+		[%} else {%]
+		return new [%=w.getSerializer().~implClass%]();
+		[%}%]
+	}
+	
+	@Override
+	protected void registerCustomSerializationTypes(Serializer serializer) {
+		checkNotNull(serializer);
 		[% for (t in w.types) {%]
-		serializer.register([%=t.name%].class);
+		serializer.registerType([%=t.name%].class);
 		[%}%]
 		[%if(CrossflowLanguageModel!ReusableComponent.all.size>0){
 			for (t in CMS!Type.all) {%]
-		serializer.register([%=t.name%].class);
+		serializer.registerType([%=t.name%].class);
 		[%}}%]
-		return serializer;
 	}
 	
 	public static [%=w.name%] run(String[] args) throws Exception {
@@ -377,4 +388,23 @@ operation CrossflowLanguageModel!Task setup() {
 		[%}%]
 	}
 [%	}
+}
+
+@cached
+operation CrossflowLanguageModel!Workflow getSerializer() : CrossflowLanguageModel!Serialiser {
+	var s = self.serialiser;
+	if (s.isUndefined()) {
+		s = new CrossflowLanguageModel!Serialiser;
+		s.name = "json";
+	}
+	
+	if (s.name.equals("xml")) {
+		s.~implClass = "XstreamSerializer";
+	} else if (s.name.equals("json")) {
+		s.~implClass = "JsonSerializer";
+	} else {
+		s.~implClass = null;
+	}
+	
+	return s; 
 }%]
