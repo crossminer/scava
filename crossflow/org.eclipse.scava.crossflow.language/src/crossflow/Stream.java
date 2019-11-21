@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link crossflow.Stream#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.Stream#isMany <em>Many</em>}</li>
  *   <li>{@link crossflow.Stream#getType <em>Type</em>}</li>
  *   <li>{@link crossflow.Stream#getInputOf <em>Input Of</em>}</li>
  *   <li>{@link crossflow.Stream#getOutputOf <em>Output Of</em>}</li>
@@ -54,6 +55,29 @@ public interface Stream extends EObject {
 	void setName(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Many</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Many</em>' attribute.
+	 * @see #setMany(boolean)
+	 * @see crossflow.CrossflowPackage#getStream_Many()
+	 * @model default="false"
+	 * @generated
+	 */
+	boolean isMany();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Stream#isMany <em>Many</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Many</em>' attribute.
+	 * @see #isMany()
+	 * @generated
+	 */
+	void setMany(boolean value);
+
+	/**
 	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -64,7 +88,7 @@ public interface Stream extends EObject {
 	 * @return the value of the '<em>Type</em>' reference.
 	 * @see #setType(Type)
 	 * @see crossflow.CrossflowPackage#getStream_Type()
-	 * @model
+	 * @model annotation="gmf.link"
 	 * @generated
 	 */
 	Type getType();

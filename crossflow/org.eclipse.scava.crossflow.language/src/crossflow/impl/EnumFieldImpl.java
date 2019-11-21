@@ -61,6 +61,7 @@ public class EnumFieldImpl extends FieldImpl implements EnumField {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<String> getValues() {
 		if (values == null) {
 			values = new EDataTypeUniqueEList<String>(String.class, this, CrossflowPackage.ENUM_FIELD__VALUES);

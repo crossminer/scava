@@ -111,6 +111,7 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getScriptingLanguage() {
 		return scriptingLanguage;
 	}
@@ -120,6 +121,7 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setScriptingLanguage(String newScriptingLanguage) {
 		String oldScriptingLanguage = scriptingLanguage;
 		scriptingLanguage = newScriptingLanguage;
@@ -132,6 +134,7 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getScript() {
 		return script;
 	}
@@ -141,6 +144,7 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setScript(String newScript) {
 		String oldScript = script;
 		script = newScript;
@@ -153,6 +157,7 @@ public class ScriptedTaskImpl extends TaskImpl implements ScriptedTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Field> getOutputVariables() {
 		if (outputVariables == null) {
 			outputVariables = new EObjectContainmentEList<Field>(Field.class, this, CrossflowPackage.SCRIPTED_TASK__OUTPUT_VARIABLES);

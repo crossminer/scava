@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link crossflow.impl.StreamImpl#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.impl.StreamImpl#isMany <em>Many</em>}</li>
  *   <li>{@link crossflow.impl.StreamImpl#getType <em>Type</em>}</li>
  *   <li>{@link crossflow.impl.StreamImpl#getInputOf <em>Input Of</em>}</li>
  *   <li>{@link crossflow.impl.StreamImpl#getOutputOf <em>Output Of</em>}</li>
@@ -59,6 +60,26 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMany() <em>Many</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMany()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MANY_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMany() <em>Many</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMany()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean many = MANY_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
@@ -114,6 +135,7 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -123,6 +145,7 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -135,6 +158,30 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public boolean isMany() {
+		return many;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setMany(boolean newMany) {
+		boolean oldMany = many;
+		many = newMany;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.STREAM__MANY, oldMany, many));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Type getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
@@ -161,6 +208,7 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(Type newType) {
 		Type oldType = type;
 		type = newType;
@@ -173,6 +221,7 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Task> getInputOf() {
 		if (inputOf == null) {
 			inputOf = new EObjectWithInverseResolvingEList.ManyInverse<Task>(Task.class, this, CrossflowPackage.STREAM__INPUT_OF, CrossflowPackage.TASK__INPUT);
@@ -185,6 +234,7 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Task> getOutputOf() {
 		if (outputOf == null) {
 			outputOf = new EObjectWithInverseResolvingEList.ManyInverse<Task>(Task.class, this, CrossflowPackage.STREAM__OUTPUT_OF, CrossflowPackage.TASK__OUTPUT);
@@ -235,6 +285,8 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 		switch (featureID) {
 			case CrossflowPackage.STREAM__NAME:
 				return getName();
+			case CrossflowPackage.STREAM__MANY:
+				return isMany();
 			case CrossflowPackage.STREAM__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
@@ -257,6 +309,9 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 		switch (featureID) {
 			case CrossflowPackage.STREAM__NAME:
 				setName((String)newValue);
+				return;
+			case CrossflowPackage.STREAM__MANY:
+				setMany((Boolean)newValue);
 				return;
 			case CrossflowPackage.STREAM__TYPE:
 				setType((Type)newValue);
@@ -284,6 +339,9 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 			case CrossflowPackage.STREAM__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case CrossflowPackage.STREAM__MANY:
+				setMany(MANY_EDEFAULT);
+				return;
 			case CrossflowPackage.STREAM__TYPE:
 				setType((Type)null);
 				return;
@@ -307,6 +365,8 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 		switch (featureID) {
 			case CrossflowPackage.STREAM__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case CrossflowPackage.STREAM__MANY:
+				return many != MANY_EDEFAULT;
 			case CrossflowPackage.STREAM__TYPE:
 				return type != null;
 			case CrossflowPackage.STREAM__INPUT_OF:
@@ -329,6 +389,8 @@ public abstract class StreamImpl extends EObjectImpl implements Stream {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", many: ");
+		result.append(many);
 		result.append(')');
 		return result.toString();
 	}

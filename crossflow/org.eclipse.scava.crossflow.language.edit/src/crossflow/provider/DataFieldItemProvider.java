@@ -46,7 +46,6 @@ public class DataFieldItemProvider extends FieldItemProvider {
 			super.getPropertyDescriptors(object);
 
 			addTypePropertyDescriptor(object);
-			addManyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -69,28 +68,6 @@ public class DataFieldItemProvider extends FieldItemProvider {
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Many feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addManyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DataField_many_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DataField_many_feature", "_UI_DataField_type"),
-				 CrossflowPackage.Literals.DATA_FIELD__MANY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -134,7 +111,6 @@ public class DataFieldItemProvider extends FieldItemProvider {
 
 		switch (notification.getFeatureID(DataField.class)) {
 			case CrossflowPackage.DATA_FIELD__TYPE:
-			case CrossflowPackage.DATA_FIELD__MANY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

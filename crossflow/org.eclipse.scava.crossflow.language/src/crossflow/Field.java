@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link crossflow.Field#getName <em>Name</em>}</li>
+ *   <li>{@link crossflow.Field#isMany <em>Many</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getField()
@@ -46,5 +47,28 @@ public interface Field extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Many</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Many</em>' attribute.
+	 * @see #setMany(boolean)
+	 * @see crossflow.CrossflowPackage#getField_Many()
+	 * @model default="false"
+	 * @generated
+	 */
+	boolean isMany();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Field#isMany <em>Many</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Many</em>' attribute.
+	 * @see #isMany()
+	 * @generated
+	 */
+	void setMany(boolean value);
 
 } // Field

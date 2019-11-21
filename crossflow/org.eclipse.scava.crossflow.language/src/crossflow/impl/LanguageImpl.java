@@ -154,6 +154,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -163,6 +164,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -175,6 +177,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getPackage() {
 		return package_;
 	}
@@ -184,6 +187,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPackage(String newPackage) {
 		String oldPackage = package_;
 		package_ = newPackage;
@@ -196,6 +200,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getOutputFolder() {
 		return outputFolder;
 	}
@@ -205,6 +210,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setOutputFolder(String newOutputFolder) {
 		String oldOutputFolder = outputFolder;
 		outputFolder = newOutputFolder;
@@ -217,6 +223,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getGenOutputFolder() {
 		return genOutputFolder;
 	}
@@ -226,6 +233,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setGenOutputFolder(String newGenOutputFolder) {
 		String oldGenOutputFolder = genOutputFolder;
 		genOutputFolder = newGenOutputFolder;
@@ -238,6 +246,7 @@ public class LanguageImpl extends EObjectImpl implements Language {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Parameter> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, CrossflowPackage.LANGUAGE__PARAMETERS);

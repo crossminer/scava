@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see crossflow.CrossflowFactory
  * @model kind="package"
+ *        annotation="gmf"
  * @generated
  */
 public interface CrossflowPackage extends EPackage {
@@ -157,13 +158,22 @@ public interface CrossflowPackage extends EPackage {
 	int STREAM__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM__MANY = 1;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__TYPE = 1;
+	int STREAM__TYPE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Input Of</b></em>' reference list.
@@ -172,7 +182,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__INPUT_OF = 2;
+	int STREAM__INPUT_OF = 3;
 
 	/**
 	 * The feature id for the '<em><b>Output Of</b></em>' reference list.
@@ -181,7 +191,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__OUTPUT_OF = 3;
+	int STREAM__OUTPUT_OF = 4;
 
 	/**
 	 * The number of structural features of the '<em>Stream</em>' class.
@@ -190,7 +200,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM_FEATURE_COUNT = 4;
+	int STREAM_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
@@ -210,6 +220,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int TOPIC__NAME = STREAM__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TOPIC__MANY = STREAM__MANY;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -265,6 +284,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int QUEUE__NAME = STREAM__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUEUE__MANY = STREAM__MANY;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1456,22 +1484,13 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE__IMPL = 1;
 
 	/**
-	 * The feature id for the '<em><b>Is Many</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE__IS_MANY = 2;
-
-	/**
 	 * The feature id for the '<em><b>Extending</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__EXTENDING = 3;
+	int TYPE__EXTENDING = 2;
 
 	/**
 	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -1480,7 +1499,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__FIELDS = 4;
+	int TYPE__FIELDS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Type</em>' class.
@@ -1489,7 +1508,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_FEATURE_COUNT = 5;
+	int TYPE_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.FieldImpl <em>Field</em>}' class.
@@ -1511,13 +1530,22 @@ public interface CrossflowPackage extends EPackage {
 	int FIELD__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__MANY = 1;
+
+	/**
 	 * The number of structural features of the '<em>Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = 1;
+	int FIELD_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
@@ -1539,6 +1567,15 @@ public interface CrossflowPackage extends EPackage {
 	int DATA_FIELD__NAME = FIELD__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD__MANY = FIELD__MANY;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1548,22 +1585,13 @@ public interface CrossflowPackage extends EPackage {
 	int DATA_FIELD__TYPE = FIELD_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Many</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_FIELD__MANY = FIELD_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Data Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATA_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 2;
+	int DATA_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.
@@ -1583,6 +1611,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int ENUM_FIELD__NAME = FIELD__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__MANY = FIELD__MANY;
 
 	/**
 	 * The feature id for the '<em><b>Values</b></em>' attribute list.
@@ -1848,6 +1885,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getStream_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Stream#isMany <em>Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Many</em>'.
+	 * @see crossflow.Stream#isMany()
+	 * @see #getStream()
+	 * @generated
+	 */
+	EAttribute getStream_Many();
 
 	/**
 	 * Returns the meta object for the reference '{@link crossflow.Stream#getType <em>Type</em>}'.
@@ -2223,17 +2271,6 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getType_Impl();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Type#isIsMany <em>Is Many</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Many</em>'.
-	 * @see crossflow.Type#isIsMany()
-	 * @see #getType()
-	 * @generated
-	 */
-	EAttribute getType_IsMany();
-
-	/**
 	 * Returns the meta object for the reference list '{@link crossflow.Type#getExtending <em>Extending</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2277,6 +2314,17 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getField_Name();
 
 	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Field#isMany <em>Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Many</em>'.
+	 * @see crossflow.Field#isMany()
+	 * @see #getField()
+	 * @generated
+	 */
+	EAttribute getField_Many();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.DataField <em>Data Field</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2296,17 +2344,6 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDataField_Type();
-
-	/**
-	 * Returns the meta object for the attribute '{@link crossflow.DataField#isMany <em>Many</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Many</em>'.
-	 * @see crossflow.DataField#isMany()
-	 * @see #getDataField()
-	 * @generated
-	 */
-	EAttribute getDataField_Many();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.EnumField <em>Enum Field</em>}'.
@@ -2563,6 +2600,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute STREAM__NAME = eINSTANCE.getStream_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STREAM__MANY = eINSTANCE.getStream_Many();
 
 		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
@@ -2869,14 +2914,6 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute TYPE__IMPL = eINSTANCE.getType_Impl();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Many</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TYPE__IS_MANY = eINSTANCE.getType_IsMany();
-
-		/**
 		 * The meta object literal for the '<em><b>Extending</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2911,6 +2948,14 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute FIELD__NAME = eINSTANCE.getField_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2927,14 +2972,6 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DATA_FIELD__TYPE = eINSTANCE.getDataField_Type();
-
-		/**
-		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DATA_FIELD__MANY = eINSTANCE.getDataField_Many();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.

@@ -18,6 +18,7 @@ class Workflow {
 @gmf.node(figure="ellipse", label="name", label.icon="false", color="255,224,224")
 abstract class Stream {
   attr String name;
+  attr boolean many = false;
 
   @gmf.link
   ref Type type;
@@ -101,7 +102,6 @@ class ReusableComponent extends Task {
 class Type {
   attr String name;
   attr String impl;
-  attr boolean[1] isMany;
 
   @gmf.link
   ref Type[*] extending;
@@ -112,19 +112,18 @@ class Type {
 
 abstract class Field {
   attr String name;
+  attr boolean many = false;
 }
 
 @gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false", color="181,255,255")
 class DataField extends Field {
   attr String type = "String";
-  attr boolean many = false;
 }
 
 @gmf.node(label="name", figure="rectangle", label.icon="false", color="181,255,255")
 class EnumField extends Field {
   attr String[*] values;
 }
-
 
 @gmf.node(label="name", figure ="rectangle", label.icon="false", color="204,204,255")
 class Language {

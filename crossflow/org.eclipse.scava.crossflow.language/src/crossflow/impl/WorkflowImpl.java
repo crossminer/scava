@@ -151,6 +151,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -160,6 +161,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -172,6 +174,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Stream> getStreams() {
 		if (streams == null) {
 			streams = new EObjectContainmentEList<Stream>(Stream.class, this, CrossflowPackage.WORKFLOW__STREAMS);
@@ -184,6 +187,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Task> getTasks() {
 		if (tasks == null) {
 			tasks = new EObjectContainmentEList<Task>(Task.class, this, CrossflowPackage.WORKFLOW__TASKS);
@@ -196,6 +200,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Type> getTypes() {
 		if (types == null) {
 			types = new EObjectContainmentEList<Type>(Type.class, this, CrossflowPackage.WORKFLOW__TYPES);
@@ -208,6 +213,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Field> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Field>(Field.class, this, CrossflowPackage.WORKFLOW__PARAMETERS);
@@ -220,6 +226,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Language> getLanguages() {
 		if (languages == null) {
 			languages = new EObjectContainmentEList<Language>(Language.class, this, CrossflowPackage.WORKFLOW__LANGUAGES);
@@ -232,6 +239,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Serializer getSerializer() {
 		return serializer;
 	}
@@ -256,6 +264,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setSerializer(Serializer newSerializer) {
 		if (newSerializer != serializer) {
 			NotificationChain msgs = null;

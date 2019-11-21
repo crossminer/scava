@@ -62,6 +62,7 @@ public class ReusableComponentImpl extends TaskImpl implements ReusableComponent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Component getComponent() {
 		if (component != null && component.eIsProxy()) {
 			InternalEObject oldComponent = (InternalEObject)component;
@@ -88,6 +89,7 @@ public class ReusableComponentImpl extends TaskImpl implements ReusableComponent
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setComponent(Component newComponent) {
 		Component oldComponent = component;
 		component = newComponent;

@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link crossflow.impl.DataFieldImpl#getType <em>Type</em>}</li>
- *   <li>{@link crossflow.impl.DataFieldImpl#isMany <em>Many</em>}</li>
  * </ul>
  *
  * @generated
@@ -47,26 +46,6 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 	protected String type = TYPE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMany() <em>Many</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isMany()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean MANY_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isMany() <em>Many</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isMany()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean many = MANY_EDEFAULT;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -90,6 +69,7 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getType() {
 		return type;
 	}
@@ -99,6 +79,7 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -111,34 +92,11 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMany() {
-		return many;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMany(boolean newMany) {
-		boolean oldMany = many;
-		many = newMany;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.DATA_FIELD__MANY, oldMany, many));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CrossflowPackage.DATA_FIELD__TYPE:
 				return getType();
-			case CrossflowPackage.DATA_FIELD__MANY:
-				return isMany();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -153,9 +111,6 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 		switch (featureID) {
 			case CrossflowPackage.DATA_FIELD__TYPE:
 				setType((String)newValue);
-				return;
-			case CrossflowPackage.DATA_FIELD__MANY:
-				setMany((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -172,9 +127,6 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 			case CrossflowPackage.DATA_FIELD__TYPE:
 				setType(TYPE_EDEFAULT);
 				return;
-			case CrossflowPackage.DATA_FIELD__MANY:
-				setMany(MANY_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -189,8 +141,6 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 		switch (featureID) {
 			case CrossflowPackage.DATA_FIELD__TYPE:
 				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-			case CrossflowPackage.DATA_FIELD__MANY:
-				return many != MANY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -207,8 +157,6 @@ public class DataFieldImpl extends FieldImpl implements DataField {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (type: ");
 		result.append(type);
-		result.append(", many: ");
-		result.append(many);
 		result.append(')');
 		return result.toString();
 	}

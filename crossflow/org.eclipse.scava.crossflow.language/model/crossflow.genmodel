@@ -16,6 +16,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="crossflow.ecore#//Stream">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Stream/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Stream/many"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/type"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/inputOf"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Stream/outputOf"/>
@@ -58,16 +59,15 @@
     <genClasses ecoreClass="crossflow.ecore#//Type">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/impl"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Type/isMany"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference crossflow.ecore#//Type/extending"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference crossflow.ecore#//Type/fields"/>
     </genClasses>
     <genClasses image="false" ecoreClass="crossflow.ecore#//Field">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Field/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//Field/many"/>
     </genClasses>
     <genClasses ecoreClass="crossflow.ecore#//DataField">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//DataField/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//DataField/many"/>
     </genClasses>
     <genClasses ecoreClass="crossflow.ecore#//EnumField">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute crossflow.ecore#//EnumField/values"/>
