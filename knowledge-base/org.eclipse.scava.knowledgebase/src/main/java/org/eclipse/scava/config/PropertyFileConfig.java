@@ -9,16 +9,41 @@
  ******************************************************************************/
 package org.eclipse.scava.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+
+import com.mongodb.Mongo;
+
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.context.annotation.PropertySource;
 //import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-//@Configuration
+@Configuration
 //@PropertySource("classpath:application.properties")
-public class PropertyFileConfig {
+public class PropertyFileConfig extends Mongo {
 //	@Bean
 //	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 //		return new PropertySourcesPlaceholderConfigurer();
 //	}
+	@Autowired
+	private MongoDbFactory mongoFactory;
+
+	@Autowired
+	private MongoMappingContext mongoMappingContext;
+
+	@Bean
+	public MappingMongoConverter mongoConverter(MongoDbFactory mongoFactory) throws Exception {
+		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoFactory);
+		MappingMongoConverter mongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
+		mongoConverter.setMapKeyDotReplacement("__");
+
+		return mongoConverter;
+	}
 }
