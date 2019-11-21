@@ -1,0 +1,19 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot ../../org.eclipse.scava.crossflow.tests/models/graphviz.egl?>
+<_>
+	<workflow name="TypeGenerationWorkflow">
+	
+		<task name="TypeTask" in="A" out="A"/>
+		<queue name="A" type="GeneratedType"/>
+	
+		<type name="GeneratedType">
+			<datafield name="strProp" type="String"/>
+			<datafield name="intProp" type="int"/>
+			<datafield name="manyStrProp" type="String" many="true"/>
+			<datafield name="manyIntProp" type="int" many="true"/>
+			<enumfield name="enumProp" values="A,B,C"/>
+			<enumfield name="manyEnumProp" values="A,B,C" many="true"/>
+		</type>
+	</workflow>	
+	
+</_>
