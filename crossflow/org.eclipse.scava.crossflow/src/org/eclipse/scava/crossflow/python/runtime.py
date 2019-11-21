@@ -9,26 +9,27 @@ to use a single connection and the subscribe functionality of stomp.py. This sho
 ActiveMQ session manager """
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 import csv
 import datetime
+from enum import Enum, auto
 import hashlib
 import logging
 import os
+from pathlib import Path
 import pickle
 import sys
 import tempfile
 import threading
 import time
 import traceback
+from typing import Type, Any
 import uuid
 import warnings
-from abc import ABC, abstractmethod
-from enum import Enum, auto
-from pathlib import Path
-from typing import Type, Any
 
 import stomp
-import xmltodict
+
+from crossflow import serialization
 
 
 class LogLevel(Enum):
@@ -46,7 +47,7 @@ class LogLevel(Enum):
         return self.name
 
     @staticmethod
-    def enum_from_name(name: str) -> LogLevel:
+    def enum_from_name(name: str) -> "LogLevel":
         """Returns the enum of this constant from it's name
 
         :param name: the name of the enum to return, case-insensitive
@@ -73,20 +74,21 @@ class LogMessage:
         workflow: str = None,
         task: str = None,
         message: str = None,
+        timestamp: int = None,
     ):
         self.level = level
         self.instanceId = instance_id
         self.workflow = workflow
         self.task = task
         self.message = message
-        self.timestamp = int(round(time.time() * 1000))
+        self.timestamp = timestamp or int(round(time.time() * 1000))
 
     @classmethod
-    def from_workflow(cls, workflow: Workflow) -> LogMessage:
+    def from_workflow(cls, workflow: "Workflow") -> "LogMessage":
         return LogMessage(instance_id=workflow.instance, workflow=workflow.name)
 
     @classmethod
-    def from_task(cls, task: Task) -> LogMessage:
+    def from_task(cls, task: "Task") -> "LogMessage":
         m = LogMessage.from_workflow(workflow=task.workflow)
         m.task = task.task_id
         return m
@@ -109,6 +111,18 @@ class LogMessage:
             self.to_external_log_str(),
         )
 
+    def __eq__(self, o):
+        if isinstance(o, LogMessage):
+            return (
+                self.level == o.level
+                and self.instance_id == o.instance_id
+                and self.workflow == o.workflow
+                and self.task == o.task
+                and self.message == o.message
+                and self.timestamp == o.timestamp
+            )
+        return False
+
     def to_external_log_str(self) -> str:
         """Same as calling str() but without the timestamp or level prefixed.
 
@@ -124,12 +138,12 @@ class LogMessage:
 
 
 class CrossflowLogger:
-    def __init__(self, workflow: Workflow, pre_print: bool = False):
+    def __init__(self, workflow: "Workflow", pre_print: bool = False):
         self.workflow = workflow
         self.pre_print = pre_print
 
     def log(
-        self, level: LogLevel = LogLevel.DEBUG, message: str = "", task: Task = None
+        self, level: LogLevel = LogLevel.DEBUG, message: str = "", task: "Task" = None
     ):
         if task:
             m = LogMessage.from_task(task)
@@ -169,7 +183,7 @@ class ControlSignals(Enum):
         return self.name
 
     @staticmethod
-    def enum_from_name(name: str) -> ControlSignals:
+    def enum_from_name(name: str) -> "ControlSignals":
         """Returns the enum of this constant from it's name
 
         :param name: the name of the enum to return, case-insensitive
@@ -192,6 +206,11 @@ class ControlSignal:
     def __init__(self, signal: ControlSignals = None, sender_id: str = None):
         self.signal = signal
         self.senderId = sender_id
+
+    def __eq__(self, other):
+        if isinstance(other, ControlSignal):
+            return self.signal == other.signal and self.senderId == other.senderId
+        return False
 
 
 class CSVParser(object):
@@ -309,6 +328,15 @@ class TaskStatus(object):
             + str(self.reason)
         )
 
+    def __eq__(self, o):
+        if isinstance(o, TaskStatus):
+            return (
+                self.status == o.status
+                and self.caller == o.caller
+                and self.reason == o.reason
+            )
+        return False
+
 
 class Mode(Enum):
     """
@@ -348,101 +376,11 @@ class Mode(Enum):
             )
 
 
-class Serializer(object):
-    """Simple port of the XStream XML serializer.
-    
-    To maintain cross-compatibility between different languages, types are
-    serialized using their simple non-qualified class name. It is expected 
-    that this contract is enforced throughout the Crossflow system.
-    
-    All objects that are to be deserialized should be registered using the
-    alias method.
-    """
-
-    def __init__(self):
-        self.aliases = {}
-
-    def to_string(self, obj):
-        """Mirror of Java method, delegates to serialize
-        """
-        return self.serialize(obj)
-
-    def serialize(self, obj):
-        # Extract name
-        if isinstance(obj, InternalException):
-            return self.__serialize_internal(obj)
-
-        name = self.aliases.get(type(obj), type(obj).__name__)
-        return xmltodict.unparse(
-            {name: obj.__dict__}, full_document=False, pretty=__debug__
-        )
-
-    def to_object(self, xml):
-        return self.deserialize(xml)
-
-    def deserialize(self, xml):
-        parsed = xmltodict.parse(xml)
-        clazzname = list(parsed.keys())[0]
-        clazztype = self.aliases[clazzname]
-        instance = clazztype()
-
-        members = parsed[clazzname]
-        for key, raw in members.items():
-            rawType = type(raw)
-            value = raw
-
-            if rawType is int:
-                value = int(raw)
-            elif rawType is float:
-                value = float(raw)
-            elif rawType is bool:
-                if raw.capitalize() == "True":
-                    value = True
-                else:
-                    value = False
-            elif rawType is str:
-                value = str(raw)
-            else:
-                if str(rawType).startswith("<enum"):
-                    value = rawType.enum_from_name(raw)
-
-            setattr(instance, key, value)
-
-        return instance
-
-    def register(self, classType):
-        if not isinstance(classType, Type):
-            classType = type(classType)
-        self.aliases[classType.__name__] = classType
-
-    def alias(self, clazz):
-        if not isinstance(clazz, Type):
-            clazz = type(clazz)
-        self.aliases[clazz.__name__] = clazz
-
-    def __serialize_internal(self, ex):
-        exDict = {
-            "InternalException": {
-                "exception": {
-                    "detailMessage": "!PYTHON!"
-                    + str(ex.exception)
-                    + "\n"
-                    + "\n".join(
-                        traceback.extract_stack(ex.exception.__traceback__).format()
-                    ),
-                    "stackTrace": {},
-                    "suppressedExceptions": {},
-                }
-            }
-        }
-        return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
-
-
 class Task(ABC):
     """Abstract implementation of a Task instance"""
 
     def __init__(
-        self, cacheable: bool = True, timeout: int = 0, workflow: Workflow = None
+        self, cacheable: bool = True, timeout: int = 0, workflow: "Workflow" = None
     ):
         self._cacheable = cacheable
         self._timeout = timeout
@@ -454,11 +392,11 @@ class Task(ABC):
         return f"{self._workflow.name}:{self.name}"
 
     @property
-    def workflow(self) -> Workflow:
+    def workflow(self) -> "Workflow":
         return self._workflow
 
     @workflow.setter
-    def workflow(self, value: Workflow):
+    def workflow(self, value: "Workflow"):
         self._workflow = value
 
     @property
@@ -507,7 +445,7 @@ class MessageListener(stomp.ConnectionListener):
         self,
         connection: stomp.Connection,
         consumer: Any,
-        workflow: Workflow,
+        workflow: "Workflow",
         destination: str,
         deserialize: bool = False,
         ack: bool = False,
@@ -531,7 +469,7 @@ class MessageListener(stomp.ConnectionListener):
         if headers["destination"] == self._destination:
             try:
                 obj = (
-                    self._workflow.serializer.to_object(message)
+                    self._workflow.serializer.deserialize(message)
                     if self._deserialize
                     else message
                 )
@@ -583,13 +521,15 @@ class DirectoryCache(object):
                 jobFolderObject = open(jobFolder)
                 self.jobFolderMap[jobFolderObject.name] = jobFolderObject
 
-    def getCachedOutputs(self, input_job: Job):
+    def getCachedOutputs(self, input_job: "Job"):
         if self.hasCachedOutputs(input_job):
             outputs = []
             input_folder = self.jobFolderMap.get(input_job.getHash())
             for outputFilePath in os.listdir(os.path.realpath(input_folder.name)):
                 output_file = open(outputFilePath)
-                output_job: Job = self.workflow.serializer.to_object(output_file.read())
+                output_job: Job = self.workflow.serializer.deserialize(
+                    output_file.read()
+                )
                 output_file.close()
                 output_job.jobId = str(uuid.uuid4())
                 output_job.correlationId = input_job.jobId
@@ -599,7 +539,7 @@ class DirectoryCache(object):
         else:
             return []
 
-    def hasCachedOutputs(self, input_job: Job):
+    def hasCachedOutputs(self, input_job: "Job"):
         return input_job.getHash() in self.jobFolderMap.keys()
 
     def cache(self, output_job):
@@ -861,7 +801,7 @@ class Stream(ABC):
     They can be either queue or topic (broadcast) based. 
     """
 
-    def __init__(self, name: str, workflow: Workflow):
+    def __init__(self, name: str, workflow: "Workflow"):
         self._name = name
         self._workflow = workflow
 
@@ -874,11 +814,11 @@ class Stream(ABC):
         self._name = value
 
     @property
-    def workflow(self) -> Workflow:
+    def workflow(self) -> "Workflow":
         return self._workflow
 
     @workflow.setter
-    def workflow(self, value: Workflow):
+    def workflow(self, value: "Workflow"):
         self._workflow = value
 
     @property
@@ -895,7 +835,7 @@ class Stream(ABC):
 class JobStream(Stream):
     """JobStreams are used to communicate Jobs between different Tasks"""
 
-    def __init__(self, name: str, workflow: Workflow):
+    def __init__(self, name: str, workflow: "Workflow"):
         super().__init__(name, workflow)
 
         self._destination = {}
@@ -950,7 +890,7 @@ class JobStream(Stream):
             # if the sender is one of the targets of this stream, it has re-sent a message
             # so it should only be put in the relevant physical queue
             job.setDestination(type(self).__name__)
-            body = self.workflow.serializer.to_string(job)
+            body = self.workflow.serializer.serialize(job)
             destination = self._pre.get(task_id, None)
             if destination is not None:
                 # producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); - stomp is NON_PERSISTENT by default
@@ -1000,7 +940,7 @@ class BuiltinStream(Stream):
 
     """
 
-    def __init__(self, name: str, workflow: Workflow, broadcast: bool = True):
+    def __init__(self, name: str, workflow: "Workflow", broadcast: bool = True):
         super().__init__(name, workflow)
         self._destination = None
         self._connection = None
@@ -1046,7 +986,7 @@ class BuiltinStream(Stream):
         if type(message) is str:
             body = message
         else:
-            body = self.workflow.serializer.to_string(message)
+            body = self.workflow.serializer.serialize(message)
         self._connection.send(body=body, destination=self._destination)
 
     @property
@@ -1057,7 +997,7 @@ class BuiltinStream(Stream):
     def destination_names(self) -> list:
         return [self._destination] if self._destination else None
 
-    def add_consumer(self, consumer: BuiltinStreamConsumer):
+    def add_consumer(self, consumer: "BuiltinStreamConsumer"):
         if not self.session_created:
             self._pending_consumers.append(consumer)
             return
@@ -1312,21 +1252,36 @@ class Workflow(ABC):
     def temp_directory(self, temp_directory: str):
         self._temp_directory = temp_directory
 
-    @property
-    def serializer(self) -> Serializer:
-        if self._serializer is None:
-            self._serializer = self._setup_serializer()
-            self._serializer.register(ControlSignal)
-            self._serializer.register(FailedJob)
-            self._serializer.register(InternalException)
-            self._serializer.register(Job)
-            self._serializer.register(LogMessage)
-            self._serializer.register(TaskStatus)
-        return self._serializer
+    @abstractmethod
+    def _create_serializer(self) -> serialization.Serializer:
+        pass
 
     @abstractmethod
-    def _setup_serializer(self) -> Serializer:
-        raise NotImplementedError
+    def _register_custom_serialization_types(self):
+        pass
+
+    @property
+    def serializer(self) -> serialization.Serializer:
+        if self._serializer is None:
+            # TODO: commented out types are currently only available in Java
+            self._serializer = self._create_serializer()
+            self._serializer.register_type(FailedJob)
+            self._serializer.register_type(InternalException)
+            self._serializer.register_type(Job)
+            # self._serializer.register_type(LoggingStrategy)
+            self._serializer.register_type(Mode)
+
+            self._serializer.register_type(ControlSignal)
+            self._serializer.register_type(ControlSignals)
+            self._serializer.register_type(LogLevel)
+            self._serializer.register_type(LogMessage)
+            # self._serializer.register_type(StreamMetadata)
+            # self._serializer.register_type(StreamMetadataSnapshot)
+            self._serializer.register_type(TaskStatus)
+            self._serializer.register_type(TaskStatuses)
+
+            self._register_custom_serialization_types()
+        return self._serializer
 
     @property
     def broker(self) -> list:
