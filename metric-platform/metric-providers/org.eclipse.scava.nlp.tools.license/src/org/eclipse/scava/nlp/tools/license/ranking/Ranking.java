@@ -32,6 +32,7 @@ public class Ranking {
 	
 	static
 	{
+		lowestNgramCount=new HashMap<String, Integer>();
 		setLowestGroupNgramCount();
 	}
 	
