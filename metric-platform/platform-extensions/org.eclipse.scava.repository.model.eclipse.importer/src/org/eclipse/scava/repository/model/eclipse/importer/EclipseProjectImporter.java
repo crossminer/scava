@@ -304,8 +304,11 @@ public class EclipseProjectImporter implements IImporter {
 							eclipseForum.setForum_id(forumIdMatch.group(1));
 							eclipseForum.setForum_name((String) entry.get("name"));
 							eclipseForum.setUrl((String) entry.get("url"));
-							eclipseForum.setClient_secret(clientSecret);
-							eclipseForum.setClient_id(clientId);
+							if(clientSecret!=null && clientId!=null)
+							{
+								eclipseForum.setClient_secret(clientSecret);
+								eclipseForum.setClient_id(clientId);
+							}
 							project.getCommunicationChannels().add(eclipseForum);
 						}
 					}
