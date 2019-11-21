@@ -58,8 +58,8 @@ public class EclipseProjectImporter implements IImporter {
 	protected OssmeterLogger logger;
 	
 	private Pattern forumIdParser=Pattern.compile("frm_id=(\\d+)$");
-	private String clientSecret;
-	private String clientId;
+	private String clientSecret="";
+	private String clientId="";
 
 	public EclipseProjectImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.eclipse ");
@@ -304,11 +304,8 @@ public class EclipseProjectImporter implements IImporter {
 							eclipseForum.setForum_id(forumIdMatch.group(1));
 							eclipseForum.setForum_name((String) entry.get("name"));
 							eclipseForum.setUrl((String) entry.get("url"));
-							if(clientSecret!=null && clientId!=null)
-							{
-								eclipseForum.setClient_secret(clientSecret);
-								eclipseForum.setClient_id(clientId);
-							}
+							eclipseForum.setClient_secret(clientSecret);
+							eclipseForum.setClient_id(clientId);
 							project.getCommunicationChannels().add(eclipseForum);
 						}
 					}
