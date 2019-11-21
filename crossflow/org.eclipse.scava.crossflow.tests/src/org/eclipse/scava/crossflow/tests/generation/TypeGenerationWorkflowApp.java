@@ -1,4 +1,4 @@
-package typeGenerationWorkflow;
+package org.eclipse.scava.crossflow.tests.generation;
 
 import org.eclipse.scava.crossflow.runtime.Mode;
 
