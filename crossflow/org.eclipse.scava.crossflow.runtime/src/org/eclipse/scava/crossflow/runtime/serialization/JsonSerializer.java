@@ -75,7 +75,7 @@ public class JsonSerializer extends AbstractSerializer {
 	@SuppressWarnings("unchecked")
 	private <O> O doDeserialize(JsonObject jsonObject) {
 		checkArgument(jsonObject.has(TYPE_PROPERTY_KEY),
-				"Missing %s key. Received: ", TYPE_PROPERTY_KEY, jsonObject.toString());
+				"Missing %s key. Received: ", TYPE_PROPERTY_KEY, jsonObject.toString());		
 		String type = jsonObject.get(TYPE_PROPERTY_KEY).getAsString();
 		if (isStrict) {
 			checkArgument(isRegistered(type),
@@ -189,7 +189,7 @@ public class JsonSerializer extends AbstractSerializer {
 							}
 							break;
 						case ENUM_VALUE_PROPERTY_KEY:
-							enumValue = enumToName.inverse().get(enumValue);
+							enumValue = enumToName.inverse().get(value);
 							break;
 						default:
 							throw new MalformedJsonException("Unrecognised key " + key);

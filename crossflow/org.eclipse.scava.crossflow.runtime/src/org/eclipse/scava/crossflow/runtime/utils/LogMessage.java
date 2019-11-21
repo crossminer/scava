@@ -8,7 +8,7 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 /**
  * A logging message sent within a workflow.
  * <p>
- * Messages are comrpised of the following components:
+ * Messages are comprised of the following components:
  * <ul>
  * <li>level - logging level as defined by {@link LogLevel}</li>
  * <li>timestamp - time which this message was created, can be overriden</li>
@@ -114,4 +114,54 @@ public class LogMessage implements Serializable {
 	public String toExternalLoggerString() {
 		return instanceId + ":" + workflow + (task == null ? "" : (":" + task)) + " | " + message;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((instanceId == null) ? 0 : instanceId.hashCode());
+		result = prime * result + ((level == null) ? 0 : level.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result + ((task == null) ? 0 : task.hashCode());
+		result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
+		result = prime * result + ((workflow == null) ? 0 : workflow.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogMessage other = (LogMessage) obj;
+		if (instanceId == null) {
+			if (other.instanceId != null)
+				return false;
+		} else if (!instanceId.equals(other.instanceId))
+			return false;
+		if (level != other.level)
+			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		if (task == null) {
+			if (other.task != null)
+				return false;
+		} else if (!task.equals(other.task))
+			return false;
+		if (timestamp != other.timestamp)
+			return false;
+		if (workflow == null) {
+			if (other.workflow != null)
+				return false;
+		} else if (!workflow.equals(other.workflow))
+			return false;
+		return true;
+	}
+	
 }

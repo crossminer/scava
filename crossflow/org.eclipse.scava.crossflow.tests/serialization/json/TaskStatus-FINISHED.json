@@ -1,0 +1,9 @@
+{
+  "status": {
+    "_enum_type_": "TaskStatuses",
+    "_enum_value_": "FINISHED"
+  },
+  "caller": "JsonSerializerTest Sender",
+  "reason": "A reason string",
+  "_type_": "TaskStatus"
+}

@@ -61,6 +61,7 @@ public class SerializationTestObject {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (booleanProp ? 1231 : 1237);
+		result = prime * result + ((enumProp == null) ? 0 : enumProp.hashCode());
 		result = prime * result + intProp;
 		result = prime * result + ((listProp == null) ? 0 : listProp.hashCode());
 		result = prime * result + (int) (longProp ^ (longProp >>> 32));
@@ -79,6 +80,8 @@ public class SerializationTestObject {
 			return false;
 		SerializationTestObject other = (SerializationTestObject) obj;
 		if (booleanProp != other.booleanProp)
+			return false;
+		if (enumProp != other.enumProp)
 			return false;
 		if (intProp != other.intProp)
 			return false;
