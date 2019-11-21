@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Neko-htmlunit
+Bundle-SymbolicName: net.sourceforge.htmlunit.neko-htmlunit
+Bundle-Version: 2.36.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: xerces.xercesImp;bundle-version="2.12.0"
+Bundle-ClassPath: neko-htmlunit-2.36.0.jar,
+ .
+Export-Package: net.sourceforge.htmlunit.cyberneko,
+ net.sourceforge.htmlunit.cyberneko.filters,
+ net.sourceforge.htmlunit.cyberneko.parsers,
+ net.sourceforge.htmlunit.cyberneko.res

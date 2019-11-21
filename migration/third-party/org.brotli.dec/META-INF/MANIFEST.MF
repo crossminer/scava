@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dec
+Bundle-SymbolicName: org.brotli.dec
+Bundle-Version: 0.1.2
+Bundle-ClassPath: dec-0.1.2.jar
+Export-Package: org.brotli.dec

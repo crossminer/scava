@@ -71,7 +71,7 @@ public class Crawler {
 		config.setPolitenessDelay(1000);
 		config.setCrawlStorageFolder(storing.toString());
 		config.setMaxDepthOfCrawling(-1);
-        config.setMaxPagesToFetch(-1);       
+        config.setMaxPagesToFetch(-1);  
         config.addAuthInfo(createAuthethicator(username, password, loginURL, usernameFieldName, passwordFieldName));
         createCrawler(config, storing, urlSeeds);
 	}
@@ -95,13 +95,14 @@ public class Crawler {
 		config.setIncludeBinaryContentInCrawling(true);
         config.setResumableCrawling(false);
         config.setMaxDownloadSize(6250000); //50mb
+        config.setShutdownOnEmptyQueue(false);
         
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         
         try {
-			controller = new CrawlController(config, pageFetcher, robotstxtServer);
+			controller = new CrawlController(config, pageFetcher, new CrawlerParser(config), robotstxtServer);
 			
 			for(String seed : urlSeeds)
 				controller.addSeed(seed);
@@ -121,7 +122,7 @@ public class Crawler {
 	
 	public void start()
 	{
-		controller.start(factory, 2);
+		controller.start(factory, 1);
 	}
 	
 	public HashMap<String, String> getMappingPaths() {

@@ -10,4 +10,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  edu.uci.ics.crawler4j,
  org.eclipse.scava.platform,
- org.apache.log4j
+ org.apache.log4j,
+ net.sourceforge.htmlunit;bundle-version="2.36.0",
+ org.apache.httpcomponents.httpcore

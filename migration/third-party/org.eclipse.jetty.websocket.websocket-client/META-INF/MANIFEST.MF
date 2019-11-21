@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Websocket-client
+Bundle-SymbolicName: org.eclipse.jetty.websocket.websocket-client
+Bundle-Version: 9.4.20
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.jetty.client;bundle-version="9.2.6",
+ org.eclipse.jetty.util;bundle-version="9.2.6",
+ org.eclipse.jetty.io;bundle-version="9.2.6",
+ org.eclipse.jetty.jetty-xml;bundle-version="9.4.20",
+ org.eclipse.jetty.websocket.websocket-common;bundle-version="9.4.20"
+Bundle-ClassPath: websocket-client-9.4.20.v20190813.jar
+Export-Package: org.eclipse.jetty.websocket.client,
+ org.eclipse.jetty.websocket.client.io,
+ org.eclipse.jetty.websocket.client.masks

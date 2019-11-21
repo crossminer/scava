@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/json-simple-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jsoup-1.7.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jsoup-1.7.3.jar" sourcepath="//c1staffhome1/STAFFHOME1/Diegol/Desktop/jsoup-1.11.2-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

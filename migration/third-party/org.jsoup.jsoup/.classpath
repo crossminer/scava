@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="jsoup-1.11.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jsoup-1.11.2.jar" sourcepath="//c1staffhome1/STAFFHOME1/Diegol/Desktop/jsoup-1.11.2-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

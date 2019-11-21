@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Websocket-api
+Bundle-SymbolicName: org.eclipse.jetty.websocket.websocket-api
+Bundle-Version: 9.4.20
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: websocket-api-9.4.20.v20190813.jar
+Export-Package: org.eclipse.jetty.websocket.api,
+ org.eclipse.jetty.websocket.api.annotations,
+ org.eclipse.jetty.websocket.api.extensions,
+ org.eclipse.jetty.websocket.api.util

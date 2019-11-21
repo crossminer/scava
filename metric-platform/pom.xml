@@ -532,6 +532,33 @@
 	<module>
 		factoids/org.eclipse.scava.factoid.documentation.sentiment
 	</module>
+	<module>../migration/third-party/net.sourceforge.htmlunit</module>
+	<module>
+		../migration/third-party/net.sourceforge.htmlunit.ccsparser
+	</module>
+	<module>
+		../migration/third-party/net.sourceforge.htmlunit.core-js
+	</module>
+	<module>
+		../migration/third-party/net.sourceforge.htmlunit.neko-htmlunit
+	</module>
+	<module>
+		../migration/third-party/org.apache.commons.commons-text
+	</module>
+	<module>../migration/third-party/org.brotli.dec</module>
+	<module>
+		../migration/third-party/org.eclipse.jetty.websocket.websocket-api
+	</module>
+	<module>
+		../migration/third-party/org.eclipse.jetty.websocket.websocket-client
+	</module>
+	<module>
+		../migration/third-party/org.eclipse.jetty.websocket.websocket-common
+	</module>
+	<module>../migration/third-party/xalan.serializer</module>
+	<module>../migration/third-party/xalan.xalan</module>
+	<module>../migration/third-party/xercesImpl</module>
+	<module>../migration/third-party/xml-apis.xml-apis</module>
   </modules>
   <build>
     <plugins>
