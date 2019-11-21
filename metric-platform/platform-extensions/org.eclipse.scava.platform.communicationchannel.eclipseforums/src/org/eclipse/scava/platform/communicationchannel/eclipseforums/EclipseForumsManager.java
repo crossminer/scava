@@ -50,7 +50,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		//this.client = new OkHttpClient();
 		this.temporalFlag = false;
 		this.clientSet = false;
-		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.bugtrackingsystem.eclipseforums");
+		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.eclipseforums");
 	}
 
 	protected OssmeterLogger logger;
