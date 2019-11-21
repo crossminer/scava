@@ -391,10 +391,10 @@ operation CrossflowLanguageModel!Task setup() {
 }
 
 @cached
-operation CrossflowLanguageModel!Workflow getSerializer() : CrossflowLanguageModel!Serialiser {
-	var s = self.serialiser;
+operation CrossflowLanguageModel!Workflow getSerializer() : CrossflowLanguageModel!Serializer {
+	var s = self.serializer;
 	if (s.isUndefined()) {
-		s = new CrossflowLanguageModel!Serialiser;
+		s = new CrossflowLanguageModel!Serializer;
 		s.name = "json";
 	}
 	
