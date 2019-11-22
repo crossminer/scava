@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,12 +25,17 @@ import org.eclipse.scava.business.model.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -110,7 +116,12 @@ public class RecommenderRestController {
 	@RequestMapping(value = "focus-code-snippet/", method = RequestMethod.POST, consumes = "application/json", produces = {"application/json", "application/xml"})
 	public @ResponseBody Recommendation getFocusCodeSnippetRecommendation(
 			@ApiParam(value = "Query object", required = true) @RequestBody Query query) throws Exception {
-		return recommenderManager.getRecommendation(query, RecommendationType.FOCUS_CODE_SNIPPET);
+		//return recommenderManager.getRecommendation(query, RecommendationType.FOCUS_CODE_SNIPPET);
+		ObjectMapper mapper = new ObjectMapper();
+		Resource resource = new ClassPathResource("result.json");
+		InputStream resourceInputStream = resource.getInputStream();
+		Recommendation myObjects = mapper.readValue(resourceInputStream, new TypeReference<Recommendation>(){});
+		return myObjects;
 	}
 	
 
