@@ -51,7 +51,7 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]
 
 [%
 operation CrossflowLanguageModel!Type isJob() {
-	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self);
+	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self or s.type.closure(c|c.extending).contains(self));
 }
 
 operation CrossflowLanguageModel!Field getJavaType() {
