@@ -1,73 +1,69 @@
 package org.eclipse.scava.platform.communicationchannel.eclipseforums.client.manager;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import okhttp3.OkHttpClient;
 
 public class ClientData {
 
-	private String oAuthToken;
-	private String clientSecret;
-	private String clientId;
-	private Long generatedAt;
-	private int expiresIn;
-	private String ossmeterID;
+	private Integer callsRemaining;
+	private Long timeToReset;
+	private Integer rateLimit;
 	private OkHttpClient client;
+	private AtomicInteger zeroCounter;
+	private Long timeUpdated;
 	
-	public String getoAuthToken() {
-		return oAuthToken;
+	public ClientData() {
+		callsRemaining=null;
+		timeToReset=null;
+		rateLimit=null;
+		zeroCounter=new AtomicInteger(0);
+		timeUpdated=null;
+	}
+	
+	public synchronized Integer getCallsRemaining() {
+		return callsRemaining;
+	}
+	
+	public synchronized void setCallsRemaining(Integer callsRemaining) {
+		if(callsRemaining>0 && zeroCounter.get()>0)
+			zeroCounter.set(0);
+		if(callsRemaining==0)
+			zeroCounter.incrementAndGet();
+		this.callsRemaining = callsRemaining;
+	}
+	
+	public int getZeroCounter()
+	{
+		return zeroCounter.get();
+	}
+	
+	public synchronized Long getTimeToReset() {
+		if(timeUpdated!=null)
+		{
+			long timeElapsed = System.nanoTime()-timeUpdated;
+			timeToReset-=TimeUnit.SECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
+		}
+		return timeToReset;
+	}
+	public synchronized void setTimeToReset(Long timeToReset) {
+		this.timeToReset = timeToReset;
+		this.timeUpdated=System.nanoTime();
+	}
+	public synchronized Integer getRateLimit() {
+		return rateLimit;
+	}
+	public synchronized void setRateLimit(Integer rateLimit) {
+		this.rateLimit = rateLimit;
 	}
 
-	public void setoAuthToken(String oAuthToken) {
-		this.oAuthToken = oAuthToken;
-	}
-
-
-	public String getOssmeterID() {
-		return ossmeterID;
-	}
-
-	public void setOssmeterID(String ossmeterID) {
-		this.ossmeterID = ossmeterID;
-	}
-
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	public void setClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-
-	public int getExpiresIn() {
-		return expiresIn;
-	}
-
-	public void setExpiresIn(int expiresIn) {
-		this.expiresIn = expiresIn;
-	}
-
-	public Long getGeneratedAt() {
-		return generatedAt;
-	}
-
-	public void setGeneratedAt(Long generatedAt) {
-		this.generatedAt = generatedAt;
-	}
-
-	public OkHttpClient getClient() {
+	public synchronized OkHttpClient getClient() {
 		return client;
 	}
 
-	public void setClient(OkHttpClient client) {
+	public synchronized void setClient(OkHttpClient client) {
 		this.client = client;
 	}
-
+	
 }
