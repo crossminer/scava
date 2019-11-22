@@ -81,14 +81,14 @@ public class TypeImpl extends EObjectImpl implements Type {
 	protected String impl = IMPL_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getExtending() <em>Extending</em>}' reference list.
+	 * The cached value of the '{@link #getExtending() <em>Extending</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExtending()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Type> extending;
+	protected Type extending;
 
 	/**
 	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
@@ -171,11 +171,37 @@ public class TypeImpl extends EObjectImpl implements Type {
 	 * @generated
 	 */
 	@Override
-	public EList<Type> getExtending() {
-		if (extending == null) {
-			extending = new EObjectResolvingEList<Type>(Type.class, this, CrossflowPackage.TYPE__EXTENDING);
+	public Type getExtending() {
+		if (extending != null && extending.eIsProxy()) {
+			InternalEObject oldExtending = (InternalEObject)extending;
+			extending = (Type)eResolveProxy(oldExtending);
+			if (extending != oldExtending) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CrossflowPackage.TYPE__EXTENDING, oldExtending, extending));
+			}
 		}
 		return extending;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Type basicGetExtending() {
+		return extending;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setExtending(Type newExtending) {
+		Type oldExtending = extending;
+		extending = newExtending;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.TYPE__EXTENDING, oldExtending, extending));
 	}
 
 	/**
@@ -218,7 +244,8 @@ public class TypeImpl extends EObjectImpl implements Type {
 			case CrossflowPackage.TYPE__IMPL:
 				return getImpl();
 			case CrossflowPackage.TYPE__EXTENDING:
-				return getExtending();
+				if (resolve) return getExtending();
+				return basicGetExtending();
 			case CrossflowPackage.TYPE__FIELDS:
 				return getFields();
 		}
@@ -241,8 +268,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 				setImpl((String)newValue);
 				return;
 			case CrossflowPackage.TYPE__EXTENDING:
-				getExtending().clear();
-				getExtending().addAll((Collection<? extends Type>)newValue);
+				setExtending((Type)newValue);
 				return;
 			case CrossflowPackage.TYPE__FIELDS:
 				getFields().clear();
@@ -267,7 +293,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 				setImpl(IMPL_EDEFAULT);
 				return;
 			case CrossflowPackage.TYPE__EXTENDING:
-				getExtending().clear();
+				setExtending((Type)null);
 				return;
 			case CrossflowPackage.TYPE__FIELDS:
 				getFields().clear();
@@ -289,7 +315,7 @@ public class TypeImpl extends EObjectImpl implements Type {
 			case CrossflowPackage.TYPE__IMPL:
 				return IMPL_EDEFAULT == null ? impl != null : !IMPL_EDEFAULT.equals(impl);
 			case CrossflowPackage.TYPE__EXTENDING:
-				return extending != null && !extending.isEmpty();
+				return extending != null;
 			case CrossflowPackage.TYPE__FIELDS:
 				return fields != null && !fields.isEmpty();
 		}

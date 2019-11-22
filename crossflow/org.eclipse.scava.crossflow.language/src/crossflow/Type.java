@@ -79,20 +79,30 @@ public interface Type extends EObject {
 	void setImpl(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Extending</b></em>' reference list.
-	 * The list contents are of type {@link crossflow.Type}.
+	 * Returns the value of the '<em><b>Extending</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Extending</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Extending</em>' reference list.
+	 * @return the value of the '<em>Extending</em>' reference.
+	 * @see #setExtending(Type)
 	 * @see crossflow.CrossflowPackage#getType_Extending()
-	 * @model annotation="gmf.link"
+	 * @model
 	 * @generated
 	 */
-	EList<Type> getExtending();
+	Type getExtending();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Type#getExtending <em>Extending</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Extending</em>' reference.
+	 * @see #getExtending()
+	 * @generated
+	 */
+	void setExtending(Type value);
 
 	/**
 	 * Returns the value of the '<em><b>Fields</b></em>' containment reference list.

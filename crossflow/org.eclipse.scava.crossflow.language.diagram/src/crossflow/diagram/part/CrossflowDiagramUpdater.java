@@ -1184,11 +1184,12 @@ public class CrossflowDiagramUpdater {
 	private static Collection<CrossflowLinkDescriptor> getOutgoingFeatureModelFacetLinks_Type_Extending_4004(
 			Type source) {
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
-		for (Iterator<?> destinations = source.getExtending().iterator(); destinations.hasNext();) {
-			Type destination = (Type) destinations.next();
-			result.add(new CrossflowLinkDescriptor(source, destination, CrossflowElementTypes.TypeExtending_4004,
-					TypeExtendingEditPart.VISUAL_ID));
+		Type destination = source.getExtending();
+		if (destination == null) {
+			return result;
 		}
+		result.add(new CrossflowLinkDescriptor(source, destination, CrossflowElementTypes.TypeExtending_4004,
+				TypeExtendingEditPart.VISUAL_ID));
 		return result;
 	}
 

@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see crossflow.CrossflowFactory
  * @model kind="package"
- *        annotation="gmf"
  * @generated
  */
 public interface CrossflowPackage extends EPackage {
@@ -1484,7 +1483,7 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE__IMPL = 1;
 
 	/**
-	 * The feature id for the '<em><b>Extending</b></em>' reference list.
+	 * The feature id for the '<em><b>Extending</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2271,10 +2270,10 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getType_Impl();
 
 	/**
-	 * Returns the meta object for the reference list '{@link crossflow.Type#getExtending <em>Extending</em>}'.
+	 * Returns the meta object for the reference '{@link crossflow.Type#getExtending <em>Extending</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Extending</em>'.
+	 * @return the meta object for the reference '<em>Extending</em>'.
 	 * @see crossflow.Type#getExtending()
 	 * @see #getType()
 	 * @generated
@@ -2914,7 +2913,7 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute TYPE__IMPL = eINSTANCE.getType_Impl();
 
 		/**
-		 * The meta object literal for the '<em><b>Extending</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Extending</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

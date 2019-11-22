@@ -17,7 +17,7 @@ for (f in t.allFields()) f.annotateType();
 %]
 
 @Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
-public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isEmpty){%]Job[%}else{%][%=t.extending.first.name%][%}}else{%] implements Serializable[%}%] {
+public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isUndefined()){%]Job[%}else{%][%=t.extending.name%][%}}else{%] implements Serializable[%}%] {
 		
 	[%=t.genFieldDeclarations()%]
 	

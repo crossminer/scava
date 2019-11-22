@@ -104,7 +104,7 @@ class Type {
   attr String impl;
 
   @gmf.link
-  ref Type[*] extending;
+  ref Type extending;
 
   @gmf.compartment(layout="list",collapsible="false")
   val Field[*] fields;
