@@ -35,7 +35,7 @@ class [%=s.name%](JobStream):
         if consumer is not None:
             def handler(message, ack_func=None):        
                 try:
-                    obj = self.workflow.serializer.to_object(message)
+                    obj = self.workflow.serializer.deserialize(message)
                     consumer.consume[%=s.name%]WithNotifications(obj)
                     if ack_func is not None:
                         ack_func()

@@ -227,3 +227,22 @@ operation CrossflowLanguageModel!Component isCommitmentComponent(){
 	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("commitment") or self.componentType.name.equalsIgnorecase("commitmenttask");
 }
 
+@cached
+operation CrossflowLanguageModel!Workflow getSerializer() : CrossflowLanguageModel!Serializer {
+	var s = self.serializer;
+	if (s.isUndefined()) {
+		s = new CrossflowLanguageModel!Serializer;
+		s.name = "json";
+	}
+	
+	if (s.name.equals("xml")) {
+		s.~implClass = "XstreamSerializer";
+	} else if (s.name.equals("json")) {
+		s.~implClass = "JsonSerializer";
+	} else {
+		s.~implClass = null;
+	}
+	
+	return s; 
+}
+

@@ -7,7 +7,7 @@ from typing import Type
 import string_utils
 import xmltodict
 
-from crossflow.runtime import InternalException
+# from crossflow.runtime import InternalException
 
 
 _TYPE_PROPERTY_KEY = "_type_"
@@ -160,84 +160,84 @@ class JsonSerializer(Serializer):
         ), f"{obj if isinstance(obj, str) else _to_type(obj).__name__} not registered"
 
 
-class XstreamSerializer(Serializer):
-    """Simple port of the XStream XML serializer.
-    
-    To maintain cross-compatibility between different languages, types are
-    serialized using their simple non-qualified class name. It is expected 
-    that this contract is enforced throughout the Crossflow system.
-    
-    All objects that are to be deserialized should be registered using the
-    alias method.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.aliases = {}
-
-    def serialize(self, obj):
-        # Extract name
-        if isinstance(obj, InternalException):
-            return self.__serialize_internal(obj)
-
-        name = self.aliases.get(type(obj), type(obj).__name__)
-        return xmltodict.unparse(
-            {name: obj.__dict__}, full_document=False, pretty=__debug__
-        )
-
-    def deserialize(self, xml):
-        parsed = xmltodict.parse(xml)
-        clazzname = list(parsed.keys())[0]
-        clazztype = self.aliases[clazzname]
-        instance = clazztype()
-
-        members = parsed[clazzname]
-        for key, raw in members.items():
-            rawType = type(raw)
-            value = raw
-
-            if rawType is int:
-                value = int(raw)
-            elif rawType is float:
-                value = float(raw)
-            elif rawType is bool:
-                if raw.capitalize() == "True":
-                    value = True
-                else:
-                    value = False
-            elif rawType is str:
-                value = str(raw)
-            else:
-                if str(rawType).startswith("<enum"):
-                    value = rawType.enum_from_name(raw)
-
-            setattr(instance, key, value)
-
-        return instance
-
-    def do_register(self, classType):
-        if not isinstance(classType, Type):
-            classType = type(classType)
-        self.aliases[classType.__name__] = classType
-
-    def alias(self, clazz):
-        if not isinstance(clazz, Type):
-            clazz = type(clazz)
-        self.aliases[clazz.__name__] = clazz
-
-    def __serialize_internal(self, ex):
-        exDict = {
-            "InternalException": {
-                "exception": {
-                    "detailMessage": "!PYTHON!"
-                    + str(ex.exception)
-                    + "\n"
-                    + "\n".join(
-                        traceback.extract_stack(ex.exception.__traceback__).format()
-                    ),
-                    "stackTrace": {},
-                    "suppressedExceptions": {},
-                }
-            }
-        }
-        return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
+# class XstreamSerializer(Serializer):
+#     """Simple port of the XStream XML serializer.
+#     
+#     To maintain cross-compatibility between different languages, types are
+#     serialized using their simple non-qualified class name. It is expected 
+#     that this contract is enforced throughout the Crossflow system.
+#     
+#     All objects that are to be deserialized should be registered using the
+#     alias method.
+#     """
+# 
+#     def __init__(self):
+#         super().__init__()
+#         self.aliases = {}
+# 
+#     def serialize(self, obj):
+#         # Extract name
+#         if isinstance(obj, InternalException):
+#             return self.__serialize_internal(obj)
+# 
+#         name = self.aliases.get(type(obj), type(obj).__name__)
+#         return xmltodict.unparse(
+#             {name: obj.__dict__}, full_document=False, pretty=__debug__
+#         )
+# 
+#     def deserialize(self, xml):
+#         parsed = xmltodict.parse(xml)
+#         clazzname = list(parsed.keys())[0]
+#         clazztype = self.aliases[clazzname]
+#         instance = clazztype()
+# 
+#         members = parsed[clazzname]
+#         for key, raw in members.items():
+#             rawType = type(raw)
+#             value = raw
+# 
+#             if rawType is int:
+#                 value = int(raw)
+#             elif rawType is float:
+#                 value = float(raw)
+#             elif rawType is bool:
+#                 if raw.capitalize() == "True":
+#                     value = True
+#                 else:
+#                     value = False
+#             elif rawType is str:
+#                 value = str(raw)
+#             else:
+#                 if str(rawType).startswith("<enum"):
+#                     value = rawType.enum_from_name(raw)
+# 
+#             setattr(instance, key, value)
+# 
+#         return instance
+# 
+#     def do_register(self, classType):
+#         if not isinstance(classType, Type):
+#             classType = type(classType)
+#         self.aliases[classType.__name__] = classType
+# 
+#     def alias(self, clazz):
+#         if not isinstance(clazz, Type):
+#             clazz = type(clazz)
+#         self.aliases[clazz.__name__] = clazz
+# 
+#     def __serialize_internal(self, ex):
+#         exDict = {
+#             "InternalException": {
+#                 "exception": {
+#                     "detailMessage": "!PYTHON!"
+#                     + str(ex.exception)
+#                     + "\n"
+#                     + "\n".join(
+#                         traceback.extract_stack(ex.exception.__traceback__).format()
+#                     ),
+#                     "stackTrace": {},
+#                     "suppressedExceptions": {},
+#                 }
+#             }
+#         }
+#         return xmltodict.unparse(exDict, full_document=False, pretty=__debug__)
