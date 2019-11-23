@@ -203,7 +203,7 @@ public class ClientManager {
 	// =========================================================
 
 	private static void waitUntilCallReset(long timeToReset)
-	{
+	{	
 		if(timeToReset>0)
 		{	
 			try {
@@ -219,7 +219,7 @@ public class ClientManager {
 	
 	private static boolean needToWait(ClientData clientData, boolean afterRequest)
 	{
-		if(clientData.getCallsRemaining()==0 && clientData.getZeroCounter()>0)
+		if(clientData.getCallsRemaining()<=0 && clientData.getZeroCounter()>0)
 		{
 			if(afterRequest && clientData.getZeroCounter()==1)
 				return false;
