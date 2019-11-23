@@ -31,6 +31,8 @@ public class ClientData {
 			zeroCounter.set(0);
 		if(callsRemaining==0)
 			zeroCounter.incrementAndGet();
+		if(callsRemaining<0)
+			zeroCounter.set(2);
 		this.callsRemaining = callsRemaining;
 	}
 	
@@ -44,6 +46,7 @@ public class ClientData {
 		{
 			long timeElapsed = System.nanoTime()-timeUpdated;
 			timeToReset-=TimeUnit.SECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
+			timeToReset+=120; //We add 2 min to prevent a call exactly on the renewal
 		}
 		return timeToReset;
 	}
