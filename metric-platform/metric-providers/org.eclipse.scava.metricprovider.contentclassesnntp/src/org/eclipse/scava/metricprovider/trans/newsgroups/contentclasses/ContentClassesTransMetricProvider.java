@@ -105,6 +105,7 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 
 		db.getNewsgroups().getDbCollection().drop();
 		db.getContentClasses().getDbCollection().drop();
+		db.getArticlesContentClass().getDbCollection().drop();
 		db.sync();
 		
 		for (ThreadData thread: usedThreads.getThreads()) {
