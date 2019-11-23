@@ -29,7 +29,7 @@ import org.eclipse.scava.metricprovider.trans.emotionclassification.model.Newsgr
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider;
-import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
+import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupArticleContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.model.NewsgroupsMigrationIssue;
@@ -250,7 +250,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 											projectName,
 											collectionName,
 											threadData.getThreadId(),
-											threadData.getSubject());	
+											threadData.getSubject());
 		for(String articleId : threadData.getArticlesId())
 			threadsByArticle.addThread(articleId, threadData.getThreadId());
 		enrichThread(threadData, td);
@@ -393,7 +393,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					{
 						if(threadId!=null)
 							articleDocument.addThread_id(threadId);
-					}	
+					}
 					break;
 				}
 				// EMOTION
@@ -448,8 +448,8 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				// Content Classification
 				case "org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider":
 				{
-					ContentClass contentClassData = findCollection(commChannelContentClassificationData,
-								ContentClass.class, commChannelContentClassificationData.getContentClasses(), article);
+					NewsgroupArticleContentClass contentClassData = findCollection(commChannelContentClassificationData,
+							NewsgroupArticleContentClass.class, commChannelContentClassificationData.getArticlesContentClass(), article);
 	
 					if (contentClassData != null)
 						articleDocument.setContent_class(contentClassData.getClassLabel());
@@ -556,9 +556,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				return threadsByArticle.get(articleId);
 			else
 				return new HashSet<String>();
-		}
-
-		
+		}		
 	}
 
 }
