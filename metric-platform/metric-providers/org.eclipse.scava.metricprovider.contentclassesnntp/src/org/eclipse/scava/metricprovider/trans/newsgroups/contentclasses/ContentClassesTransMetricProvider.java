@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider;
 import org.eclipse.scava.metricprovider.trans.indexing.preparation.model.IndexPrepTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.ContentClass;
+import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupArticleContentClass;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupData;
 import org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model.NewsgroupsContentClassesTransMetric;
 import org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider;
@@ -123,6 +124,16 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 				}
 				newsgroupData.setNumberOfArticles(newsgroupData.getNumberOfArticles() + 1);
 				
+				NewsgroupArticleContentClass articleContentClass = findArticleContentClass(db, articleData);
+				if(articleContentClass==null)
+				{
+					articleContentClass = new NewsgroupArticleContentClass();
+					articleContentClass.setArticleId(articleData.getArticleId());
+					articleContentClass.setNewsgroupName(articleData.getNewsgroupName());
+					articleContentClass.setClassLabel(articleData.getContentClass());
+					db.getArticlesContentClass().add(articleContentClass);
+				}
+				
 				Iterable<ContentClass> contentClassIt =db.getContentClasses().find(
 								ContentClass.NEWSGROUPNAME.eq(articleData.getNewsgroupName()),
 								ContentClass.CLASSLABEL.eq(articleData.getContentClass()));
@@ -163,6 +174,19 @@ public class ContentClassesTransMetricProvider implements ITransientMetricProvid
 	@Override
 	public String getSummaryInformation() {
 		return "This metric computes the content classes in newgroup articles, per newsgroup";
+	}
+	
+	private NewsgroupArticleContentClass findArticleContentClass(NewsgroupsContentClassesTransMetric db, ArticleData articleData)
+	{
+		NewsgroupArticleContentClass newsgroupArticleInContentClass = null;
+		
+		Iterable<NewsgroupArticleContentClass> newsgroupArticleIt = db.getArticlesContentClass().
+				find(NewsgroupArticleContentClass.NEWSGROUPNAME.eq(articleData.getNewsgroupName()),
+						NewsgroupArticleContentClass.ARTICLEID.eq(articleData.getArticleId()));
+		for (NewsgroupArticleContentClass nacc:  newsgroupArticleIt) {
+			newsgroupArticleInContentClass = nacc;
+		}
+		return newsgroupArticleInContentClass;
 	}
 
 }

@@ -6,12 +6,20 @@ class NewsgroupsContentClassesTransMetric {
 	@series
 	val NewsgroupData[*] newsgroups;
 	val ContentClass[*] contentClasses;
+	val NewsgroupArticleContentClass[*] articlesContentClass;
 }
 
 class NewsgroupData {
 	@searchable
    	attr String newsgroupName;
    	attr int numberOfArticles;
+}
+
+class NewsgroupArticleContentClass {
+	@searchable
+	attr String newsgroupName;
+	attr String articleId;
+	attr String classLabel;
 }
 
 
