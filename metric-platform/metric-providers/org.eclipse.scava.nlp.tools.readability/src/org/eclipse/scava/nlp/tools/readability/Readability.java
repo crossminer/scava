@@ -35,15 +35,17 @@ public class Readability {
 					difficultWords++;
 			}
 		}
-
-		difficultWords=(difficultWords/words)*100;
-		words=(words/sentences);
-		
-		
-		if(difficultWords>5)
-			return (0.1579*difficultWords)+(0.0496*words)+3.6365;
+		if(words>0 && sentences>0)
+		{	
+			difficultWords=(difficultWords/words)*100;
+			words=(words/sentences);
+			if(difficultWords>5)
+				return (0.1579*difficultWords)+(0.0496*words)+3.6365;
+			else
+				return (0.1579*difficultWords)+(0.0496*words);
+		}
 		else
-			return (0.1579*difficultWords)+(0.0496*words);
+			return 0.0;
 	}
 	
 	public static List<Double> calculateDaleChall(List<String> texts)
