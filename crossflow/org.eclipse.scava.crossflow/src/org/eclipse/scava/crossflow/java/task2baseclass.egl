@@ -249,7 +249,7 @@ operation CrossflowLanguageModel!Stream createEndOfConsumeMethod() {%]
 				}
 				if (sendFailed) {
 					[%=self.type.name.ftlc()%].setFailures([%=self.type.name.ftlc()%].getFailures()+1);
-					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], new Exception(ex), workflow.getName(), getName()));
+					workflow.getFailedJobsTopic().send(new FailedJob([%=self.type.name.ftlc()%], new Exception(ex), this));
 				}
 			} catch (Exception e) {
 				workflow.reportInternalException(e);

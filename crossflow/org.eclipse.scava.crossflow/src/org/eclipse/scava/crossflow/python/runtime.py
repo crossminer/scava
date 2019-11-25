@@ -22,8 +22,8 @@ import sys
 import tempfile
 import threading
 import time
-import traceback
-from typing import Type, Any
+from traceback import TracebackException
+from typing import Any
 import uuid
 import warnings
 
@@ -477,11 +477,9 @@ class MessageListener(stomp.ConnectionListener):
                     self._consumer.consume(obj, self._do_ack(headers))
                 else:
                     self._consumer.consume(obj, None)
-            except Exception as e:
-                msg = "Error consuming message"
-                self._workflow.local_logger.exception(msg)
+            except Exception as ex:
                 if self._workflow is not None:
-                    self._workflow.report_internal_exception(e, msg)
+                    self._workflow.report_internal_exception(ex)
         else:
             self._workflow.local_logger.debug(
                 f"{self._destination} discarded message from {headers['destination']}: {message}"
@@ -559,9 +557,7 @@ class DirectoryCache(object):
                     self.save(output_job, outputFile)
             except Exception as ex:
                 self.workflow.local_logger.exception("Error caching Job")
-                self.workflow.report_internal_exception(
-                    ex, "Error caching job " + output_job.jobId
-                )
+                self.workflow.report_internal_exception(ex)
 
     def getDirectory(self):
         return self.directory
@@ -612,68 +608,53 @@ class DirectoryCache(object):
                         ) as outputFile:
                             self.jobFolderMap[inputJob.getHash()] = inputFolder
                             self.save(outputJob, outputFile)
-            except Exception as e:
-                msg = "Error caching pending transaction for CorrelationID: {} ".format(
-                    correlationId
-                )
-                self.workflow.local_logger.exception(msg)
-                self.workflow.report_internal_exception(e, msg)
-
-
-class FailedJob(object):
-    def __init__(self, job=None, exception=None, worker=None, task=None):
-        self.job = job
-        self.exception = exception
-        self.worker = worker
-        self.task = task
-
-    def getJob(self):
-        return self.job
-
-    def setJob(self, job):
-        self.job = job
-
-    def getException(self):
-        return self.exception
-
-    def setException(self, exception):
-        self.exception = exception
-
-    def getWorker(self):
-        return self.worker
-
-    def setWorker(self, worker):
-        self.worker = worker
-
-    def getTask(self):
-        return self.task
-
-    def setTask(self, task):
-        self.task = task
-
-    def __str__(self):
-        return (
-            str(self.job) + " | " + self.exception + " " + self.worker + " " + self.task
-        )
+            except Exception as ex:
+                self.workflow.local_logger.exception(f"Error caching pending transaction for CorrelationID: {correlationId}")
+                self.workflow.report_internal_exception(ex)
 
 
 class InternalException(Exception):
-    def __init__(self, exception=None, message=None, worker=None):
-        self.exception = exception
-        self.worker = worker
-        self.message = message
+    def __init__(
+        self, reason: str = None, stacktrace: str = None, sender_id: str = None
+    ):
+        self._reason = reason
+        self._stacktrace = stacktrace
+        self._sender_id = sender_id
 
-    def getException(self):
-        return self.exception
+    @classmethod
+    def from_exception(
+        cls, exception: Exception, sender_id: str
+    ) -> "InternalException":
+        from_exception = TracebackException.from_exception(exception)
+        reason = next(from_exception.format_exception_only()).strip()
+        stacktrace = "".join(from_exception.format()).strip()
+        return InternalException(
+            reason=reason, stacktrace=stacktrace, sender_id=sender_id
+        )
 
-    def setException(self, exception):
-        self.exception = exception
+    @property
+    def reason(self) -> str:
+        return self._reason
 
-    def getWorker(self):
-        return self.worker
+    @reason.setter
+    def reason(self, reason: str):
+        self._reason = reason
 
-    def setWorker(self, worker):
-        self.worker = worker
+    @property
+    def stacktrace(self) -> str:
+        return self._stacktrace
+
+    @stacktrace.setter
+    def stacktrace(self, stacktrace):
+        self._stacktrace = stacktrace
+
+    @property
+    def sender_id(self) -> str:
+        return self._sender_id
+
+    @sender_id.setter
+    def sender_id(self, sender_id):
+        self._sender_id = sender_id
 
 
 class CacheManagerTask(Task):
@@ -901,8 +882,8 @@ class JobStream(Stream):
                 for task_id in self._pre.keys():
                     self.send_message(body, self._pre[task_id].destination)
         except Exception as ex:
-            self.workflow.local_logger.exception("")
-            self.workflow.report_internal_exception(ex, "")
+            self.workflow.local_logger.exception(f"Error sending {job}")
+            self.workflow.report_internal_exception(ex)
 
     @property
     def destination_names(self) -> list:
@@ -1427,12 +1408,12 @@ class Workflow(ABC):
         self._terminated = True
         self.local_logger.info(f"Workflow {self.name} successfully terminated")
 
-    # noinspection PyBroadException
-    def report_internal_exception(self, ex, message):
+    def report_internal_exception(self, exception: Exception):
         self.local_logger.exception("")
         try:
-            ser_obj = self._serializer.serialize(InternalException(ex, message, None))
-            self._internal_exceptions_queue.send(ser_obj)
+            internal_exception = InternalException.from_exception(exception, self.name)
+            serialized = self.serializer.serialize(internal_exception)
+            self._internal_exceptions_queue.send(serialized)
         except Exception as e:
             self.local_logger.exception(
                 "Could not propagate exception, serialisation error encountered"
@@ -1458,3 +1439,72 @@ class Workflow(ABC):
         self._task_status_topic.send(
             TaskStatus(TaskStatuses.INPROGRESS, caller.task_id, "")
         )
+
+
+class FailedJob(object):
+    def __init__(
+        self,
+        job: Job = None,
+        reason: str = None,
+        stacktrace: str = None,
+        task: str = None,
+        workflow: str = None,
+    ):
+        self._job = job
+        self._reason = reason
+        self._stacktrace = stacktrace
+        self._task = task
+        self._workflow = workflow
+
+    @classmethod
+    def from_exception(cls, job: Job, exception: Exception, task: Task):
+        from_exception = TracebackException.from_exception(exception)
+        reason = next(from_exception.format_exception_only()).strip()
+        stacktrace = "".join(from_exception.format()).strip()
+        return FailedJob(
+            job=job,
+            reason=reason,
+            stacktrace=stacktrace,
+            task=task.name,
+            workflow=task.workflow.name,
+        )
+
+    @property
+    def job(self) -> Job:
+        return self._job
+
+    @job.setter
+    def job(self, job: Job):
+        self._job = job
+
+    @property
+    def reason(self) -> str:
+        return self._reason
+
+    @reason.setter
+    def reason(self, reason: str):
+        self._reason = reason
+
+    @property
+    def stacktrace(self) -> str:
+        return self._stacktrace
+
+    @stacktrace.setter
+    def stacktrace(self, stacktrace: str):
+        self._stacktrace = stacktrace
+
+    @property
+    def task(self) -> str:
+        return self._task
+
+    @task.setter
+    def task(self, task: str):
+        self._task = task
+
+    @property
+    def workflow(self) -> str:
+        return self._workflow
+
+    @workflow.setter
+    def workflow(self, workflow: str):
+        self._workflow = workflow

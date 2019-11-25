@@ -17,6 +17,8 @@ from crossflow.runtime import (
     InternalException,
     FailedJob,
 )
+from symbol import try_stmt, except_clause
+from builtins import ValueError
 
 
 def json_from_file(file: str) -> str:
@@ -113,6 +115,8 @@ class TestSerializerUtils(unittest.TestCase):
 
 class TestJsonSerializer(unittest.TestCase):
     def assertJsonEqual(self, first, second, msg=None):
+        f = json.loads(first)
+        s = json.loads(second)
         self.assertEqual(json.loads(first), json.loads(second), msg)
 
     def setUp(self):
@@ -236,12 +240,12 @@ class TestJsonSerializer(unittest.TestCase):
                     workflow=workflow,
                     task=task,
                     message=message,
-                    timestamp=timestamp
+                    timestamp=timestamp,
                 )
                 actual = self.serializer.serialize(logMessage)
                 expected = json_from_file(f"LogMessage-{level.name}.json")
                 self.assertJsonEqual(actual, expected)
-                
+
     def test_deserialize_should_return_LogMessage_when_given_valid_json(self):
         timestamp = 123456
         instance_id = "JsonSerializerTest Sender"
@@ -259,28 +263,53 @@ class TestJsonSerializer(unittest.TestCase):
                     workflow=workflow,
                     task=task,
                     message=message,
-                    timestamp=timestamp
+                    timestamp=timestamp,
                 )
                 self.assertEqual(actual, expected)
-    
+
     def test_serialize_should_return_correct_json_when_given_TaskStatus_objects(self):
         caller = "JsonSerializerTest Sender"
         reason = "A reason string"
-        
+
         for status in TaskStatuses:
             with self.subTest():
                 obj = TaskStatus(status, caller, reason)
                 actual = self.serializer.serialize(obj)
                 expected = json_from_file(f"TaskStatus-{status.name}.json")
                 self.assertJsonEqual(actual, expected)
-    
+
     def test_deserialize_should_return_TaskStatus_when_given_valid_json(self):
         caller = "JsonSerializerTest Sender"
         reason = "A reason string"
-        
+
         for status in TaskStatuses:
             with self.subTest():
                 json_str = json_from_file(f"TaskStatus-{status.name}.json")
                 actual = self.serializer.deserialize(json_str)
                 expected = TaskStatus(status, caller, reason)
                 self.assertEqual(actual, expected)
+
+    def test_serialize_should_return_correct_json_when_given_python_InternalException_objects(
+        self
+    ):
+        # Construct nested exception
+        exception = ValueError("A value error message")
+        exception.__cause__ = ValueError("A nested value error message")
+
+        sender_id = "JsonSerializerTest Sender"
+        internal_exception = InternalException.from_exception(exception, sender_id)
+        actual = self.serializer.serialize(internal_exception)
+        expected = json_from_file("InternalException-python.json")
+        self.assertJsonEqual(actual, expected)
+
+    def test_deserialize_should_return_InternalException_when_given_valid_json_for_python_exception(
+        self
+    ):
+        json_str = json_from_file("InternalException-python.json")
+        actual = self.serializer.deserialize(json_str)
+        reason = "ValueError: A value error message"
+        stacktrace = "ValueError: A nested value error message\n\nThe above exception was the direct cause of the following exception:\n\nValueError: A value error message"
+        sender_id = "JsonSerializerTest Sender"
+        self.assertEqual(actual.reason, reason)
+        self.assertEqual(actual.stacktrace, stacktrace)
+        self.assertEqual(actual.sender_id, sender_id)

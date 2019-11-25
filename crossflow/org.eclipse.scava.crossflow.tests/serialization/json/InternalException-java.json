@@ -1,0 +1,6 @@
+{
+  "reason": "A reason",
+  "stacktrace": "The stacktrace",
+  "senderId": "JsonSerializerTest Sender",
+  "_type_": "InternalException"
+}

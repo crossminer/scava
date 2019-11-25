@@ -471,7 +471,12 @@ public abstract class Workflow<E extends Enum<E>> {
 
 				@Override
 				public void consume(FailedJob failedJob) {
-					failedJob.getException().printStackTrace();
+					System.err.println("Workflow received failed job");
+					System.out.println("Workflow: " + failedJob.getWorkflow());
+					System.out.println("Task: " + failedJob.getTask());
+					System.out.println("Job: " + failedJob.getJob());
+					System.out.println("Reason: " + failedJob.getReason());
+					System.out.println("Stacktrace: " + failedJob.getStacktrace());
 					failedJobs.add(failedJob);
 				}
 			});
@@ -486,8 +491,9 @@ public abstract class Workflow<E extends Enum<E>> {
 
 				@Override
 				public void consume(InternalException internalException) {
-					System.err.println("Workflow forwarding internal exception:");
-					internalException.getException().printStackTrace();
+					System.err.println("Workflow forwarding internal exception from " + internalException.getSenderId() + ":");
+					System.err.println(internalException.getReason());
+					System.err.println(internalException.getStacktrace());
 					internalExceptions.add(internalException);
 				}
 			});

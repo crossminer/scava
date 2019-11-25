@@ -1,0 +1,19 @@
+{
+  "job": {
+    "jobId": "123_job_id",
+    "correlationId": "123_correlation_id",
+    "cached": false,
+    "failures": 0,
+    "cacheable": true,
+    "timeout": 0,
+    "transactional": true,
+    "isTransactionSuccessMessage": false,
+    "totalOutputs": 0,
+    "_type_": "Job"
+  },
+  "reason": "Failed Job Reason",
+  "stacktrace": "Failed Job Stacktrace",
+  "task": "Failed Job Task",
+  "workflow": "Failed Job Workflow",
+  "_type_": "FailedJob"
+}

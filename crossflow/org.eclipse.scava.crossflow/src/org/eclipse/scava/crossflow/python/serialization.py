@@ -7,9 +7,6 @@ from typing import Type
 import string_utils
 import xmltodict
 
-# from crossflow.runtime import InternalException
-
-
 _TYPE_PROPERTY_KEY = "_type_"
 _ENUM_TYPE_PROPERTY_KEY = "_enum_type_"
 _ENUM_VALUE_PROPERTY_KEY = "_enum_value_"
@@ -37,6 +34,28 @@ def _sanitize_key(key: str) -> str:
         return string_utils.snake_case_to_camel(key[1:], upper_case_first=False)
     else:
         return key
+
+
+def _find_correct_key(key: str, obj: object):
+    def _find(key: str, obj: object, done=False):
+        if isinstance(key, str):
+            if hasattr(obj, key):
+                return key
+            if hasattr(obj, f"_{key}"):
+                return f"_{key}"
+            if hasattr(obj, f"__{key}"):
+                return f"__{key}"
+            if not done:
+                return _find(string_utils.camel_case_to_snake(key), obj, True)
+            return None
+
+    return _find(key, obj)
+
+
+def _camel_to_snake(s: str) -> str:
+    if not isinstance(s):
+        return s
+    return string_utils.camel_case_to_snake(s)
 
 
 class Serializer(ABC):
@@ -127,7 +146,11 @@ class JsonSerializer(Serializer):
 
                 class_type = self._registered_types[key]()
                 for k, v in obj.items():
-                    setattr(class_type, k, self._deserialize(v))
+                    setattr(
+                        class_type,
+                        _find_correct_key(k, class_type),
+                        self._deserialize(v),
+                    )
                 return class_type
 
             # Dict class of enum
@@ -162,40 +185,40 @@ class JsonSerializer(Serializer):
 
 # class XstreamSerializer(Serializer):
 #     """Simple port of the XStream XML serializer.
-#     
+#
 #     To maintain cross-compatibility between different languages, types are
-#     serialized using their simple non-qualified class name. It is expected 
+#     serialized using their simple non-qualified class name. It is expected
 #     that this contract is enforced throughout the Crossflow system.
-#     
+#
 #     All objects that are to be deserialized should be registered using the
 #     alias method.
 #     """
-# 
+#
 #     def __init__(self):
 #         super().__init__()
 #         self.aliases = {}
-# 
+#
 #     def serialize(self, obj):
 #         # Extract name
 #         if isinstance(obj, InternalException):
 #             return self.__serialize_internal(obj)
-# 
+#
 #         name = self.aliases.get(type(obj), type(obj).__name__)
 #         return xmltodict.unparse(
 #             {name: obj.__dict__}, full_document=False, pretty=__debug__
 #         )
-# 
+#
 #     def deserialize(self, xml):
 #         parsed = xmltodict.parse(xml)
 #         clazzname = list(parsed.keys())[0]
 #         clazztype = self.aliases[clazzname]
 #         instance = clazztype()
-# 
+#
 #         members = parsed[clazzname]
 #         for key, raw in members.items():
 #             rawType = type(raw)
 #             value = raw
-# 
+#
 #             if rawType is int:
 #                 value = int(raw)
 #             elif rawType is float:
@@ -210,21 +233,21 @@ class JsonSerializer(Serializer):
 #             else:
 #                 if str(rawType).startswith("<enum"):
 #                     value = rawType.enum_from_name(raw)
-# 
+#
 #             setattr(instance, key, value)
-# 
+#
 #         return instance
-# 
+#
 #     def do_register(self, classType):
 #         if not isinstance(classType, Type):
 #             classType = type(classType)
 #         self.aliases[classType.__name__] = classType
-# 
+#
 #     def alias(self, clazz):
 #         if not isinstance(clazz, Type):
 #             clazz = type(clazz)
 #         self.aliases[clazz.__name__] = clazz
-# 
+#
 #     def __serialize_internal(self, ex):
 #         exDict = {
 #             "InternalException": {
