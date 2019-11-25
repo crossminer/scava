@@ -184,7 +184,8 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 																	plainTextCollection.getCommitsMessagesPlainText(),
 																	commit,
 																	repositoryURL);
-					cd.setPlain_text(String.join(" ",plainText.getPlainText()));
+					if(plainText!=null)
+						cd.setPlain_text(String.join(" ",plainText.getPlainText()));
 					break;
 				}
 				case "org.eclipse.scava.metricprovider.trans.commits.message.references.CommitsMessageReferencesTransMetricProvider":
