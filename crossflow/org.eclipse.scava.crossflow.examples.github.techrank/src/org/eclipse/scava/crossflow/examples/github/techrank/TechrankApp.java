@@ -22,11 +22,11 @@ public class TechrankApp {
 		}
 		
 		for (InternalException ex : workflow.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : workflow.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 		
 		System.out.println("Done");
