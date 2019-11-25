@@ -4,7 +4,6 @@ package crossflow;
 
 import org.eclipse.emf.common.util.EList;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Scripted Task</b></em>'.
@@ -20,7 +19,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getScriptedTask()
- * @model annotation="gmf.node label='name'"
+ * @model annotation="gmf.node label='name' color='245,222,170'"
  * @generated
  */
 public interface ScriptedTask extends Task {

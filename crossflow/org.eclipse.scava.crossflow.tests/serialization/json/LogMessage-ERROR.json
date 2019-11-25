@@ -1,0 +1,12 @@
+{
+  "level": {
+    "_enum_type_": "LogLevel",
+    "_enum_value_": "ERROR"
+  },
+  "timestamp": 123456,
+  "instanceId": "JsonSerializerTest Sender",
+  "workflow": "workflow 1",
+  "task": "task a",
+  "message": "this is a message",
+  "_type_": "LogMessage"
+}

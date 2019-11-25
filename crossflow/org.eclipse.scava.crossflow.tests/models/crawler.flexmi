@@ -11,7 +11,7 @@
 		<task name="UrlAnalyser" multipleOutputs="true" in="UrlsToAnalyse" out="Urls"/>
 		
 		<type name="Url">
-			<field name="location" type="String"/>
+			<datafield name="location" type="String"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.crawler" genOutputFolder="src-gen" outputFolder="src"/>

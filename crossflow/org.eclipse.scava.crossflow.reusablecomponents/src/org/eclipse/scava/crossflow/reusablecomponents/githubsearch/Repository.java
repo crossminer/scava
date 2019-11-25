@@ -4,8 +4,8 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Repository extends Job {
 
-	private String fullName;
-	private String htmlUrl;
+	protected String fullName;
+	protected String htmlUrl;
 
 	public String getFullName() {
 		return fullName;

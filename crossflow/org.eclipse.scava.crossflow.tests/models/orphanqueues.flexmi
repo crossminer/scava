@@ -13,7 +13,7 @@
 		<queue name="q2" type="ty1"/>
 	
 		<type name="ty1">
-			<field name="f0" type="String"/>
+			<datafield name="f0" type="String"/>
 		</type>
 	
 	</workflow>	

@@ -2,7 +2,7 @@ package org.eclipse.scava.crossflow.reusablecomponents.githubsearch;
 
 public class RepoTechPair extends Repository {
 
-	private Technology tech;
+	protected Technology tech;
 
 	public Technology getTech() {
 		return tech;

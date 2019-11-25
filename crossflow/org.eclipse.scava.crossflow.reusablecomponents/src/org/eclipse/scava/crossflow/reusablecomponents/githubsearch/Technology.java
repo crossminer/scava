@@ -4,8 +4,8 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class Technology extends Job {
 
-	private String techKey;
-	private String fileExt;
+	protected String techKey;
+	protected String fileExt;
 
 	public String getTechKey() {
 		return techKey;

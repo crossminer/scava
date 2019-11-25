@@ -23,7 +23,8 @@ from crossflow.[%=package%].[%=s.pyVarName()%] import [%=s.name%]
 
 # Utility
 from crossflow.[%=package%].[%=w.pyVarName()%]_tasks import [%=w.name%]Tasks
-from crossflow.runtime import BuiltinStream, Mode, Serializer, Workflow
+from crossflow.runtime import BuiltinStream, Mode, Workflow
+from crossflow.serialization import Serializer, JsonSerializer
 
 
 class [%=w.name%](Workflow):
@@ -140,12 +141,13 @@ class [%=w.name%](Workflow):
         return self.[%=t.name.ftlc()%]
         
     [%}%]
-    def _setup_serializer(self) -> Serializer:
-        s = Serializer()
-        [%for (t in w.types) {%]
-        s.register([%=t.name%])
-        [%}%]
-        return s
+    def _create_serializer(self) -> Serializer:
+        return [%=w.getSerializer().~implClass%]()
+
+    def _register_custom_serialization_types(self):
+    [%for (t in w.types) {%]
+        self._serializer.register_type([%=t.name%])
+    [%}%]
 
 
 if __name__ == '__main__':

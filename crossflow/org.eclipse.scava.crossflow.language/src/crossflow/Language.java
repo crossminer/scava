@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getLanguage()
- * @model annotation="gmf.node label='name' figure='rectangle'"
+ * @model annotation="gmf.node label='name' figure='rectangle' label.icon='false' color='204,204,255'"
  * @generated
  */
 public interface Language extends EObject {
@@ -143,7 +143,7 @@ public interface Language extends EObject {
 	 * @return the value of the '<em>Parameters</em>' containment reference list.
 	 * @see crossflow.CrossflowPackage#getLanguage_Parameters()
 	 * @model containment="true"
-	 *        annotation="gmf.compartment layout='list' collapsible='false'"
+	 *        annotation="gmf.compartment layout='list' collapsible='false' color='204,204,255'"
 	 * @generated
 	 */
 	EList<Parameter> getParameters();

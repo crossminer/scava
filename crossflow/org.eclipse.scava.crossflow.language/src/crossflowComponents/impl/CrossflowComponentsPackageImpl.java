@@ -112,6 +112,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getComponent() {
 		return componentEClass;
 	}
@@ -121,6 +122,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getComponent_FullyQualifiedName() {
 		return (EAttribute)componentEClass.getEStructuralFeatures().get(0);
 	}
@@ -130,6 +132,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getComponent_Language() {
 		return (EReference)componentEClass.getEStructuralFeatures().get(1);
 	}
@@ -139,6 +142,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getComponent_Consumes() {
 		return (EReference)componentEClass.getEStructuralFeatures().get(2);
 	}
@@ -148,6 +152,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getComponent_Produces() {
 		return (EReference)componentEClass.getEStructuralFeatures().get(3);
 	}
@@ -157,6 +162,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getComponent_MultipleOutputs() {
 		return (EAttribute)componentEClass.getEStructuralFeatures().get(4);
 	}
@@ -166,6 +172,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getComponent_ComponentType() {
 		return (EAttribute)componentEClass.getEStructuralFeatures().get(5);
 	}
@@ -175,6 +182,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EEnum getComponentTypes() {
 		return componentTypesEEnum;
 	}
@@ -184,6 +192,7 @@ public class CrossflowComponentsPackageImpl extends EPackageImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CrossflowComponentsFactory getCrossflowComponentsFactory() {
 		return (CrossflowComponentsFactory)getEFactoryInstance();
 	}

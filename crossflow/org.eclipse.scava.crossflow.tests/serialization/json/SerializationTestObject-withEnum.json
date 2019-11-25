@@ -1,0 +1,11 @@
+{
+  "stringProp": "default",
+  "intProp": 123,
+  "longProp": 123,
+  "booleanProp": true,
+  "enumProp": {
+    "_enum_type_": "SerializationTestEnum",
+    "_enum_value_": "VALUE_B"
+  },
+  "_type_": "SerializationTestObject"
+}

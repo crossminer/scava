@@ -6,17 +6,17 @@
     <tasks xmi:type="cf:Source" xmi:id="_vtMbkHNoEemR4dUnJRQOBg" name="Source" output="_2yYHgKMpEemkJZUMghqoiQ" masterOnly="true"/>
     <tasks xmi:type="cf:Sink" xmi:id="_wQeu0HNoEemR4dUnJRQOBg" name="Sink" input="_4HW9cKMpEemkJZUMghqoiQ" masterOnly="true"/>
     <tasks xmi:type="cf:ScriptedTask" xmi:id="_S7VAwKfAEemdCqlG-3Judg" name="Analyse" input="_2yYHgKMpEemkJZUMghqoiQ" output="_4HW9cKMpEemkJZUMghqoiQ" scriptingLanguage="R" script="library(e1071)&#xA;data(iris)&#xA;svmfit &lt;- svm(analysisType, data=iris)&#xA;print(svmfit)&#xA;str(svmfit)&#xA;ls()">
-      <outputVariables xmi:type="cf:Field" xmi:id="_WUt-cKfAEemdCqlG-3Judg" name="svmfit$nclasses" type="int"/>
-      <outputVariables xmi:type="cf:Field" xmi:id="_WjmH8KfAEemdCqlG-3Judg" name="svmfit$levels" many="true"/>
-      <outputVariables xmi:type="cf:Field" xmi:id="_CrV2MKfjEemS7JxYiMFCxA" name="svmfit$gamma" type="double"/>
+      <outputVariables xmi:type="cf:DataField" xmi:id="_WUt-cKfAEemdCqlG-3Judg" name="svmfit$nclasses" type="int"/>
+      <outputVariables xmi:type="cf:DataField" xmi:id="_WjmH8KfAEemdCqlG-3Judg" name="svmfit$levels" many="true"/>
+      <outputVariables xmi:type="cf:DataField" xmi:id="_CrV2MKfjEemS7JxYiMFCxA" name="svmfit$gamma" type="double"/>
     </tasks>
     <types xmi:type="cf:Type" xmi:id="__pstgKMpEemkJZUMghqoiQ" name="RConfiguration">
-      <fields xmi:type="cf:Field" xmi:id="_El7hgKMrEemkJZUMghqoiQ" name="analysisType"/>
+      <fields xmi:type="cf:DataField" xmi:id="_El7hgKMrEemkJZUMghqoiQ" name="analysisType"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_DK6KcKMqEemkJZUMghqoiQ" name="RData">
-      <fields xmi:type="cf:Field" xmi:id="_ja3v0KfVEemdCqlG-3Judg" name="svmfit$gamma" type="double"/>
-      <fields xmi:type="cf:Field" xmi:id="__AvJgKfeEembZuxzusrW6w" name="svmfit$levels" many="true"/>
-      <fields xmi:type="cf:Field" xmi:id="_mv0b8KfhEemnlKKFZs2J0g" name="svmfit$nclasses" type="int"/>
+      <fields xmi:type="cf:DataField" xmi:id="_ja3v0KfVEemdCqlG-3Judg" name="svmfit$gamma" type="double"/>
+      <fields xmi:type="cf:DataField" xmi:id="__AvJgKfeEembZuxzusrW6w" name="svmfit$levels" many="true"/>
+      <fields xmi:type="cf:DataField" xmi:id="_mv0b8KfhEemnlKKFZs2J0g" name="svmfit$nclasses" type="int"/>
     </types>
   </cf:Workflow>
   <notation:Diagram xmi:id="_ZM1NAHNoEemR4dUnJRQOBg" type="Crossflow" element="_ZMRzYHNoEemR4dUnJRQOBg" name="wordcount.crossflow_diagram" measurementUnit="Pixel">
@@ -39,10 +39,6 @@
     <children xmi:type="notation:Shape" xmi:id="__pyNEKMpEemkJZUMghqoiQ" type="2011" element="__pstgKMpEemkJZUMghqoiQ" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="__py0IKMpEemkJZUMghqoiQ" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="__pzbMKMpEemkJZUMghqoiQ" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_EmBBEKMrEemkJZUMghqoiQ" type="3001" element="_El7hgKMrEemkJZUMghqoiQ" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_EmBoIKMrEemkJZUMghqoiQ" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_EmBBEaMrEemkJZUMghqoiQ"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="__pzbMaMpEemkJZUMghqoiQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="__pzbMqMpEemkJZUMghqoiQ"/>
       </children>
@@ -52,18 +48,6 @@
     <children xmi:type="notation:Shape" xmi:id="_DK7YkKMqEemkJZUMghqoiQ" type="2011" element="_DK6KcKMqEemkJZUMghqoiQ" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_DK7Yk6MqEemkJZUMghqoiQ" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_DK7YlKMqEemkJZUMghqoiQ" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_ja498KfVEemdCqlG-3Judg" type="3001" element="_ja3v0KfVEemdCqlG-3Judg" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_ja498qfVEemdCqlG-3Judg" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ja498afVEemdCqlG-3Judg"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="__AvwkKfeEembZuxzusrW6w" type="3001" element="__AvJgKfeEembZuxzusrW6w" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="__AvwkqfeEembZuxzusrW6w" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="__AvwkafeEembZuxzusrW6w"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_mwlQ8KfhEemnlKKFZs2J0g" type="3001" element="_mv0b8KfhEemnlKKFZs2J0g" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_mwl4AKfhEemnlKKFZs2J0g" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mwlQ8afhEemnlKKFZs2J0g"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_DK7YlaMqEemkJZUMghqoiQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_DK7YlqMqEemkJZUMghqoiQ"/>
       </children>
@@ -73,18 +57,6 @@
     <children xmi:type="notation:Shape" xmi:id="_S77dsKfAEemdCqlG-3Judg" type="2015" element="_S7VAwKfAEemdCqlG-3Judg" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_S78EwKfAEemdCqlG-3Judg" type="5017"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_S78r0KfAEemdCqlG-3Judg" type="7003">
-        <children xmi:type="notation:Shape" xmi:id="_WUulgKfAEemdCqlG-3Judg" type="3003" element="_WUt-cKfAEemdCqlG-3Judg" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_WUulgqfAEemdCqlG-3Judg" type="5018"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WUulgafAEemdCqlG-3Judg"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_WjnWEKfAEemdCqlG-3Judg" type="3003" element="_WjmH8KfAEemdCqlG-3Judg" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_Wjn9IKfAEemdCqlG-3Judg" type="5018"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WjnWEafAEemdCqlG-3Judg"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_CrnjAKfjEemS7JxYiMFCxA" type="3003" element="_CrV2MKfjEemS7JxYiMFCxA" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_CroxIKfjEemS7JxYiMFCxA" type="5018"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CrnjAafjEemS7JxYiMFCxA"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_S78r0afAEemdCqlG-3Judg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_S78r0qfAEemdCqlG-3Judg"/>
       </children>

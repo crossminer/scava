@@ -17,13 +17,12 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link crossflow.Type#getName <em>Name</em>}</li>
  *   <li>{@link crossflow.Type#getImpl <em>Impl</em>}</li>
- *   <li>{@link crossflow.Type#isIsMany <em>Is Many</em>}</li>
  *   <li>{@link crossflow.Type#getExtending <em>Extending</em>}</li>
  *   <li>{@link crossflow.Type#getFields <em>Fields</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getType()
- * @model annotation="gmf.node label='name' figure='rectangle'"
+ * @model annotation="gmf.node label='name' figure='rectangle' label.icon='false' color='181,255,255'"
  * @generated
  */
 public interface Type extends EObject {
@@ -80,46 +79,30 @@ public interface Type extends EObject {
 	void setImpl(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Is Many</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Is Many</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Is Many</em>' attribute.
-	 * @see #setIsMany(boolean)
-	 * @see crossflow.CrossflowPackage#getType_IsMany()
-	 * @model required="true"
-	 * @generated
-	 */
-	boolean isIsMany();
-
-	/**
-	 * Sets the value of the '{@link crossflow.Type#isIsMany <em>Is Many</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Is Many</em>' attribute.
-	 * @see #isIsMany()
-	 * @generated
-	 */
-	void setIsMany(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Extending</b></em>' reference list.
-	 * The list contents are of type {@link crossflow.Type}.
+	 * Returns the value of the '<em><b>Extending</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Extending</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Extending</em>' reference list.
+	 * @return the value of the '<em>Extending</em>' reference.
+	 * @see #setExtending(Type)
 	 * @see crossflow.CrossflowPackage#getType_Extending()
 	 * @model
 	 * @generated
 	 */
-	EList<Type> getExtending();
+	Type getExtending();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Type#getExtending <em>Extending</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Extending</em>' reference.
+	 * @see #getExtending()
+	 * @generated
+	 */
+	void setExtending(Type value);
 
 	/**
 	 * Returns the value of the '<em><b>Fields</b></em>' containment reference list.

@@ -1,0 +1,18 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+	<workflow name="PythonTestsWorkflow">
+		<type name="TypeA">
+			<field name="foo" type="String"/>
+		</type>
+		<queue name="QueueA" type="TypeA"/>
+		<task name="TaskA" in="QueueA" language="Python"/>
+		
+		<language name="Java" package="org.eclipse.scava.crossflow.tests.python" genOutputFolder="src-gen" outputFolder="src"/>
+		<language name="Python" package="testspython">
+			<parameter name="skipReadme" value="true"/>
+			<parameter name="skipMain" value="true"/>
+		</language>
+	</workflow>
+
+</_>

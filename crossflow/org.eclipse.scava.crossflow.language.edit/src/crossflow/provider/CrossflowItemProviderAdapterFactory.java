@@ -371,26 +371,49 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Field} instances.
+	 * This keeps track of the one adapter used for all {@link crossflow.DataField} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FieldItemProvider fieldItemProvider;
+	protected DataFieldItemProvider dataFieldItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link crossflow.Field}.
+	 * This creates an adapter for a {@link crossflow.DataField}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createFieldAdapter() {
-		if (fieldItemProvider == null) {
-			fieldItemProvider = new FieldItemProvider(this);
+	public Adapter createDataFieldAdapter() {
+		if (dataFieldItemProvider == null) {
+			dataFieldItemProvider = new DataFieldItemProvider(this);
 		}
 
-		return fieldItemProvider;
+		return dataFieldItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link crossflow.EnumField} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EnumFieldItemProvider enumFieldItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link crossflow.EnumField}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEnumFieldAdapter() {
+		if (enumFieldItemProvider == null) {
+			enumFieldItemProvider = new EnumFieldItemProvider(this);
+		}
+
+		return enumFieldItemProvider;
 	}
 
 	/**
@@ -440,26 +463,26 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link crossflow.Serialiser} instances.
+	 * This keeps track of the one adapter used for all {@link crossflow.Serializer} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected SerialiserItemProvider serialiserItemProvider;
+	protected SerializerItemProvider serializerItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link crossflow.Serialiser}.
+	 * This creates an adapter for a {@link crossflow.Serializer}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createSerialiserAdapter() {
-		if (serialiserItemProvider == null) {
-			serialiserItemProvider = new SerialiserItemProvider(this);
+	public Adapter createSerializerAdapter() {
+		if (serializerItemProvider == null) {
+			serializerItemProvider = new SerializerItemProvider(this);
 		}
 
-		return serialiserItemProvider;
+		return serializerItemProvider;
 	}
 
 	/**
@@ -468,6 +491,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ComposeableAdapterFactory getRootAdapterFactory() {
 		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
 	}
@@ -478,6 +502,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
 		this.parentAdapterFactory = parentAdapterFactory;
 	}
@@ -526,6 +551,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void addListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.addListener(notifyChangedListener);
 	}
@@ -536,6 +562,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void removeListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.removeListener(notifyChangedListener);
 	}
@@ -546,6 +573,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void fireNotifyChanged(Notification notification) {
 		changeNotifier.fireNotifyChanged(notification);
 
@@ -560,6 +588,7 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void dispose() {
 		if (workflowItemProvider != null) workflowItemProvider.dispose();
 		if (topicItemProvider != null) topicItemProvider.dispose();
@@ -574,10 +603,11 @@ public class CrossflowItemProviderAdapterFactory extends CrossflowAdapterFactory
 		if (scriptedTaskItemProvider != null) scriptedTaskItemProvider.dispose();
 		if (reusableComponentItemProvider != null) reusableComponentItemProvider.dispose();
 		if (typeItemProvider != null) typeItemProvider.dispose();
-		if (fieldItemProvider != null) fieldItemProvider.dispose();
+		if (dataFieldItemProvider != null) dataFieldItemProvider.dispose();
+		if (enumFieldItemProvider != null) enumFieldItemProvider.dispose();
 		if (languageItemProvider != null) languageItemProvider.dispose();
 		if (parameterItemProvider != null) parameterItemProvider.dispose();
-		if (serialiserItemProvider != null) serialiserItemProvider.dispose();
+		if (serializerItemProvider != null) serializerItemProvider.dispose();
 	}
 
 }

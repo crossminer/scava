@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.runtime.serialization;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -10,13 +11,28 @@ import java.util.stream.Stream;
 public interface Serializer {
 
 	/**
+	 * Whether this {@link Serializer} will only attempt to de/serialize classes
+	 * registered via the {@link #registerType(Class)} method
+	 * 
+	 * @return {@code true} if strict mode enabled
+	 */
+	public boolean isStrict();
+
+	/**
+	 * Set strict mode
+	 * 
+	 * @param isStrict new mode
+	 * @return This serializer for fluent API
+	 */
+	public Serializer setStrict(boolean isStrict);
+
+	/**
 	 * Initialise the {@link Serializer}.
 	 * <p>
 	 * Implementations should implement this method if any setup is required that
 	 * cannot be safely performed in the constructor
 	 */
-	default public void init() {
-	}
+	public void init();
 
 	/**
 	 * Register a type that can be used with this {@link Serializer}.
@@ -40,6 +56,12 @@ public interface Serializer {
 	 */
 	public Collection<Class<?>> getRegisteredTypes();
 
+	public boolean isRegistered(Object o);
+
+	public boolean isRegistered(Class<?> clazz);
+
+	public boolean isRegistered(String clazz);
+
 	/**
 	 * Serialize the given input to a <code>String</code> representation
 	 * 
@@ -57,5 +79,7 @@ public interface Serializer {
 	 * @return the deserialized object of type <code>O</code>
 	 */
 	public <O> O deserialize(String input);
+	
+	public <O> O deserialize(File input);
 
 }

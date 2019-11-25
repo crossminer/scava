@@ -129,7 +129,6 @@ public interface CrossflowComponentsPackage extends EPackage {
 	 */
 	int COMPONENT_FEATURE_COUNT = 6;
 
-
 	/**
 	 * The meta object id for the '{@link crossflowComponents.ComponentTypes <em>Component Types</em>}' enum.
 	 * <!-- begin-user-doc -->

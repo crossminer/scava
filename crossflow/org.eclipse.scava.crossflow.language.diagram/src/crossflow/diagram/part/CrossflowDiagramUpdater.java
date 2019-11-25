@@ -27,7 +27,7 @@ import crossflow.Parameter;
 import crossflow.Queue;
 import crossflow.ReusableComponent;
 import crossflow.ScriptedTask;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 import crossflow.Sink;
 import crossflow.Source;
 import crossflow.Stream;
@@ -38,9 +38,12 @@ import crossflow.Workflow;
 import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
-import crossflow.diagram.edit.parts.Field2EditPart;
-import crossflow.diagram.edit.parts.Field3EditPart;
-import crossflow.diagram.edit.parts.FieldEditPart;
+import crossflow.diagram.edit.parts.DataField2EditPart;
+import crossflow.diagram.edit.parts.DataField3EditPart;
+import crossflow.diagram.edit.parts.DataFieldEditPart;
+import crossflow.diagram.edit.parts.EnumField2EditPart;
+import crossflow.diagram.edit.parts.EnumField3EditPart;
+import crossflow.diagram.edit.parts.EnumFieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
@@ -50,8 +53,8 @@ import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
-import crossflow.diagram.edit.parts.SerialiserSerialiserParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
+import crossflow.diagram.edit.parts.SerializerSerializerParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
@@ -90,8 +93,8 @@ public class CrossflowDiagramUpdater {
 			return getTypeTypeFieldsCompartment_7001SemanticChildren(view);
 		case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 			return getLanguageLanguageParametersCompartment_7002SemanticChildren(view);
-		case SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID:
-			return getSerialiserSerialiserParametersCompartment_7004SemanticChildren(view);
+		case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
+			return getSerializerSerializerParametersCompartment_7005SemanticChildren(view);
 		}
 		return Collections.emptyList();
 	}
@@ -157,18 +160,22 @@ public class CrossflowDiagramUpdater {
 				continue;
 			}
 		}
-		for (Iterator<?> it = modelElement.getTypes().iterator(); it.hasNext();) {
-			Type childElement = (Type) it.next();
+		for (Iterator<?> it = modelElement.getParameters().iterator(); it.hasNext();) {
+			Field childElement = (Field) it.next();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == TypeEditPart.VISUAL_ID) {
+			if (visualID == DataFieldEditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == EnumFieldEditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
 		}
-		for (Iterator<?> it = modelElement.getParameters().iterator(); it.hasNext();) {
-			Field childElement = (Field) it.next();
+		for (Iterator<?> it = modelElement.getTypes().iterator(); it.hasNext();) {
+			Type childElement = (Type) it.next();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == FieldEditPart.VISUAL_ID) {
+			if (visualID == TypeEditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -182,9 +189,9 @@ public class CrossflowDiagramUpdater {
 			}
 		}
 		{
-			Serialiser childElement = modelElement.getSerialiser();
+			Serializer childElement = modelElement.getSerializer();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SerialiserEditPart.VISUAL_ID) {
+			if (visualID == SerializerEditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 			}
 		}
@@ -208,7 +215,11 @@ public class CrossflowDiagramUpdater {
 		for (Iterator<?> it = modelElement.getOutputVariables().iterator(); it.hasNext();) {
 			Field childElement = (Field) it.next();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == Field2EditPart.VISUAL_ID) {
+			if (visualID == DataField2EditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == EnumField2EditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -232,7 +243,11 @@ public class CrossflowDiagramUpdater {
 		for (Iterator<?> it = modelElement.getFields().iterator(); it.hasNext();) {
 			Field childElement = (Field) it.next();
 			int visualID = CrossflowVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == Field3EditPart.VISUAL_ID) {
+			if (visualID == DataField3EditPart.VISUAL_ID) {
+				result.add(new CrossflowNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == EnumField3EditPart.VISUAL_ID) {
 				result.add(new CrossflowNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -268,7 +283,7 @@ public class CrossflowDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<CrossflowNodeDescriptor> getSerialiserSerialiserParametersCompartment_7004SemanticChildren(
+	public static List<CrossflowNodeDescriptor> getSerializerSerializerParametersCompartment_7005SemanticChildren(
 			View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
@@ -277,7 +292,7 @@ public class CrossflowDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		Serialiser modelElement = (Serialiser) containerView.getElement();
+		Serializer modelElement = (Serializer) containerView.getElement();
 		LinkedList<CrossflowNodeDescriptor> result = new LinkedList<CrossflowNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getParameters().iterator(); it.hasNext();) {
 			Parameter childElement = (Parameter) it.next();
@@ -317,24 +332,30 @@ public class CrossflowDiagramUpdater {
 			return getScriptedTask_2015ContainedLinks(view);
 		case ReusableComponentEditPart.VISUAL_ID:
 			return getReusableComponent_2017ContainedLinks(view);
+		case DataFieldEditPart.VISUAL_ID:
+			return getDataField_2019ContainedLinks(view);
+		case EnumFieldEditPart.VISUAL_ID:
+			return getEnumField_2020ContainedLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010ContainedLinks(view);
 		case TypeEditPart.VISUAL_ID:
 			return getType_2011ContainedLinks(view);
-		case FieldEditPart.VISUAL_ID:
-			return getField_2014ContainedLinks(view);
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013ContainedLinks(view);
-		case SerialiserEditPart.VISUAL_ID:
-			return getSerialiser_2016ContainedLinks(view);
-		case Field2EditPart.VISUAL_ID:
-			return getField_3003ContainedLinks(view);
-		case Field3EditPart.VISUAL_ID:
-			return getField_3001ContainedLinks(view);
+		case SerializerEditPart.VISUAL_ID:
+			return getSerializer_2018ContainedLinks(view);
+		case DataField2EditPart.VISUAL_ID:
+			return getDataField_3006ContainedLinks(view);
+		case EnumField2EditPart.VISUAL_ID:
+			return getEnumField_3007ContainedLinks(view);
+		case DataField3EditPart.VISUAL_ID:
+			return getDataField_3008ContainedLinks(view);
+		case EnumField3EditPart.VISUAL_ID:
+			return getEnumField_3009ContainedLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002ContainedLinks(view);
 		case Parameter2EditPart.VISUAL_ID:
-			return getParameter_3004ContainedLinks(view);
+			return getParameter_3005ContainedLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -364,24 +385,30 @@ public class CrossflowDiagramUpdater {
 			return getScriptedTask_2015IncomingLinks(view);
 		case ReusableComponentEditPart.VISUAL_ID:
 			return getReusableComponent_2017IncomingLinks(view);
+		case DataFieldEditPart.VISUAL_ID:
+			return getDataField_2019IncomingLinks(view);
+		case EnumFieldEditPart.VISUAL_ID:
+			return getEnumField_2020IncomingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010IncomingLinks(view);
 		case TypeEditPart.VISUAL_ID:
 			return getType_2011IncomingLinks(view);
-		case FieldEditPart.VISUAL_ID:
-			return getField_2014IncomingLinks(view);
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013IncomingLinks(view);
-		case SerialiserEditPart.VISUAL_ID:
-			return getSerialiser_2016IncomingLinks(view);
-		case Field2EditPart.VISUAL_ID:
-			return getField_3003IncomingLinks(view);
-		case Field3EditPart.VISUAL_ID:
-			return getField_3001IncomingLinks(view);
+		case SerializerEditPart.VISUAL_ID:
+			return getSerializer_2018IncomingLinks(view);
+		case DataField2EditPart.VISUAL_ID:
+			return getDataField_3006IncomingLinks(view);
+		case EnumField2EditPart.VISUAL_ID:
+			return getEnumField_3007IncomingLinks(view);
+		case DataField3EditPart.VISUAL_ID:
+			return getDataField_3008IncomingLinks(view);
+		case EnumField3EditPart.VISUAL_ID:
+			return getEnumField_3009IncomingLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002IncomingLinks(view);
 		case Parameter2EditPart.VISUAL_ID:
-			return getParameter_3004IncomingLinks(view);
+			return getParameter_3005IncomingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -411,24 +438,30 @@ public class CrossflowDiagramUpdater {
 			return getScriptedTask_2015OutgoingLinks(view);
 		case ReusableComponentEditPart.VISUAL_ID:
 			return getReusableComponent_2017OutgoingLinks(view);
+		case DataFieldEditPart.VISUAL_ID:
+			return getDataField_2019OutgoingLinks(view);
+		case EnumFieldEditPart.VISUAL_ID:
+			return getEnumField_2020OutgoingLinks(view);
 		case TaskEditPart.VISUAL_ID:
 			return getTask_2010OutgoingLinks(view);
 		case TypeEditPart.VISUAL_ID:
 			return getType_2011OutgoingLinks(view);
-		case FieldEditPart.VISUAL_ID:
-			return getField_2014OutgoingLinks(view);
 		case LanguageEditPart.VISUAL_ID:
 			return getLanguage_2013OutgoingLinks(view);
-		case SerialiserEditPart.VISUAL_ID:
-			return getSerialiser_2016OutgoingLinks(view);
-		case Field2EditPart.VISUAL_ID:
-			return getField_3003OutgoingLinks(view);
-		case Field3EditPart.VISUAL_ID:
-			return getField_3001OutgoingLinks(view);
+		case SerializerEditPart.VISUAL_ID:
+			return getSerializer_2018OutgoingLinks(view);
+		case DataField2EditPart.VISUAL_ID:
+			return getDataField_3006OutgoingLinks(view);
+		case EnumField2EditPart.VISUAL_ID:
+			return getEnumField_3007OutgoingLinks(view);
+		case DataField3EditPart.VISUAL_ID:
+			return getDataField_3008OutgoingLinks(view);
+		case EnumField3EditPart.VISUAL_ID:
+			return getEnumField_3009OutgoingLinks(view);
 		case ParameterEditPart.VISUAL_ID:
 			return getParameter_3002OutgoingLinks(view);
 		case Parameter2EditPart.VISUAL_ID:
-			return getParameter_3004OutgoingLinks(view);
+			return getParameter_3005OutgoingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -533,13 +566,27 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getReusableComponent_2017ContainedLinks(View view) {
 		ReusableComponent modelElement = (ReusableComponent) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
 		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
 		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_2019ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_2020ContainedLinks(View view) {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -565,35 +612,42 @@ public class CrossflowDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_2014ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getSerialiser_2016ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getField_3003ContainedLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getSerializer_2018ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_3001ContainedLinks(View view) {
+	public static List<CrossflowLinkDescriptor> getDataField_3006ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3007ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_3008ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3009ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -605,9 +659,9 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getParameter_3004ContainedLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getParameter_3005ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -720,8 +774,8 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getReusableComponent_2017IncomingLinks(View view) {
 		ReusableComponent modelElement = (ReusableComponent) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
@@ -729,6 +783,20 @@ public class CrossflowDiagramUpdater {
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
 		result.addAll(getIncomingFeatureModelFacetLinks_Stream_InputOf_4005(modelElement, crossReferences));
 		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_2019IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_2020IncomingLinks(View view) {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -759,35 +827,42 @@ public class CrossflowDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_2014IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getSerialiser_2016IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getField_3003IncomingLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getSerializer_2018IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_3001IncomingLinks(View view) {
+	public static List<CrossflowLinkDescriptor> getDataField_3006IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3007IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_3008IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3009IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -799,9 +874,9 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getParameter_3004IncomingLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getParameter_3005IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -898,13 +973,27 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
+	 * @generated
+	 */
 	public static List<CrossflowLinkDescriptor> getReusableComponent_2017OutgoingLinks(View view) {
 		ReusableComponent modelElement = (ReusableComponent) view.getElement();
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
 		result.addAll(getOutgoingFeatureModelFacetLinks_Task_Output_4003(modelElement));
 		return result;
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_2019OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_2020OutgoingLinks(View view) {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -930,35 +1019,42 @@ public class CrossflowDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_2014OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<CrossflowLinkDescriptor> getLanguage_2013OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getSerialiser_2016OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getField_3003OutgoingLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getSerializer_2018OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<CrossflowLinkDescriptor> getField_3001OutgoingLinks(View view) {
+	public static List<CrossflowLinkDescriptor> getDataField_3006OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3007OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getDataField_3008OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getEnumField_3009OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -970,9 +1066,9 @@ public class CrossflowDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<CrossflowLinkDescriptor> getParameter_3004OutgoingLinks(View view) {
+	 * @generated
+	 */
+	public static List<CrossflowLinkDescriptor> getParameter_3005OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -1088,11 +1184,12 @@ public class CrossflowDiagramUpdater {
 	private static Collection<CrossflowLinkDescriptor> getOutgoingFeatureModelFacetLinks_Type_Extending_4004(
 			Type source) {
 		LinkedList<CrossflowLinkDescriptor> result = new LinkedList<CrossflowLinkDescriptor>();
-		for (Iterator<?> destinations = source.getExtending().iterator(); destinations.hasNext();) {
-			Type destination = (Type) destinations.next();
-			result.add(new CrossflowLinkDescriptor(source, destination, CrossflowElementTypes.TypeExtending_4004,
-					TypeExtendingEditPart.VISUAL_ID));
+		Type destination = source.getExtending();
+		if (destination == null) {
+			return result;
 		}
+		result.add(new CrossflowLinkDescriptor(source, destination, CrossflowElementTypes.TypeExtending_4004,
+				TypeExtendingEditPart.VISUAL_ID));
 		return result;
 	}
 

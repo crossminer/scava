@@ -107,6 +107,7 @@ public class Job implements Serializable {
 		this.timeout = timeout;
 	}
 
+	@Deprecated
 	public String getXML() {
 		String jobId = this.jobId;
 		int failures = this.getFailures();

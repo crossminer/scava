@@ -7,8 +7,8 @@ import crossflow.Field;
 import crossflow.Language;
 import crossflow.Stream;
 import crossflow.Task;
-
 import crossflow.Type;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -244,6 +244,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -253,6 +254,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -265,6 +267,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Stream> getInput() {
 		if (input == null) {
 			input = new EObjectWithInverseResolvingEList.ManyInverse<Stream>(Stream.class, this, CrossflowPackage.TASK__INPUT, CrossflowPackage.STREAM__INPUT_OF);
@@ -277,6 +280,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Stream> getOutput() {
 		if (output == null) {
 			output = new EObjectWithInverseResolvingEList.ManyInverse<Stream>(Stream.class, this, CrossflowPackage.TASK__OUTPUT, CrossflowPackage.STREAM__OUTPUT_OF);
@@ -289,6 +293,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getMasterOnly() {
 		return masterOnly;
 	}
@@ -298,6 +303,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMasterOnly(Boolean newMasterOnly) {
 		Boolean oldMasterOnly = masterOnly;
 		masterOnly = newMasterOnly;
@@ -310,6 +316,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getParallel() {
 		return parallel;
 	}
@@ -319,6 +326,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setParallel(Boolean newParallel) {
 		Boolean oldParallel = parallel;
 		parallel = newParallel;
@@ -331,6 +339,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getCached() {
 		return cached;
 	}
@@ -340,6 +349,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCached(Boolean newCached) {
 		Boolean oldCached = cached;
 		cached = newCached;
@@ -352,6 +362,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getMultipleOutputs() {
 		return multipleOutputs;
 	}
@@ -361,6 +372,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMultipleOutputs(Boolean newMultipleOutputs) {
 		Boolean oldMultipleOutputs = multipleOutputs;
 		multipleOutputs = newMultipleOutputs;
@@ -373,6 +385,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getImpl() {
 		return impl;
 	}
@@ -382,6 +395,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setImpl(String newImpl) {
 		String oldImpl = impl;
 		impl = newImpl;
@@ -394,6 +408,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Field> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectResolvingEList<Field>(Field.class, this, CrossflowPackage.TASK__PARAMETERS);
@@ -406,6 +421,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Language> getLanguages() {
 		if (languages == null) {
 			languages = new EObjectResolvingEList<Language>(Language.class, this, CrossflowPackage.TASK__LANGUAGES);
@@ -418,6 +434,7 @@ public class TaskImpl extends EObjectImpl implements Task {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Type> getConfigurations() {
 		if (configurations == null) {
 			configurations = new EObjectResolvingEList<Type>(Type.class, this, CrossflowPackage.TASK__CONFIGURATIONS);

@@ -12,6 +12,8 @@ import java.util.List;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.draw2d.GridData;
+import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.RoundedRectangle;
@@ -78,7 +80,7 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
 		for (IConfigurationElement ice : reusableComponentsCEs) {
 			Bundle bundle = Platform.getBundle(ice.getDeclaringExtension().getContributor().getName());
-	
+
 			URL model = bundle.getEntry(ice.getAttribute("definition"));
 			// System.out.println(model);
 
@@ -89,7 +91,8 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
 			//System.out.println(resourceSet.getResources());
 
-			URI uri = URI.createPlatformPluginURI(ice.getContributor().getName()+"/"+ice.getAttribute("definition"),true);
+			URI uri = URI.createPlatformPluginURI(ice.getContributor().getName() + "/" + ice.getAttribute("definition"),
+					true);
 
 			if (!resourceSet.getResources().stream().map(r -> r.getURI()).anyMatch(r -> r.equals(uri))) {
 
@@ -352,7 +355,14 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public ReusableComponentFigure() {
+
+			GridLayout layoutThis = new GridLayout();
+			layoutThis.numColumns = 1;
+			layoutThis.makeColumnsEqualWidth = true;
+			this.setLayoutManager(layoutThis);
+
 			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(8), getMapMode().DPtoLP(8)));
+			this.setBackgroundColor(THIS_BACK);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -367,7 +377,15 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 
 			fFigureReusableComponentLabelFigure.setText("ReusableComponent");
 
-			this.add(fFigureReusableComponentLabelFigure);
+			GridData constraintFFigureReusableComponentLabelFigure = new GridData();
+			constraintFFigureReusableComponentLabelFigure.verticalAlignment = GridData.CENTER;
+			constraintFFigureReusableComponentLabelFigure.horizontalAlignment = GridData.CENTER;
+			constraintFFigureReusableComponentLabelFigure.horizontalIndent = 0;
+			constraintFFigureReusableComponentLabelFigure.horizontalSpan = 1;
+			constraintFFigureReusableComponentLabelFigure.verticalSpan = 1;
+			constraintFFigureReusableComponentLabelFigure.grabExcessHorizontalSpace = true;
+			constraintFFigureReusableComponentLabelFigure.grabExcessVerticalSpace = true;
+			this.add(fFigureReusableComponentLabelFigure, constraintFFigureReusableComponentLabelFigure);
 
 		}
 
@@ -379,5 +397,10 @@ public class ReusableComponentEditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	* @generated
+	*/
+	static final Color THIS_BACK = new Color(null, 255, 255, 181);
 
 }

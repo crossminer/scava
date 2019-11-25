@@ -151,6 +151,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getFullyQualifiedName() {
 		return fullyQualifiedName;
 	}
@@ -160,6 +161,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFullyQualifiedName(String newFullyQualifiedName) {
 		String oldFullyQualifiedName = fullyQualifiedName;
 		fullyQualifiedName = newFullyQualifiedName;
@@ -172,6 +174,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Language getLanguage() {
 		if (language != null && language.eIsProxy()) {
 			InternalEObject oldLanguage = (InternalEObject)language;
@@ -198,6 +201,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLanguage(Language newLanguage) {
 		Language oldLanguage = language;
 		language = newLanguage;
@@ -210,6 +214,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Type getConsumes() {
 		return consumes;
 	}
@@ -234,6 +239,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setConsumes(Type newConsumes) {
 		if (newConsumes != consumes) {
 			NotificationChain msgs = null;
@@ -253,6 +259,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Type getProduces() {
 		return produces;
 	}
@@ -277,6 +284,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProduces(Type newProduces) {
 		if (newProduces != produces) {
 			NotificationChain msgs = null;
@@ -296,6 +304,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isMultipleOutputs() {
 		return multipleOutputs;
 	}
@@ -305,6 +314,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMultipleOutputs(boolean newMultipleOutputs) {
 		boolean oldMultipleOutputs = multipleOutputs;
 		multipleOutputs = newMultipleOutputs;
@@ -317,6 +327,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ComponentTypes getComponentType() {
 		return componentType;
 	}
@@ -326,6 +337,7 @@ public class ComponentImpl extends EObjectImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setComponentType(ComponentTypes newComponentType) {
 		ComponentTypes oldComponentType = componentType;
 		componentType = newComponentType == null ? COMPONENT_TYPE_EDEFAULT : newComponentType;
