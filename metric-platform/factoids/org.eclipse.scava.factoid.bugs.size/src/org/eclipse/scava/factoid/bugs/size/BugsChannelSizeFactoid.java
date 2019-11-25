@@ -128,9 +128,12 @@ public class BugsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		
 		int bugs = 0, comments = 0, patches = 0;
 		for (String tracker: sortByKeys(trackerBugs)) {
-			bugs += trackerBugs.get(tracker);
-			comments += trackerComments.get(tracker);
-			patches += trackerPatches.get(tracker);
+			if(trackerBugs.containsKey(tracker))
+				bugs += trackerBugs.get(tracker);
+			if(trackerComments.containsKey(tracker))
+				comments += trackerComments.get(tracker);
+			if(trackerPatches.containsKey(tracker))
+				patches += trackerPatches.get(tracker);
 		}
 		
 		stringBuffer.append("The bug trackers of the project contain ");
