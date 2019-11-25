@@ -40,6 +40,7 @@ import org.eclipse.scava.repository.model.cc.wiki.Wiki;
 import org.eclipse.scava.repository.model.eclipse.Documentation;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.eclipse.MailingList;
+import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import org.eclipse.scava.repository.model.importer.IImporter;
 import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
@@ -203,15 +204,29 @@ public class EclipseProjectImporter implements IImporter {
 			if ((isNotNull(currentProg, "description")))
 				project.setDescription(
 						((JSONObject) ((JSONArray) currentProg.get("description")).get(0)).get("value").toString());
-			//The commented code enables to import the parent project
-//			if ((isNotNull(currentProg, "parent_project"))) {
-//				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
-//						.get("id").toString();
-//				if (parentProjectName != null) {
-//					project.setParent(importProject(parentProjectName, platform, false));
-//					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
-//				}
-//			}
+			if((isNotNull(currentProg, "github_repos"))) {
+				JSONArray githubRepos = (JSONArray) currentProg.get("github_repos");
+				Iterator<JSONObject> iter = githubRepos.iterator();
+				GitHubBugTracker bt = null;
+				while (iter.hasNext()) {
+					bt = new GitHubBugTracker();
+					JSONObject entry = (JSONObject) iter.next();
+					String prjId = (String) entry.get("url");
+					prjId = prjId.replace("https://github.com/", "");
+					
+					String owner = prjId.split("/")[0];
+					String repo = prjId.split("/")[1];
+					
+					bt.setUrl("https://api.github.com/repos/" + projectId + "/issues");
+					logger.info("Creating a GitHub Bug Tracker Reader. Owner: "+owner+" Repository: "+repo);
+					{
+						logger.info("Creating a GitHub Bug Tracker with no authentication.");
+						bt.setProject(owner, repo);
+					}
+					project.getBugTrackingSystems().add(bt);
+					
+				}
+			}
 
 			if ((isNotNull(currentProg, "download_url")))
 				project.setDownloadsUrl(
@@ -235,6 +250,20 @@ public class EclipseProjectImporter implements IImporter {
 			if (projectToBeUpdated) {
 				project.getCommunicationChannels().clear();
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
+			}
+			if ((isNotNullObj(currentProg, "dev_list"))) {
+				JSONObject devList = (JSONObject) currentProg.get("dev_list");
+				MailingList mailingList = null;
+			
+				mailingList = new MailingList();
+				mailingList.setName((String) devList.get("name"));
+				mailingList.setUrl((String) devList.get("url"));
+				if (mailingList.getUrl().startsWith("news://") || mailingList.getUrl().startsWith("git://")
+						|| mailingList.getUrl().startsWith("svn://"))
+					mailingList.setNonProcessable(false);
+				else
+					mailingList.setNonProcessable(true);
+				project.getCommunicationChannels().add(mailingList);
 			}
 
 			if ((isNotNull(currentProg, "documentation_url"))) {
@@ -540,7 +569,6 @@ public class EclipseProjectImporter implements IImporter {
 
 		Project projectTemp = null;
 		EclipseProject project = new EclipseProject();
-		Boolean projectToBeUpdated = false;
 		while (iprojects.hasNext()) {
 			projectTemp = iprojects.next();
 			if (projectTemp instanceof EclipseProject) {
