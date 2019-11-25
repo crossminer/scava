@@ -43,6 +43,16 @@ public class Cache<T, K> {
 		this.provider = provider;
 		this.minUpdateIntervalMillis = minUpdateIntervalSecs * 1000;
 	}
+	
+	public boolean updatedCommunicationChannel(CommunicationChannel communicationChannel)
+	{
+		if(!this.communicationChannel.getDbObject().equals(communicationChannel.getDbObject()))
+		{
+			this.communicationChannel=communicationChannel;
+			return true;
+		}
+		return false;
+	}
 
 	public Iterable<T> getItems() throws Exception {
 		update(Calendar.getInstance().getTime());
