@@ -5,10 +5,10 @@ Bundle-SymbolicName: org.eclipse.scava.index.indexer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.osgi,
  org.elasticsearch.dependencies,
- org.eclipse.scava.platform
+ org.eclipse.scava.platform,
+ org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.index.indexer.Activator
 Export-Package: org.eclipse.scava.index.indexer
-Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 
