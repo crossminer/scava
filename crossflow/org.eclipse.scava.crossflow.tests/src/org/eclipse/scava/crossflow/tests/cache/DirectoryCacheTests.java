@@ -19,7 +19,7 @@ public class DirectoryCacheTests {
 
 		DirectoryCache cache = new DirectoryCache();
 		MinimalWorkflow cacheWorkflow = new MinimalWorkflow();
-		cacheWorkflow.getSerializer().register(NumberPair.class);
+		cacheWorkflow.getSerializer().registerType(NumberPair.class);
 		cache.setWorkflow(cacheWorkflow);
 		File directory = cache.getDirectory();
 		cache.cache(input);
@@ -32,7 +32,7 @@ public class DirectoryCacheTests {
 
 		DirectoryCache fresh = new DirectoryCache(directory);
 		MinimalWorkflow freshWorkflow = new MinimalWorkflow();
-		freshWorkflow.getSerializer().register(NumberPair.class);
+		freshWorkflow.getSerializer().registerType(NumberPair.class);
 		fresh.setWorkflow(freshWorkflow);
 
 		assertTrue(fresh.hasCachedOutputs(input));

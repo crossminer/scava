@@ -15,7 +15,7 @@ import junit.textui.TestRunner;
  * <!-- end-user-doc -->
  * @generated
  */
-public class FieldTest extends TestCase {
+public abstract class FieldTest extends TestCase {
 
 	/**
 	 * The fixture for this Field test case.
@@ -24,15 +24,6 @@ public class FieldTest extends TestCase {
 	 * @generated
 	 */
 	protected Field fixture = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(FieldTest.class);
-	}
 
 	/**
 	 * Constructs a new Field test case with the given name.
@@ -62,28 +53,6 @@ public class FieldTest extends TestCase {
 	 */
 	protected Field getFixture() {
 		return fixture;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#setUp()
-	 * @generated
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		setFixture(CrossflowFactory.eINSTANCE.createField());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		setFixture(null);
 	}
 
 } //FieldTest

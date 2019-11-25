@@ -13,7 +13,7 @@
 		<sink name="Sink" in="Results" />
 	
 		<type name="StringElement">
-			<field name="value" type="String"/>
+			<datafield name="value" type="String"/>
 		</type>
 	
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.multisource" genOutputFolder="src-gen" outputFolder="src"/>

@@ -289,6 +289,7 @@ public class SinkEditPart extends ShapeNodeEditPart {
 			this.addPoint(new Point(getMapMode().DPtoLP(5), getMapMode().DPtoLP(6)));
 			this.addPoint(new Point(getMapMode().DPtoLP(0), getMapMode().DPtoLP(4)));
 			this.setFill(true);
+			this.setBackgroundColor(THIS_BACK);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -323,5 +324,10 @@ public class SinkEditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	 * @generated
+	 */
+	static final Color THIS_BACK = new Color(null, 201, 231, 183);
 
 }

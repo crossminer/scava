@@ -10,12 +10,12 @@
 		<simple-sink name="WordCountSink"/>
 						
 		<type name="Line">
-			<field name="text" type="String"/>
+			<datafield name="text" type="String"/>
 		</type>
 		
 		<type name="WordFrequency">
-			<field name="word" type="String"/>
-			<field name="frequency" type="int"/>
+			<datafield name="word" type="String"/>
+			<datafield name="frequency" type="int"/>
 		</type>
 		
 		<language name="Java" package="org.eclipse.scava.crossflow.tests.wordcount" genOutputFolder="src-gen" outputFolder="src"/>

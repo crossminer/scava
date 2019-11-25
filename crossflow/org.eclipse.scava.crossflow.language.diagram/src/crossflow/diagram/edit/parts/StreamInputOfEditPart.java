@@ -74,8 +74,8 @@ public class StreamInputOfEditPart extends ConnectionNodeEditPart implements ITr
 		}
 
 		/**
-		* @generated
-		*/
+		 * @generated
+		 */
 		private RotatableDecoration createTargetDecoration() {
 			PolygonDecoration df = new PolygonDecoration();
 			df.setFill(true);

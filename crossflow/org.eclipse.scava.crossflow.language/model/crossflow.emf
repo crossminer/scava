@@ -12,12 +12,13 @@ class Workflow {
   val Type[*] types;
   val Field[*] parameters;
   val Language[*] languages;
-  val Serialiser serialiser;
+  val Serializer serializer;
 }
 
-@gmf.node(figure="ellipse", label="name", label.icon="false")
+@gmf.node(figure="ellipse", label="name", label.icon="false", color="255,224,224")
 abstract class Stream {
   attr String name;
+  attr boolean many = false;
 
   @gmf.link
   ref Type type;
@@ -34,7 +35,7 @@ class Topic extends Stream {
 class Queue extends Stream {
 }
 
-@gmf.node(label="name", label.icon="false")
+@gmf.node(label="name", label.icon="false", color="255,255,181")
 class Task {
   attr String name;
 
@@ -57,7 +58,7 @@ class Task {
   ref Type[*] configurations; 
 }
 
-@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 11 10 0",polygon.y="0 0 2 4 4")
+@gmf.node(label="name", label.icon="false", figure="polygon", polygon.x="0 10 11 10 0", polygon.y="0 0 2 4 4", color="201,231,183")
 class Source extends Task {
 }
 
@@ -65,7 +66,7 @@ class CsvSource extends Source {
   attr String fileName;
 }
 
-@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 10 5 0",polygon.y="0 0 4 6 4")
+@gmf.node(label="name", label.icon="false", figure="polygon",polygon.x="0 10 10 5 0",polygon.y="0 0 4 6 4", color="201,231,183")
 class Sink extends Task {
 }
 
@@ -82,7 +83,7 @@ class CommitmentTask extends Task {
 class OpinionatedTask extends Task {
 }
 
-@gmf.node(label="name")
+@gmf.node(label="name", color="245,222,170")
 class ScriptedTask extends Task {
 	attr String scriptingLanguage;
 	@emf.gen(propertyMultiLine="true")
@@ -97,45 +98,52 @@ class ReusableComponent extends Task {
 	ref crossflowComponents.Component[1] component;
 }
 
-@gmf.node(label="name", figure ="rectangle")
+@gmf.node(label="name", figure ="rectangle", label.icon="false", color="181,255,255")
 class Type {
   attr String name;
   attr String impl;
-  attr boolean[1] isMany;
 
   @gmf.link
-  ref Type[*] extending;
+  ref Type extending;
 
   @gmf.compartment(layout="list",collapsible="false")
   val Field[*] fields;
 }
 
-@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
-class Field {
+abstract class Field {
   attr String name;
-  attr String type = "String";
   attr boolean many = false;
 }
 
-@gmf.node(label="name", figure ="rectangle")
+@gmf.node(label="name,type", figure="rectangle", label.pattern="{0}:{1}", label.icon="false", color="181,255,255")
+class DataField extends Field {
+  attr String type = "String";
+}
+
+@gmf.node(label="name", figure="rectangle", label.icon="false", color="181,255,255")
+class EnumField extends Field {
+  attr String[*] values;
+}
+
+@gmf.node(label="name", figure ="rectangle", label.icon="false", color="204,204,255")
 class Language {
   attr String name;
   attr String ~package;
   attr String outputFolder;
   attr String genOutputFolder;
 
-  @gmf.compartment(layout="list",collapsible="false")
+  @gmf.compartment(layout="list",collapsible="false", color="204,204,255")
   val Parameter[*] parameters;
 }
 
-@gmf.node(label="name,value", figure="rectangle", label.pattern="{0}:{1}", label.icon="false")
+@gmf.node(label="name,value", figure="rectangle", label.pattern="{0}:{1}", label.icon="false", color="204,204,255")
 class Parameter {
   attr String name;
   attr String value;
 }
 
-@gmf.node(label="name", figure ="rectangle")
-class Serialiser {
+@gmf.node(label="name", figure ="rectangle", label.icon="false", color="204,204,255")
+class Serializer {
   attr String name;
 
   @gmf.compartment(layout="list",collapsible="false")

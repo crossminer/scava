@@ -174,6 +174,7 @@ public class CrossflowComponentsModelWizard extends Wizard implements INewWizard
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.workbench = workbench;
 		this.selection = selection;
@@ -396,6 +397,7 @@ public class CrossflowComponentsModelWizard extends Wizard implements INewWizard
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
+		@Override
 		public void createControl(Composite parent) {
 			Composite composite = new Composite(parent, SWT.NONE); {
 				GridLayout layout = new GridLayout();

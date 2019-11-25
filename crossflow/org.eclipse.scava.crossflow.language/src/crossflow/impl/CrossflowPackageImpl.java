@@ -7,6 +7,8 @@ import crossflow.CrossflowFactory;
 import crossflow.CrossflowPackage;
 import crossflow.CsvSink;
 import crossflow.CsvSource;
+import crossflow.DataField;
+import crossflow.EnumField;
 import crossflow.Field;
 import crossflow.Language;
 import crossflow.OpinionatedTask;
@@ -14,7 +16,7 @@ import crossflow.Parameter;
 import crossflow.Queue;
 import crossflow.ReusableComponent;
 import crossflow.ScriptedTask;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 import crossflow.Sink;
 import crossflow.Source;
 import crossflow.Stream;
@@ -24,7 +26,9 @@ import crossflow.Type;
 import crossflow.Workflow;
 
 import crossflowComponents.CrossflowComponentsPackage;
+
 import crossflowComponents.impl.CrossflowComponentsPackageImpl;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -149,6 +153,20 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass dataFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass enumFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass languageEClass = null;
 
 	/**
@@ -163,7 +181,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass serialiserEClass = null;
+	private EClass serializerEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -237,6 +255,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getWorkflow() {
 		return workflowEClass;
 	}
@@ -246,6 +265,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getWorkflow_Name() {
 		return (EAttribute)workflowEClass.getEStructuralFeatures().get(0);
 	}
@@ -255,6 +275,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getWorkflow_Streams() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(1);
 	}
@@ -264,6 +285,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getWorkflow_Tasks() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(2);
 	}
@@ -273,6 +295,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getWorkflow_Types() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(3);
 	}
@@ -282,6 +305,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getWorkflow_Parameters() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(4);
 	}
@@ -291,6 +315,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getWorkflow_Languages() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(5);
 	}
@@ -300,7 +325,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getWorkflow_Serialiser() {
+	@Override
+	public EReference getWorkflow_Serializer() {
 		return (EReference)workflowEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -309,6 +335,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getStream() {
 		return streamEClass;
 	}
@@ -318,6 +345,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getStream_Name() {
 		return (EAttribute)streamEClass.getEStructuralFeatures().get(0);
 	}
@@ -327,8 +355,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getStream_Type() {
-		return (EReference)streamEClass.getEStructuralFeatures().get(1);
+	@Override
+	public EAttribute getStream_Many() {
+		return (EAttribute)streamEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -336,7 +365,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getStream_InputOf() {
+	@Override
+	public EReference getStream_Type() {
 		return (EReference)streamEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -345,7 +375,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getStream_OutputOf() {
+	@Override
+	public EReference getStream_InputOf() {
 		return (EReference)streamEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -354,6 +385,17 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EReference getStream_OutputOf() {
+		return (EReference)streamEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getTopic() {
 		return topicEClass;
 	}
@@ -363,6 +405,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getQueue() {
 		return queueEClass;
 	}
@@ -372,6 +415,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTask() {
 		return taskEClass;
 	}
@@ -381,6 +425,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_Name() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(0);
 	}
@@ -390,6 +435,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTask_Input() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(1);
 	}
@@ -399,6 +445,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTask_Output() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(2);
 	}
@@ -408,6 +455,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_MasterOnly() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(3);
 	}
@@ -417,6 +465,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_Parallel() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(4);
 	}
@@ -426,6 +475,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_Cached() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(5);
 	}
@@ -435,6 +485,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_MultipleOutputs() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(6);
 	}
@@ -444,6 +495,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTask_Impl() {
 		return (EAttribute)taskEClass.getEStructuralFeatures().get(7);
 	}
@@ -453,6 +505,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTask_Parameters() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(8);
 	}
@@ -462,6 +515,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTask_Languages() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(9);
 	}
@@ -471,6 +525,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTask_Configurations() {
 		return (EReference)taskEClass.getEStructuralFeatures().get(10);
 	}
@@ -480,6 +535,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSource() {
 		return sourceEClass;
 	}
@@ -489,6 +545,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getCsvSource() {
 		return csvSourceEClass;
 	}
@@ -498,6 +555,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCsvSource_FileName() {
 		return (EAttribute)csvSourceEClass.getEStructuralFeatures().get(0);
 	}
@@ -507,6 +565,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSink() {
 		return sinkEClass;
 	}
@@ -516,6 +575,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getCsvSink() {
 		return csvSinkEClass;
 	}
@@ -525,6 +585,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCsvSink_FileName() {
 		return (EAttribute)csvSinkEClass.getEStructuralFeatures().get(0);
 	}
@@ -534,6 +595,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getCommitmentTask() {
 		return commitmentTaskEClass;
 	}
@@ -543,6 +605,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCommitmentTask_CommitAfter() {
 		return (EAttribute)commitmentTaskEClass.getEStructuralFeatures().get(0);
 	}
@@ -552,6 +615,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getOpinionatedTask() {
 		return opinionatedTaskEClass;
 	}
@@ -561,6 +625,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScriptedTask() {
 		return scriptedTaskEClass;
 	}
@@ -570,6 +635,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScriptedTask_ScriptingLanguage() {
 		return (EAttribute)scriptedTaskEClass.getEStructuralFeatures().get(0);
 	}
@@ -579,6 +645,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScriptedTask_Script() {
 		return (EAttribute)scriptedTaskEClass.getEStructuralFeatures().get(1);
 	}
@@ -588,6 +655,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScriptedTask_OutputVariables() {
 		return (EReference)scriptedTaskEClass.getEStructuralFeatures().get(2);
 	}
@@ -597,6 +665,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getReusableComponent() {
 		return reusableComponentEClass;
 	}
@@ -606,6 +675,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getReusableComponent_Component() {
 		return (EReference)reusableComponentEClass.getEStructuralFeatures().get(0);
 	}
@@ -615,6 +685,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getType() {
 		return typeEClass;
 	}
@@ -624,6 +695,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getType_Name() {
 		return (EAttribute)typeEClass.getEStructuralFeatures().get(0);
 	}
@@ -633,6 +705,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getType_Impl() {
 		return (EAttribute)typeEClass.getEStructuralFeatures().get(1);
 	}
@@ -642,8 +715,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getType_IsMany() {
-		return (EAttribute)typeEClass.getEStructuralFeatures().get(2);
+	@Override
+	public EReference getType_Extending() {
+		return (EReference)typeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -651,7 +725,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getType_Extending() {
+	@Override
+	public EReference getType_Fields() {
 		return (EReference)typeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -660,15 +735,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getType_Fields() {
-		return (EReference)typeEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public EClass getField() {
 		return fieldEClass;
 	}
@@ -678,6 +745,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getField_Name() {
 		return (EAttribute)fieldEClass.getEStructuralFeatures().get(0);
 	}
@@ -687,7 +755,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getField_Type() {
+	@Override
+	public EAttribute getField_Many() {
 		return (EAttribute)fieldEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -696,8 +765,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getField_Many() {
-		return (EAttribute)fieldEClass.getEStructuralFeatures().get(2);
+	@Override
+	public EClass getDataField() {
+		return dataFieldEClass;
 	}
 
 	/**
@@ -705,6 +775,37 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EAttribute getDataField_Type() {
+		return (EAttribute)dataFieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getEnumField() {
+		return enumFieldEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getEnumField_Values() {
+		return (EAttribute)enumFieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getLanguage() {
 		return languageEClass;
 	}
@@ -714,6 +815,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLanguage_Name() {
 		return (EAttribute)languageEClass.getEStructuralFeatures().get(0);
 	}
@@ -723,6 +825,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLanguage_Package() {
 		return (EAttribute)languageEClass.getEStructuralFeatures().get(1);
 	}
@@ -732,6 +835,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLanguage_OutputFolder() {
 		return (EAttribute)languageEClass.getEStructuralFeatures().get(2);
 	}
@@ -741,6 +845,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLanguage_GenOutputFolder() {
 		return (EAttribute)languageEClass.getEStructuralFeatures().get(3);
 	}
@@ -750,6 +855,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getLanguage_Parameters() {
 		return (EReference)languageEClass.getEStructuralFeatures().get(4);
 	}
@@ -759,6 +865,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getParameter() {
 		return parameterEClass;
 	}
@@ -768,6 +875,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getParameter_Name() {
 		return (EAttribute)parameterEClass.getEStructuralFeatures().get(0);
 	}
@@ -777,6 +885,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getParameter_Value() {
 		return (EAttribute)parameterEClass.getEStructuralFeatures().get(1);
 	}
@@ -786,8 +895,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getSerialiser() {
-		return serialiserEClass;
+	@Override
+	public EClass getSerializer() {
+		return serializerEClass;
 	}
 
 	/**
@@ -795,8 +905,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getSerialiser_Name() {
-		return (EAttribute)serialiserEClass.getEStructuralFeatures().get(0);
+	@Override
+	public EAttribute getSerializer_Name() {
+		return (EAttribute)serializerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -804,8 +915,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSerialiser_Parameters() {
-		return (EReference)serialiserEClass.getEStructuralFeatures().get(1);
+	@Override
+	public EReference getSerializer_Parameters() {
+		return (EReference)serializerEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -813,6 +925,7 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CrossflowFactory getCrossflowFactory() {
 		return (CrossflowFactory)getEFactoryInstance();
 	}
@@ -843,10 +956,11 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEReference(workflowEClass, WORKFLOW__TYPES);
 		createEReference(workflowEClass, WORKFLOW__PARAMETERS);
 		createEReference(workflowEClass, WORKFLOW__LANGUAGES);
-		createEReference(workflowEClass, WORKFLOW__SERIALISER);
+		createEReference(workflowEClass, WORKFLOW__SERIALIZER);
 
 		streamEClass = createEClass(STREAM);
 		createEAttribute(streamEClass, STREAM__NAME);
+		createEAttribute(streamEClass, STREAM__MANY);
 		createEReference(streamEClass, STREAM__TYPE);
 		createEReference(streamEClass, STREAM__INPUT_OF);
 		createEReference(streamEClass, STREAM__OUTPUT_OF);
@@ -894,14 +1008,18 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		typeEClass = createEClass(TYPE);
 		createEAttribute(typeEClass, TYPE__NAME);
 		createEAttribute(typeEClass, TYPE__IMPL);
-		createEAttribute(typeEClass, TYPE__IS_MANY);
 		createEReference(typeEClass, TYPE__EXTENDING);
 		createEReference(typeEClass, TYPE__FIELDS);
 
 		fieldEClass = createEClass(FIELD);
 		createEAttribute(fieldEClass, FIELD__NAME);
-		createEAttribute(fieldEClass, FIELD__TYPE);
 		createEAttribute(fieldEClass, FIELD__MANY);
+
+		dataFieldEClass = createEClass(DATA_FIELD);
+		createEAttribute(dataFieldEClass, DATA_FIELD__TYPE);
+
+		enumFieldEClass = createEClass(ENUM_FIELD);
+		createEAttribute(enumFieldEClass, ENUM_FIELD__VALUES);
 
 		languageEClass = createEClass(LANGUAGE);
 		createEAttribute(languageEClass, LANGUAGE__NAME);
@@ -914,9 +1032,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		createEAttribute(parameterEClass, PARAMETER__NAME);
 		createEAttribute(parameterEClass, PARAMETER__VALUE);
 
-		serialiserEClass = createEClass(SERIALISER);
-		createEAttribute(serialiserEClass, SERIALISER__NAME);
-		createEReference(serialiserEClass, SERIALISER__PARAMETERS);
+		serializerEClass = createEClass(SERIALIZER);
+		createEAttribute(serializerEClass, SERIALIZER__NAME);
+		createEReference(serializerEClass, SERIALIZER__PARAMETERS);
 	}
 
 	/**
@@ -960,6 +1078,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		opinionatedTaskEClass.getESuperTypes().add(this.getTask());
 		scriptedTaskEClass.getESuperTypes().add(this.getTask());
 		reusableComponentEClass.getESuperTypes().add(this.getTask());
+		dataFieldEClass.getESuperTypes().add(this.getField());
+		enumFieldEClass.getESuperTypes().add(this.getField());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(workflowEClass, Workflow.class, "Workflow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -969,10 +1089,11 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEReference(getWorkflow_Types(), this.getType(), null, "types", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Parameters(), this.getField(), null, "parameters", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkflow_Languages(), this.getLanguage(), null, "languages", null, 0, -1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getWorkflow_Serialiser(), this.getSerialiser(), null, "serialiser", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorkflow_Serializer(), this.getSerializer(), null, "serializer", null, 0, 1, Workflow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(streamEClass, Stream.class, "Stream", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStream_Name(), ecorePackage.getEString(), "name", null, 0, 1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getStream_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStream_Type(), this.getType(), null, "type", null, 0, 1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStream_InputOf(), this.getTask(), this.getTask_Input(), "inputOf", null, 0, -1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStream_OutputOf(), this.getTask(), this.getTask_Output(), "outputOf", null, 0, -1, Stream.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1020,14 +1141,18 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getType_Impl(), ecorePackage.getEString(), "impl", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getType_IsMany(), ecorePackage.getEBoolean(), "isMany", null, 1, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getType_Extending(), this.getType(), null, "extending", null, 0, -1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getType_Extending(), this.getType(), null, "extending", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getType_Fields(), this.getField(), null, "fields", null, 0, -1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(fieldEClass, Field.class, "Field", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(fieldEClass, Field.class, "Field", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getField_Name(), ecorePackage.getEString(), "name", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getField_Many(), ecorePackage.getEBoolean(), "many", "false", 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(dataFieldEClass, DataField.class, "DataField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDataField_Type(), ecorePackage.getEString(), "type", "String", 0, 1, DataField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(enumFieldEClass, EnumField.class, "EnumField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEnumField_Values(), ecorePackage.getEString(), "values", null, 0, -1, EnumField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(languageEClass, Language.class, "Language", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLanguage_Name(), ecorePackage.getEString(), "name", null, 0, 1, Language.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1040,9 +1165,9 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParameter_Value(), ecorePackage.getEString(), "value", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(serialiserEClass, Serialiser.class, "Serialiser", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSerialiser_Name(), ecorePackage.getEString(), "name", null, 0, 1, Serialiser.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSerialiser_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Serialiser.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(serializerEClass, Serializer.class, "Serializer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSerializer_Name(), ecorePackage.getEString(), "name", null, 0, 1, Serializer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSerializer_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Serializer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -1107,14 +1232,16 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   new String[] {
 			   "figure", "ellipse",
 			   "label", "name",
-			   "label.icon", "false"
+			   "label.icon", "false",
+			   "color", "255,224,224"
 		   });
 		addAnnotation
 		  (taskEClass,
 		   source,
 		   new String[] {
 			   "label", "name",
-			   "label.icon", "false"
+			   "label.icon", "false",
+			   "color", "255,255,181"
 		   });
 		addAnnotation
 		  (sourceEClass,
@@ -1124,7 +1251,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label.icon", "false",
 			   "figure", "polygon",
 			   "polygon.x", "0 10 11 10 0",
-			   "polygon.y", "0 0 2 4 4"
+			   "polygon.y", "0 0 2 4 4",
+			   "color", "201,231,183"
 		   });
 		addAnnotation
 		  (sinkEClass,
@@ -1134,7 +1262,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label.icon", "false",
 			   "figure", "polygon",
 			   "polygon.x", "0 10 10 5 0",
-			   "polygon.y", "0 0 4 6 4"
+			   "polygon.y", "0 0 4 6 4",
+			   "color", "201,231,183"
 		   });
 		addAnnotation
 		  (commitmentTaskEClass,
@@ -1152,7 +1281,8 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		  (scriptedTaskEClass,
 		   source,
 		   new String[] {
-			   "label", "name"
+			   "label", "name",
+			   "color", "245,222,170"
 		   });
 		addAnnotation
 		  (reusableComponentEClass,
@@ -1165,23 +1295,37 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   source,
 		   new String[] {
 			   "label", "name",
-			   "figure", "rectangle"
+			   "figure", "rectangle",
+			   "label.icon", "false",
+			   "color", "181,255,255"
 		   });
 		addAnnotation
-		  (fieldEClass,
+		  (dataFieldEClass,
 		   source,
 		   new String[] {
 			   "label", "name,type",
 			   "figure", "rectangle",
 			   "label.pattern", "{0}:{1}",
-			   "label.icon", "false"
+			   "label.icon", "false",
+			   "color", "181,255,255"
+		   });
+		addAnnotation
+		  (enumFieldEClass,
+		   source,
+		   new String[] {
+			   "label", "name",
+			   "figure", "rectangle",
+			   "label.icon", "false",
+			   "color", "181,255,255"
 		   });
 		addAnnotation
 		  (languageEClass,
 		   source,
 		   new String[] {
 			   "label", "name",
-			   "figure", "rectangle"
+			   "figure", "rectangle",
+			   "label.icon", "false",
+			   "color", "204,204,255"
 		   });
 		addAnnotation
 		  (parameterEClass,
@@ -1190,14 +1334,17 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 			   "label", "name,value",
 			   "figure", "rectangle",
 			   "label.pattern", "{0}:{1}",
-			   "label.icon", "false"
+			   "label.icon", "false",
+			   "color", "204,204,255"
 		   });
 		addAnnotation
-		  (serialiserEClass,
+		  (serializerEClass,
 		   source,
 		   new String[] {
 			   "label", "name",
-			   "figure", "rectangle"
+			   "figure", "rectangle",
+			   "label.icon", "false",
+			   "color", "204,204,255"
 		   });
 	}
 
@@ -1276,10 +1423,11 @@ public class CrossflowPackageImpl extends EPackageImpl implements CrossflowPacka
 		   source,
 		   new String[] {
 			   "layout", "list",
-			   "collapsible", "false"
+			   "collapsible", "false",
+			   "color", "204,204,255"
 		   });
 		addAnnotation
-		  (getSerialiser_Parameters(),
+		  (getSerializer_Parameters(),
 		   source,
 		   new String[] {
 			   "layout", "list",

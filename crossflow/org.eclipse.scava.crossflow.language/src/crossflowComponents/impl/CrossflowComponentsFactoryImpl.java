@@ -98,6 +98,7 @@ public class CrossflowComponentsFactoryImpl extends EFactoryImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Component createComponent() {
 		ComponentImpl component = new ComponentImpl();
 		return component;
@@ -128,6 +129,7 @@ public class CrossflowComponentsFactoryImpl extends EFactoryImpl implements Cros
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CrossflowComponentsPackage getCrossflowComponentsPackage() {
 		return (CrossflowComponentsPackage)getEPackage();
 	}

@@ -17,7 +17,7 @@
         eType="#//Field" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="languages" upperBound="-1"
         eType="#//Language" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="serialiser" eType="#//Serialiser"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serializer" eType="#//Serializer"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Stream" abstract="true">
@@ -25,8 +25,11 @@
       <details key="figure" value="ellipse"/>
       <details key="label" value="name"/>
       <details key="label.icon" value="false"/>
+      <details key="color" value="255,224,224"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="many" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type">
       <eAnnotations source="gmf.link"/>
     </eStructuralFeatures>
@@ -45,6 +48,7 @@
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="label.icon" value="false"/>
+      <details key="color" value="255,255,181"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
@@ -76,6 +80,7 @@
       <details key="figure" value="polygon"/>
       <details key="polygon.x" value="0 10 11 10 0"/>
       <details key="polygon.y" value="0 0 2 4 4"/>
+      <details key="color" value="201,231,183"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CsvSource" eSuperTypes="#//Source">
@@ -88,6 +93,7 @@
       <details key="figure" value="polygon"/>
       <details key="polygon.x" value="0 10 10 5 0"/>
       <details key="polygon.y" value="0 0 4 6 4"/>
+      <details key="color" value="201,231,183"/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CsvSink" eSuperTypes="#//Sink">
@@ -108,6 +114,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ScriptedTask" eSuperTypes="#//Task">
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
+      <details key="color" value="245,222,170"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scriptingLanguage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="script" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -134,13 +141,12 @@
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="figure" value="rectangle"/>
+      <details key="label.icon" value="false"/>
+      <details key="color" value="181,255,255"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="impl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isMany" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="extending" upperBound="-1"
-        eType="#//Type">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extending" eType="#//Type">
       <eAnnotations source="gmf.link"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
@@ -151,23 +157,38 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Field">
+  <eClassifiers xsi:type="ecore:EClass" name="Field" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="many" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataField" eSuperTypes="#//Field">
     <eAnnotations source="gmf.node">
       <details key="label" value="name,type"/>
       <details key="figure" value="rectangle"/>
       <details key="label.pattern" value="{0}:{1}"/>
       <details key="label.icon" value="false"/>
+      <details key="color" value="181,255,255"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral="String"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="many" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EnumField" eSuperTypes="#//Field">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="figure" value="rectangle"/>
+      <details key="label.icon" value="false"/>
+      <details key="color" value="181,255,255"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Language">
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="figure" value="rectangle"/>
+      <details key="label.icon" value="false"/>
+      <details key="color" value="204,204,255"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="package" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -178,6 +199,7 @@
       <eAnnotations source="gmf.compartment">
         <details key="layout" value="list"/>
         <details key="collapsible" value="false"/>
+        <details key="color" value="204,204,255"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -187,14 +209,17 @@
       <details key="figure" value="rectangle"/>
       <details key="label.pattern" value="{0}:{1}"/>
       <details key="label.icon" value="false"/>
+      <details key="color" value="204,204,255"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Serialiser">
+  <eClassifiers xsi:type="ecore:EClass" name="Serializer">
     <eAnnotations source="gmf.node">
       <details key="label" value="name"/>
       <details key="figure" value="rectangle"/>
+      <details key="label.icon" value="false"/>
+      <details key="color" value="204,204,255"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"

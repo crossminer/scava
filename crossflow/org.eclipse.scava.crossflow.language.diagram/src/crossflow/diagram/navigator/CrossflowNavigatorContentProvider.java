@@ -31,9 +31,12 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
 import crossflow.diagram.edit.parts.CommitmentTaskEditPart;
 import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
-import crossflow.diagram.edit.parts.Field2EditPart;
-import crossflow.diagram.edit.parts.Field3EditPart;
-import crossflow.diagram.edit.parts.FieldEditPart;
+import crossflow.diagram.edit.parts.DataField2EditPart;
+import crossflow.diagram.edit.parts.DataField3EditPart;
+import crossflow.diagram.edit.parts.DataFieldEditPart;
+import crossflow.diagram.edit.parts.EnumField2EditPart;
+import crossflow.diagram.edit.parts.EnumField3EditPart;
+import crossflow.diagram.edit.parts.EnumFieldEditPart;
 import crossflow.diagram.edit.parts.LanguageEditPart;
 import crossflow.diagram.edit.parts.LanguageLanguageParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
@@ -43,8 +46,8 @@ import crossflow.diagram.edit.parts.QueueEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart;
-import crossflow.diagram.edit.parts.SerialiserEditPart;
-import crossflow.diagram.edit.parts.SerialiserSerialiserParametersCompartmentEditPart;
+import crossflow.diagram.edit.parts.SerializerEditPart;
+import crossflow.diagram.edit.parts.SerializerSerializerParametersCompartmentEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
 import crossflow.diagram.edit.parts.StreamInputOfEditPart;
@@ -288,19 +291,22 @@ public class CrossflowNavigatorContentProvider implements ICommonContentProvider
 					CrossflowVisualIDRegistry.getType(ReusableComponentEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
+					CrossflowVisualIDRegistry.getType(DataFieldEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					CrossflowVisualIDRegistry.getType(EnumFieldEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(TaskEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(TypeEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
-					CrossflowVisualIDRegistry.getType(FieldEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-			connectedViews = getChildrenByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(LanguageEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
-					CrossflowVisualIDRegistry.getType(SerialiserEditPart.VISUAL_ID));
+					CrossflowVisualIDRegistry.getType(SerializerEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(StreamTypeEditPart.VISUAL_ID));
@@ -564,7 +570,12 @@ public class CrossflowNavigatorContentProvider implements ICommonContentProvider
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					CrossflowVisualIDRegistry.getType(Field3EditPart.VISUAL_ID));
+					CrossflowVisualIDRegistry.getType(DataField3EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					CrossflowVisualIDRegistry.getType(TypeTypeFieldsCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					CrossflowVisualIDRegistry.getType(EnumField3EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(StreamTypeEditPart.VISUAL_ID));
@@ -609,7 +620,12 @@ public class CrossflowNavigatorContentProvider implements ICommonContentProvider
 			connectedViews = getChildrenByType(Collections.singleton(sv), CrossflowVisualIDRegistry
 					.getType(ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					CrossflowVisualIDRegistry.getType(Field2EditPart.VISUAL_ID));
+					CrossflowVisualIDRegistry.getType(DataField2EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv), CrossflowVisualIDRegistry
+					.getType(ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					CrossflowVisualIDRegistry.getType(EnumField2EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 					CrossflowVisualIDRegistry.getType(StreamInputOfEditPart.VISUAL_ID));
@@ -623,18 +639,6 @@ public class CrossflowNavigatorContentProvider implements ICommonContentProvider
 			if (!outgoinglinks.isEmpty()) {
 				result.add(outgoinglinks);
 			}
-			return result.toArray();
-		}
-
-		case SerialiserEditPart.VISUAL_ID: {
-			LinkedList<CrossflowAbstractNavigatorItem> result = new LinkedList<CrossflowAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					CrossflowVisualIDRegistry.getType(SerialiserSerialiserParametersCompartmentEditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
-					CrossflowVisualIDRegistry.getType(Parameter2EditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
 
@@ -660,6 +664,18 @@ public class CrossflowNavigatorContentProvider implements ICommonContentProvider
 			if (!outgoinglinks.isEmpty()) {
 				result.add(outgoinglinks);
 			}
+			return result.toArray();
+		}
+
+		case SerializerEditPart.VISUAL_ID: {
+			LinkedList<CrossflowAbstractNavigatorItem> result = new LinkedList<CrossflowAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					CrossflowVisualIDRegistry.getType(SerializerSerializerParametersCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					CrossflowVisualIDRegistry.getType(Parameter2EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
 

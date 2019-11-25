@@ -1,0 +1,23 @@
+{
+  "stringProp": "parent",
+  "intProp": 0,
+  "longProp": 0,
+  "booleanProp": true,
+  "listProp": [
+    {
+      "stringProp": "child1",
+      "intProp": 0,
+      "longProp": 0,
+      "booleanProp": true,
+      "_type_": "SerializationTestObject"
+    },
+    {
+      "stringProp": "child2",
+      "intProp": 0,
+      "longProp": 0,
+      "booleanProp": true,
+      "_type_": "SerializationTestObject"
+    }
+  ],
+  "_type_": "SerializationTestObject"
+}

@@ -68,7 +68,7 @@ public class TypeExtendingCreateCommand extends EditElementCommand {
 		}
 
 		if (getSource() != null && getTarget() != null) {
-			getSource().getExtending().add(getTarget());
+			getSource().setExtending(getTarget());
 		}
 		return CommandResult.newOKCommandResult();
 

@@ -11,6 +11,9 @@
 			<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/java/crossflow.egx" outputroot=".">
 				<model ref="CrossflowLanguageModel"/>
 			</epsilon.egl>
+			<epsilon.egl src="../org.eclipse.scava.crossflow/src/org/eclipse/scava/crossflow/python/crossflow.egx" outputroot=".">
+				<model ref="CrossflowLanguageModel"/>
+			</epsilon.egl>
 			<epsilon.disposeModel model="CrossflowLanguageModel"/>
 		</epsilon.for>
 		<eclipse.refreshLocal resource="org.eclipse.scava.crossflow.tests" depth="-1"/>

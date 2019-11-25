@@ -57,7 +57,7 @@ public class DirectoryCache implements Cache {
 			ArrayList<Job> outputs = new ArrayList<>();
 			File inputFolder = jobFolderMap.get(input.getHash());
 			for (File outputFile : inputFolder.listFiles()) {
-				Job output = (Job) workflow.getSerializer().toObject(outputFile);
+				Job output = workflow.getSerializer().deserialize(outputFile);
 				output.setJobId(UUID.randomUUID().toString());
 				output.setCorrelationId(input.getJobId());
 				output.setCached(true);
@@ -107,7 +107,9 @@ public class DirectoryCache implements Cache {
 
 	protected void save(Job job, File file) throws Exception {
 		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(job.getXML().getBytes());
+		String serialize = workflow.getSerializer().serialize(job);
+		System.out.println(serialize);
+		fos.write(serialize.getBytes());
 		fos.flush();
 		fos.close();
 	}

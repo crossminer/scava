@@ -20,9 +20,12 @@ import crossflow.CrossflowPackage;
 import crossflow.diagram.edit.parts.CommitmentTaskNameEditPart;
 import crossflow.diagram.edit.parts.CsvSinkNameEditPart;
 import crossflow.diagram.edit.parts.CsvSourceNameEditPart;
-import crossflow.diagram.edit.parts.FieldNameType2EditPart;
-import crossflow.diagram.edit.parts.FieldNameType3EditPart;
-import crossflow.diagram.edit.parts.FieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.DataFieldNameType2EditPart;
+import crossflow.diagram.edit.parts.DataFieldNameType3EditPart;
+import crossflow.diagram.edit.parts.DataFieldNameTypeEditPart;
+import crossflow.diagram.edit.parts.EnumFieldName2EditPart;
+import crossflow.diagram.edit.parts.EnumFieldName3EditPart;
+import crossflow.diagram.edit.parts.EnumFieldNameEditPart;
 import crossflow.diagram.edit.parts.LanguageNameEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskNameEditPart;
 import crossflow.diagram.edit.parts.ParameterNameValue2EditPart;
@@ -30,7 +33,7 @@ import crossflow.diagram.edit.parts.ParameterNameValueEditPart;
 import crossflow.diagram.edit.parts.QueueNameEditPart;
 import crossflow.diagram.edit.parts.ReusableComponentNameEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskNameEditPart;
-import crossflow.diagram.edit.parts.SerialiserNameEditPart;
+import crossflow.diagram.edit.parts.SerializerNameEditPart;
 import crossflow.diagram.edit.parts.SinkNameEditPart;
 import crossflow.diagram.edit.parts.SourceNameEditPart;
 import crossflow.diagram.edit.parts.TaskNameEditPart;
@@ -217,6 +220,44 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
+	private IParser dataFieldNameType_5026Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataFieldNameType_5026Parser() {
+		if (dataFieldNameType_5026Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name(),
+					CrossflowPackage.eINSTANCE.getDataField_Type() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
+			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
+			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
+			dataFieldNameType_5026Parser = parser;
+		}
+		return dataFieldNameType_5026Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser enumFieldName_5027Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getEnumFieldName_5027Parser() {
+		if (enumFieldName_5027Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			enumFieldName_5027Parser = parser;
+		}
+		return enumFieldName_5027Parser;
+	}
+
+	/**
+	* @generated
+	*/
 	private IParser taskName_5010Parser;
 
 	/**
@@ -251,27 +292,6 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
-	private IParser fieldNameType_5016Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getFieldNameType_5016Parser() {
-		if (fieldNameType_5016Parser == null) {
-			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name(),
-					CrossflowPackage.eINSTANCE.getField_Type() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
-			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
-			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
-			fieldNameType_5016Parser = parser;
-		}
-		return fieldNameType_5016Parser;
-	}
-
-	/**
-	* @generated
-	*/
 	private IParser languageName_5015Parser;
 
 	/**
@@ -289,60 +309,94 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
-	private IParser serialiserName_5020Parser;
+	private IParser serializerName_5023Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getSerialiserName_5020Parser() {
-		if (serialiserName_5020Parser == null) {
-			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getSerialiser_Name() };
+	private IParser getSerializerName_5023Parser() {
+		if (serializerName_5023Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getSerializer_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			serialiserName_5020Parser = parser;
+			serializerName_5023Parser = parser;
 		}
-		return serialiserName_5020Parser;
+		return serializerName_5023Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser fieldNameType_5018Parser;
+	private IParser dataFieldNameType_5024Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getFieldNameType_5018Parser() {
-		if (fieldNameType_5018Parser == null) {
+	private IParser getDataFieldNameType_5024Parser() {
+		if (dataFieldNameType_5024Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name(),
-					CrossflowPackage.eINSTANCE.getField_Type() };
+					CrossflowPackage.eINSTANCE.getDataField_Type() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
-			fieldNameType_5018Parser = parser;
+			dataFieldNameType_5024Parser = parser;
 		}
-		return fieldNameType_5018Parser;
+		return dataFieldNameType_5024Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser fieldNameType_5011Parser;
+	private IParser enumFieldName_5025Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getFieldNameType_5011Parser() {
-		if (fieldNameType_5011Parser == null) {
+	private IParser getEnumFieldName_5025Parser() {
+		if (enumFieldName_5025Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			enumFieldName_5025Parser = parser;
+		}
+		return enumFieldName_5025Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataFieldNameType_5028Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataFieldNameType_5028Parser() {
+		if (dataFieldNameType_5028Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name(),
-					CrossflowPackage.eINSTANCE.getField_Type() };
+					CrossflowPackage.eINSTANCE.getDataField_Type() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
-			fieldNameType_5011Parser = parser;
+			dataFieldNameType_5028Parser = parser;
 		}
-		return fieldNameType_5011Parser;
+		return dataFieldNameType_5028Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser enumFieldName_5029Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getEnumFieldName_5029Parser() {
+		if (enumFieldName_5029Parser == null) {
+			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getField_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			enumFieldName_5029Parser = parser;
+		}
+		return enumFieldName_5029Parser;
 	}
 
 	/**
@@ -369,22 +423,22 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 	/**
 	* @generated
 	*/
-	private IParser parameterNameValue_5019Parser;
+	private IParser parameterNameValue_5022Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getParameterNameValue_5019Parser() {
-		if (parameterNameValue_5019Parser == null) {
+	private IParser getParameterNameValue_5022Parser() {
+		if (parameterNameValue_5022Parser == null) {
 			EAttribute[] features = new EAttribute[] { CrossflowPackage.eINSTANCE.getParameter_Name(),
 					CrossflowPackage.eINSTANCE.getParameter_Value() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditorPattern("{0}:{1}"); //$NON-NLS-1$
 			parser.setEditPattern("{0}:{1}"); //$NON-NLS-1$
-			parameterNameValue_5019Parser = parser;
+			parameterNameValue_5022Parser = parser;
 		}
-		return parameterNameValue_5019Parser;
+		return parameterNameValue_5022Parser;
 	}
 
 	/**
@@ -412,24 +466,30 @@ public class CrossflowParserProvider extends AbstractProvider implements IParser
 			return getScriptedTaskName_5017Parser();
 		case ReusableComponentNameEditPart.VISUAL_ID:
 			return getReusableComponentName_5021Parser();
+		case DataFieldNameTypeEditPart.VISUAL_ID:
+			return getDataFieldNameType_5026Parser();
+		case EnumFieldNameEditPart.VISUAL_ID:
+			return getEnumFieldName_5027Parser();
 		case TaskNameEditPart.VISUAL_ID:
 			return getTaskName_5010Parser();
 		case TypeNameEditPart.VISUAL_ID:
 			return getTypeName_5012Parser();
-		case FieldNameTypeEditPart.VISUAL_ID:
-			return getFieldNameType_5016Parser();
 		case LanguageNameEditPart.VISUAL_ID:
 			return getLanguageName_5015Parser();
-		case SerialiserNameEditPart.VISUAL_ID:
-			return getSerialiserName_5020Parser();
-		case FieldNameType2EditPart.VISUAL_ID:
-			return getFieldNameType_5018Parser();
-		case FieldNameType3EditPart.VISUAL_ID:
-			return getFieldNameType_5011Parser();
+		case SerializerNameEditPart.VISUAL_ID:
+			return getSerializerName_5023Parser();
+		case DataFieldNameType2EditPart.VISUAL_ID:
+			return getDataFieldNameType_5024Parser();
+		case EnumFieldName2EditPart.VISUAL_ID:
+			return getEnumFieldName_5025Parser();
+		case DataFieldNameType3EditPart.VISUAL_ID:
+			return getDataFieldNameType_5028Parser();
+		case EnumFieldName3EditPart.VISUAL_ID:
+			return getEnumFieldName_5029Parser();
 		case ParameterNameValueEditPart.VISUAL_ID:
 			return getParameterNameValue_5014Parser();
 		case ParameterNameValue2EditPart.VISUAL_ID:
-			return getParameterNameValue_5019Parser();
+			return getParameterNameValue_5022Parser();
 		}
 		return null;
 	}

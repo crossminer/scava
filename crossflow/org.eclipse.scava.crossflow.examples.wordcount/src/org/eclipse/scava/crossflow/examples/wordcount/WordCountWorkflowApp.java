@@ -14,8 +14,8 @@ public class WordCountWorkflowApp {
 		
 		//master.setParallelization(4);
 		
-		master.setInputDirectory(new File("experiment/in"));
-		master.setOutputDirectory(new File("experiment/out"));
+		master.setInputDirectory(new File("artifacts/in"));
+		master.setOutputDirectory(new File("artifacts/out"));
 		
 		master.setInstanceId("Example WordCountWorkflow Instance");
 		master.setName("WordCountWorkflow");

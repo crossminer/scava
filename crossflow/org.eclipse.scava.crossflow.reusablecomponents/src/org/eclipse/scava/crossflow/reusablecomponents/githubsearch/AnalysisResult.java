@@ -4,7 +4,7 @@ import org.eclipse.scava.crossflow.runtime.Job;
 
 public class AnalysisResult extends Job {
 	
-	private int fileCount;
+	protected int fileCount;
 	
 	public void setFileCount(int fileCount) {
 		this.fileCount = fileCount;
@@ -14,7 +14,7 @@ public class AnalysisResult extends Job {
 		return fileCount;
 	}
 	
-	private int authorCount;
+	protected int authorCount;
 	
 	public void setAuthorCount(int authorCount) {
 		this.authorCount = authorCount;
@@ -24,7 +24,7 @@ public class AnalysisResult extends Job {
 		return authorCount;
 	}
 	
-	private Repository repository;
+	protected Repository repository;
 	
 	public void setRepository(Repository repository) {
 		this.repository = repository;
@@ -34,7 +34,7 @@ public class AnalysisResult extends Job {
 		return repository;
 	}
 	
-	private Technology technology;
+	protected Technology technology;
 	
 	public void setTechnology(Technology technology) {
 		this.technology = technology;

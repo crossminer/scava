@@ -16,11 +16,11 @@
 		<sink name="Sink" in="Results" />
 		
 		<type name="IntElement">
-			<field name="value" type="int"/>
+			<datafield name="value" type="int"/>
 		</type>
 	
 		<type name="StringElement">
-			<field name="value" type="String"/>
+			<datafield name="value" type="String"/>
 		</type>
 	
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.ack" genOutputFolder="src-gen" outputFolder="src"/>

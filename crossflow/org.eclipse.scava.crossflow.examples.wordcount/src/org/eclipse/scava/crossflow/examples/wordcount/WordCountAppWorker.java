@@ -18,6 +18,7 @@ import org.eclipse.scava.crossflow.runtime.Mode;
  * (!) Requires matching instance identifier (instanceId).
  * 
  * @author Patrick Neubauer
+ * @author Konstantinos Barmpis
  *
  */
 public class WordCountAppWorker {
@@ -35,6 +36,9 @@ public class WordCountAppWorker {
 		worker1.run();
 		worker2.run();
 	
+		worker1.awaitTermination();
+		worker2.awaitTermination();
+		
 		System.out.println("Done");
 	}
 

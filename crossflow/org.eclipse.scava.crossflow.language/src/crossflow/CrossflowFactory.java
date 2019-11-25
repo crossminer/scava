@@ -139,13 +139,22 @@ public interface CrossflowFactory extends EFactory {
 	Type createType();
 
 	/**
-	 * Returns a new object of class '<em>Field</em>'.
+	 * Returns a new object of class '<em>Data Field</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Field</em>'.
+	 * @return a new object of class '<em>Data Field</em>'.
 	 * @generated
 	 */
-	Field createField();
+	DataField createDataField();
+
+	/**
+	 * Returns a new object of class '<em>Enum Field</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Enum Field</em>'.
+	 * @generated
+	 */
+	EnumField createEnumField();
 
 	/**
 	 * Returns a new object of class '<em>Language</em>'.
@@ -166,13 +175,13 @@ public interface CrossflowFactory extends EFactory {
 	Parameter createParameter();
 
 	/**
-	 * Returns a new object of class '<em>Serialiser</em>'.
+	 * Returns a new object of class '<em>Serializer</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Serialiser</em>'.
+	 * @return a new object of class '<em>Serializer</em>'.
 	 * @generated
 	 */
-	Serialiser createSerialiser();
+	Serializer createSerializer();
 
 	/**
 	 * Returns the package supported by this factory.

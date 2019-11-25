@@ -61,6 +61,7 @@ public class StreamItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
+			addManyPropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
 			addInputOfPropertyDescriptor(object);
 			addOutputOfPropertyDescriptor(object);
@@ -86,6 +87,28 @@ public class StreamItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Many feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addManyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Stream_many_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Stream_many_feature", "_UI_Stream_type"),
+				 CrossflowPackage.Literals.STREAM__MANY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -184,6 +207,7 @@ public class StreamItemProvider
 
 		switch (notification.getFeatureID(Stream.class)) {
 			case CrossflowPackage.STREAM__NAME:
+			case CrossflowPackage.STREAM__MANY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

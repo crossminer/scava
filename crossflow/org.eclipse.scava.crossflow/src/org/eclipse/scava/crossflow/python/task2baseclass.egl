@@ -88,17 +88,17 @@ class [%=t.name%]Base(Task):
                 [%}
             }%]
             
-            process = multiprocessing.Process(target=consumer)
-            process.start()
-            
             timeout = int([%=s.type.name.ftlc()%].timeout) if int([%=s.type.name.ftlc()%].timeout) > 0 else int(self.timeout)
+            
             if timeout > 0:
+                process = multiprocessing.Process(target=consumer)
+                process.start()
                 process.join(timeout)
                 if process.is_alive():
                     process.terminate()
                     raise TimeoutError
             else:
-                process.join()
+                consumer()
             
         except Exception as ex:
             self.workflow.local_logger.exception("")

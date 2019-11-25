@@ -8,6 +8,9 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.draw2d.ui.mapmode.IMapMode;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @generated NOT
@@ -28,6 +31,8 @@ public class StreamFigure extends Shape {
 
 		this.setBorder(new MarginBorder(mapMode.DPtoLP(5), mapMode.DPtoLP(5), mapMode.DPtoLP(5), mapMode.DPtoLP(5)));
 		createContents();
+		
+		this.setBackgroundColor(new Color(Display.getCurrent(), new RGB(255, 224, 224)));
 	}
 
 	private void createContents() {

@@ -49,11 +49,11 @@ public class QueueItemProvider extends StreamItemProvider {
 	 * This returns Queue.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Queue"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Queue.png"));
 	}
 
 	/**

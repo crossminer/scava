@@ -10,17 +10,17 @@
 		<simple-sink name="CalculationResultsSink"/>
 		
 		<type name="Calculation">
-			<field name="a" type="int"/>
-			<field name="b" type="int"/>
-			<field name="operator" type="String"/>
+			<datafield name="a" type="int"/>
+			<datafield name="b" type="int"/>
+			<datafield name="operator" type="String"/>
 		</type>
 		
 		<type name="CalculationResult">
-			<field name="a" type="int"/>
-			<field name="b" type="int"/>
-			<field name="operator" type="String"/>
-			<field name="worker" type="String"/>
-			<field name="result" type="String"/>
+			<datafield name="a" type="int"/>
+			<datafield name="b" type="int"/>
+			<datafield name="operator" type="String"/>
+			<datafield name="worker" type="String"/>
+			<datafield name="result" type="String"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.calculator" genOutputFolder="src-gen" outputFolder="src"/>

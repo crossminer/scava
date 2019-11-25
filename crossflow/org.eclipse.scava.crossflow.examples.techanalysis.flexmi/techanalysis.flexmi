@@ -22,22 +22,22 @@
 		
 		<!-- TYPES -->
 		<type name="Technology">
-			<field name="fileExt" type="String"/>
-			<field name="techKey" type="String"/>
+			<datafield name="fileExt" type="String"/>
+			<datafield name="techKey" type="String"/>
 		</type>
 		<type name="Repository" isMany="true" extending="Technology">
-			<field name="url" type="String"/>
-			<field name="name" type="String"/>
+			<datafield name="url" type="String"/>
+			<datafield name="name" type="String"/>
 		</type>
 		<type name="AnalysisResult" isMany="true" extending="Technology">
-			<field name="fileCount" type="int"/>
-			<field name="authorCount" type="int"/>
-			<field name="repository" type="String"/>
-			<field name="technology" type="String"/>
-			<field name="name" type="String"/>
+			<datafield name="fileCount" type="int"/>
+			<datafield name="authorCount" type="int"/>
+			<datafield name="repository" type="String"/>
+			<datafield name="technology" type="String"/>
+			<datafield name="name" type="String"/>
 		</type>
 		<type name="TechnologyCollection">
-			<field name="technologies" type="Technology" many="true"/>
+			<datafield name="technologies" type="Technology" many="true"/>
 		</type>		
 		
 	</workflow>	

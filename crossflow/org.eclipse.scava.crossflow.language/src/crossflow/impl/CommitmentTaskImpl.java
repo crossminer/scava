@@ -69,6 +69,7 @@ public class CommitmentTaskImpl extends TaskImpl implements CommitmentTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getCommitAfter() {
 		return commitAfter;
 	}
@@ -78,6 +79,7 @@ public class CommitmentTaskImpl extends TaskImpl implements CommitmentTask {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCommitAfter(int newCommitAfter) {
 		int oldCommitAfter = commitAfter;
 		commitAfter = newCommitAfter;

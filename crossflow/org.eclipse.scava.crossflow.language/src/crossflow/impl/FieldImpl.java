@@ -21,13 +21,12 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link crossflow.impl.FieldImpl#getName <em>Name</em>}</li>
- *   <li>{@link crossflow.impl.FieldImpl#getType <em>Type</em>}</li>
  *   <li>{@link crossflow.impl.FieldImpl#isMany <em>Many</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FieldImpl extends EObjectImpl implements Field {
+public abstract class FieldImpl extends EObjectImpl implements Field {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -47,26 +46,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String TYPE_EDEFAULT = "String";
-
-	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getType()
-	 * @generated
-	 * @ordered
-	 */
-	protected String type = TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isMany() <em>Many</em>}' attribute.
@@ -112,6 +91,7 @@ public class FieldImpl extends EObjectImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -121,6 +101,7 @@ public class FieldImpl extends EObjectImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -133,27 +114,7 @@ public class FieldImpl extends EObjectImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setType(String newType) {
-		String oldType = type;
-		type = newType;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.FIELD__TYPE, oldType, type));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public boolean isMany() {
 		return many;
 	}
@@ -163,6 +124,7 @@ public class FieldImpl extends EObjectImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMany(boolean newMany) {
 		boolean oldMany = many;
 		many = newMany;
@@ -180,8 +142,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 		switch (featureID) {
 			case CrossflowPackage.FIELD__NAME:
 				return getName();
-			case CrossflowPackage.FIELD__TYPE:
-				return getType();
 			case CrossflowPackage.FIELD__MANY:
 				return isMany();
 		}
@@ -198,9 +158,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 		switch (featureID) {
 			case CrossflowPackage.FIELD__NAME:
 				setName((String)newValue);
-				return;
-			case CrossflowPackage.FIELD__TYPE:
-				setType((String)newValue);
 				return;
 			case CrossflowPackage.FIELD__MANY:
 				setMany((Boolean)newValue);
@@ -220,9 +177,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 			case CrossflowPackage.FIELD__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case CrossflowPackage.FIELD__TYPE:
-				setType(TYPE_EDEFAULT);
-				return;
 			case CrossflowPackage.FIELD__MANY:
 				setMany(MANY_EDEFAULT);
 				return;
@@ -240,8 +194,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 		switch (featureID) {
 			case CrossflowPackage.FIELD__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CrossflowPackage.FIELD__TYPE:
-				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 			case CrossflowPackage.FIELD__MANY:
 				return many != MANY_EDEFAULT;
 		}
@@ -260,8 +212,6 @@ public class FieldImpl extends EObjectImpl implements Field {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", type: ");
-		result.append(type);
 		result.append(", many: ");
 		result.append(many);
 		result.append(')');

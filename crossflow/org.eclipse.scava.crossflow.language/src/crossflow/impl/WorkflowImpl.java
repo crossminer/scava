@@ -5,7 +5,7 @@ package crossflow.impl;
 import crossflow.CrossflowPackage;
 import crossflow.Field;
 import crossflow.Language;
-import crossflow.Serialiser;
+import crossflow.Serializer;
 import crossflow.Stream;
 import crossflow.Task;
 import crossflow.Type;
@@ -41,7 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link crossflow.impl.WorkflowImpl#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link crossflow.impl.WorkflowImpl#getLanguages <em>Languages</em>}</li>
- *   <li>{@link crossflow.impl.WorkflowImpl#getSerialiser <em>Serialiser</em>}</li>
+ *   <li>{@link crossflow.impl.WorkflowImpl#getSerializer <em>Serializer</em>}</li>
  * </ul>
  *
  * @generated
@@ -118,14 +118,14 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	protected EList<Language> languages;
 
 	/**
-	 * The cached value of the '{@link #getSerialiser() <em>Serialiser</em>}' containment reference.
+	 * The cached value of the '{@link #getSerializer() <em>Serializer</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSerialiser()
+	 * @see #getSerializer()
 	 * @generated
 	 * @ordered
 	 */
-	protected Serialiser serialiser;
+	protected Serializer serializer;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,6 +151,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -160,6 +161,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -172,6 +174,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Stream> getStreams() {
 		if (streams == null) {
 			streams = new EObjectContainmentEList<Stream>(Stream.class, this, CrossflowPackage.WORKFLOW__STREAMS);
@@ -184,6 +187,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Task> getTasks() {
 		if (tasks == null) {
 			tasks = new EObjectContainmentEList<Task>(Task.class, this, CrossflowPackage.WORKFLOW__TASKS);
@@ -196,6 +200,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Type> getTypes() {
 		if (types == null) {
 			types = new EObjectContainmentEList<Type>(Type.class, this, CrossflowPackage.WORKFLOW__TYPES);
@@ -208,6 +213,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Field> getParameters() {
 		if (parameters == null) {
 			parameters = new EObjectContainmentEList<Field>(Field.class, this, CrossflowPackage.WORKFLOW__PARAMETERS);
@@ -220,6 +226,7 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Language> getLanguages() {
 		if (languages == null) {
 			languages = new EObjectContainmentEList<Language>(Language.class, this, CrossflowPackage.WORKFLOW__LANGUAGES);
@@ -232,8 +239,9 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Serialiser getSerialiser() {
-		return serialiser;
+	@Override
+	public Serializer getSerializer() {
+		return serializer;
 	}
 
 	/**
@@ -241,11 +249,11 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetSerialiser(Serialiser newSerialiser, NotificationChain msgs) {
-		Serialiser oldSerialiser = serialiser;
-		serialiser = newSerialiser;
+	public NotificationChain basicSetSerializer(Serializer newSerializer, NotificationChain msgs) {
+		Serializer oldSerializer = serializer;
+		serializer = newSerializer;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALISER, oldSerialiser, newSerialiser);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALIZER, oldSerializer, newSerializer);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -256,18 +264,19 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSerialiser(Serialiser newSerialiser) {
-		if (newSerialiser != serialiser) {
+	@Override
+	public void setSerializer(Serializer newSerializer) {
+		if (newSerializer != serializer) {
 			NotificationChain msgs = null;
-			if (serialiser != null)
-				msgs = ((InternalEObject)serialiser).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALISER, null, msgs);
-			if (newSerialiser != null)
-				msgs = ((InternalEObject)newSerialiser).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALISER, null, msgs);
-			msgs = basicSetSerialiser(newSerialiser, msgs);
+			if (serializer != null)
+				msgs = ((InternalEObject)serializer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALIZER, null, msgs);
+			if (newSerializer != null)
+				msgs = ((InternalEObject)newSerializer).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CrossflowPackage.WORKFLOW__SERIALIZER, null, msgs);
+			msgs = basicSetSerializer(newSerializer, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALISER, newSerialiser, newSerialiser));
+			eNotify(new ENotificationImpl(this, Notification.SET, CrossflowPackage.WORKFLOW__SERIALIZER, newSerializer, newSerializer));
 	}
 
 	/**
@@ -288,8 +297,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return ((InternalEList<?>)getLanguages()).basicRemove(otherEnd, msgs);
-			case CrossflowPackage.WORKFLOW__SERIALISER:
-				return basicSetSerialiser(null, msgs);
+			case CrossflowPackage.WORKFLOW__SERIALIZER:
+				return basicSetSerializer(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -314,8 +323,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return getParameters();
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return getLanguages();
-			case CrossflowPackage.WORKFLOW__SERIALISER:
-				return getSerialiser();
+			case CrossflowPackage.WORKFLOW__SERIALIZER:
+				return getSerializer();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -352,8 +361,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				getLanguages().clear();
 				getLanguages().addAll((Collection<? extends Language>)newValue);
 				return;
-			case CrossflowPackage.WORKFLOW__SERIALISER:
-				setSerialiser((Serialiser)newValue);
+			case CrossflowPackage.WORKFLOW__SERIALIZER:
+				setSerializer((Serializer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -385,8 +394,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				getLanguages().clear();
 				return;
-			case CrossflowPackage.WORKFLOW__SERIALISER:
-				setSerialiser((Serialiser)null);
+			case CrossflowPackage.WORKFLOW__SERIALIZER:
+				setSerializer((Serializer)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -412,8 +421,8 @@ public class WorkflowImpl extends EObjectImpl implements Workflow {
 				return parameters != null && !parameters.isEmpty();
 			case CrossflowPackage.WORKFLOW__LANGUAGES:
 				return languages != null && !languages.isEmpty();
-			case CrossflowPackage.WORKFLOW__SERIALISER:
-				return serialiser != null;
+			case CrossflowPackage.WORKFLOW__SERIALIZER:
+				return serializer != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -28,22 +28,22 @@
 				
 		<!-- Github JavaProjects: github owner/repo -->
 		<type name="OwnerRepoTuple">
-			<field name="repoOwner" type="String"/>
-			<field name="repoRemote" type="String"/>
+			<datafield name="repoOwner" type="String"/>
+			<datafield name="repoRemote" type="String"/>
 		</type>
 		
 		<!-- SearchClonedRepoEntries: github owner/repo, repo remote URL, repo local path -->
 		<type name="OwnerRepoUrlTuple">
-			<field name="repoOwner" type="String"/>
-			<field name="repoRemote" type="String"/>
-			<field name="repoLocal" type="String"/>
+			<datafield name="repoOwner" type="String"/>
+			<datafield name="repoRemote" type="String"/>
+			<datafield name="repoLocal" type="String"/>
 		</type>
 		
 		<!-- github owner/repo, repo remote URL, count -->
 		<type name="OwnerRepoAuthorCountTuple">
-			<field name="repoOwner" type="String"/>
-			<field name="repoRemote" type="String"/>
-			<field name="authorCount" type="Integer"/> <!-- unique author count -->
+			<datafield name="repoOwner" type="String"/>
+			<datafield name="repoRemote" type="String"/>
+			<datafield name="authorCount" type="Integer"/> <!-- unique author count -->
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.examples.github.topsearch" genOutputFolder="src-gen" outputFolder="src"/>

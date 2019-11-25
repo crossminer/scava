@@ -53,11 +53,10 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 		MessageProducer producer = session.createProducer(destination);
 		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		producer.setPriority(9);
-		producer.send(session.createTextMessage(workflow.getSerializer().toString(t)));
+		producer.send(session.createTextMessage(workflow.getSerializer().serialize(t)));
 		producer.close();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addConsumer(BuiltinStreamConsumer<T> consumer) throws Exception {
 
 		if (session == null) {
@@ -79,7 +78,7 @@ public class BuiltinStream<T extends Serializable> implements Stream {
 					bm.readBytes(data);
 					messageText = new String(data);
 				}
-				consumer.consume((T) workflow.getSerializer().toObject(messageText));
+				consumer.consume(workflow.getSerializer().deserialize(messageText));
 			}
 			catch (JMSException e) {
 				workflow.reportInternalException(e);
