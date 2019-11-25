@@ -117,13 +117,12 @@ class IndexerSingleton {
 	
 	private RestClientBuilder createRestClientBuilder(String host, String scheme)
 	{
-		RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(host, port, scheme),
-				new HttpHost(host, port + 1, scheme));
+		RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(host, port, scheme));
 		restClientBuilder.setFailureListener(new RestClient.FailureListener() {
 
 			@Override
 			public void onFailure(HttpHost host) {
-				logger.info("Cluster Connection Failure: Unable to connect to the Scava Elasticsearch cluster");
+				logger.error("Cluster Connection Failure: Unable to connect to the Scava Elasticsearch cluster in "+ host);
 			}
 		});
 		

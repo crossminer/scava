@@ -85,8 +85,6 @@ public class Indexer {
 		// checks if index exists
 		try {
 			if (highLevelClient.indices().exists(new GetIndexRequest().indices(indexName), getReadHeaders())) {
-				// do nothing already exists
-				logger.info("A index for " + indexName + " already exists");
 				if (mapping!=null) 
 				{
 					try {
