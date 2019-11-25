@@ -380,10 +380,13 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					NewsgroupArticlePlainTextProcessing plainTextData = findCollection(commChannelPlainTextData,
 							NewsgroupArticlePlainTextProcessing.class, commChannelPlainTextData.getNewsgroupArticles(),
 							article);
-
-					if (!plainTextData.getPlainText().isEmpty()) {
-						String plaintext = String.join(" ", plainTextData.getPlainText());
-						articleDocument.setPlain_text(plaintext);
+					
+					if(plainTextData!=null)
+					{
+						if (!plainTextData.getPlainText().isEmpty()) {
+							String plaintext = String.join(" ", plainTextData.getPlainText());
+							articleDocument.setPlain_text(plaintext);
+						}
 					}
 					break;
 				}
@@ -403,9 +406,12 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 					List<String> emotionData = findCollection(commChannelEmotionData,
 							NewsgroupArticlesEmotionClassification.class, commChannelEmotionData.getNewsgroupArticles(),
 							article).getEmotions();
-
-					for (String dimension : emotionData)
-						articleDocument.addEmotional_dimension(dimension);
+					
+					if(emotionData!=null)
+					{
+						for (String dimension : emotionData)
+							articleDocument.addEmotional_dimension(dimension);
+					}
 					break;
 				}
 				// SENTIMENT
