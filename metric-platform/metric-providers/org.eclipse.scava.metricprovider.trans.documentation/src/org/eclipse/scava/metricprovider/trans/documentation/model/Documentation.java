@@ -1,9 +1,12 @@
 package org.eclipse.scava.metricprovider.trans.documentation.model;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import java.util.List;
+
+import com.googlecode.pongo.runtime.Pongo;
+import com.googlecode.pongo.runtime.PrimitiveList;
+import com.googlecode.pongo.runtime.querying.ArrayQueryProducer;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.BasicDBList;
 
 
 public class Documentation extends Pongo {
@@ -22,12 +25,14 @@ public class Documentation extends Pongo {
 		LASTUPDATEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		LASTREVISIONANALYZED.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 		NEXTUPDATEDATE.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
+		UPDATED.setOwningType("org.eclipse.scava.metricprovider.trans.documentation.model.Documentation");
 	}
 	
 	public static StringQueryProducer DOCUMENTATIONID = new StringQueryProducer("documentationId"); 
 	public static StringQueryProducer LASTUPDATEDATE = new StringQueryProducer("lastUpdateDate"); 
 	public static StringQueryProducer LASTREVISIONANALYZED = new StringQueryProducer("lastRevisionAnalyzed"); 
 	public static StringQueryProducer NEXTUPDATEDATE = new StringQueryProducer("nextUpdateDate"); 
+	public static StringQueryProducer UPDATED = new StringQueryProducer("updated"); 
 	public static ArrayQueryProducer ENTRIESID = new ArrayQueryProducer("entriesId");
 	public static ArrayQueryProducer REMOVEDENTRIESID = new ArrayQueryProducer("removedEntriesId");
 	
@@ -65,6 +70,15 @@ public class Documentation extends Pongo {
 	
 	public Documentation setNextUpdateDate(String nextUpdateDate) {
 		dbObject.put("nextUpdateDate", nextUpdateDate);
+		notifyChanged();
+		return this;
+	}
+	public boolean getUpdated() {
+		return parseBoolean(dbObject.get("updated")+"", false);
+	}
+	
+	public Documentation setUpdated(boolean updated) {
+		dbObject.put("updated", updated);
 		notifyChanged();
 		return this;
 	}

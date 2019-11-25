@@ -152,12 +152,14 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 			}
 			
 			boolean needToReadAll=false;
+			documentation.setUpdated(false);
 			
 			if(documentation.getNextUpdateDate().isEmpty() || documentation.getNextUpdateDate().equals(nextDateDelta))
 				needToReadAll=true;
 			
 			if(needToReadAll)
 			{
+				documentation.setUpdated(true);
 				documentation.setNextUpdateDate(nextDateDelta);
 				File documentationStorage = createSystematicDocumentationStorage(project);
 				Crawler crawler = null;
@@ -240,7 +242,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				db.sync();
 			}
 			
-			
+			documentation.setUpdated(false);
 			
 			//If the last commit analyzed does not match the commit previous to today, 
 			//then we need to read everything as in the meantime there was a change
@@ -255,6 +257,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.getEntriesId().clear();
 				documentation.getRemovedEntriesId().clear();
 				documentation.setLastUpdateDate(projectDelta.getDate().toString());
+				documentation.setUpdated(true);
 				
 				//As we are reading everything, then we can just read the last revision of today
 				VcsCommit commit = commits.get(commits.size()-1);
@@ -321,6 +324,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 				
 				documentation.setLastRevisionAnalyzed(lastRevision);
+				documentation.setUpdated(true);
 				
 				if(filesToProcess.size()>0 || filesToDelete.size()>0)
 				{
