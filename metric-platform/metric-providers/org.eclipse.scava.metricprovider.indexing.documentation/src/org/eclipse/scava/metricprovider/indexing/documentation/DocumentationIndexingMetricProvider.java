@@ -150,25 +150,27 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 		documentType = "documentation";
 		for(Documentation documentation : documentationIt)
 		{
-			
-			indexName = Indexer.generateIndexName("documentation", documentType, KNOWLEDGE);
-			uid = generateUniqueDocumentationId(projectName, documentation.getDocumentationId());
-			mapping = Mapping.getMapping(documentType);
-			
-			DocumentationDocument dd = new DocumentationDocument(projectName,
-					uid,
-					documentation.getDocumentationId(),
-					delta.getDate().toJavaDate());
-			
-			dd.setDocumentation_entries(documentation.getEntriesId());
-			
-			try {
-				document = mapper.writeValueAsString(dd);
-				Indexer.indexDocument(indexName, mapping, documentType, uid, document);
-			}
-			catch (JsonProcessingException e) {
-				logger.error("Error while processing json:", e);
-				e.printStackTrace();
+			if(documentation.getUpdated())
+			{
+				indexName = Indexer.generateIndexName("documentation", documentType, KNOWLEDGE);
+				uid = generateUniqueDocumentationId(projectName, documentation.getDocumentationId());
+				mapping = Mapping.getMapping(documentType);
+				
+				DocumentationDocument dd = new DocumentationDocument(projectName,
+						uid,
+						documentation.getDocumentationId(),
+						delta.getDate().toJavaDate());
+				
+				dd.setDocumentation_entries(documentation.getEntriesId());
+				
+				try {
+					document = mapper.writeValueAsString(dd);
+					Indexer.indexDocument(indexName, mapping, documentType, uid, document);
+				}
+				catch (JsonProcessingException e) {
+					logger.error("Error while processing json:", e);
+					e.printStackTrace();
+				}
 			}
 		}
 		
