@@ -273,17 +273,14 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 
 				case "org.eclipse.scava.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider": // severity
 				{
-					try {
-						BugTrackerBugsData severityData = findCollection(bugTrackerSeverityData, BugTrackerBugsData.class,
+					BugTrackerBugsData severityData = findCollection(bugTrackerSeverityData, BugTrackerBugsData.class,
 								bugTrackerSeverityData.getBugTrackerBugs(), bug);
 	
+					if(severityData!=null)
+					{
 						if (!severityData.getSeverity().isEmpty())
 							bd.setSeverity(severityData.getSeverity());
-	
-					} catch (NullPointerException np) {
-						bd.setSeverity("unable to calculate severity at this time (reason: no comments)");
 					}
-	
 					break;
 				}
 				case "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider":
@@ -328,8 +325,11 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 					List<String> emotionData = findCollection(bugTrackerEmotionData,
 							BugTrackerCommentsEmotionClassification.class,
 							bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
-					for (String dimension : emotionData)
-						commentDocument.getEmotional_dimension().add(dimension);
+					if(emotionData!=null)
+					{
+						for (String dimension : emotionData)
+							commentDocument.getEmotional_dimension().add(dimension);
+					}
 					break;
 				}
 				// SENTIMENT
