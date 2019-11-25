@@ -273,7 +273,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																			DocumentationEntryPlainText.class,
 																			plainTextDB.getDocumentationEntriesPlainText(),
 																			documentationEntry);
-					ded.setPlain_text(String.join(" ",plainTextDocEntry.getPlainText()));
+					if(plainTextDocEntry!=null)
+						ded.setPlain_text(String.join(" ",plainTextDocEntry.getPlainText()));
 					break;
 				}
 				// CODE
@@ -283,10 +284,13 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 							 															DocumentationEntryDetectingCode.class,
 							 															detectingCodeDB.getDocumentationEntriesDetectingCode(),
 							 															documentationEntry);
-					if (!detectingCodeDocEntry.getCode().isEmpty())
-						ded.setCode(true); 
-					else
-						ded.setCode(false);
+					if(detectingCodeDocEntry!=null)
+					{
+						if (!detectingCodeDocEntry.getCode().isEmpty())
+							ded.setCode(true); 
+						else
+							ded.setCode(false);
+					}
 					break;
 				}
 				//READABILITY
@@ -296,7 +300,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																						DocumentationEntryReadability.class,
 							 															readabilityDB.getDocumentationEntriesReadability(),
 							 															documentationEntry);
-					ded.setReadability(readabiliytyDocEntry.getReadability());
+					if(readabiliytyDocEntry!=null)
+						ded.setReadability(readabiliytyDocEntry.getReadability());
 					break;
 				}
 				//SENTIMENT
@@ -306,7 +311,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																						DocumentationEntrySentiment.class,
 							 															sentimentDB.getDocumentationEntriesSentiment(),
 							 															documentationEntry);
-					ded.setSentiment(sentimentDocEntry.getPolarity());	 
+					if(sentimentDocEntry!=null)
+						ded.setSentiment(sentimentDocEntry.getPolarity());	 
 					break;
 				}
 				//Classification
@@ -316,7 +322,8 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																						DocumentationEntryClassification.class,
 																						classificationDB.getDocumentationEntriesClassification(),
 							 															documentationEntry);
-					ded.setDocumentation_types(classificationDocEntry.getTypes()); 
+					if(classificationDocEntry!=null)
+						ded.setDocumentation_types(classificationDocEntry.getTypes()); 
 					break;
 				}
 				//License
