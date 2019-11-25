@@ -148,11 +148,17 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.setDocumentationId(documentationId);
 				documentation.setNextUpdateDate("");
 				db.getDocumentation().add(documentation);
+				documentation.setUpdated(false);
+				db.sync();
+			}
+			else
+			{
+				documentation.setUpdated(false);
 				db.sync();
 			}
 			
 			boolean needToReadAll=false;
-			documentation.setUpdated(false);
+			
 			
 			if(documentation.getNextUpdateDate().isEmpty() || documentation.getNextUpdateDate().equals(nextDateDelta))
 				needToReadAll=true;
@@ -239,10 +245,14 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.setDocumentationId(repository.getUrl());
 				documentation.setLastRevisionAnalyzed("");
 				db.getDocumentation().add(documentation);
+				documentation.setUpdated(false);
 				db.sync();
 			}
-			
-			documentation.setUpdated(false);
+			else
+			{
+				documentation.setUpdated(false);
+				db.sync();
+			}
 			
 			//If the last commit analyzed does not match the commit previous to today, 
 			//then we need to read everything as in the meantime there was a change
