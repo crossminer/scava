@@ -403,13 +403,13 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
 				{
 	
-					List<String> emotionData = findCollection(commChannelEmotionData,
+					NewsgroupArticlesEmotionClassification emotionData = findCollection(commChannelEmotionData,
 							NewsgroupArticlesEmotionClassification.class, commChannelEmotionData.getNewsgroupArticles(),
-							article).getEmotions();
+							article);
 					
 					if(emotionData!=null)
 					{
-						for (String dimension : emotionData)
+						for (String dimension : emotionData.getEmotions())
 							articleDocument.addEmotional_dimension(dimension);
 					}
 					break;
