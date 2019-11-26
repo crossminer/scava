@@ -54,7 +54,7 @@ public class ProjectImporter {
 				Properties eclipseClientId = projectRepo.getProperties().findOneByKey("eclipseClientId");
 				Properties eclipseClientSecret = projectRepo.getProperties().findOneByKey("eclipseClientSecret");
 				if (eclipseClientId != null && eclipseClientSecret!=null) {
-					importer.setCredentials(new Credentials(eclipseClientSecret.getValue(), eclipseClientId.getValue(), ""));
+					importer.setCredentials(new Credentials("eclipseForums", eclipseClientSecret.getValue(), eclipseClientId.getValue(), ""));
 				} else {
 					importer.setCredentials(new Credentials("", "", ""));
 				}
