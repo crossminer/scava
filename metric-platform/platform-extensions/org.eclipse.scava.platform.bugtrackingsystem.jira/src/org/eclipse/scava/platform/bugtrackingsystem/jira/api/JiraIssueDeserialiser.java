@@ -48,12 +48,12 @@ public class JiraIssueDeserialiser extends ExtendedJsonDeserialiser<JiraIssue> {
         issue.setCreator(getText(fields, "reporter", "name"));
         issue.setDescription(getText(fields, "description"));
         issue.setDueDate(getDate(fields, context, "duedate"));
-        issue.setIssueType(getText(fields, "issuetype", "id"));
+        issue.setIssueType(getText(fields, "issuetype", "name"));
         issue.setNumWatchers(getInteger(fields, "watches", "watchCount"));
-        issue.setPriority(getText(fields, "priority", "id"));
-        issue.setResolution(getText(fields, "resolution", "id"));
+        issue.setPriority(getText(fields, "priority", "name"));
+        issue.setResolution(getText(fields, "resolution", "name"));
         issue.setResolutionDate(getDate(fields, context, "resolutiondate"));
-        issue.setStatus(getText(fields, "status", "id"));
+        issue.setStatus(getText(fields, "status", "name"));
         issue.setSummary(getText(fields, "summary"));
         issue.setUpdateDate(getDate(fields, context, "updated"));
         issue.setVotes(getInteger(fields, "votes", "votes"));
