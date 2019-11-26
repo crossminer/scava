@@ -58,6 +58,9 @@ public class ProjectImporter {
 				} else {
 					importer.setCredentials(new Credentials("", "", ""));
 				}
+				Properties githubToken = projectRepo.getProperties().findOneByKey("githubToken");
+				if(githubToken !=null)
+					importer.setCredentials(new Credentials("github", githubToken.getValue() , "", ""));
 				p = importer.importProject(url, platform);
 			} catch (Exception e) {
 				e.printStackTrace(); // FIXME better handling
