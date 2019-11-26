@@ -10,6 +10,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
+import org.eclipse.scava.platform.documentation.gitbased.utils.VcsDocumentationDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.git.GitManager;
 import org.eclipse.scava.repository.model.VcsRepository;
@@ -31,11 +32,23 @@ public class DocumentationGitBasedManager extends GitManager {
 	
 	@Override
 	public VcsRepositoryDelta getDelta(VcsRepository repository, String startRevision, String endRevision) throws Exception {
+		VcsDocumentationDelta vcsDelta;
 		if(super.validRepository(repository))
-			return super.getDelta(repository, startRevision, endRevision);
-		VcsRepositoryDelta vcsDelta = new VcsRepositoryDelta();
+			vcsDelta=convertDeltas(super.getDelta(repository, startRevision, endRevision));
+		else
+		{
+			logger.error("Returning an empty delta due to an invalid repository.");
+			vcsDelta = new VcsDocumentationDelta();
+		}
 		vcsDelta.setRepository(repository);
-		logger.error("Returning an empty delta due to an invalid repository.");
+		return vcsDelta;
+	}
+	
+	private VcsDocumentationDelta convertDeltas(VcsRepositoryDelta delta)
+	{
+		VcsDocumentationDelta vcsDelta = new VcsDocumentationDelta();
+		vcsDelta.setLatestRevision(delta.getLatestRevision());
+		vcsDelta.setCommits(delta.getCommits());
 		return vcsDelta;
 	}
 	
