@@ -5,11 +5,24 @@ public class Credentials {
 	private String authToken;
 	private String username;
 	private String password;
+	private String credentialsId;
 	
 	public Credentials(String authToken, String username, String password) {
 		this.authToken = authToken;
 		this.username = username;
 		this.password = password;
+		this.credentialsId="";
+	}
+	
+	public Credentials(String credentialsId, String authToken, String username, String password) {
+		this.authToken = authToken;
+		this.username = username;
+		this.password = password;
+		this.credentialsId = credentialsId;
+	}
+	
+	public String getCredentialsId() {
+		return credentialsId;
 	}
 
 	public String getAuthToken() {
