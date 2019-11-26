@@ -322,13 +322,13 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 				// EMOTION
 				case "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider":
 				{
-					List<String> emotionData = findCollection(bugTrackerEmotionData,
+					BugTrackerCommentsEmotionClassification emotionData = findCollection(bugTrackerEmotionData,
 							BugTrackerCommentsEmotionClassification.class,
-							bugTrackerEmotionData.getBugTrackerComments(), comment).getEmotions();
+							bugTrackerEmotionData.getBugTrackerComments(), comment);
 					if(emotionData!=null)
 					{
-						for (String dimension : emotionData)
-							commentDocument.getEmotional_dimension().add(dimension);
+						for (String dimension : emotionData.getEmotions())
+							commentDocument.addEmotional_dimension(dimension);
 					}
 					break;
 				}
