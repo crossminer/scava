@@ -67,7 +67,7 @@ public class Indexer {
 		UpdateSettingsResponse updateSettingsResponse = highLevelClient.indices().putSettings(updateSettingsRequest,
 				getWriteHeaders());
 		if (updateSettingsResponse.isAcknowledged() == true) {
-			System.out.println("[INDEXER] \tSettings have been added to " + index);
+			logger.info("Settings have been added to " + index);
 		}
 	}
 	
