@@ -301,8 +301,6 @@ public class Indexer {
 
 	public static void indexDocument(String indexName, MappingStorage mapping, String documentType, String uid, String document)  {
 
-		logger.info("Indexing tool has started - Attempting to add document to " + indexName);
-		
 		indexName=indexName.toLowerCase();
 		documentType=documentType.toLowerCase();
 			
