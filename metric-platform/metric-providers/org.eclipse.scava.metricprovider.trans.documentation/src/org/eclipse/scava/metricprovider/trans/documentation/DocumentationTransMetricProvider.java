@@ -37,6 +37,7 @@ import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsCommitItem;
 import org.eclipse.scava.platform.delta.vcs.VcsProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
+import org.eclipse.scava.platform.documentation.gitbased.utils.VcsDocumentationDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutException;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
@@ -223,6 +224,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 		
 		for(VcsRepositoryDelta vcsDelta : vcsProjectDelta.getRepoDeltas())
 		{
+			if(!(vcsDelta instanceof VcsDocumentationDelta))
+				return;
+			
 			List<VcsCommit> commits = vcsDelta.getCommits();
 			
 			if(commits.size()==0)
