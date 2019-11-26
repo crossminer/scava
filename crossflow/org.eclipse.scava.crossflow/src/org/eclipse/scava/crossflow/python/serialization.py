@@ -4,7 +4,7 @@ import json
 import traceback
 from typing import Type
 
-import string_utils
+import stringcase
 import xmltodict
 
 _TYPE_PROPERTY_KEY = "_type_"
@@ -31,7 +31,7 @@ def _sanitize_key(key: str) -> str:
     elif key.startswith("__"):
         return key
     elif key.startswith("_"):
-        return string_utils.snake_case_to_camel(key[1:], upper_case_first=False)
+        return stringcase.camelcase(key[1:])
     else:
         return key
 
@@ -46,16 +46,10 @@ def _find_correct_key(key: str, obj: object):
             if hasattr(obj, f"__{key}"):
                 return f"__{key}"
             if not done:
-                return _find(string_utils.camel_case_to_snake(key), obj, True)
+                return _find(stringcase.snakecase(key), obj, True)
             return None
 
     return _find(key, obj)
-
-
-def _camel_to_snake(s: str) -> str:
-    if not isinstance(s):
-        return s
-    return string_utils.camel_case_to_snake(s)
 
 
 class Serializer(ABC):
