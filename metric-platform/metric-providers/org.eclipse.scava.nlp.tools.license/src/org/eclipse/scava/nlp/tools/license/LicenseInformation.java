@@ -10,6 +10,7 @@ public class LicenseInformation {
 	
 	static
 	{
+		hierarchy=new HashMap<String, Map<String, License>>();
 		splitData();
 	}
 	
