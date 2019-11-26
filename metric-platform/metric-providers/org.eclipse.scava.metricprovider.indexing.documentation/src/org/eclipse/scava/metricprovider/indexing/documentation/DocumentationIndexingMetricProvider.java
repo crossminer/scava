@@ -333,10 +333,13 @@ public class DocumentationIndexingMetricProvider extends AbstractIndexingMetricP
 																						DocumentationEntryLicense.class,
 																						licenseDB.getDocumentationEntriesLicense(),
 							 															documentationEntry);
-					ded.setLicense_found(licenseDocEntry.getLicenseFound());
-					if(licenseDocEntry.getLicenseFound())
+					if(licenseDocEntry!=null)
 					{
-						ded.setLicense(licenseDocEntry.getLicenseGroup(), licenseDocEntry.getLicenseName(), licenseDocEntry.getHeaderType(), licenseDocEntry.getScore());
+						ded.setLicense_found(licenseDocEntry.getLicenseFound());
+						if(licenseDocEntry.getLicenseFound())
+						{
+							ded.setLicense(licenseDocEntry.getLicenseGroup(), licenseDocEntry.getLicenseName(), licenseDocEntry.getHeaderType(), licenseDocEntry.getScore());
+						}
 					}
 					break;
 				}
