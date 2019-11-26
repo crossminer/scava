@@ -61,6 +61,7 @@ public class EclipseProjectImporter implements IImporter {
 	private Pattern forumIdParser=Pattern.compile("frm_id=(\\d+)$");
 	private String clientSecret="";
 	private String clientId="";
+	private String githubToken="";
 
 	public EclipseProjectImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.eclipse ");
@@ -220,8 +221,16 @@ public class EclipseProjectImporter implements IImporter {
 					bt.setUrl("https://api.github.com/repos/" + projectId + "/issues");
 					logger.info("Creating a GitHub Bug Tracker Reader. Owner: "+owner+" Repository: "+repo);
 					{
-						logger.info("Creating a GitHub Bug Tracker with no authentication.");
-						bt.setProject(owner, repo);
+						if(githubToken.isEmpty())
+						{
+							logger.info("Creating a GitHub Bug Tracker with no authentication.");
+							bt.setProject(owner, repo);
+						}
+						else
+						{
+							logger.info("Creating a GitHub Bug Tracker with authentication.");
+							bt.setProject(githubToken, owner, repo);
+						}
 					}
 					project.getBugTrackingSystems().add(bt);
 					
@@ -651,9 +660,17 @@ public class EclipseProjectImporter implements IImporter {
 
 	@Override
 	public void setCredentials(Credentials credentials) {
-		if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
-			clientSecret=credentials.getAuthToken();
-		if(!credentials.getUsername().equals("") || credentials.getUsername()!=null)
-			clientId=credentials.getUsername();
+		if(credentials.getCredentialsId().equals("eclipseForums"))
+		{	
+			if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+				clientSecret=credentials.getAuthToken();
+			if(!credentials.getUsername().equals("") || credentials.getUsername()!=null)
+				clientId=credentials.getUsername();
+		}
+		if(credentials.getCredentialsId().equals("github"))
+		{
+			if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+				githubToken= credentials.getAuthToken();
+		}
 	}
 }
