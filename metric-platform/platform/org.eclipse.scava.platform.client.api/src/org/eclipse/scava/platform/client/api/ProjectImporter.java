@@ -53,11 +53,8 @@ public class ProjectImporter {
 				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
 				Properties eclipseClientId = projectRepo.getProperties().findOneByKey("eclipseClientId");
 				Properties eclipseClientSecret = projectRepo.getProperties().findOneByKey("eclipseClientSecret");
-				if (eclipseClientId != null && eclipseClientSecret!=null) {
+				if (eclipseClientId != null && eclipseClientSecret!=null)
 					importer.setCredentials(new Credentials("eclipseForums", eclipseClientSecret.getValue(), eclipseClientId.getValue(), ""));
-				} else {
-					importer.setCredentials(new Credentials("", "", ""));
-				}
 				Properties githubToken = projectRepo.getProperties().findOneByKey("githubToken");
 				if(githubToken !=null)
 					importer.setCredentials(new Credentials("github", githubToken.getValue() , "", ""));
