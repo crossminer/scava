@@ -203,7 +203,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						 		
 						 		if(!relativePath.equals(""))
 						 			relativePath=relativePath.replaceAll("\\\\", "/");		
-						 		System.err.println(relativePath);
 						 		processFile(file.toFile(), db, documentation, documentationId, relativePath);
 							}
 							file.toFile().delete();
@@ -307,12 +306,10 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						
 			        } catch (IOException e) {
 			        	logger.error("Error while reading file from local copy of documentation: ", e);
-						e.printStackTrace();
 					}
 				}
 				 catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 						logger.error("Error while creating local copy of documentation: ", e);
-						e.printStackTrace();
 				}
 			}
 			else if(commits.size()>0)
@@ -377,7 +374,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 											+ "i.e. \\ / : * ? \" < > |");
 								} catch (FileNotFoundException e) {
 									logger.error("File: "+relativePath+" couldn't be found in the working copy.", e);
-									e.printStackTrace();
 								} catch (Exception e) {
 									continue;
 								}
@@ -386,7 +382,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 							
 						} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 							logger.error("Error while creating local copy of documentation: ", e);
-							e.printStackTrace();
 						}
 						
 					}
@@ -400,6 +395,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	private void processFile(File file, DocumentationTransMetric db, Documentation documentation, String documentId, String entryId)
 	{
 		try {
+			logger.info("File " + entryId + " is being processed");
 			FileContent fileContent = FileParser.extractText(file);
 			
 			if(fileContent!=null)
@@ -422,6 +418,10 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 					
 				db.sync();
 	 		}
+			else
+			{
+				logger.info("File " + entryId + " was empty.");
+			}
 			
 		} catch (UnsupportedOperationException e) {
 			logger.error(e.getMessage()+" "+file.toString());
