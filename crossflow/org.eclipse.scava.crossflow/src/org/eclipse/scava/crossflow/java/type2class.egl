@@ -102,7 +102,7 @@ public [%=t.name%]([%
 }
 [%}%]
 
-[% if (t.isJob()) {%]
+[% if (t.isJob()) {%] 
 public [%=t.name%]([%
 	for (f in t.allFields()) {%][%=f.~javaType%] [%=f.name%], [%}%]Job correlation) {
 	[%for (f in t.allFields()) {%]
@@ -144,12 +144,10 @@ public void set[%=f.name.ftuc()%]([%=f.~javaType%] [%=f.name%]) {
 @template
 operation CrossflowLanguageModel!EnumField genEnumType() {%]
 public enum [%=self.name.ftuc()%] {
-	[% var values = "";
-	for (v in self.values) {
-		values += v;
-		if (hasMore) values += ", ";
+	[%for (v in self.values) {%]
+	[%=v.toSnakeCaseUpper()%][%if (hasMore) {%],
+	[%} else {%];[%}
 	}%]
-	[%=values%];
 }
 
 [%}
