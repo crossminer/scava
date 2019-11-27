@@ -127,8 +127,10 @@ public class NewsgroupsChannelSizeFactoid extends AbstractFactoidMetricProvider{
 		
 		int articles = 0, threads = 0;
 		for (String tracker: sortByKeys(trackerArticles)) {
-			articles += trackerArticles.get(tracker);
-			threads += trackerNewThreads.get(tracker);
+			if(trackerArticles.containsKey(tracker))
+				articles += trackerArticles.get(tracker);
+			if(trackerNewThreads.containsKey(tracker))
+				threads += trackerNewThreads.get(tracker);
 		}
 		stringBuffer.append("The newsgroups of the project contain ");
 		stringBuffer.append(threads);
