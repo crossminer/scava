@@ -3,7 +3,7 @@
 <_>
 	<workflow name="PythonTestsWorkflow">
 		<type name="TypeA">
-			<field name="foo" type="String"/>
+			<datafield name="foo" type="String"/>
 		</type>
 		<queue name="QueueA" type="TypeA"/>
 		<task name="TaskA" in="QueueA" language="Python"/>
