@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
-import org.apache.http.ParseException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.nio.entity.NStringEntity;
@@ -27,7 +26,6 @@ import org.apache.http.util.EntityUtils;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ElasticsearchStatusException;
-import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -44,7 +42,6 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.reindex.ReindexRequest;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 public class Indexer {
@@ -152,13 +149,14 @@ public class Indexer {
 							}
 							else
 							{
-								logger.info("Updating mapping to version "+mapping.getVersion());
+								logger.info("Updating mapping to version to"+mapping.getVersion());
 								addMappingToIndex(indexName, documentType, mapping.getMapping());
 							}
 						}
 						catch (ElasticsearchException e)
 						{
 							logger.info("Impossible to update mapping without reindexing");
+							logger.warn("Keeping old mapping, some functionalities might be lost");
 							//reindexing(response, indexName, documentType, mapping.getMapping());
 						}
 					}
