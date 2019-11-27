@@ -11,17 +11,27 @@ package org.eclipse.scava.index.indexer;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.ParseException;
+import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ElasticsearchStatusException;
+import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
@@ -34,6 +44,7 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.reindex.ReindexRequest;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 public class Indexer {
@@ -71,6 +82,46 @@ public class Indexer {
 		}
 	}
 	
+	//The main issue is to create always new indexesNames, otherwise after the first reindexing the methods is useless
+	private static boolean reindexing(Response response, String indexName, String documentType, String newMapping)
+	{ 
+		createIndex(indexName+".new","", documentType, newMapping);
+		if(reindex(indexName, indexName+".new"))
+		{
+			logger.info("Reindexing of "+ indexName +" has been sucessful");
+			deleteIndex(indexName);
+			addAlias(indexName+".new", indexName);
+			logger.info("Deleting old version of "+ indexName);
+			return true;
+		}
+		logger.info("Reindexing of "+ indexName +" has been unsucessful");
+		return false;
+	}
+	
+	private static void addAlias(String indexName, String alias)
+	{
+		try {
+			highLevelClient.getLowLevelClient().performRequest("POST", indexName+"/_alias/"+alias, getWriteHeaders());
+		} catch (IOException e) {
+			logger.error("Error while adding an alias ", e);
+			
+		}
+	}
+	
+	private static boolean reindex(String indexSource, String indexDest)
+	{
+		String entity = "{ \"source\":{\"index\" : \""+indexSource+"\"}, \"dest\":{\"index\" : \""+indexDest+"\"}}";
+		HttpEntity httpEntity = new NStringEntity(entity, ContentType.APPLICATION_JSON);
+		Map<String, String> params = Collections.emptyMap();
+		try {
+			Response response = highLevelClient.getLowLevelClient().performRequest("POST", "_reindex", params, httpEntity, getWriteHeaders());
+			return true;
+		} catch (IOException e) {
+			logger.error("Error while reindexing "+ indexSource+" to "+indexDest, e);
+		}
+		return false;
+	}
+	
 	
 
 	/**
@@ -89,13 +140,26 @@ public class Indexer {
 				{
 					try {
 						Response response = highLevelClient.getLowLevelClient().performRequest("GET", indexName+"/_mapping/"+documentType, getReadHeaders());
-					
 						Matcher m = versionFinder.matcher(EntityUtils.toString(response.getEntity()));
-						if(m.find())
+						try {
+							if(m.find())
+							{
+								if(Float.valueOf(m.group(1))<mapping.getVersion())
+								{
+									logger.info("Updating mapping from "+m.group(1)+" to "+mapping.getVersion());
+									addMappingToIndex(indexName, documentType, mapping.getMapping());
+								}
+							}
+							else
+							{
+								logger.info("Updating mapping to version "+mapping.getVersion());
+								addMappingToIndex(indexName, documentType, mapping.getMapping());
+							}
+						}
+						catch (ElasticsearchException e)
 						{
-							if(Float.valueOf(m.group(1))<mapping.getVersion())
-								addMappingToIndex(indexName, documentType, mapping.getMapping());	
-						
+							logger.info("Impossible to update mapping without reindexing");
+							//reindexing(response, indexName, documentType, mapping.getMapping());
 						}
 					}
 					catch (ResponseException e) {
@@ -104,33 +168,10 @@ public class Indexer {
 				}
 				return true;
 
-			} else {
-
-				CreateIndexRequest request = new CreateIndexRequest(indexName);
-				CreateIndexResponse createIndexResponse;
-
-				try {
-					createIndexResponse = highLevelClient.indices().create(request, getWriteHeaders());
-					
-					
-					if (createIndexResponse.isAcknowledged() == true) {
-						logger.info("The index " + indexName + " has been created");
-						addMappingToIndex(indexName, documentType, mapping.getMapping());
-						return true;
-					}
-
-				} catch (ElasticsearchStatusException e) {
-
-					logger.error(indexName + "\tIndexResponse :" + e.getLocalizedMessage());
-
-				} catch (IOException e) {
-
-					logger.error("Issue whilst creating index", e);
-				}
+			} else
+			{
+				return createIndex(indexName, "", documentType, mapping.getMapping());
 			}
-			
-			
-		
 		} catch(UnknownHostException e) {
 			
 			logger.error(e);
@@ -140,6 +181,55 @@ public class Indexer {
 			
 			logger.error("Issue whilst creating index", e);
 		} 
+		
+		return false;
+	}
+	
+	private static boolean deleteIndex(String indexName)
+	{
+		DeleteIndexRequest request = new DeleteIndexRequest(indexName);
+		DeleteIndexResponse deleteIndexRequest;
+		
+		try {
+			deleteIndexRequest = highLevelClient.indices().delete(request, getWriteHeaders());
+			if(deleteIndexRequest.isAcknowledged())
+			{
+				logger.info("The index " + indexName + " has been deleted");
+				return true;
+			}
+		} catch (IOException e) {
+			logger.error("Issue whilst deleting index", e);
+		}
+		return false;
+	}
+	
+	private static boolean createIndex(String indexName, String alias, String documentType, String mapping)
+	{
+		CreateIndexRequest request = new CreateIndexRequest(indexName);
+		/*if(!alias.isEmpty())
+		{
+			request.alias(new Alias(alias));
+		}*/
+		CreateIndexResponse createIndexResponse;
+
+		try {
+			createIndexResponse = highLevelClient.indices().create(request, getWriteHeaders());
+			
+			
+			if (createIndexResponse.isAcknowledged() == true) {
+				logger.info("The index " + indexName + " has been created");
+				addMappingToIndex(indexName, documentType, mapping);
+				return true;
+			}
+
+		} catch (ElasticsearchStatusException e) {
+
+			logger.error(indexName + "\tIndexResponse :" + e.getLocalizedMessage());
+
+		} catch (IOException e) {
+
+			logger.error("Issue whilst creating index", e);
+		}
 		
 		return false;
 	}
