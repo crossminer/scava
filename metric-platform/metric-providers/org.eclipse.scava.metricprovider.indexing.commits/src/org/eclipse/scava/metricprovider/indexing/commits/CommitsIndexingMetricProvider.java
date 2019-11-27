@@ -194,10 +194,12 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 															CommitMessageReferringTo.class,
 															referencesDB.getCommitsMessagesReferringTo(),
 															commit, repositoryURL);
-					if(references!=null)
+					if(references != null)
 					{
-						cd.setCommits_references(references.getCommitsReferred());
-						cd.setBugs_references(references.getBugsReferred());
+						for(String bugReference : references.getBugsReferred())
+							cd.addBugReference(bugReference);
+						for(String commitReference : references.getCommitsReferred())
+							cd.addCommitReference(commitReference);
 					}
 					break;
 				}
