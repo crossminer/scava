@@ -24,7 +24,7 @@ import org.eclipse.scava.nlp.tools.license.LicenseAnalyser;
 
 public class Ranking {
 
-	final static double threshold = 0.5; // cut of point
+	final static double threshold = 0.9; // cut of point
 	
 	final static double thresholdNgrams = 5;
 	
@@ -49,8 +49,7 @@ public class Ranking {
 		}
 	}
 
-	public static Map<String, Rank> calculateGroupRank(Map<String, Double> scores, Map<String, Integer> ngramsMatched,
-			Map<String, Integer> ngramsNotMatched, int ngramsInSource, double modifier) {
+	public static Map<String, Rank> calculateGroupRank(Map<String, Double> scores, Map<String, Integer> ngramsMatched, int ngramsInSource, double modifier) {
 
 		// lets first remove all entries from the whose score is maximum no match value
 		// as these are not interesting and that fall below the threshold
@@ -68,7 +67,7 @@ public class Ranking {
 		List<String> rankedLicencesPerNgramsMatched = rankNgramsMatched(ngramsMatched);
 
 		// then lets also remove instances where the min number of ngrams for the
-		// smallest license in the group < 50%
+		// smallest license in the group < 80%
 
 		List<String> keysToBeRemoved = new ArrayList<>();
 
@@ -126,8 +125,7 @@ public class Ranking {
 	}
 
 	public static Map<String, Rank> calculateIndividualRank(Map<String, Double> scores,
-			Map<String, Integer> ngramsMatched, Map<String, Integer> ngramsNotMatched, int ngramsInSource,
-			double modifier) {
+			Map<String, Integer> ngramsMatched, int ngramsInSource, double modifier) {
 
 		// lets first remove all entries from the whose score is maximum no match value
 		// as these are not interesting and that fall below the threshold

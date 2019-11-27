@@ -165,7 +165,6 @@ public class LicenseAnalyser {
 	private static Map<String, Rank> analyseLicenseHeaders(Map<String, Rank> headerRankings, List<String> ngrams) {
 
 		Map<String, Integer> ngramsMatched = new HashMap<>();
-		Map<String, Integer> ngramsNotMatched = new HashMap<>();
 		Map<String, Double> scores = new HashMap<>();
 
 		for (String license : headerRankings.keySet()) {
@@ -183,25 +182,20 @@ public class LicenseAnalyser {
 							ngramsMatched = Utils.tracknGrams(license, ngramsMatched);
 						} else {
 							scores = Utils.addScore(license, modifier, scores);
-							// keep track of not matched
-							ngramsNotMatched = Utils.tracknGrams(license, ngramsNotMatched);
 						}
 					} else {
 						scores = Utils.addScore(license, modifier, scores);
-						// keep track of not matched
-						ngramsNotMatched = Utils.tracknGrams(license, ngramsNotMatched);
 					}
 				}
 			}
 		}
 
-		return Ranking.calculateIndividualRank(scores, ngramsMatched, ngramsNotMatched, ngrams.size(), modifier);
+		return Ranking.calculateIndividualRank(scores, ngramsMatched, ngrams.size(), modifier);
 	}
 
 	private static Map<String, Rank> analyseGroupLicences(Map<String, Double> scores, List<String> ngrams) {
 
 		Map<String, Integer> ngramsMatched = new HashMap<>();
-		Map<String, Integer> ngramsNotMatched = new HashMap<>();
 
 		
 		for (String ngram : ngrams) {
@@ -214,19 +208,15 @@ public class LicenseAnalyser {
 						ngramsMatched = Utils.tracknGrams(license, ngramsMatched);
 					} else {
 						scores = Utils.addScore(license, modifier, scores);
-						// keep track of not matched
-						ngramsNotMatched = Utils.tracknGrams(license, ngramsNotMatched);
 					}
 				}
 			} else {
 				for (String license : licenseGroupHierarchy.keySet()) {
 					scores = Utils.addScore(license, modifier, scores);
-					// keep track of not matched
-					ngramsNotMatched = Utils.tracknGrams(license, ngramsNotMatched);
 				}
 			}
 		}
-		return Ranking.calculateGroupRank(scores, ngramsMatched, ngramsNotMatched, ngrams.size(), modifier);
+		return Ranking.calculateGroupRank(scores, ngramsMatched, ngrams.size(), modifier);
 
 	}
 
@@ -234,7 +224,6 @@ public class LicenseAnalyser {
 
 		Map<String, Double> scores = new HashMap<>();
 		Map<String, Integer> ngramsMatched = new HashMap<>();
-		Map<String, Integer> ngramsNotMatched = new HashMap<>();
 
 		for (License license : LicenseAnalyser.getHierarchy().get(rank.getName())) {
 
@@ -250,19 +239,15 @@ public class LicenseAnalyser {
 						ngramsMatched = Utils.tracknGrams(license.getLicenseId(), ngramsMatched);
 					} else {
 						scores = Utils.addScore(license.getLicenseId(), modifier, scores);
-						// keep track of not matched
-						ngramsNotMatched = Utils.tracknGrams(license.getLicenseId(), ngramsNotMatched);
 					}
 				} else {
 					scores = Utils.addScore(license.getLicenseId(), modifier, scores);
-					// keep track of not matched
-					ngramsNotMatched = Utils.tracknGrams(license.getLicenseId(), ngramsNotMatched);
 				}
 			}
 
 		}
 
-		return Ranking.calculateIndividualRank(scores, ngramsMatched, ngramsNotMatched, ngrams.size(), modifier);
+		return Ranking.calculateIndividualRank(scores, ngramsMatched, ngrams.size(), modifier);
 
 	}
 
