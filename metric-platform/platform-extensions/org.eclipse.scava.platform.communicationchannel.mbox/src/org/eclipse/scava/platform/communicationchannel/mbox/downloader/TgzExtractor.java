@@ -13,14 +13,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import org.eclipse.scava.platform.communicationchannel.mbox.utils.DataPath;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataPath;
 
 public class TgzExtractor {
 
@@ -33,10 +34,10 @@ public class TgzExtractor {
 	}
 	
 		
-	public static DataPath extract(InputStream inputStream , String ext) throws IOException {
+	public static CommunicationChannelDataPath extract(Path tempDir, InputStream inputStream , String ext) throws IOException {
 		
-		File file = createTempFile(inputStream, ext);
-		DataPath dataPath = null;
+		File file = createTempFile(tempDir,inputStream, ext);
+		CommunicationChannelDataPath dataPath = null;
 	    try
 	    {
 	    	InputStream in = new FileInputStream(file);
@@ -45,8 +46,8 @@ public class TgzExtractor {
 		        if(ext.equals(".txt.gz"))
 		        {
 		        	GZIPInputStream gzis = new GZIPInputStream(in);
-		        	File textfile = createTempFile(gzis, ".txt");
-			    	dataPath = new DataPath(textfile.toPath(), true);
+		        	File textfile = createTempFile(tempDir, gzis, ".txt");
+			    	dataPath = new CommunicationChannelDataPath(textfile.toPath(), true);
 		        }
 		        else
 		        {
@@ -80,7 +81,7 @@ public class TgzExtractor {
 		                                if(rootCreated.isEmpty())
 		                                {
 		                                    path=Files.createTempDirectory(parsedPath.get(i) + "_");
-		                                    rootCreated=path.toString();
+		                                    rootCreated=tempDir.toString()+"/"+path.toString();
 		                                }
 		                                else
 		                                {
@@ -102,7 +103,7 @@ public class TgzExtractor {
 		                        }
 		                    }
 		                }
-		                dataPath = new DataPath(Paths.get(rootCreated), false);
+		                dataPath = new CommunicationChannelDataPath(Paths.get(rootCreated), false);
 		    	    } catch (IOException e) {
 		    	    	logger.error("Error while reading Tar file", e);
 		    		}
@@ -126,8 +127,8 @@ public class TgzExtractor {
 	    
 	}
 	
-	private static File createTempFile(InputStream inputStream, String extension) throws IOException {
-		File tmpFile = createEmptyTempFile(extension);
+	private static File createTempFile(Path tempDir, InputStream inputStream, String extension) throws IOException {
+		File tmpFile = createEmptyTempFile(tempDir, extension);
 	    try {
 	        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(tmpFile));
 	        IOUtils.copy(inputStream, bufferedOutputStream);
@@ -145,9 +146,10 @@ public class TgzExtractor {
 	    }
 	}
 	
-	private static File createEmptyTempFile(String extension) throws IOException
+	private static File createEmptyTempFile(Path tempDir, String extension) throws IOException
 	{
-		return File.createTempFile("mailingListArchive", extension);
+		String uniqueName = UUID.randomUUID().toString() + extension;
+		return new File(tempDir.toString()+"/"+uniqueName);
 	}
 	
 	private static List<String> pathParser(String path)

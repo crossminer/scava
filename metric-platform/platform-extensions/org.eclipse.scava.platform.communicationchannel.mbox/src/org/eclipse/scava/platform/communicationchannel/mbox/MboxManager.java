@@ -18,14 +18,14 @@ import org.eclipse.scava.platform.communicationchannel.mbox.downloader.MyAuthent
 import org.eclipse.scava.platform.communicationchannel.mbox.downloader.TgzExtractor;
 import org.eclipse.scava.platform.communicationchannel.mbox.parser.Email;
 import org.eclipse.scava.platform.communicationchannel.mbox.parser.MBoxReader;
-import org.eclipse.scava.platform.communicationchannel.mbox.utils.Data;
-import org.eclipse.scava.platform.communicationchannel.mbox.utils.DataManager;
-import org.eclipse.scava.platform.communicationchannel.mbox.utils.DataPath;
 import org.eclipse.scava.platform.communicationchannel.mbox.utils.MboxUtils;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelData;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataManager;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataPath;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 
@@ -73,7 +73,7 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
 		
-		Data data = DataManager.getData(mbox.getOSSMeterId());
+		CommunicationChannelData data = CommunicationChannelDataManager.getData(mbox.getOSSMeterId());
 		
 		String extension = MboxUtils.checkExtension(mbox.getCompressedFileExtension());
 		
@@ -83,18 +83,18 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			return delta;
 		}
 		
-		DataPath dataPath;
+		CommunicationChannelDataPath dataPath;
 		if(!data.compareDate(month, year) || !data.fileExists())
 		{
 			String url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
 			if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
-				dataPath=downloadMbox(url, extension);
+				dataPath=downloadMbox(data.getTempDir(), url, extension);
 			else
-				dataPath=downloadMbox(url, mbox.getUsername(), mbox.getPassword(),extension);
+				dataPath=downloadMbox(data.getTempDir(),url, mbox.getUsername(), mbox.getPassword(),extension);
 			if(dataPath!=null)
 			{
 				data.updateDataPath(dataPath, month, year);
-				DataManager.updateData(mbox.getOSSMeterId(), data);
+				CommunicationChannelDataManager.updateData(mbox.getOSSMeterId(), data);
 			}
 		}
 		else
@@ -137,19 +137,20 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 	
 	/**
 	 * Download Data from URL using no authentication
+	 * @param tempFile 
 	 * 
 	 * @param downloadURL
 	 * @return 
 	 */
-	private DataPath downloadMbox(String downloadURL, String ext) {
+	private CommunicationChannelDataPath downloadMbox(Path tempDir, String downloadURL, String ext) {
 
 		URL url = null;
-		DataPath dataPath;
+		CommunicationChannelDataPath dataPath;
 		try {
 			
 			url = new URL(downloadURL);
 			InputStream is = url.openStream();
-			dataPath = TgzExtractor.extract(is, ext);
+			dataPath = TgzExtractor.extract(tempDir, is, ext);
 			is.close();
 			return dataPath;
 
@@ -175,12 +176,12 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 	 * @param username
 	 * @param password
 	 */
-	private DataPath downloadMbox(String downloadURL, String username, String password, String ext) {
+	private CommunicationChannelDataPath downloadMbox(Path tempDir, String downloadURL, String username, String password, String ext) {
 
 		MyAuthenticator.setPasswordAuthentication(username, password);
 		Authenticator.setDefault(new MyAuthenticator());
 		
-		return downloadMbox(downloadURL, ext);
+		return downloadMbox(tempDir, downloadURL, ext);
 
 	}
 	
