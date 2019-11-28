@@ -84,7 +84,7 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 		}
 		
 		DataPath dataPath;
-		if(!data.compareDate(month, year))
+		if(!data.compareDate(month, year) || !data.fileExists())
 		{
 			String url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
 			if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())

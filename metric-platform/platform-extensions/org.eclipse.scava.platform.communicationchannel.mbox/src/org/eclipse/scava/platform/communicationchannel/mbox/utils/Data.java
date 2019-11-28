@@ -14,6 +14,11 @@ public class Data {
 		month=-1;
 	}
 	
+	public boolean fileExists()
+	{
+		return dataPath.getFile().exists();
+	}
+	
 	public boolean compareDate(int month, int year)
 	{
 		return (this.month==month && this.year==year);
