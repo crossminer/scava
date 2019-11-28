@@ -15,6 +15,8 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 		USERNAME.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		PASSWORD.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		COMPRESSEDFILEEXTENSION.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
+		setUsername("");
+		setPassword("");
 	}
 	
 	public static StringQueryProducer MBOXNAME = new StringQueryProducer("MboxName"); 
@@ -72,14 +74,12 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 
 	@Override
 	public String getCommunicationChannelType() {
-		// TODO Auto-generated method stub
 		return "Mbox";
 	}
 
 	@Override
 	public String getInstanceId() {
-		// TODO Auto-generated method stub
-		return getUrl() + "/" + getMboxName();
+		return getUrl();
 	}
 	
 	
