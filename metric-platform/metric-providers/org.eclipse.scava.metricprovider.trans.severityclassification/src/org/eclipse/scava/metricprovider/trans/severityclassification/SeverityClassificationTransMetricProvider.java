@@ -244,9 +244,13 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 						{
 							//We need to match here the thread article with the code detector article
 							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleId());
-							deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
-							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
-							db.getNewsgroupArticles().add(newsgroupArticleData);
+							NewsgroupArticleData newsgroupArticleData;
+							if(deltaArticle!=null)
+							{
+								deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
+								newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
+								db.getNewsgroupArticles().add(newsgroupArticleData);
+							}
 						}
 					}
 				}
