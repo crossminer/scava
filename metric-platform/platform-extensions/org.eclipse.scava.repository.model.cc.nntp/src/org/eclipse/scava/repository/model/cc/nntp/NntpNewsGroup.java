@@ -81,7 +81,7 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 		return this;
 	}
 	public int getPort() {
-		return parseInteger(dbObject.get("port")+"", 0);
+		return parseInteger(dbObject.get("port")+"", 119);
 	}
 	
 	public NntpNewsGroup setPort(int port) {
