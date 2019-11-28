@@ -83,7 +83,7 @@ public class ProjectCreationResource extends ServerResource {
 				switch (cc.get("type").asText()) {
 					case "nntp":
 						NntpNewsGroup newsgroup = new NntpNewsGroup();
-						newsgroup.setName(cc.get("name").asText());
+						newsgroup.setNewsGroupName(cc.get("name").asText());
 						newsgroup.setUrl(cc.get("url").asText());
 						newsgroup.setPort(Integer.parseInt(cc.get("port").asText()));
 						if (cc.get("interval").asText() != null && !cc.get("interval").asText().equals("")) {
