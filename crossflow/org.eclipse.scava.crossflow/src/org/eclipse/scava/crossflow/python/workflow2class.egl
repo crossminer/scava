@@ -129,9 +129,9 @@ class [%=w.name%](Workflow):
                     [%=t.setup()%]
             	[%}
             }%]
-        except Exception as e:
+        except Exception as ex:
             self.local_logger.exception("")
-            self.report_internal_exception(e)
+            self.report_internal_exception(ex)
 
     [%for (s in w.streams) { %]
     def get[%=s.name%](self) -> [%=s.pyType()%]:

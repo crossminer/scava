@@ -98,12 +98,13 @@ class [%=t.name%][%if (t.getSuperType().isDefined()) {%]([%=t.getSuperType()%])[
         [%}
         %]
     ):
-        super.__init__()
+        super().__init__()
         [% for (f in t.~fields) {%]
         self._[%=f.name.toSnakeCaseLower()%] = [%=f.name.toSnakeCaseLower()%]
         [%}
         if (t.isJob()) { // TODO: change this when correlationId -> _correlation_id%]
-        self.correlationId = correlation.correlationId
+        if correlation is not None:
+            self.correlationId = correlation.correlationId
         [%}
     }%]
 
@@ -119,10 +120,20 @@ class [%=t.name%][%if (t.getSuperType().isDefined()) {%]([%=t.getSuperType()%])[
     [%}%]
     def __str__(self):
         [%
-        var fields = t.fields.name;
-        if (t.isJob()) fields = fields.includingAll(Sequence{"jobId", "correlationId", "destination"});
+        var names = t.fields.collect(f|f.name.toSnakeCaseLower());
+        if (t.isJob()) {
+        	// TODO: Replace this with snakecased names when runtime changes
+            names.add("jobId");
+            names.add("correlationId");
+            names.add("destination");
+        }
+        var format = "";
+        for (n in names) {
+        	format += n + "={self." + n + "}";
+        	if (hasMore) format += ", ";
+        }
         %]
-        return '[%=t.name%] (' + [%=fields.collect(f|'" ' + f + '=" + str(self.' + f).concat(') + ')%]) + ")"
+        return f"[%=t.name%] ( [%=format%] )"
 [%
 operation Type getSuperType() : String {
     if (self.isJob()) {
