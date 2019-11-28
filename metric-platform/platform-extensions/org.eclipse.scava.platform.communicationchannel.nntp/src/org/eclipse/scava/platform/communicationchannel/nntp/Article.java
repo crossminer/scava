@@ -87,6 +87,8 @@ public class Article implements Threadable, Comparable<Article>{
     private void simplifySubject() {
             int start = 0;
             String subject = getSubject();
+            if(subject==null)
+            	simplifiedSubject="";
             int len = subject.length();
 
             boolean done = false;
