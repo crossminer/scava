@@ -71,20 +71,20 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 			
 			//Edge Hill May 2019: This code breaks when javaArticleDate==null, I tried to avoid the null with javaArticleDate!=null,
 			//but that created an infinite loop
-//			do {
+			//do {
 				articles = NntpUtil.getArticleInfo(nntpClient, 
 						lastArticleChecked + 1, lastArticleChecked + retrievalStep);
-//				if (articles.length > 0) {
-//					Article lastArticleRetrieved = articles[articles.length-1];
-//					java.util.Date javaArticleDate = NntpUtil.parseDate(lastArticleRetrieved.getDate());
-//					if(javaArticleDate!=null)
-//					{
-//						articleDate = new Date(javaArticleDate);
-//						if (date.compareTo(articleDate) > 0)
-//							lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
-//					}
-//				}
-//			} while (date.compareTo(articleDate) > 0);
+				/*if (articles.length > 0) {
+					Article lastArticleRetrieved = articles[articles.length-1];
+					java.util.Date javaArticleDate = NntpUtil.parseDate(lastArticleRetrieved.getDate());
+					if(javaArticleDate!=null)
+					{
+						articleDate = new Date(javaArticleDate);
+						if (date.compareTo(articleDate) > 0)
+							lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
+					}
+				}
+			} while (date.compareTo(articleDate) > 0);*/
 
 			for (Article article: articles) {
 				java.util.Date javaArticleDate = NntpUtil.parseDate(article.getDate());
