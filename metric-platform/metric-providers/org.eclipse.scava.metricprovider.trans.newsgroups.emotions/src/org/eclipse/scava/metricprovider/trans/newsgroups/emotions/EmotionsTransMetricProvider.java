@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.newsgroups.emotions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -190,7 +191,9 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<New
 		for (NewsgroupArticlesEmotionClassification naec:  newsgroupArticleIt) {
 			newsgroupArticleInEmotionClassification = naec;
 		}
-		return newsgroupArticleInEmotionClassification.getEmotions();
+		if(newsgroupArticleInEmotionClassification!=null)
+			return newsgroupArticleInEmotionClassification.getEmotions();
+		return new ArrayList<String>(0);
 	}
 
 }
