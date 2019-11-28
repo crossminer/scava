@@ -5,10 +5,10 @@ import java.nio.file.Path;
 
 public class CommunicationChannelData {
 
-	int year;
-	int month;
-	CommunicationChannelDataPath dataPath;
-	Path tempDir;
+	private int year;
+	private int month;
+	private CommunicationChannelDataPath dataPath;
+	private Path tempDir;
 	
 	public CommunicationChannelData(Path tempDir)
 	{
