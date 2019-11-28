@@ -10,8 +10,8 @@ from [%=package%].[%=t.pyVarName()%] import [%=t.name%]
 [%}%]
 
 # Types
-[%for (t in w.types) {%]
-from crossflow.[%=package%].[%=t.pyVarName()%] import [%=t.name%]
+[% for (t in CrossflowLanguageModel!Type.all) {%]
+from crossflow.[%=package%] import [%=t.name.toSnakeCaseLower()%]
 [%}%]
 
 # Streams
@@ -120,16 +120,18 @@ class [%=w.name%](Workflow):
             [%for (s in w.streams) {%]
             [%=s.genInitStream()%]
             
-            [%}%]
-
+            [%}
+            
+            if (not w.getPyTasks().isEmpty()) {%]
             if (self.is_worker()):
-            [%for (t in w.getPyTasks()){%]
+            	[%for (t in w.getPyTasks()){%]
                 if not [%=w.name%]Tasks.[%=t.name.toSnakeCaseUpper()%] in self._excluded_tasks:
                     [%=t.setup()%]
-            [%}%]
-
+            	[%}
+            }%]
         except Exception as e:
             self.local_logger.exception("")
+            self.report_internal_exception(e)
 
     [%for (s in w.streams) { %]
     def get[%=s.name%](self) -> [%=s.pyType()%]:
@@ -146,7 +148,10 @@ class [%=w.name%](Workflow):
 
     def _register_custom_serialization_types(self):
     [%for (t in w.types) {%]
-        self._serializer.register_type([%=t.name%])
+        self._serializer.register_type([%=t.name.toSnakeCaseLower()%].[%=t.name%])
+        [%for (e in t.fields.select(e|e.isTypeOf(CrossflowLanguageModel!EnumField))) {%]
+        self._serializer.register_type([%=t.name.toSnakeCaseLower()%].[%=e.name.ftuc()%])
+        [%}%]
     [%}%]
 
 

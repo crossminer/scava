@@ -666,6 +666,7 @@ class CacheManagerTask(Task):
 class Job:
     def __init__(self):
         self.jobId = str(uuid.uuid4())
+        #TODO: needs to change to _correlation_id in type2class.egl
         self.correlationId = ""
         self.destination = ""
         self.cached = False
