@@ -56,7 +56,7 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 	
 	private void authentication()
 	{
-		if((!getUsername().isEmpty()) && (!getPassword().isEmpty()))
+		if(!getUsername().isEmpty() && !getPassword().isEmpty())
 			setAuthenticationRequired(true);
 	}
 	
@@ -130,7 +130,7 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 	}
 	
 	public NntpNewsGroup setNewsGroupName(String newsGroupName) {
-		if (getLastArticleChecked().isEmpty())
+		if (getLastArticleChecked().isEmpty() || getLastArticleChecked().equals("null"))
 			setLastArticleChecked("-1");
 		dbObject.put("newsGroupName", newsGroupName);
 		notifyChanged();
