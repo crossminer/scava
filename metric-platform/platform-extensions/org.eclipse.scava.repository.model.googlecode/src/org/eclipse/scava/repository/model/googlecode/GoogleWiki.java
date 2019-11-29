@@ -30,7 +30,10 @@ public class GoogleWiki extends org.eclipse.scava.repository.model.Communication
 		return "";
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 	
 }

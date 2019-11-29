@@ -82,7 +82,10 @@ public class Irc extends org.eclipse.scava.repository.model.CommunicationChannel
 		return getUrl();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 	
 }

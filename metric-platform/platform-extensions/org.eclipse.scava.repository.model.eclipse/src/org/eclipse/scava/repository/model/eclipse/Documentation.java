@@ -31,7 +31,10 @@ public class Documentation extends org.eclipse.scava.repository.model.Communicat
 		return "";
 	}	
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 	
 }

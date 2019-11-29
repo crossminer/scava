@@ -47,4 +47,8 @@ public class RedmineQueryManager extends org.eclipse.scava.repository.model.Comm
 		return "";
 	}
 	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

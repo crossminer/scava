@@ -56,5 +56,8 @@ public class Wiki extends org.eclipse.scava.repository.model.CommunicationChanne
 		return getName();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

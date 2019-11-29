@@ -80,4 +80,9 @@ public class SympaMailingList extends org.eclipse.scava.repository.model.Communi
 		return getUrl() + "/" + getMailingListName();
 	}
 	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
+	
 }
