@@ -355,6 +355,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		ClassifierMessage classifierMessage =  prepareBugTrackerClassifierMessage(bug);
 		String severity = classifier.getClassificationResult(classifierMessage);
 		
+		if(severity==null)
+			severity="unknown";
+		
 		ClassificationInstance classificationInstance = classifier.getClassificationInstance(classifierMessage);
 		
 		BugTrackerBugsData bugTrackerBugsData = new BugTrackerBugsData();
