@@ -82,7 +82,10 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 		return getUrl();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return true;
+	}
 	
 	
 }

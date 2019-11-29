@@ -12,8 +12,7 @@ Require-Bundle: com.googlecode.pongo.runtime,
  org.apache.log4j,
  org.eclipse.scava.platform.analysis.data;bundle-version="1.0.0",
  org.eclipse.scava.platform.visualisation;bundle-version="1.0.0",
- org.eclipse.scava.repository.model.cc.eclipseforums,
- org.eclipse.scava.repository.model.cc.mbox
+ org.eclipse.scava.repository.model.cc.eclipseforums
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.scava.platform,

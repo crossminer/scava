@@ -77,7 +77,10 @@ public class EclipseForum extends org.eclipse.scava.repository.model.Communicati
 		return getForum_name() + "/" + getForum_id();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 	
 }

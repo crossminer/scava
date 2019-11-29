@@ -84,5 +84,7 @@ public abstract class CommunicationChannel extends Pongo {
 		return persons;
 	}
 	
+	public abstract boolean needsLocalStorage(); 
+	
 	
 }

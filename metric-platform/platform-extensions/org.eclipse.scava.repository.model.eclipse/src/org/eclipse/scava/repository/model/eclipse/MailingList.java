@@ -79,4 +79,9 @@ public class MailingList extends org.eclipse.scava.repository.model.Communicatio
 		return getName();
 	}	
 	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
+	
 }

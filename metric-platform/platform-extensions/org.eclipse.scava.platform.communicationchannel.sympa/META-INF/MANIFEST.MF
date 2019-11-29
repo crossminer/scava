@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.osgi,
  org.apache.commons.compress,
  org.eclipse.scava.platform.communicationchannel.nntp,
  org.apache.commons.commons-email,
- commons-net.commons-net
+ commons-net.commons-net,
+ org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.scava.platform.communicationchannel.sympa.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -15,6 +15,8 @@ public class SympaMailingList extends org.eclipse.scava.repository.model.Communi
 		USERNAME.setOwningType("org.eclipse.scava.repository.model.cc.sympa.SympaMailingList");
 		PASSWORD.setOwningType("org.eclipse.scava.repository.model.cc.sympa.SympaMailingList");
 		COMPRESSEDFILEEXTENSION.setOwningType("org.eclipse.scava.repository.model.cc.sympa.SympaMailingList");
+		setUsername("");
+		setPassword("");
 	}
 	
 	public static StringQueryProducer MAILINGLISTNAME = new StringQueryProducer("MailingListName"); 
@@ -78,6 +80,11 @@ public class SympaMailingList extends org.eclipse.scava.repository.model.Communi
 	@Override
 	public String getInstanceId() {
 		return getUrl() + "/" + getMailingListName();
+	}
+	
+	@Override
+	public boolean needsLocalStorage() {
+		return true;
 	}
 	
 }

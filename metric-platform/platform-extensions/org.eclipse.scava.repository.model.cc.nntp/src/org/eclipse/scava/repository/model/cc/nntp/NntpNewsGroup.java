@@ -147,5 +147,8 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 		return getUrl()+"/"+getNewsGroupName();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

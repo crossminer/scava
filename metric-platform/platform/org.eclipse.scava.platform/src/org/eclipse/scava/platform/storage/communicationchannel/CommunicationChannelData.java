@@ -7,6 +7,7 @@ public class CommunicationChannelData {
 
 	private int year;
 	private int month;
+	private int day;
 	private CommunicationChannelDataPath dataPath;
 	private Path tempDir;
 	
@@ -15,6 +16,7 @@ public class CommunicationChannelData {
 		dataPath=null;
 		year=-1;
 		month=-1;
+		day=-1;
 		this.tempDir=tempDir;
 	}
 	
@@ -26,6 +28,11 @@ public class CommunicationChannelData {
 	public boolean compareDate(int month, int year)
 	{
 		return (this.month==month && this.year==year);
+	}
+	
+	public boolean compareDate(int day, int month, int year)
+	{
+		return (this.month==month && this.year==year && this.day==day);
 	}
 	
 	private void deleteFile()
@@ -42,6 +49,16 @@ public class CommunicationChannelData {
 		this.dataPath=dataPath;
 		this.month=month;
 		this.year=year;
+	}
+	
+	public void updateDataPath(CommunicationChannelDataPath dataPath, int day, int month, int year)
+	{
+		if(this.dataPath!=null)
+			deleteFile();
+		this.dataPath=dataPath;
+		this.month=month;
+		this.year=year;
+		this.day=day;
 	}
 	
 	public Path getTempDir()

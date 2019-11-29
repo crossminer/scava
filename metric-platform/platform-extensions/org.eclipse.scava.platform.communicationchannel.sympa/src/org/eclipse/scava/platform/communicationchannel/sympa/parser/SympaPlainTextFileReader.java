@@ -13,43 +13,31 @@ public class SympaPlainTextFileReader {
 
 	static Pattern pattern = Pattern.compile("\\/arctxt[^\\/]+\\/\\d{1,2}_");
 
-	public static List<Email> parseFolder(Path inputFolder) {
+	public static List<Email> parseFolder(Path inputFolder) throws IOException {
 
 		List<Email> emails = new ArrayList<Email>();
 
-		Stream<Path> filePaths;
+		Stream<Path> filePaths = Files.walk(inputFolder);
+	
 
-		try {
+		for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
 
-			filePaths = Files.walk(inputFolder);
+		{
+			File file = path.toFile();
 
-			for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
+			if (pattern.matcher(path.toString()).find() == true) {
 
-			{
-				File file = path.toFile();
+				PlainTextMessage message = new PlainTextMessage(file);
+				Email email = new Email(message);
+				emails.add(email);
+				file.delete();
 
-				if (pattern.matcher(path.toString()).find() == true) {
-
-					PlainTextMessage message = new PlainTextMessage(file);
-					Email email = new Email(message);
-					emails.add(email);
-					file.delete();
-
-				} else {
-					//deletes all files that are not required for processing...
-					file.delete();
-				}
+			} else {
+				file.delete();
 			}
-			
-//			// This reader clears up after it's self...
-//			File root = Paths.get(inputFolder).toFile();
-//			root.delete();
-			
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
 		}
+		filePaths.close();
+		
 		return emails;
 	}
 

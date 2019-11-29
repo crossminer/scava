@@ -38,6 +38,10 @@ public class TgzExtractor {
 		
 		File file = createTempFile(tempDir,inputStream, ext);
 		CommunicationChannelDataPath dataPath = null;
+		
+		if(file==null)
+			return dataPath;
+		
 	    try
 	    {
 	    	InputStream in = new FileInputStream(file);
@@ -112,7 +116,7 @@ public class TgzExtractor {
 				
 			}
 			catch (IOException e) {
-				logger.error("Error while reading GZIP file");
+				logger.error("Error while reading GZIP file", e);
 			}
 			
 			in.close();

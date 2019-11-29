@@ -48,6 +48,10 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 //		if (Integer.parseInt(newsgroup.getLastArticleChecked())<134500)
 //			newsgroup.setLastArticleChecked("134500"); //137500");
 
+		/*FIXME: Edge Hill. This will be always the original value
+		 * Readers cannot change values in the MongoDB
+		 * And therefore the reader will always start from the first article*/
+		//TODO: This means that it is necessary to create a variable that stores the last article checked
 		String lac = newsgroup.getLastArticleChecked();
 		if (lac == null || lac.equals("") || lac.equals("null"))
 			lac = "-1";

@@ -27,9 +27,7 @@ public class CommunicationChannelProjectDelta {
 	
 	public CommunicationChannelProjectDelta(DB db, Project project, Date date, ICommunicationChannelManager communicationChannelManager) throws Exception {
 		for (CommunicationChannel communicationChannel: project.getCommunicationChannels()) {
-			//Temporal solution and horrible solution
-			//TODO: IMPROVE THIS
-			if(communicationChannel.getCommunicationChannelType().equals("Mbox"))
+			if(communicationChannel.needsLocalStorage())
 			{
 				File tempDir = createDataStorage(project, communicationChannel.getCommunicationChannelType());
 				CommunicationChannelDataManager.intializeStorage(communicationChannel.getOSSMeterId(), tempDir.toPath());
