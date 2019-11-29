@@ -99,8 +99,8 @@ export class CreateProjectComponent implements OnInit {
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required],
-          'name': ['', Validators.required],
-          'port': ['', Validators.required],
+          'newsGroupName': ['', Validators.required],
+          'port': ['119', Validators.required],
           'interval': [''],
           'username': [''],
           'password': ['']

@@ -224,10 +224,10 @@
                         <input type="text" class="form-control" name="cc.url-{{i + 1}}" [(ngModel)]="cc.url">
                     </td>
                 </tr>
-                <tr *ngIf="cc?.name != null" class="row">
-                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;Name: </td>
+                <tr *ngIf="cc?.newsGroupName != null" class="row">
+                    <td class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;NewsGroup Name: </td>
                     <td class="col-10">
-                        <input type="text" class="form-control" name="cc.name-{{i + 1}}" [(ngModel)]="cc.name">
+                        <input type="text" class="form-control" name="cc.newsGroupName-{{i + 1}}" [(ngModel)]="cc.newsGroupName">
                     </td>
                 </tr>
                 <tr *ngIf="cc?.port != null" class="row">
