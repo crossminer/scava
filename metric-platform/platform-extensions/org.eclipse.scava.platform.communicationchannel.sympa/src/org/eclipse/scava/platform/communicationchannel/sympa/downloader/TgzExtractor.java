@@ -40,6 +40,10 @@ private static OssmeterLogger logger;
 
         File file = createTempFile(tempDir, inputStream, SympaUtils.checkExtension(ext));
         CommunicationChannelDataPath dataPath = null;
+        
+        if(file==null)
+			return dataPath;
+        
         try
         {
         	InputStream in = new FileInputStream(file);
