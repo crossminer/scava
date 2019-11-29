@@ -38,6 +38,10 @@ public class TgzExtractor {
 		
 		File file = createTempFile(tempDir,inputStream, ext);
 		CommunicationChannelDataPath dataPath = null;
+		
+		if(file==null)
+			return dataPath;
+		
 	    try
 	    {
 	    	InputStream in = new FileInputStream(file);
