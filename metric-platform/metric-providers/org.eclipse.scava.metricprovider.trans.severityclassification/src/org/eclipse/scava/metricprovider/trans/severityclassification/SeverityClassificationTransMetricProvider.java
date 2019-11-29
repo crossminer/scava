@@ -325,6 +325,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				ClassifierMessage classifierMessage =  prepareNewsgroupClassifierMessage(newsgroupName, threadId);
 				String severity = classifier.getClassificationResult(classifierMessage);
 				
+				if(severity==null || severity.isEmpty())
+					severity="unknown";
+				
 				NewsgroupThreadData newsgroupThreadData = new NewsgroupThreadData();
 				newsgroupThreadData.setNewsgroupName(newsgroupName);
 				newsgroupThreadData.setThreadId(threadId);
