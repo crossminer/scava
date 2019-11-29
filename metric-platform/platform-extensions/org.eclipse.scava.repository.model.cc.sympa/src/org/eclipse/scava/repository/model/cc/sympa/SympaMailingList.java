@@ -84,7 +84,7 @@ public class SympaMailingList extends org.eclipse.scava.repository.model.Communi
 	
 	@Override
 	public boolean needsLocalStorage() {
-		return false;
+		return true;
 	}
 	
 }
