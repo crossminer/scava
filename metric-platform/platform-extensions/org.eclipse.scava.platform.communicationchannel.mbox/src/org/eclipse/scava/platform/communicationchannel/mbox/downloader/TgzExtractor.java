@@ -112,7 +112,7 @@ public class TgzExtractor {
 				
 			}
 			catch (IOException e) {
-				logger.error("Error while reading GZIP file");
+				logger.error("Error while reading GZIP file", e);
 			}
 			
 			in.close();
