@@ -86,7 +86,7 @@ public class Irc extends org.eclipse.scava.repository.model.CommunicationChannel
 	
 	@Override
 	public boolean needsLocalStorage() {
-		return false;
+		return true;
 	}
 	
 	

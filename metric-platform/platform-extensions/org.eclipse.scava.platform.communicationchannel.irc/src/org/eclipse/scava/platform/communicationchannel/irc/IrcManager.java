@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,14 +24,15 @@ import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChanne
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelData;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataManager;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataPath;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
 
 import com.mongodb.DB;
 
 public class IrcManager implements ICommunicationChannelManager<Irc> {
-	
-	private Path rootPath;
 	
 	protected OssmeterLogger logger;
 	
@@ -65,27 +67,54 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	}
 	
 
-	private boolean getMessageData(Irc irc, Date date) {
+	private CommunicationChannelDataPath getMessageData(Irc irc, Date date) {
 		
-		String downloadLink = irc.getUrl();
-
-		if (!irc.getUrl().endsWith("/"))
-			downloadLink += "/";
-			
-		downloadLink += irc.getName() + "-" + date + irc.getCompressedFileExtension();
-
-		// Determines which download method to use i.e with or without authentication.
-		if (irc.getUsername()!="" || irc.getPassword()!="") {
-
-			//.tar.gz
-			return downloadMessage(downloadLink,  irc.getCompressedFileExtension());
-
-		} else {
-
-			//.tar.gz
-			return downloadMessage(downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
-
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date.toJavaDate());
+		
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		
+		String extension = irc.getCompressedFileExtension();
+		
+		if(extension.isEmpty())
+		{
+			logger.error("File extension is empty. Returning empty delta.");
+			return null;
 		}
+		
+		CommunicationChannelData data = CommunicationChannelDataManager.getData(irc.getOSSMeterId());
+		
+		CommunicationChannelDataPath dataPath;
+		
+		if(!data.compareDate(day, month, year) || !data.fileExists())
+		{
+		
+			String downloadLink = irc.getUrl();
+			if (!irc.getUrl().endsWith("/"))
+				downloadLink += "/";
+				
+			downloadLink += irc.getName() + "-" + date + extension;
+	
+			// Determines which download method to use i.e with or without authentication.
+			if (irc.getUsername()!="" || irc.getPassword()!="") {
+				dataPath=downloadMessage(data.getTempDir(), downloadLink,  irc.getCompressedFileExtension());
+	
+			} else {
+				dataPath=downloadMessage(data.getTempDir(), downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
+	
+			}
+			if(dataPath!=null)
+			{
+				data.updateDataPath(dataPath, day, month, year);
+				CommunicationChannelDataManager.updateData(irc.getOSSMeterId(), data);
+			}
+		}
+		else
+			dataPath=data.getDataPath();
+		
+		return dataPath;
 		
 	}
 
@@ -94,32 +123,28 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * 
 	 * @param downloadURL
 	 */
-	private boolean downloadMessage(String downloadURL, String ext) {
+	private  CommunicationChannelDataPath downloadMessage(Path tempDir,String downloadURL, String ext) {
 
-		URL url = null;
-
+		CommunicationChannelDataPath dataPath=null;
 		try {
 
-			url = new URL(downloadURL);
+			URL url = new URL(downloadURL);
 			InputStream is = url.openStream();
-			rootPath = TgzExtractor.extract(is, ext);
+			dataPath = TgzExtractor.extract(tempDir, is, ext);
 			is.close();
 
 		} catch (MalformedURLException e) {
 
 			logger.error("Malformed URL: ", e);
-			return false;
 
 		} catch (FileNotFoundException e) {
 			
 			logger.error("File not found: ", e);
-			return false;
 		} catch (IOException e) {
 
 			logger.error("IO exception: ", e);
-			return false;
 		}
-		return true;
+		return dataPath;
 
 	}
 
@@ -130,34 +155,12 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * @param username
 	 * @param password
 	 */
-	private boolean downloadMessage(String downloadURL, String username, String password, String ext) {
+	private CommunicationChannelDataPath downloadMessage(Path tempDir, String downloadURL, String username, String password, String ext) {
 
 		MyAuthenticator.setPasswordAuthentication(username, password);
 		Authenticator.setDefault(new MyAuthenticator());
-		URL url = null;
-				
-		try {
-
-			url = new URL(downloadURL);
-			InputStream is = url.openStream();
-			rootPath = TgzExtractor.extract(is, ext);
-			is.close();
-
-		} catch (MalformedURLException e) {
-
-			logger.error("Malformed URL: ", e);
-			return false;
-
-		} catch (FileNotFoundException e) {
-			
-			logger.error("File not found: ", e);
-			return false;
-		} catch (IOException e) {
-
-			logger.error("IO exception: ", e);
-			return false;
-		}
-		return true;
+		
+		return downloadMessage(tempDir, downloadURL, ext);
 	}
 
 	/**
@@ -170,15 +173,13 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	private List<IrcMessage> getAnalysisDateMessage(Irc irc, Date date) {
 
 		List<IrcMessage> analysisDateMessage = new ArrayList<>();
-		
-		if(!getMessageData(irc, date))
+		CommunicationChannelDataPath dataPath = getMessageData(irc, date);
+		if(dataPath==null)
 			return analysisDateMessage;
-		
-		Stream<Path> filePaths;
 		
 		try {
 
-			filePaths = Files.walk(rootPath);
+			Stream<Path> filePaths = Files.walk(dataPath.getPath());
 
 			for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
 
@@ -203,9 +204,7 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 				file.delete();
 			}
 			
-//			This reader clears up after it's self...
-//			File root = Paths.get(inputFolder).toFile();
-//			root.delete();
+			filePaths.close();
 			
 
 		} catch (IOException e) {
