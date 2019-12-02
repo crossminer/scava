@@ -11,24 +11,44 @@
 package org.eclipse.scava.plugin.knowledgebase.access;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.ApiClient;
+import io.swagger.client.api.ApiMigrationRestControllerApi;
 import io.swagger.client.api.ArtifactsRestControllerApi;
 import io.swagger.client.api.RecommenderRestControllerApi;
 
 public class KnowledgeBaseAccess {
 	private final ApiClient apiClient;
 
+	private final IPropertyChangeListener propertyChangeListener;
+
 	public KnowledgeBaseAccess() {
 		apiClient = new ApiClient();
 		configureBasePath(apiClient);
+
+		propertyChangeListener = new IPropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				String property = event.getProperty();
+				if (Preferences.KNOWLEDGEBASE_SERVER_ADDRESS.equals(property)
+						|| Preferences.KNOWLEDGEBASE_SERVER_PORT.equals(property)) {
+					configureBasePath(apiClient);
+				}
+			}
+		};
+
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		preferences.addPropertyChangeListener(propertyChangeListener);
 	}
 
 	private void configureBasePath(ApiClient apiClient) {
-		String basePath = "";
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		String basePath = "";
 
 		// Host address
 		String serverAddress = preferences.getString(Preferences.KNOWLEDGEBASE_SERVER_ADDRESS);
@@ -37,7 +57,7 @@ public class KnowledgeBaseAccess {
 		int serverPort = preferences.getInt(Preferences.KNOWLEDGEBASE_SERVER_PORT);
 
 		basePath = serverAddress + ":" + serverPort;
-		
+
 		apiClient.setBasePath(basePath);
 	}
 
@@ -47,5 +67,14 @@ public class KnowledgeBaseAccess {
 
 	public RecommenderRestControllerApi getRecommenderRestController() {
 		return new RecommenderRestControllerApi(apiClient);
+	}
+
+	public ApiMigrationRestControllerApi getApiMigrationRestController() {
+		return new ApiMigrationRestControllerApi(apiClient);
+	}
+
+	public void dispose() {
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		preferences.removePropertyChangeListener(propertyChangeListener);
 	}
 }

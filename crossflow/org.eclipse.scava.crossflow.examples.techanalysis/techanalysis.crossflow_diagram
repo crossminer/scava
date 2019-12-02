@@ -11,22 +11,22 @@
     <tasks xmi:type="cf:CommitmentTask" xmi:id="_VEt0wIxZEemkDbLqlteBag" name="RepositorySearcher" input="_9Y7xYIxXEemkDbLqlteBag" output="_-6tNoIXqEemNI_lvasQPzQ" multipleOutputs="true" configurations="_kJcMoIxjEemkDbLqlteBag"/>
     <tasks xmi:type="cf:Task" xmi:id="_DM9SkIxlEemkDbLqlteBag" name="RepositorySearchDispatcher" input="_9MhNgIXqEemNI_lvasQPzQ" output="_9Y7xYIxXEemkDbLqlteBag" masterOnly="true" multipleOutputs="true"/>
     <types xmi:type="cf:Type" xmi:id="_Ho1bYIXrEemNI_lvasQPzQ" name="Repository">
-      <fields xmi:type="cf:Field" xmi:id="_M6QRsIXrEemNI_lvasQPzQ" name="url"/>
-      <fields xmi:type="cf:Field" xmi:id="_F3YcIIX8EemY8JuncGZEaw" name="name"/>
+      <fields xmi:type="cf:DataField" xmi:id="_M6QRsIXrEemNI_lvasQPzQ" name="url"/>
+      <fields xmi:type="cf:DataField" xmi:id="_F3YcIIX8EemY8JuncGZEaw" name="name"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_N9oaQIXrEemNI_lvasQPzQ" name="Technology">
-      <fields xmi:type="cf:Field" xmi:id="_PltLUIXrEemNI_lvasQPzQ" name="fileExt"/>
-      <fields xmi:type="cf:Field" xmi:id="_Rp4pkIXrEemNI_lvasQPzQ" name="techKey"/>
+      <fields xmi:type="cf:DataField" xmi:id="_PltLUIXrEemNI_lvasQPzQ" name="fileExt"/>
+      <fields xmi:type="cf:DataField" xmi:id="_Rp4pkIXrEemNI_lvasQPzQ" name="techKey"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_EFrnQIX3EemY8JuncGZEaw" name="AnalysisResult">
-      <fields xmi:type="cf:Field" xmi:id="_GfpIQIX3EemY8JuncGZEaw" name="fileCount" type="int"/>
-      <fields xmi:type="cf:Field" xmi:id="_KA1-IIX3EemY8JuncGZEaw" name="authorCount" type="int"/>
-      <fields xmi:type="cf:Field" xmi:id="_cxSJwIxXEemkDbLqlteBag" name="repository"/>
-      <fields xmi:type="cf:Field" xmi:id="_bgHx8IxZEemkDbLqlteBag" name="technology"/>
-      <fields xmi:type="cf:Field" xmi:id="_6fNNYIxmEemkDbLqlteBag" name="name"/>
+      <fields xmi:type="cf:DataField" xmi:id="_GfpIQIX3EemY8JuncGZEaw" name="fileCount" type="int"/>
+      <fields xmi:type="cf:DataField" xmi:id="_KA1-IIX3EemY8JuncGZEaw" name="authorCount" type="int"/>
+      <fields xmi:type="cf:DataField" xmi:id="_cxSJwIxXEemkDbLqlteBag" name="repository"/>
+      <fields xmi:type="cf:DataField" xmi:id="_bgHx8IxZEemkDbLqlteBag" name="technology"/>
+      <fields xmi:type="cf:DataField" xmi:id="_6fNNYIxmEemkDbLqlteBag" name="name"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_kJcMoIxjEemkDbLqlteBag" name="TechnologyCollection">
-      <fields xmi:type="cf:Field" xmi:id="_n6TPIIxjEemkDbLqlteBag" name="technologies" type="Technology" many="true"/>
+      <fields xmi:type="cf:DataField" xmi:id="_n6TPIIxjEemkDbLqlteBag" name="technologies" type="Technology" many="true"/>
     </types>
     <languages xmi:type="cf:Language" xmi:id="_IXb74IXtEemNI_lvasQPzQ" name="Java" package="org.eclipse.scava.crossflow.examples.techanalysis" outputFolder="src" genOutputFolder="src-gen"/>
   </cf:Workflow>
@@ -50,14 +50,6 @@
     <children xmi:type="notation:Shape" xmi:id="_Ho2pgIXrEemNI_lvasQPzQ" type="2011" element="_Ho1bYIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_Ho3QkIXrEemNI_lvasQPzQ" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_Ho4esIXrEemNI_lvasQPzQ" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_M6Q4wIXrEemNI_lvasQPzQ" type="3001" element="_M6QRsIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_M6Q4woXrEemNI_lvasQPzQ" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_M6Q4wYXrEemNI_lvasQPzQ"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_F3YcIYX8EemY8JuncGZEaw" type="3001" element="_F3YcIIX8EemY8JuncGZEaw" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_F3YcI4X8EemY8JuncGZEaw" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_F3YcIoX8EemY8JuncGZEaw"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_Ho4esYXrEemNI_lvasQPzQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_Ho4esoXrEemNI_lvasQPzQ"/>
       </children>
@@ -67,14 +59,6 @@
     <children xmi:type="notation:Shape" xmi:id="_N9pBUIXrEemNI_lvasQPzQ" type="2011" element="_N9oaQIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_N9pBU4XrEemNI_lvasQPzQ" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_N9pBVIXrEemNI_lvasQPzQ" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_PltyYIXrEemNI_lvasQPzQ" type="3001" element="_PltLUIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_PltyYoXrEemNI_lvasQPzQ" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PltyYYXrEemNI_lvasQPzQ"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_Rp5QoIXrEemNI_lvasQPzQ" type="3001" element="_Rp4pkIXrEemNI_lvasQPzQ" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_Rp5QooXrEemNI_lvasQPzQ" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Rp5QoYXrEemNI_lvasQPzQ"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_N9pBVYXrEemNI_lvasQPzQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_N9pBVoXrEemNI_lvasQPzQ"/>
       </children>
@@ -93,26 +77,6 @@
     <children xmi:type="notation:Shape" xmi:id="_EFrnQYX3EemY8JuncGZEaw" type="2011" element="_EFrnQIX3EemY8JuncGZEaw" fontName=".SF NS Text">
       <children xmi:type="notation:DecorationNode" xmi:id="_EFrnRIX3EemY8JuncGZEaw" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_EFrnRYX3EemY8JuncGZEaw" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_GfpIQYX3EemY8JuncGZEaw" type="3001" element="_GfpIQIX3EemY8JuncGZEaw" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_GfpIQ4X3EemY8JuncGZEaw" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GfpIQoX3EemY8JuncGZEaw"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_KA1-IYX3EemY8JuncGZEaw" type="3001" element="_KA1-IIX3EemY8JuncGZEaw" fontName=".SF NS Text">
-          <children xmi:type="notation:DecorationNode" xmi:id="_KA1-I4X3EemY8JuncGZEaw" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KA1-IoX3EemY8JuncGZEaw"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_cyBwoIxXEemkDbLqlteBag" type="3001" element="_cxSJwIxXEemkDbLqlteBag" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_cyBwooxXEemkDbLqlteBag" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cyBwoYxXEemkDbLqlteBag"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_bgHx8YxZEemkDbLqlteBag" type="3001" element="_bgHx8IxZEemkDbLqlteBag" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_bgHx84xZEemkDbLqlteBag" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bgHx8oxZEemkDbLqlteBag"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_6fNNYYxmEemkDbLqlteBag" type="3001" element="_6fNNYIxmEemkDbLqlteBag" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_6fNNY4xmEemkDbLqlteBag" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6fNNYoxmEemkDbLqlteBag"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_EFrnRoX3EemY8JuncGZEaw"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_EFrnR4X3EemY8JuncGZEaw"/>
       </children>
@@ -138,10 +102,6 @@
     <children xmi:type="notation:Shape" xmi:id="_kJeo4IxjEemkDbLqlteBag" type="2011" element="_kJcMoIxjEemkDbLqlteBag" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_kJfP8oxjEemkDbLqlteBag" type="5012"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_kJfP84xjEemkDbLqlteBag" type="7001">
-        <children xmi:type="notation:Shape" xmi:id="_n6T2MIxjEemkDbLqlteBag" type="3001" element="_n6TPIIxjEemkDbLqlteBag" fontName="Segoe UI">
-          <children xmi:type="notation:DecorationNode" xmi:id="_n6T2MoxjEemkDbLqlteBag" type="5011"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_n6T2MYxjEemkDbLqlteBag"/>
-        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_kJfP9IxjEemkDbLqlteBag"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_kJfP9YxjEemkDbLqlteBag"/>
       </children>

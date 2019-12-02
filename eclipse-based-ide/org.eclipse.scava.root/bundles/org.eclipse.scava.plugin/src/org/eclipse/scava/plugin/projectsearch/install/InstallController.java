@@ -88,6 +88,7 @@ public class InstallController extends ModelViewController<InstallModel, Install
 			notReadyToInstall.remove(event.getProject());
 
 			getView().setEnabledInstall(false);
+			getView().setEnabledChangeBasePath(false);
 			getView().setEnabledClose(false);
 
 			return;
@@ -106,8 +107,12 @@ public class InstallController extends ModelViewController<InstallModel, Install
 			if (installing.isEmpty()) {
 				getView().setEnabledClose(true);
 
-				if (!getModel().isAllProjectInstalled() && notReadyToInstall.isEmpty()) {
-					getView().setEnabledInstall(true);
+				if (!getModel().isAllProjectInstalled() ) {
+					getView().setEnabledChangeBasePath(true);
+					
+					if( notReadyToInstall.isEmpty() ) {
+						getView().setEnabledInstall(true);
+					}
 				}
 			}
 

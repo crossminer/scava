@@ -22,15 +22,14 @@ import org.eclipse.scava.platform.delta.ProjectDelta;
 import org.eclipse.scava.platform.delta.bugtrackingsystem.PlatformBugTrackingSystemManager;
 import org.eclipse.scava.platform.delta.communicationchannel.PlatformCommunicationChannelManager;
 import org.eclipse.scava.platform.delta.vcs.PlatformVcsManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.Project;
-import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
 import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 import org.eclipse.scava.repository.model.cc.sympa.SympaMailingList;
-import org.eclipse.scava.repository.model.documentation.gitbased.DocumentationGitBased;
 import org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic;
 import org.eclipse.scava.repository.model.sourceforge.Discussion;
 
@@ -53,6 +52,12 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 	protected PlatformBugTrackingSystemManager platformBugTrackingSystemManager;
 	protected PlatformCommunicationChannelManager communicationChannelManager;
 	protected PlatformVcsManager platformVcsManager;
+	
+	protected OssmeterLogger logger;
+	
+	public IndexPreparationTransMetricProvider() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger(".metricprovider.trans.indexing.preparation");
+	}
 	
 	@Override
 	public String getIdentifier() {
@@ -120,13 +125,11 @@ public class IndexPreparationTransMetricProvider implements ITransientMetricProv
 
 	@Override
 	public void measure(Project project, ProjectDelta delta, IndexPrepTransMetric db) {
-		System.err.println("Entering Index Preparation");
+		logger.info("Entering Index Preparation");
 		clearDB(db);// this ensures that the collection is always clean everytime it is executed
 		ExecutedMetricProviders emp = new ExecutedMetricProviders();
 		db.getExecutedMetricProviders().add(emp);
 		db.sync();
-		
-		
 	}
 	
 	private void clearDB(IndexPrepTransMetric db) {

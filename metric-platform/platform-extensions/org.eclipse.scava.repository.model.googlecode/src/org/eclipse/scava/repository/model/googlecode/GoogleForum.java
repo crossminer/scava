@@ -29,8 +29,9 @@ public class GoogleForum extends org.eclipse.scava.repository.model.Communicatio
 		return "";
 	}
 	
-	
-	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 }

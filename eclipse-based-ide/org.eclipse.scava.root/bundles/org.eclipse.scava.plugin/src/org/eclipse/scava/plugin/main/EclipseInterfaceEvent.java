@@ -43,6 +43,22 @@ public abstract class EclipseInterfaceEvent extends RoutedEvent {
 
 	}
 
+	public static class FocusApiCallRecommendationRequestEvent extends EclipseInterfaceEvent {
+
+		public FocusApiCallRecommendationRequestEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
+	public static class FocusCodeSnippetRecommendationRequestEvent extends EclipseInterfaceEvent {
+
+		public FocusCodeSnippetRecommendationRequestEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
 	public static class ApiDocuemntationRequestEvent extends EclipseInterfaceEvent {
 
 		public ApiDocuemntationRequestEvent(Controller source) {
@@ -50,4 +66,29 @@ public abstract class EclipseInterfaceEvent extends RoutedEvent {
 		}
 
 	}
+
+	public static class WorkbenchStartup extends EclipseInterfaceEvent {
+
+		public WorkbenchStartup(Controller source) {
+			super(source);
+		}
+
+	}
+
+	public static class LibraryVersionUpdaterRequestEvent extends EclipseInterfaceEvent {
+
+		public LibraryVersionUpdaterRequestEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
+	public static abstract class MarkerResolutionEvent extends EclipseInterfaceEvent {
+
+		public MarkerResolutionEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
 }

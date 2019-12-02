@@ -20,7 +20,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -61,17 +63,11 @@ public class NntpUtil {
 				client.authenticate(newsgroup.getUsername(), newsgroup.getPassword());
 			}
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-	        System.err.println("SocketException while connecting to NNTP server: '"+ 
-	        		newsgroup.getUrl() + "': " + e.getMessage());
-	        e.printStackTrace();
-//	        System.exit(1);
+			NntpManager.logger.error("SocketException while connecting to NNTP server: '"+ 
+	        		newsgroup.getUrl() + "': ", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-	        System.err.println("IOException while connecting to NNTP server: '"+ 
-	        		newsgroup.getUrl() + "': " + e.getMessage());
-	        e.printStackTrace();
-//	        System.exit(1);
+			NntpManager.logger.error("IOException while connecting to NNTP server: "+ 
+	        		newsgroup.getUrl(), e);
 		}
 		return client;
 	}
@@ -82,10 +78,8 @@ public class NntpUtil {
 		try {
 			client.selectNewsgroup(newsgroupName, newsgroupInfo);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-	        System.err.println("IOException while selecting newsgroup: '"+ 
-	        		newsgroupName + "': " + e.getMessage());
-	        e.printStackTrace();
+			NntpManager.logger.error("IOException while selecting newsgroup: "+ 
+	        		newsgroupName, e);
 		}
 		return newsgroupInfo;
 	}
@@ -94,15 +88,14 @@ public class NntpUtil {
 		try {
 			nntpClient.disconnect();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-	        System.err.println("IOException while disconnectiong from NNTP server: "+ e.getMessage());
+			NntpManager.logger.error("IOException while disconnectiong from NNTP server: ", e);
 		}
 	}
 
-	public static Article[] getArticleInfo(NNTPClient nntpClient, 
+	public static List<Article> getArticleInfo(NNTPClient nntpClient, 
 			long startArticleNumber, long endArticleNumber) throws IOException {
 		Reader reader = null;
-		Article[] articles = null;
+		List<Article> articles=null;
 		reader = (DotTerminatedMessageReader) nntpClient.retrieveArticleInfo(startArticleNumber, endArticleNumber);
 
 		if (reader != null) {
@@ -114,8 +107,7 @@ public class NntpUtil {
 			// Subject\tAuthor\tDate\tID\tReference(s)\tByte Count\tLine Count
 
 			int count = st.countTokens();
-			articles = new Article[count];
-			int index = 0;
+			articles = new ArrayList<Article>(count);
 
 			while (st.hasMoreTokens()) {
 				StringTokenizer stt = new StringTokenizer(st.nextToken(), "\t");
@@ -126,10 +118,8 @@ public class NntpUtil {
 				article.setDate(stt.nextToken());
 				article.setArticleId(stt.nextToken());
 				article.addReference(stt.nextToken());
-				articles[index++] = article;
+				articles.add(article);
 			}
-		} else {
-			return null;
 		}
 
 		return articles;
@@ -137,7 +127,7 @@ public class NntpUtil {
 	
 	public static Article getArticleInfo(NNTPClient client, long articleNumber)
 			throws IOException {
-		return getArticleInfo(client, articleNumber, articleNumber)[0];
+		return getArticleInfo(client, articleNumber, articleNumber).get(0);
 /*		DotTerminatedMessageReader reader = (DotTerminatedMessageReader) client.retrieveArticleInfo(articlePointer.articleNumber);
 	
 		
@@ -183,16 +173,13 @@ public class NntpUtil {
 
 	protected static String decodeSubject(String subject) {
 		if (subject.contains("=?utf-8?")) {
-//			System.err.println("D: subject:\t" + subject);
 			String decodedSubject = "";
         	for (String str: subject.replace("=?utf-8?", " =?utf-8?").split("\\s+"))
     			try {
     				decodedSubject += MimeUtility.decodeText(str);
     			} catch (UnsupportedEncodingException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
+    				NntpManager.logger.error("Unsupported encoding:", e);
     			}
-//    		System.err.println("D: decoded:\t" + decodedSubject);
         	return decodedSubject;
     	} else
     		return subject;
@@ -215,8 +202,7 @@ public class NntpUtil {
 						articleBody = getBodyPart((MimeMultipart) contentObject);
 					
 				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					NntpManager.logger.error("Error while getting article body", e);
 				}
 			} else {
 				return articleBody;
@@ -255,7 +241,7 @@ public class NntpUtil {
 				temp = bufReader.readLine();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			NntpManager.logger.error(e);
 		}
 
 		return sb.toString();
@@ -280,7 +266,7 @@ public class NntpUtil {
     		if (ps.getIndex() != 0)
     			return result;
     	}
-    	System.err.println("\t\t" + dateString + " cannot be parsed!\n");
+    	NntpManager.logger.warn(dateString + " cannot be parsed!");
 		return null;
     }
 

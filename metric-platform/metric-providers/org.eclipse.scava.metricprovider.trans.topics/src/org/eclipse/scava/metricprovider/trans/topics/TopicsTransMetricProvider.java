@@ -338,7 +338,9 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		for (BugTrackerCommentDetectingCode bcd : commentsIt) {
 			bugTrackerComments = bcd;
 		}
-		return bugTrackerComments.getNaturalLanguage();
+		if(bugTrackerComments!=null)
+			return bugTrackerComments.getNaturalLanguage();
+		return "";
 	}
 
 	private NewsgroupArticlesData findNewsgroupArticle(TopicsTransMetric db, CommunicationChannelArticle article) {
@@ -360,7 +362,9 @@ public class TopicsTransMetricProvider implements ITransientMetricProvider<Topic
 		for (NewsgroupArticleDetectingCode nad : articlesIt) {
 			newsgroupArticles = nad;
 		}
-		return newsgroupArticles.getNaturalLanguage();
+		if(newsgroupArticles!=null)
+			return newsgroupArticles.getNaturalLanguage();
+		return "";
 	}
 	
 	@Override

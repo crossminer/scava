@@ -56,5 +56,8 @@ public class Forum extends org.eclipse.scava.repository.model.CommunicationChann
 		return getName();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

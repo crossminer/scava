@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.scava.nlp.tools.plaintext.communicationchannels;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import org.eclipse.scava.nlp.tools.plaintext.PlainTextObject;
@@ -27,9 +28,13 @@ public class PlainTextNewsgroups
 	
 	public static PlainTextObject process(String text)
 	{
-		text=newlines.matcher(text).replaceAll("\n");
-		IntermadiatePlainTextObject intermadiatePlainTextObject= ReplyLineDetection.process(text);
-		text=intermadiatePlainTextObject.getPlainText();
-		return new PlainTextObject(PlainTextVerticalSplit.process(text), intermadiatePlainTextObject.hadReplies());
+		if(text!=null)
+		{
+			text=newlines.matcher(text).replaceAll("\n");
+			IntermadiatePlainTextObject intermadiatePlainTextObject= ReplyLineDetection.process(text);
+			text=intermadiatePlainTextObject.getPlainText();
+			return new PlainTextObject(PlainTextVerticalSplit.process(text), intermadiatePlainTextObject.hadReplies());
+		}
+		return new PlainTextObject(new ArrayList<String>(), false);
 	}
 }

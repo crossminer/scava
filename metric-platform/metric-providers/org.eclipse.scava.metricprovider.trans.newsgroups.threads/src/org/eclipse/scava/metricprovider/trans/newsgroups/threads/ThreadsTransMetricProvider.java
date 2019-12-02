@@ -403,10 +403,12 @@ public class ThreadsTransMetricProvider implements ITransientMetricProvider<News
 		for (NewsgroupArticleDetectingCode nadc : newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
-		if (newsgroupArticleInDetectionCode.getNaturalLanguage() != null)
-			return newsgroupArticleInDetectionCode.getNaturalLanguage();
-		else
-			return "";
+		if(newsgroupArticleInDetectionCode!=null)
+		{
+			if (newsgroupArticleInDetectionCode.getNaturalLanguage() != null)
+				return newsgroupArticleInDetectionCode.getNaturalLanguage();
+		}
+		return "";
 	}
 
 	private ClassificationInstance prepareClassificationInstance(String ossmeterID,

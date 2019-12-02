@@ -1,7 +1,7 @@
 package org.eclipse.scava.platform.communicationchannel.eclipseforums.client.manager;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.scava.platform.communicationchannel.eclipseforums.utils.EclipseForumUtils;
@@ -26,96 +26,125 @@ public class ClientManager {
 	private static Map<String, ClientData> clientMap;
 	protected static OssmeterLogger logger;
 
-	static {
-		logger = (OssmeterLogger) OssmeterLogger.getLogger("eclipse_forums.token.manager");
-		clientMap = ClientManagerSingleton.getInstance().getClientData();
-
+	static
+	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("communicationchannel.eclipseforums.client.manager");
+		clientMap = new Hashtable<String, ClientData>();
 	}
-
-	public OkHttpClient getClient(EclipseForum eclipseForum) throws IOException {
-		OkHttpClient client = null;
-
-		if (clientMap.containsKey(eclipseForum.getOSSMeterId())) {
-			checkForRefresh(eclipseForum);// ensures that the client is up-to-date
-			client = clientMap.get(eclipseForum.getOSSMeterId()).getClient();
-		}
-
-		return client;
+	
+	public static ClientData getClient(EclipseForum eclipseForum)
+	{
+		ClientData clientData;
+		if(clientMap.containsKey(eclipseForum.getClient_id()))
+			clientData=verifyClientStatus(clientMap.get(eclipseForum.getClient_id()));
+		else
+			clientData=setClient(eclipseForum);
+		return clientData;
 	}
-
-	private void addNewClient(EclipseForum eclipseForum) {
-
-		if (clientMap.containsKey(eclipseForum.getOSSMeterId())) {
-
-			logger.info("A Client already exists for " + eclipseForum.getOSSMeterId());
-
-		} else {
-
-			ClientData data = new ClientData();
-			data.setOssmeterID(eclipseForum.getOSSMeterId());
-
-			if (!((eclipseForum.getClient_id().equals("null")) && (eclipseForum.getClient_secret().equals("null")))) {
-
-				data.setClientId(eclipseForum.getClient_id());
-				data.setClientSecret(eclipseForum.getClient_secret());
-
-				try {
-
-					data = generateOAuthToken(data);// this sets OauthToken, refresh token, expiresIn and generatedAt
-					logger.info("An authenticated client has been added for " + eclipseForum.getOSSMeterId());
-
-				} catch (IOException e) {
-
-					logger.error(e);
-				}
-
-			} else {
-
-				data.setClient(getUnAuthenticatedClient());
-				logger.info("Unauthenticated client has been added for " + eclipseForum.getOSSMeterId());
+	
+	private static ClientData verifyClientStatus(ClientData clientData)
+	{
+		needToWait(clientData, false);
+		if(clientData instanceof ClientDataOAuth)
+			refreshOAuth((ClientDataOAuth) clientData);
+		return clientData;
+	}
+	
+	private static void refreshOAuth(ClientDataOAuth clientDataOAuth)
+	{
+		//If the client will need to be refreshed in the following 60s
+		if(clientDataOAuth.getExpiresIn()<60)
+		{
+			try {
+				generateOAuthToken(clientDataOAuth);
+			} catch (IOException | InterruptedException e) {
+				logger.error("Error while creating an OAuth client due to: ", e);
+				logger.info("Using a temporal non-OAuth client");
+				setTemporalNoOAuth(clientDataOAuth);
 			}
-			clientMap.put(data.getOssmeterID(), data);
-			logger.info("Client data has been added to Client Map " + eclipseForum.getOSSMeterId());
+			clientMap.put(clientDataOAuth.getClientId(), clientDataOAuth);
 		}
 	}
-
-	private OkHttpClient getUnAuthenticatedClient() {
-
-		return new OkHttpClient();
+	
+	private static ClientData getNoOAuthClient()
+	{
+		ClientData clientData;
+		if(!clientMap.containsKey("")) //NoOAuth client
+			clientData=setClientNoOAuth();
+		else
+			clientData=clientMap.get("");
+		return clientData;
 	}
-
-	public void checkForRefresh(EclipseForum eclipseForum) throws IOException {
-
-		if (clientMap.containsKey(eclipseForum.getOSSMeterId())) {
-
-			ClientData td = clientMap.get(eclipseForum.getOSSMeterId());
-
-			// only enters if the the user wants to use OAuth
-			if (!((eclipseForum.getClient_id().equals("null")) && (eclipseForum.getClient_secret().equals("null")))) {
-
-				if (checkTime(td.getGeneratedAt(), td.getExpiresIn()) == true) {
-					// THIS SHOULD BE REFRESEH TOKEN BUT ECLIPSE DOESNT INCLUDE IT
-					// IN THE BODY (EVEN THOUGH THEY SAY THEY DO IN THE DOCS)
-					logger.info("Refreshing client for " + eclipseForum.getOSSMeterId());
-					td = generateOAuthToken(td);
-
-				}
-
+	
+	private static void setTemporalNoOAuth(ClientDataOAuth clientDataOAuth)
+	{
+		ClientData clientData = getNoOAuthClient();
+		
+		clientDataOAuth.setCallsRemaining(clientData.getCallsRemaining());
+		clientDataOAuth.setClient(clientData.getClient());
+		clientDataOAuth.setTimeToReset(clientData.getTimeToReset());
+		clientDataOAuth.setRateLimit(clientData.getRateLimit());
+	}
+	
+	private static ClientData setClient(EclipseForum eclipseForum)
+	{
+		if(eclipseForum.getClient_id().isEmpty() || eclipseForum.getClient_secret().isEmpty())
+			return setClientNoOAuth();
+		else
+			return setClientOAuth(eclipseForum);
+	}
+	
+	private static ClientData setClientNoOAuth()
+	{
+		ClientData clientData = new ClientData();
+		clientData.setClient(new OkHttpClient());
+		clientMap.put("", clientData);
+		logger.info("Creating a non-OAuth client");
+		return clientData;
+	}
+	
+	private static ClientData setClientOAuth(EclipseForum eclipseForum)
+	{
+		ClientDataOAuth clientDataOAuth = new ClientDataOAuth();
+		clientDataOAuth.setClientId(eclipseForum.getClient_id());
+		clientDataOAuth.setClientSecret(eclipseForum.getClient_secret());
+		try {
+			generateOAuthToken(clientDataOAuth);
+			clientMap.put(eclipseForum.getClient_id(), clientDataOAuth);
+			return clientDataOAuth;
+		} catch (IOException | InterruptedException e) {
+			logger.error("Error while creating an OAuth client for "+ eclipseForum.getOSSMeterId() +" due to: ", e);
+			logger.info("Creating instead a non-OAuth client");
+			return setClientNoOAuth();
+		}
+	}
+	
+	public static Response executeRequest(EclipseForum eclipseForum, Request request) throws IOException, InterruptedException
+	{
+		return executeRequest(getClient(eclipseForum), request);
+	}
+	
+	private static Response executeRequest(ClientData clientData, Request request) throws IOException, InterruptedException
+	{
+		int counter=0;
+		Response response;
+		do
+		{
+			response = clientData.getClient().newCall(request).execute();
+			checkHeader(response.headers(), clientData);
+			counter++;
+			if(counter==3)
+			{
+				throw new InterruptedException("The client manager has been trying 3 times in a row to get the response. This has been interrupted to prevent a ban.");
 			}
-
-			clientMap.put(td.getOssmeterID(), td);
-
-		} else {
-
-			logger.info("No Client Found");
-
 		}
+		while(needToWait(clientData, true));
+		return response;
 	}
 
-	private ClientData generateOAuthToken(ClientData clientData) throws JsonProcessingException, IOException {
+	private static ClientData generateOAuthToken(ClientDataOAuth clientData) throws JsonProcessingException, IOException, InterruptedException {
 
 		logger.info("Attempting to generate OAuth Token");
-		OkHttpClient genClient = new OkHttpClient();
 
 		FormBody.Builder formBodyBuilder = new FormBody.Builder();
 		formBodyBuilder.add("grant_type", "client_credentials");
@@ -129,29 +158,27 @@ public class ClientManager {
 		builder = builder.url("https://accounts.eclipse.org/oauth2/token");
 		builder = builder.post(body);
 		Request request = builder.build();
-		Response response = genClient.newCall(request).execute();
-
-		Map<String, Integer> headerData = checkHeader(response.headers());
-
-		if (headerData.get("calls-remaining") == 0) {
-
-			waitUntilCallReset(headerData.get("time-to-reset"));
+		
+		Response response;
+		if(clientData.getClient()==null)
+		{	
+			clientData.setClient(new OkHttpClient());
+			response = executeRequest(clientData, request);
 		}
-
+		else
+			response = executeRequest(clientData, request);
+		
 		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string());
 
 		clientData.setoAuthToken(EclipseForumUtils.fixString(jsonNode.get("access_token").toString()));
 
 		// This sets the number of milliseconds until expiration
 		clientData.setExpiresIn(
-				Integer.parseInt(EclipseForumUtils.fixString(jsonNode.get("expires_in").toString())) * 1000);
+				Long.parseLong(EclipseForumUtils.fixString(jsonNode.get("expires_in").toString())));
 
 		clientData.setGeneratedAt(System.currentTimeMillis());
 
 		response.close();
-
-		logger.info("OAuth Token has been generated for " + clientData.getOssmeterID());
-		logger.info("Creating authenticated client for " + clientData.getOssmeterID());
 
 		OkHttpClient.Builder authClient = new OkHttpClient.Builder();
 		authClient.addInterceptor(new Interceptor() {
@@ -168,70 +195,45 @@ public class ClientManager {
 
 		clientData.setClient(authClient.build());
 
-		logger.info("Authenticated client created for " + clientData.getOssmeterID());
-
 		return clientData;
-	}
-
-	public ClientData getClientData(EclipseForum eclipseForum) {
-
-		return clientMap.get(eclipseForum.getOSSMeterId());
-	}
-
-	public Boolean clientDataExists(EclipseForum eclipseForum) {
-
-		if (clientMap.containsKey(eclipseForum.getOSSMeterId())) {
-
-			return true;
-
-		} else {
-
-			addNewClient(eclipseForum);
-
-			return true;
-		}
 	}
 
 	// =========================================================
 	// U T I L I T Y M E T H O D S
 	// =========================================================
 
-	private void waitUntilCallReset(int timeToReset) {
-
-		try {
-			logger.info("The rate limit has been reached. This thread will be suspended for " + timeToReset
-					+ " seconds until the limit has been reset");
-			Thread.sleep((timeToReset * 1000l) + 2);
-
-		} catch (InterruptedException e) {
-
+	private static void waitUntilCallReset(long timeToReset)
+	{	
+		if(timeToReset>0)
+		{	
+			try {
+				logger.info("The rate limit has been reached. This thread will be suspended for " + timeToReset
+						+ " seconds until the limit has been reset");
+				Thread.sleep((timeToReset * 1000l));
+	
+			} catch (InterruptedException e) {
+				logger.error("An error happened while waiting for the calls limit to renew", e);
+			}
 		}
 	}
-
-	private Map<String, Integer> checkHeader(Headers responseHeader) {
-
-		Map<String, Integer> responseHeaderData = new HashMap<>();
-
-		int rateLimit = Integer.parseInt(responseHeader.get("X-Rate-Limit-Limit"));
-		int callsRemaning = Integer.parseInt(responseHeader.get("X-Rate-Limit-Remaining"));
-		int timeToReset = Integer.parseInt(responseHeader.get("X-Rate-Limit-Reset"));
-
-		responseHeaderData.put("rate-limit", rateLimit);
-		responseHeaderData.put("calls-remaining", callsRemaning);
-		responseHeaderData.put("time-to-reset", timeToReset);
-
-		return responseHeaderData;
-	}
-
-	private Boolean checkTime(long generatedAt, long expiresIn) {
-
-		long currentTime = System.currentTimeMillis();
-		long diff = (currentTime - generatedAt);
-
-		if (diff < expiresIn) {
-			return false;
+	
+	private static boolean needToWait(ClientData clientData, boolean afterRequest)
+	{
+		if(clientData.getCallsRemaining()<=0 && clientData.getZeroCounter()>0)
+		{
+			if(afterRequest && clientData.getZeroCounter()==1)
+				return false;
+			waitUntilCallReset(clientData.getTimeToReset());
+			return true;
 		}
-		return true;
+		return false;
+	}
+	
+	private static void checkHeader(Headers responseHeader, ClientData clientData)
+	{
+		clientData.setCallsRemaining(Integer.parseInt(responseHeader.get("X-Rate-Limit-Remaining")));
+		clientData.setRateLimit(Integer.parseInt(responseHeader.get("X-Rate-Limit-Limit")));
+		clientData.setTimeToReset(Long.parseLong(responseHeader.get("X-Rate-Limit-Reset")));
 	}
 
 }

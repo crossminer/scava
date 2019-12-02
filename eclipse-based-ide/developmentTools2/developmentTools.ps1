@@ -10,7 +10,7 @@ $menu += @{caption="Create a Test package with auto increased version number"; c
 $menu += @{caption="Create a Test package with auto increased version number and with a test run"; command="./testPackager/testPackager.ps1 -increaseVersions -testRun"}
 $menu += @{caption="Create a Test package without auto increased version"; command="./testPackager/testPackager.ps1"}
 $menu += @{caption="Create a Test package without auto increased version and with a test run"; command="./testPackager/testPackager.ps1 -testRun"}
-$menu += @{caption="Launch a test run with ignoring uncommitted changes and the versions of the components and ignoring documentation"; command="./testPackager/testPackager.ps1 -ignoreUncommittedChanges -ignoreVersions -ignoreNumberOfModifications -releaseVersion 999.999.999.rev999 -testRun -noZip -noDoc -ignoreHeadDiverge"}
+$menu += @{caption="Launch a test run with ignoring uncommitted changes and the versions of the components and ignoring documentation"; command="./testPackager/testPackager.ps1 -ignoreUncommittedChanges -ignoreVersions -ignoreNumberOfModifications -releaseVersion 999.999.999.rev999 -testRun -noZip -ignoreHeadDiverge"}
 
 while( $true ) {
     Clear-Host

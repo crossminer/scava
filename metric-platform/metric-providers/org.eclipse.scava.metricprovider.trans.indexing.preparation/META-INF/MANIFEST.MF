@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.scava.repository.model.documentation.gitbased,
  org.eclipse.scava.repository.model.vcs.git,
  org.eclipse.scava.repository.model.documentation.systematic,
- org.eclipse.scava.repository.model.cc.mbox
+ org.eclipse.scava.repository.model.cc.mbox,
+ org.apache.log4j
 Export-Package: org.eclipse.scava.metricprovider.trans.indexing.preparation,
  org.eclipse.scava.metricprovider.trans.indexing.preparation.model

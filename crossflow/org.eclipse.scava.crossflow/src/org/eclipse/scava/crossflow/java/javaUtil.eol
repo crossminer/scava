@@ -1,0 +1,11 @@
+@cached
+operation CrossflowLanguageModel!DataField getBoxedName() : String {
+	if (self.type = "int") return "Integer";
+	if (self.type = "char") return "Character";
+	return self.type.ftuc();
+}
+
+@cached
+operation CrossflowLanguageModel!EnumField getBoxedName() : String {
+	return self.type;
+}

@@ -3,6 +3,7 @@ import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Project, IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
 import { Router } from '@angular/router';
+import { observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-project',
@@ -98,8 +99,8 @@ export class CreateProjectComponent implements OnInit {
         return this.formBuilder.group({
           'type': [type],
           'url': ['', Validators.required],
-          'name': ['', Validators.required],
-          'port': ['', Validators.required],
+          'newsGroupName': ['', Validators.required],
+          'port': ['119', Validators.required],
           'interval': [''],
           'username': [''],
           'password': ['']

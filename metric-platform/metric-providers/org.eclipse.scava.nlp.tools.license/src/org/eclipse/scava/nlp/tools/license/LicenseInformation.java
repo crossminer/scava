@@ -10,6 +10,7 @@ public class LicenseInformation {
 	
 	static
 	{
+		hierarchy=new HashMap<String, Map<String, License>>();
 		splitData();
 	}
 	
@@ -26,7 +27,7 @@ public class LicenseInformation {
 			licenses = new HashMap<String, License>(licensesTemp.size());
 			for(License license : licensesTemp)
 			{
-				licenses.put(license.getName(), license);
+				licenses.put(license.getLicenseId(), license);
 			}
 			hierarchy.put(groupName, licenses);
 		}

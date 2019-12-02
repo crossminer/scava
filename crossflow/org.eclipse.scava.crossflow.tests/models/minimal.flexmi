@@ -10,7 +10,7 @@
 		<simple-sink name="MinimalSink"/>
 		
 		<type name="Number">
-			<field name="n" type="int"/>
+			<datafield name="n" type="int"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.minimal" genOutputFolder="src-gen" outputFolder="src"/>

@@ -332,13 +332,4 @@ public class Artifact {
 	public void setLicenseUrl(String licenseUrl) {
 		this.licenseUrl = licenseUrl;
 	}
-	
-//	VcsRepository[*] vcsRepositories;
-//	CommunicationChannel[*] communicationChannels;
-//	BugTrackingSystem[*] bugTrackingSystems;
-//	Person[*] persons;
-//	License[*] licenses;
-//	MetricProvider[*] metricProviderData;
-//	ProjectExecutionInformation executionInformation;
-//	Company[*] companies;
 }

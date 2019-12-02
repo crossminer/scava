@@ -1,0 +1,8 @@
+{
+  "signal": {
+    "_enum_type_": "ControlSignals",
+    "_enum_value_": "WORKER_REMOVED"
+  },
+  "senderId": "JsonSerializerTest Sender",
+  "_type_": "ControlSignal"
+}

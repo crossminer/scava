@@ -8,7 +8,8 @@
 			"type" : "LineChart",
 			"datatable" : {
 				"rows" : "$severityLevels",
-				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
+				"cols" : [  { "name" : "Date", "field" : "$__date" },
+					{ "name" : "Severity", "field" : "$severityLevel" }, 
 					{ "name" : "Average Sentiment", "field" : "$averageSentiment" },
 					{ "name" : "Average Sentiment at Thread Beginning", "field" : "$sentimentAtThreadBeggining" },
 					{ "name" : "Average Sentiment at Thread End", "field" : "$sentimentAtThreadEnd" } ]

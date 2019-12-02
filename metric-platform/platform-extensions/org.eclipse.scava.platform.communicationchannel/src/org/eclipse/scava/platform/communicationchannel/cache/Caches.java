@@ -33,7 +33,11 @@ public class Caches<T, K> {
         Cache<T, K> cache = null;
 
         cache = map.get(id);
-
+        if(cache!=null)
+        {
+        	if(cache.updatedCommunicationChannel(communicationChannel))
+        		map.replace(id, cache);
+        }
         if (null == cache && createIfNotExists) {
             cache = new Cache<T, K>(communicationChannel, provider);
             map.put(id, cache);

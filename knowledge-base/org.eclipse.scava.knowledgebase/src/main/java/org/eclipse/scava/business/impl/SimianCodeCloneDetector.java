@@ -1,4 +1,5 @@
 package org.eclipse.scava.business.impl;
+
 /*******************************************************************************
  * Copyright (C) 2017 University of L'Aquila
  * 
@@ -17,9 +18,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.compress.utils.Lists;
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.dto.ApiCallResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harukizaemon.simian.Checker;
@@ -31,41 +32,61 @@ import com.harukizaemon.simian.StreamLoader;
 public class SimianCodeCloneDetector implements ICodeCloneDetector {
 
 	private static final Logger logger = LoggerFactory.getLogger(SimianCodeCloneDetector.class);
-	@Autowired
-	CodeListenerImpl aulist;
 
 	@Override
-	public ApiCallResult checkClone(String left, String right, Options options) {
+	public ApiCallResult checkClone(String left, String right, Options options) throws IOException {
+		CodeListenerImpl aulist = new CodeListenerImpl();
 		List<String> results = new ArrayList<String>();
 		Checker checker = new Checker(aulist, options);
 		StreamLoader streamLoader = new StreamLoader(checker);
 		FileLoader fileLoader = new FileLoader(streamLoader);
-		try {
-			fileLoader.load(createTempFile(left));
-			fileLoader.load(createTempFile(right));
-			checker.check();
-		} catch (IOException e) {
-			logger.error(e.getMessage());
-		}
-		ApiCallResult pattern = new ApiCallResult();
 
-		pattern.setTime(aulist.getTotalTime());
-		pattern.setDuplicatedLines(aulist.getDuplicatedLines());
-		if (aulist.getNumClonedBlock() > 0 && aulist.getNumClonedFiles() == 2) {
-			results = getRecommendedlines(aulist.getClonedCode(), right);
-			pattern.setCodeLines(results);
-		}
-		return pattern;
+		fileLoader.load(createTempFile(left, "left"));
+		fileLoader.load(createTempFile(right, "right"));
+		if (checker.check()) {
+			CodeListenerImpl auListL = checkClone(left, options);
+			CodeListenerImpl auListR = checkClone(right, options);
+			ArrayList<String> tbd = Lists.newArrayList();
+			aulist.getClonedCode().forEach(z -> {
+				if (auListL.getClonedCode().contains(z))
+					tbd.add(z);
+				if (auListR.getClonedCode().contains(z))
+					tbd.add(z);
+			});
+			aulist.getClonedCode().removeAll(tbd);
+			ApiCallResult pattern = new ApiCallResult();
+			pattern.setTime(aulist.getTotalTime());
+			pattern.setDuplicatedLines(aulist.getDuplicatedLines());
+			if (aulist.getClonedCode().size() > 0 && aulist.getNumClonedBlock() > 0
+					&& aulist.getNumClonedFiles() == 2) {
+				logger.info("a patter is discoverd");
+				results = getRecommendedlines(aulist.getClonedCode(), right);
+				pattern.setCodeLines(results);
+				return pattern;
+			} else
+				return null;
+		} else
+			return null;
 	}
 
-	private List<String> getRecommendedlines(ArrayList<String> blocks, String pattern){
+	private CodeListenerImpl checkClone(String part, Options options) throws IOException {
+		CodeListenerImpl aulist = new CodeListenerImpl();
+		Checker checker = new Checker(aulist, options);
+		StreamLoader streamLoader = new StreamLoader(checker);
+		FileLoader fileLoader = new FileLoader(streamLoader);
+		fileLoader.load(createTempFile(part, "left"));
+		checker.check();
+		return aulist;
+	}
+
+	private List<String> getRecommendedlines(ArrayList<String> blocks, String pattern) {
 		List<String> patternLines = Arrays.asList(pattern.split("\n"));
-		patternLines.removeAll(blocks);	
+		patternLines.removeAll(blocks);
 		return patternLines;
 	}
 
-	private File createTempFile(String devSnippet) throws IOException {
-		File recFile = File.createTempFile("temp", ".java");
+	private File createTempFile(String devSnippet, String filename) throws IOException {
+		File recFile = File.createTempFile(filename, ".java");
 		FileWriter writer = new FileWriter(recFile, true);
 		writer.write(devSnippet);
 		writer.flush();

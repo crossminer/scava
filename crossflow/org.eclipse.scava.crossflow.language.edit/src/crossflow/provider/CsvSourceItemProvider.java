@@ -76,11 +76,11 @@ public class CsvSourceItemProvider extends SourceItemProvider {
 	 * This returns CsvSource.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/CsvSource"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/CsvSource.png"));
 	}
 
 	/**

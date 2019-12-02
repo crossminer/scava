@@ -184,7 +184,8 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 																	plainTextCollection.getCommitsMessagesPlainText(),
 																	commit,
 																	repositoryURL);
-					cd.setPlain_text(String.join(" ",plainText.getPlainText()));
+					if(plainText!=null)
+						cd.setPlain_text(String.join(" ",plainText.getPlainText()));
 					break;
 				}
 				case "org.eclipse.scava.metricprovider.trans.commits.message.references.CommitsMessageReferencesTransMetricProvider":
@@ -193,10 +194,12 @@ public class CommitsIndexingMetricProvider extends AbstractIndexingMetricProvide
 															CommitMessageReferringTo.class,
 															referencesDB.getCommitsMessagesReferringTo(),
 															commit, repositoryURL);
-					if(references!=null)
+					if(references != null)
 					{
-						cd.setCommits_references(references.getCommitsReferred());
-						cd.setBugs_references(references.getBugsReferred());
+						for(String bugReference : references.getBugsReferred())
+							cd.addBugReference(bugReference);
+						for(String commitReference : references.getCommitsReferred())
+							cd.addCommitReference(commitReference);
 					}
 					break;
 				}

@@ -8,8 +8,12 @@ import org.eclipse.scava.crossflow.runtime.Workflow;
 import org.eclipse.scava.crossflow.runtime.Job;
 import org.eclipse.scava.crossflow.runtime.JobStream;
 import org.apache.activemq.command.ActiveMQBytesMessage;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 		
 	public [%=s.name%](Workflow<[%=w.name%]Tasks> workflow, boolean enablePrefetch) throws Exception {
@@ -35,9 +39,9 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 				preConsumer.setMessageListener(message -> {
 					try {
 						workflow.cancelTermination();
-						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(Sink));%]
+						[%var isCached = not s.inputOf.exists(s|s.isTypeOf(CrossflowLanguageModel!Sink));%]
 						[%if (isCached){%]
-						Job job = workflow.getSerializer().<Job>toObject(getMessageText(message));
+						Job job = workflow.getSerializer().deserialize(getMessageText(message));
 						
 						if (workflow.getCache() != null && workflow.getCache().hasCachedOutputs(job)) {
 							
@@ -49,7 +53,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 								[%for (next in s.inputOf.output.flatten()){%]
 								if (output.getDestination().equals("[%=next.name%]")) {
 									workflow.cancelTermination();
-									(([%=w.name%]) workflow).get[%=next.name%]().send(([%=next.type.name%]) output, consumerId);
+									(([%=w.name%]) workflow).get[%=next.name%]().send(([%=next.type.name%]) output[%if(not next.inputOf.isEmpty()){%], consumerId[%}%]);
 								}
 								[%}%]
 								
@@ -80,7 +84,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 				destinationConsumer.setMessageListener(message -> {
 					try {
 						workflow.cancelTermination();
-						Job job = workflow.getSerializer().<Job>toObject(getMessageText(message));
+						Job job = workflow.getSerializer().deserialize(getMessageText(message));
 						
 						if (workflow.getCache() != null && !job.isCached())
 							if(job.isTransactional())
@@ -119,7 +123,7 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 			messageConsumer.setMessageListener(message -> {
 				try {
 					String messageText = getMessageText(message);
-					[%=s.type.name%] [%=s.type.name.ftlc%] = workflow.getSerializer().<[%=s.type.name%]>toObject(messageText);
+					[%=s.type.name%] [%=s.type.name.ftlc%] = workflow.getSerializer().deserialize(messageText);
 					consumer.consume[%=s.name%]WithNotifications([%=s.type.name.ftlc%]);
 				} catch (Exception ex) {
 					workflow.reportInternalException(ex);
@@ -150,6 +154,6 @@ public class [%=s.name%] extends JobStream<[%=s.type.name%]> {
 
 [%
 operation Task isSingletonTask() {
-	return self.isKindOf(Source) or self.isKindOf(Sink);
+	return self.isKindOf(CrossflowLanguageModel!Source) or self.isKindOf(CrossflowLanguageModel!Sink);
 }
 %]

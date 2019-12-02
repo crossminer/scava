@@ -27,5 +27,6 @@ Export-Package: org.eclipse.scava.platform,
  org.eclipse.scava.platform.factoids,
  org.eclipse.scava.platform.indexing,
  org.eclipse.scava.platform.logging,
+ org.eclipse.scava.platform.storage.communicationchannel,
  org.eclipse.scava.platform.util
 

@@ -61,7 +61,6 @@ public class FieldItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
-			addTypePropertyDescriptor(object);
 			addManyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -81,28 +80,6 @@ public class FieldItemProvider
 				 getString("_UI_Field_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Field_name_feature", "_UI_Field_type"),
 				 CrossflowPackage.Literals.FIELD__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Type feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Field_type_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Field_type_feature", "_UI_Field_type"),
-				 CrossflowPackage.Literals.FIELD__TYPE,
 				 true,
 				 false,
 				 false,
@@ -141,7 +118,7 @@ public class FieldItemProvider
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/field"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Field.png"));
 	}
 
 	/**
@@ -172,7 +149,6 @@ public class FieldItemProvider
 
 		switch (notification.getFeatureID(Field.class)) {
 			case CrossflowPackage.FIELD__NAME:
-			case CrossflowPackage.FIELD__TYPE:
 			case CrossflowPackage.FIELD__MANY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

@@ -11,6 +11,7 @@
 package org.eclipse.scava.metricprovider.trans.requestreplyclassification;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -228,8 +229,12 @@ public class RequestReplyClassificationTransMetricProvider
 		for (BugTrackerCommentPlainTextProcessing btcptp : bugtrackerCommentIt) {
 			bugtrackerCommentInPlainText = btcptp;
 		}
-		return new PlainTextObject(bugtrackerCommentInPlainText.getPlainText(),
+		if(bugtrackerCommentInPlainText!=null)
+		{
+			return new PlainTextObject(bugtrackerCommentInPlainText.getPlainText(),
 				bugtrackerCommentInPlainText.getHadReplies());
+		}
+		return new PlainTextObject(new ArrayList<String>());
 	}
 
 	private boolean hasCode(DetectingCodeTransMetric db, BugTrackerComments comment) {
@@ -259,8 +264,12 @@ public class RequestReplyClassificationTransMetricProvider
 		for (NewsgroupArticlePlainTextProcessing nadc : newsgroupArticleIt) {
 			newsgroupArticleInPlainText = nadc;
 		}
-		return new PlainTextObject(newsgroupArticleInPlainText.getPlainText(),
+		if(newsgroupArticleInPlainText!=null)
+		{
+			return new PlainTextObject(newsgroupArticleInPlainText.getPlainText(),
 				newsgroupArticleInPlainText.getHadReplies());
+		}
+		return new PlainTextObject(new ArrayList<String>());
 	}
 
 	private boolean hasCode(DetectingCodeTransMetric db, NewsgroupArticles article) {

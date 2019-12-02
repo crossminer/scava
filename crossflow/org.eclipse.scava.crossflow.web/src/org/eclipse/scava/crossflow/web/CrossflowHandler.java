@@ -65,21 +65,21 @@ public class CrossflowHandler implements Crossflow.Iface {
 							.getRealPath("experiments/" + experimentId + "/" + experiment.getJar())).toURI().toURL() },
 					Thread.currentThread().getContextClassLoader());
 		} catch (MalformedURLException e) {
-			throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Unable to load workflow jar to class path");
+			throw new TApplicationException(TApplicationException.INTERNAL_ERROR,
+					"Unable to load workflow jar to class path");
 		}
 
 		Workflow workflow;
 		try {
-			workflow = (Workflow) classLoader.loadClass(experiment.getClassName())
-					.getConstructor(Mode.class).newInstance(mode);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException
-				| ClassNotFoundException e) {
-			throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Unable to craete instance of workflow main class.");
-		}
-		finally {
+			workflow = (Workflow) classLoader.loadClass(experiment.getClassName()).getConstructor(Mode.class)
+					.newInstance(mode);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+			throw new TApplicationException(TApplicationException.INTERNAL_ERROR,
+					"Unable to create instance of workflow main class.");
+		} finally {
 			// FIXME We should close the class loader somewhere!
-			//classLoader.close();
+			// classLoader.close();
 		}
 		if (workflow != null) {
 			workflow.getSerializer().setClassloader(classLoader);
@@ -96,7 +96,8 @@ public class CrossflowHandler implements Crossflow.Iface {
 			try {
 				workflow.run();
 			} catch (Exception e) {
-				workflow.log(LogLevel.ERROR, "Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
+				workflow.log(LogLevel.ERROR,
+						"Workflow " + workflow.getName() + " throwed an exception. " + e.getMessage());
 				throw new TApplicationException(TApplicationException.INTERNAL_ERROR, "Error executiong the workflow");
 			}
 			// add new workflow to registry
@@ -126,7 +127,10 @@ public class CrossflowHandler implements Crossflow.Iface {
 			workflow.log(LogLevel.INFO, "Workflow " + workflow.getName() + " termination requested.");
 			workflow.terminate();
 			result = true;
-		}
+			System.out.println("terminated workflow: " + experimentId + "");
+		} else
+			System.out.println("warning, trying to terminate workflow: " + experimentId
+					+ ", but could not find it in the registry.");
 		return result;
 	}
 

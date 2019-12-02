@@ -82,6 +82,24 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case ScriptedTaskNameEditPart.VISUAL_ID:
 				return new ScriptedTaskNameEditPart(view);
 
+			case ReusableComponentEditPart.VISUAL_ID:
+				return new ReusableComponentEditPart(view);
+
+			case ReusableComponentNameEditPart.VISUAL_ID:
+				return new ReusableComponentNameEditPart(view);
+
+			case DataFieldEditPart.VISUAL_ID:
+				return new DataFieldEditPart(view);
+
+			case DataFieldNameTypeEditPart.VISUAL_ID:
+				return new DataFieldNameTypeEditPart(view);
+
+			case EnumFieldEditPart.VISUAL_ID:
+				return new EnumFieldEditPart(view);
+
+			case EnumFieldNameEditPart.VISUAL_ID:
+				return new EnumFieldNameEditPart(view);
+
 			case TaskEditPart.VISUAL_ID:
 				return new TaskEditPart(view);
 
@@ -94,35 +112,53 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 			case TypeNameEditPart.VISUAL_ID:
 				return new TypeNameEditPart(view);
 
-			case FieldEditPart.VISUAL_ID:
-				return new FieldEditPart(view);
-
-			case FieldNameTypeEditPart.VISUAL_ID:
-				return new FieldNameTypeEditPart(view);
-
 			case LanguageEditPart.VISUAL_ID:
 				return new LanguageEditPart(view);
 
 			case LanguageNameEditPart.VISUAL_ID:
 				return new LanguageNameEditPart(view);
 
-			case Field2EditPart.VISUAL_ID:
-				return new Field2EditPart(view);
+			case SerializerEditPart.VISUAL_ID:
+				return new SerializerEditPart(view);
 
-			case FieldNameType2EditPart.VISUAL_ID:
-				return new FieldNameType2EditPart(view);
+			case SerializerNameEditPart.VISUAL_ID:
+				return new SerializerNameEditPart(view);
 
-			case Field3EditPart.VISUAL_ID:
-				return new Field3EditPart(view);
+			case DataField2EditPart.VISUAL_ID:
+				return new DataField2EditPart(view);
 
-			case FieldNameType3EditPart.VISUAL_ID:
-				return new FieldNameType3EditPart(view);
+			case DataFieldNameType2EditPart.VISUAL_ID:
+				return new DataFieldNameType2EditPart(view);
+
+			case EnumField2EditPart.VISUAL_ID:
+				return new EnumField2EditPart(view);
+
+			case EnumFieldName2EditPart.VISUAL_ID:
+				return new EnumFieldName2EditPart(view);
+
+			case DataField3EditPart.VISUAL_ID:
+				return new DataField3EditPart(view);
+
+			case DataFieldNameType3EditPart.VISUAL_ID:
+				return new DataFieldNameType3EditPart(view);
+
+			case EnumField3EditPart.VISUAL_ID:
+				return new EnumField3EditPart(view);
+
+			case EnumFieldName3EditPart.VISUAL_ID:
+				return new EnumFieldName3EditPart(view);
 
 			case ParameterEditPart.VISUAL_ID:
 				return new ParameterEditPart(view);
 
 			case ParameterNameValueEditPart.VISUAL_ID:
 				return new ParameterNameValueEditPart(view);
+
+			case Parameter2EditPart.VISUAL_ID:
+				return new Parameter2EditPart(view);
+
+			case ParameterNameValue2EditPart.VISUAL_ID:
+				return new ParameterNameValue2EditPart(view);
 
 			case ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart.VISUAL_ID:
 				return new ScriptedTaskScriptedTaskOutputVariablesCompartmentEditPart(view);
@@ -132,6 +168,9 @@ public class CrossflowEditPartFactory implements EditPartFactory {
 
 			case LanguageLanguageParametersCompartmentEditPart.VISUAL_ID:
 				return new LanguageLanguageParametersCompartmentEditPart(view);
+
+			case SerializerSerializerParametersCompartmentEditPart.VISUAL_ID:
+				return new SerializerSerializerParametersCompartmentEditPart(view);
 
 			case StreamTypeEditPart.VISUAL_ID:
 				return new StreamTypeEditPart(view);

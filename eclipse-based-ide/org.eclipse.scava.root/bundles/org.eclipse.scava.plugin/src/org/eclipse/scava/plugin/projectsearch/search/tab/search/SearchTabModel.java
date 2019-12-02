@@ -20,17 +20,22 @@ import io.swagger.client.model.Artifact;
 
 //TODO needs clarifications about the way the server sends the artifacts. Would be good for us if the results were wrapped in a Page<Artifact> thing
 public abstract class SearchTabModel extends Model {
-	protected final KnowledgeBaseAccess knowledgeBaseAccess = new KnowledgeBaseAccess();
+	protected final KnowledgeBaseAccess knowledgeBaseAccess;
 	protected int pageSize = 10;
 	protected int nextPage = 0;
 	protected boolean pageSortAscending = true;
 	protected boolean hasNextPage = true;
-	
+
+	public SearchTabModel(KnowledgeBaseAccess knowledgeBaseAccess) {
+		super();
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
+	}
+
 	public boolean hasNextPage() {
 		return hasNextPage;
 	}
 
 	public abstract List<Artifact> getNextPageResults() throws ApiException;
-	
+
 	public abstract String getDescription();
 }

@@ -16,6 +16,7 @@ import crossflow.diagram.edit.parts.CsvSinkEditPart;
 import crossflow.diagram.edit.parts.CsvSourceEditPart;
 import crossflow.diagram.edit.parts.OpinionatedTaskEditPart;
 import crossflow.diagram.edit.parts.QueueEditPart;
+import crossflow.diagram.edit.parts.ReusableComponentEditPart;
 import crossflow.diagram.edit.parts.ScriptedTaskEditPart;
 import crossflow.diagram.edit.parts.SinkEditPart;
 import crossflow.diagram.edit.parts.SourceEditPart;
@@ -89,6 +90,9 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 		if (targetEditPart instanceof ScriptedTaskEditPart) {
 			types.add(CrossflowElementTypes.StreamInputOf_4005);
 		}
+		if (targetEditPart instanceof ReusableComponentEditPart) {
+			types.add(CrossflowElementTypes.StreamInputOf_4005);
+		}
 		if (targetEditPart instanceof TaskEditPart) {
 			types.add(CrossflowElementTypes.StreamInputOf_4005);
 		}
@@ -120,6 +124,7 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 			types.add(CrossflowElementTypes.CommitmentTask_2007);
 			types.add(CrossflowElementTypes.OpinionatedTask_2008);
 			types.add(CrossflowElementTypes.ScriptedTask_2015);
+			types.add(CrossflowElementTypes.ReusableComponent_2017);
 			types.add(CrossflowElementTypes.Task_2010);
 		}
 		return types;
@@ -167,6 +172,7 @@ public class CrossflowModelingAssistantProviderOfQueueEditPart extends Crossflow
 			types.add(CrossflowElementTypes.CommitmentTask_2007);
 			types.add(CrossflowElementTypes.OpinionatedTask_2008);
 			types.add(CrossflowElementTypes.ScriptedTask_2015);
+			types.add(CrossflowElementTypes.ReusableComponent_2017);
 			types.add(CrossflowElementTypes.Task_2010);
 		}
 		return types;

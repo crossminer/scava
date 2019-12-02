@@ -2,6 +2,7 @@ package org.eclipse.scava.crossflow.tests.configurable.addition;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -29,7 +30,7 @@ public class ConfigurableWorkflowTests extends WorkflowTests {
 		masterWorkflow.setName("master");
 		masterWorkflow.setInstanceId("testLateWorkerAddition");
 		masterWorkflow.createBroker(createBroker);
-		masterWorkflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
+		masterWorkflow.getNumberPairSource().setNumbers(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
 		masterWorkflow.setTerminationTimeout(0);
 		masterWorkflow.getNumberPairSource().setInterval(600);
 		masterWorkflow.run();
@@ -40,13 +41,13 @@ public class ConfigurableWorkflowTests extends WorkflowTests {
 		workerWorkflow.setName("worker");
 		workerWorkflow.setInstanceId("testLateWorkerAddition");
 		workerWorkflow.setTerminationTimeout(0);
-		workerWorkflow.run();
+		workerWorkflow.run(500);
 
 		waitFor(masterWorkflow);
 		waitFor(workerWorkflow);
 
-		assertEquals(true, workerWorkflow.getAdder().getExecutions() < 7);
-		assertEquals(7, masterWorkflow.getAdder().getExecutions() + workerWorkflow.getAdder().getExecutions());
+		assertTrue(workerWorkflow.getAdder().getExecutions() < 10);
+		assertEquals(10, masterWorkflow.getAdder().getExecutions() + workerWorkflow.getAdder().getExecutions());
 
 	}
 

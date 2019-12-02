@@ -67,10 +67,13 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 			case CrossflowPackage.COMMITMENT_TASK: return createCommitmentTask();
 			case CrossflowPackage.OPINIONATED_TASK: return createOpinionatedTask();
 			case CrossflowPackage.SCRIPTED_TASK: return createScriptedTask();
+			case CrossflowPackage.REUSABLE_COMPONENT: return createReusableComponent();
 			case CrossflowPackage.TYPE: return createType();
-			case CrossflowPackage.FIELD: return createField();
+			case CrossflowPackage.DATA_FIELD: return createDataField();
+			case CrossflowPackage.ENUM_FIELD: return createEnumField();
 			case CrossflowPackage.LANGUAGE: return createLanguage();
 			case CrossflowPackage.PARAMETER: return createParameter();
+			case CrossflowPackage.SERIALIZER: return createSerializer();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -81,6 +84,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Workflow createWorkflow() {
 		WorkflowImpl workflow = new WorkflowImpl();
 		return workflow;
@@ -91,6 +95,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Topic createTopic() {
 		TopicImpl topic = new TopicImpl();
 		return topic;
@@ -101,6 +106,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Queue createQueue() {
 		QueueImpl queue = new QueueImpl();
 		return queue;
@@ -111,6 +117,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Task createTask() {
 		TaskImpl task = new TaskImpl();
 		return task;
@@ -121,6 +128,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Source createSource() {
 		SourceImpl source = new SourceImpl();
 		return source;
@@ -131,6 +139,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CsvSource createCsvSource() {
 		CsvSourceImpl csvSource = new CsvSourceImpl();
 		return csvSource;
@@ -141,6 +150,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Sink createSink() {
 		SinkImpl sink = new SinkImpl();
 		return sink;
@@ -151,6 +161,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CsvSink createCsvSink() {
 		CsvSinkImpl csvSink = new CsvSinkImpl();
 		return csvSink;
@@ -161,6 +172,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CommitmentTask createCommitmentTask() {
 		CommitmentTaskImpl commitmentTask = new CommitmentTaskImpl();
 		return commitmentTask;
@@ -171,6 +183,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public OpinionatedTask createOpinionatedTask() {
 		OpinionatedTaskImpl opinionatedTask = new OpinionatedTaskImpl();
 		return opinionatedTask;
@@ -181,6 +194,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScriptedTask createScriptedTask() {
 		ScriptedTaskImpl scriptedTask = new ScriptedTaskImpl();
 		return scriptedTask;
@@ -191,6 +205,18 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public ReusableComponent createReusableComponent() {
+		ReusableComponentImpl reusableComponent = new ReusableComponentImpl();
+		return reusableComponent;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Type createType() {
 		TypeImpl type = new TypeImpl();
 		return type;
@@ -201,9 +227,10 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Field createField() {
-		FieldImpl field = new FieldImpl();
-		return field;
+	@Override
+	public DataField createDataField() {
+		DataFieldImpl dataField = new DataFieldImpl();
+		return dataField;
 	}
 
 	/**
@@ -211,6 +238,18 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EnumField createEnumField() {
+		EnumFieldImpl enumField = new EnumFieldImpl();
+		return enumField;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Language createLanguage() {
 		LanguageImpl language = new LanguageImpl();
 		return language;
@@ -221,6 +260,7 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Parameter createParameter() {
 		ParameterImpl parameter = new ParameterImpl();
 		return parameter;
@@ -231,6 +271,18 @@ public class CrossflowFactoryImpl extends EFactoryImpl implements CrossflowFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Serializer createSerializer() {
+		SerializerImpl serializer = new SerializerImpl();
+		return serializer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CrossflowPackage getCrossflowPackage() {
 		return (CrossflowPackage)getEPackage();
 	}

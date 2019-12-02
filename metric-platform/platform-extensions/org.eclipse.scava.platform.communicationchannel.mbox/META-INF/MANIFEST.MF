@@ -6,8 +6,10 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: lib/apache-mime4j-mbox-iterator-0.8.3.jar,
  lib/jcharset-2.1.jar,
  .
-Export-Package: org.eclipse.scava.platform.communicationchannel.mbox.encoding,
- org.eclipse.scava.platform.communicationchannel.mbox.parser
+Export-Package: org.eclipse.scava.platform.communicationchannel.mbox,
+ org.eclipse.scava.platform.communicationchannel.mbox.encoding,
+ org.eclipse.scava.platform.communicationchannel.mbox.parser,
+ org.eclipse.scava.platform.communicationchannel.mbox.utils
 Require-Bundle: org.eclipse.scava.platform.communicationchannel.mbox,
  org.eclipse.osgi,
  javax.mail,
@@ -20,5 +22,6 @@ Require-Bundle: org.eclipse.scava.platform.communicationchannel.mbox,
  com.googlecode.pongo.runtime.dependencies,
  org.apache.commons.commons-email,
  commons-net.commons-net,
- commons-io.commons-io
+ commons-io.commons-io,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

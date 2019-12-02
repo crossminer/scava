@@ -57,9 +57,9 @@ public class DirectoryCache implements Cache {
 			ArrayList<Job> outputs = new ArrayList<>();
 			File inputFolder = jobFolderMap.get(input.getHash());
 			for (File outputFile : inputFolder.listFiles()) {
-				Job output = (Job) workflow.getSerializer().toObject(outputFile);
-				output.setId(UUID.randomUUID().toString());
-				output.setCorrelationId(input.getId());
+				Job output = workflow.getSerializer().deserialize(outputFile);
+				output.setJobId(UUID.randomUUID().toString());
+				output.setCorrelationId(input.getJobId());
 				output.setCached(true);
 				outputs.add(output);
 			}
@@ -82,7 +82,7 @@ public class DirectoryCache implements Cache {
 		if (!output.isCacheable())
 			return;
 
-		jobMap.put(output.getId(), output);
+		jobMap.put(output.getJobId(), output);
 		Job input = jobMap.get(output.getCorrelationId());
 
 		if (input != null) {
@@ -107,7 +107,9 @@ public class DirectoryCache implements Cache {
 
 	protected void save(Job job, File file) throws Exception {
 		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(job.getXML().getBytes());
+		String serialize = workflow.getSerializer().serialize(job);
+		System.out.println(serialize);
+		fos.write(serialize.getBytes());
 		fos.flush();
 		fos.close();
 	}
@@ -132,7 +134,7 @@ public class DirectoryCache implements Cache {
 
 		// even though the task producing this job may have failed, this job itself is
 		// complete so should be indexed in the job map regardless
-		jobMap.put(output.getId(), output);
+		jobMap.put(output.getJobId(), output);
 		//
 
 		if (output.getCorrelationId() == null)

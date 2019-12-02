@@ -6,11 +6,11 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.scava.platform.bugtrackingsystem.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scava.repository.model,
- org.joda.time
+ org.joda.time,
+ com.googlecode.pongo.runtime,
+ org.apache.commons.lang
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.commons.lang.time,
- org.joda.time
 Export-Package: org.eclipse.scava.platform.bugtrackingsystem,
  org.eclipse.scava.platform.bugtrackingsystem.cache,
  org.eclipse.scava.platform.bugtrackingsystem.cache.provider

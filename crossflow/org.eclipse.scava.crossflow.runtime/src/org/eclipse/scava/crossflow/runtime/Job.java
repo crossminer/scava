@@ -10,20 +10,13 @@ public class Job implements Serializable {
 
 	private static final long serialVersionUID = 431981L;
 
-	public Job() {
-		this.id = UUID.randomUUID().toString();
-	}
-
-	public String toString() {
-		return id + " " + correlationId + " " + destination + " " + cacheable + " " + failures;
-	}
-
-	protected String id;
+	protected String jobId;
 	protected String correlationId;
 	protected String destination;
 	protected boolean cached = false;
 	protected int failures = 0;
 	protected boolean cacheable = true;
+	protected long timeout = 0;
 	// sets whether this job requires a transactional level of caching (usually due
 	// to being created multiple times per single task)
 	protected boolean transactional = true;
@@ -32,6 +25,14 @@ public class Job implements Serializable {
 	private boolean isTransactionSuccessMessage = false;	
 	private int totalOutputs = 0; 
 
+	public Job() {
+		this.jobId = UUID.randomUUID().toString();
+	}
+
+	public String toString() {
+		return jobId + " " + correlationId + " " + destination + " " + cacheable + " " + failures;
+	}
+	
 	public boolean isTransactional() {
 		return transactional;
 	}
@@ -39,13 +40,23 @@ public class Job implements Serializable {
 	public void setTransactional(boolean transactional) {
 		this.transactional = transactional;
 	}
-
+	
+	@Deprecated
+	public String getId() {
+		return getJobId();
+	}
+	
+	@Deprecated
 	public void setId(String id) {
-		this.id = id;
+		setJobId(id);
 	}
 
-	public String getId() {
-		return id;
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+	public String getJobId() {
+		return jobId;
 	}
 
 	public void setCorrelationId(String correlationId) {
@@ -88,14 +99,23 @@ public class Job implements Serializable {
 		this.failures = failures;
 	}
 
+	public long getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
+
+	@Deprecated
 	public String getXML() {
-		String id = this.id;
+		String jobId = this.jobId;
 		int failures = this.getFailures();
 		String correlationId = this.correlationId;
 		boolean cached = this.cached;
 		boolean cacheable = this.cacheable;
 
-		this.id = null;
+		this.jobId = null;
 		this.correlationId = null;
 		this.failures = 0;
 		this.cached = false;
@@ -103,7 +123,7 @@ public class Job implements Serializable {
 
 		String xml = new XStream(new DomDriver()).toXML(this);
 
-		this.id = id;
+		this.jobId = jobId;
 		this.correlationId = correlationId;
 		this.cached = cached;
 		this.failures = failures;

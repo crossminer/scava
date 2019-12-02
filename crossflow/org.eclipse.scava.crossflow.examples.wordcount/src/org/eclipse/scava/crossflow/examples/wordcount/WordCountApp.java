@@ -22,6 +22,7 @@ import org.eclipse.scava.crossflow.runtime.Mode;
  *  (!) Requires matching instance identifier (instanceId).
  * 
  * @author Patrick Neubauer
+ * @author Konstantinos Barmpis
  *
  */
 public class WordCountApp {
@@ -29,8 +30,8 @@ public class WordCountApp {
 	public WordCountApp() throws Exception {
 		WordCountWorkflow master = new WordCountWorkflow(Mode.MASTER);
 		master.createBroker(true);
-		master.setInputDirectory(new File("experiment/in"));
-		master.setOutputDirectory(new File("experiment/out"));
+		master.setInputDirectory(new File("artifacts/in"));
+		master.setOutputDirectory(new File("artifacts/out"));
 		master.setInstanceId(WordCountProperties.INSTANCE_ID);
 		master.setName("Master");
 		
@@ -46,10 +47,7 @@ public class WordCountApp {
 		worker1.run();
 		worker2.run();
 		
-		// master
-		while (!master.hasTerminated()) {
-			Thread.sleep(100);
-		}
+		master.awaitTermination();
 		
 		for (InternalException ex : master.getInternalExceptions()) {
 			ex.getException().printStackTrace();

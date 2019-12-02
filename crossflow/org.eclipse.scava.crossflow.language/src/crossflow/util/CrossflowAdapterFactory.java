@@ -116,6 +116,10 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createScriptedTaskAdapter();
 			}
 			@Override
+			public Adapter caseReusableComponent(ReusableComponent object) {
+				return createReusableComponentAdapter();
+			}
+			@Override
 			public Adapter caseType(Type object) {
 				return createTypeAdapter();
 			}
@@ -124,12 +128,24 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 				return createFieldAdapter();
 			}
 			@Override
+			public Adapter caseDataField(DataField object) {
+				return createDataFieldAdapter();
+			}
+			@Override
+			public Adapter caseEnumField(EnumField object) {
+				return createEnumFieldAdapter();
+			}
+			@Override
 			public Adapter caseLanguage(Language object) {
 				return createLanguageAdapter();
 			}
 			@Override
 			public Adapter caseParameter(Parameter object) {
 				return createParameterAdapter();
+			}
+			@Override
+			public Adapter caseSerializer(Serializer object) {
+				return createSerializerAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -320,6 +336,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.ReusableComponent <em>Reusable Component</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.ReusableComponent
+	 * @generated
+	 */
+	public Adapter createReusableComponentAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link crossflow.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -348,6 +378,34 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.DataField <em>Data Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.DataField
+	 * @generated
+	 */
+	public Adapter createDataFieldAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.EnumField <em>Enum Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.EnumField
+	 * @generated
+	 */
+	public Adapter createEnumFieldAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link crossflow.Language <em>Language</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -372,6 +430,20 @@ public class CrossflowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createParameterAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link crossflow.Serializer <em>Serializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see crossflow.Serializer
+	 * @generated
+	 */
+	public Adapter createSerializerAdapter() {
 		return null;
 	}
 

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link crossflow.Workflow#getTypes <em>Types</em>}</li>
  *   <li>{@link crossflow.Workflow#getParameters <em>Parameters</em>}</li>
  *   <li>{@link crossflow.Workflow#getLanguages <em>Languages</em>}</li>
+ *   <li>{@link crossflow.Workflow#getSerializer <em>Serializer</em>}</li>
  * </ul>
  *
  * @see crossflow.CrossflowPackage#getWorkflow()
@@ -133,5 +134,31 @@ public interface Workflow extends EObject {
 	 * @generated
 	 */
 	EList<Language> getLanguages();
+
+	/**
+	 * Returns the value of the '<em><b>Serializer</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Serializer</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Serializer</em>' containment reference.
+	 * @see #setSerializer(Serializer)
+	 * @see crossflow.CrossflowPackage#getWorkflow_Serializer()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Serializer getSerializer();
+
+	/**
+	 * Sets the value of the '{@link crossflow.Workflow#getSerializer <em>Serializer</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Serializer</em>' containment reference.
+	 * @see #getSerializer()
+	 * @generated
+	 */
+	void setSerializer(Serializer value);
 
 } // Workflow

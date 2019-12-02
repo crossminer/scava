@@ -244,9 +244,13 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 						{
 							//We need to match here the thread article with the code detector article
 							CommunicationChannelArticle deltaArticle = articlesDeltaArticles.get(articleData.getArticleId());
-							deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
-							NewsgroupArticleData newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
-							db.getNewsgroupArticles().add(newsgroupArticleData);
+							NewsgroupArticleData newsgroupArticleData;
+							if(deltaArticle!=null)
+							{
+								deltaArticle.setText(naturalLanguageNewsgroupArticle(detectingCodeMetric, deltaArticle));
+								newsgroupArticleData = prepareNewsgroupArticleData(classifier, communicationChannel.getOSSMeterId(), deltaArticle, threadId);
+								db.getNewsgroupArticles().add(newsgroupArticleData);
+							}
 						}
 					}
 				}
@@ -321,6 +325,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 				ClassifierMessage classifierMessage =  prepareNewsgroupClassifierMessage(newsgroupName, threadId);
 				String severity = classifier.getClassificationResult(classifierMessage);
 				
+				if(severity==null || severity.isEmpty())
+					severity="unknown";
+				
 				NewsgroupThreadData newsgroupThreadData = new NewsgroupThreadData();
 				newsgroupThreadData.setNewsgroupName(newsgroupName);
 				newsgroupThreadData.setThreadId(threadId);
@@ -347,6 +354,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 
 		ClassifierMessage classifierMessage =  prepareBugTrackerClassifierMessage(bug);
 		String severity = classifier.getClassificationResult(classifierMessage);
+		
+		if(severity==null)
+			severity="unknown";
 		
 		ClassificationInstance classificationInstance = classifier.getClassificationInstance(classifierMessage);
 		
@@ -481,7 +491,9 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		for (BugTrackerCommentDetectingCode btcdc:  bugtrackerCommentIt) {
 			bugtrackerCommentInDetectionCode = btcdc;
 		}
-		return bugtrackerCommentInDetectionCode.getNaturalLanguage();
+		if(bugtrackerCommentInDetectionCode!=null)
+			return bugtrackerCommentInDetectionCode.getNaturalLanguage();
+		return "";
 	}
 	
 	private String naturalLanguageNewsgroupArticle(DetectingCodeTransMetric db, CommunicationChannelArticle article) {
@@ -493,7 +505,10 @@ public class SeverityClassificationTransMetricProvider  implements ITransientMet
 		for (NewsgroupArticleDetectingCode nadc:  newsgroupArticleIt) {
 			newsgroupArticleInDetectionCode = nadc;
 		}
-		return newsgroupArticleInDetectionCode.getNaturalLanguage();
+		if(newsgroupArticleInDetectionCode!=null)
+			return newsgroupArticleInDetectionCode.getNaturalLanguage();
+		else
+			return "";
 	}
 
 	private FeatureIdCollection retrieveBugTrackerBugFeatures(BugTrackerBugsData bugTrackerBugsData)

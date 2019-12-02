@@ -52,7 +52,7 @@ public class UTF8toASCII {
 		}
 		StringWriter writer = new StringWriter();
 		try {
-			IOUtils.copy(is, writer);//, "UTF-8");
+			IOUtils.copy(is, writer, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

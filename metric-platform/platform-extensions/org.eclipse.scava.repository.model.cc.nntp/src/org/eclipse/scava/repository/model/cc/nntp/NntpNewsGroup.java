@@ -54,9 +54,18 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 		return parseString(dbObject.get("username")+"", "");
 	}
 	
+	private void authentication()
+	{
+		if(!getUsername().isEmpty() && !getPassword().isEmpty())
+			setAuthenticationRequired(true);
+	}
+	
 	public NntpNewsGroup setUsername(String username) {
+		if(username==null)
+			username="";
 		dbObject.put("username", username);
 		notifyChanged();
+		authentication();
 		return this;
 	}
 	public String getPassword() {
@@ -64,12 +73,15 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 	}
 	
 	public NntpNewsGroup setPassword(String password) {
+		if(password==null)
+			password="";
 		dbObject.put("password", password);
 		notifyChanged();
+		authentication();
 		return this;
 	}
 	public int getPort() {
-		return parseInteger(dbObject.get("port")+"", 0);
+		return parseInteger(dbObject.get("port")+"", 119);
 	}
 	
 	public NntpNewsGroup setPort(int port) {
@@ -118,6 +130,8 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 	}
 	
 	public NntpNewsGroup setNewsGroupName(String newsGroupName) {
+		if (getLastArticleChecked().isEmpty() || getLastArticleChecked().equals("null"))
+			setLastArticleChecked("-1");
 		dbObject.put("newsGroupName", newsGroupName);
 		notifyChanged();
 		return this;
@@ -133,5 +147,8 @@ public class NntpNewsGroup extends org.eclipse.scava.repository.model.Communicat
 		return getUrl()+"/"+getNewsGroupName();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

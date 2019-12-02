@@ -134,5 +134,8 @@ public class Zendesk extends org.eclipse.scava.repository.model.CommunicationCha
 		return getName();
 	}	
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 }

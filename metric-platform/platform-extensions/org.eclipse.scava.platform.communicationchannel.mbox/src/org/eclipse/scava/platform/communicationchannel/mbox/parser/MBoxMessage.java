@@ -16,14 +16,22 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.mail.util.MimeMessageParser;
 import org.apache.commons.net.nntp.Article;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class MBoxMessage extends Message {
 	
 	private MimeMessage mimeMessage;
 	private MimeMessageParser mimeMessageParser;
 	private Session session;
+	
+	private static OssmeterLogger logger;
+	
+	static
+	{
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.mbox.parser");
+	}
 
-	public MBoxMessage(String stringMessage, boolean verbose) {
+	public MBoxMessage(String stringMessage) {
 		super();
 		Properties props = System.getProperties();
 		props.setProperty("mail.mime.address.strict", "false");
@@ -40,7 +48,7 @@ public class MBoxMessage extends Message {
 		props.setProperty("mail.mime.ignoremultipartencoding", "false");
 //		props.setProperty("mail.mime.allowencodedmessages", "true");
 		session = Session.getDefaultInstance(props);
-		parse(stringMessage, verbose);
+		parse(stringMessage);
 	}
 
 	@Override
@@ -49,11 +57,10 @@ public class MBoxMessage extends Message {
 		try {
 			messageID = mimeMessage.getMessageID();
 		} catch (MessagingException e) {
-			System.err.println("MESSAGEID NOT FOUND");
-			e.printStackTrace();
+			logger.error("MessageID not found:", e);
 		}
-		if (messageID==null || messageID.length()==0)
-			System.err.println("MESSAGEID NULL OR ZERO LENGTH");
+		if (messageID==null || messageID.isEmpty())
+			logger.warn("MessageID null or zero length.");
 		return messageID;
 	}
 
@@ -63,9 +70,7 @@ public class MBoxMessage extends Message {
 		try {
 			to = mimeMessageParser.getTo();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("TO NOT FOUND FROM PARSER");
-			System.err.println("e.toString(): " + e.toString());
+			logger.error("Field TO not found by the parser: ", e);
 		}
 		if ((to != null) && (to.size()>0))
 			return to.get(0).toString();
@@ -73,12 +78,11 @@ public class MBoxMessage extends Message {
 		try {
 			toString = mimeMessage.getHeader("To", " ");
 		} catch (MessagingException e) {
-			System.err.println("TO NOT FOUND FROM MIME-MESSAGE DIRECTLY");
-			e.printStackTrace();
+			logger.error("Field TO not found from MIME-message directly: ",e);
 		}
-		if ((toString != null) && (toString.length()>0))
+		if ((toString != null) && (toString.isEmpty()))
 			return toString;
-		System.err.println("TO NULL OR ZERO LENGTH");		
+		logger.warn("Field TO either null or empty.");		
 		return "";
 	}
 
@@ -88,11 +92,10 @@ public class MBoxMessage extends Message {
 		try {
 			date =  mimeMessage.getSentDate();
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			System.err.println("DATE NOT FOUND");
+			logger.error("Field DATE not found");
 		}
-		if (date==null || date.toString().length()==0)
-			System.err.println("DATE NULL OR ZERO LENGTH");
+		if (date==null || date.toString().isEmpty())
+			logger.warn("Field DATE either null or empty.");
 		return date;
 	}
 
@@ -102,11 +105,10 @@ public class MBoxMessage extends Message {
 		try {
 			from = mimeMessageParser.getFrom();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("FROM NOT FOUND");
+			logger.error("Field FROM not found: ",e);
 		}
-		if (from==null || from.length()==0)
-			System.err.println("FROM NULL OR ZERO LENGTH");
+		if (from==null || from.isEmpty())
+			logger.warn("Field FROM either null or empty");
 		return from;
 	}
 
@@ -116,11 +118,10 @@ public class MBoxMessage extends Message {
 		try {
 			subject = mimeMessageParser.getSubject();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("SUBJECT NOT FOUND");
+			logger.error("Field SUBJECT not found: ",e);
 		}
-		if (subject==null || subject.length()==0)
-			System.err.println("SUBJECT NULL OR ZERO LENGTH");
+		if (subject==null || subject.isEmpty())
+			logger.warn("Field SUBJECT either null or empty.");
 		return subject;
 	}
 
@@ -130,11 +131,10 @@ public class MBoxMessage extends Message {
 		try {
 			mimeMessageParser.getReplyTo();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("REPLY TO NOT FOUND");
+			logger.error("Field REPLY not found:",e);
 		}
-//		if (replyTo==null || replyTo.length()==0)
-//			System.out.println("REPLY TO NULL OR ZERO LENGTH");
+		if (replyTo==null || replyTo.isEmpty())
+			logger.warn("Field REPLY either null or empty.");
 		return replyTo;
 	}
 
@@ -149,17 +149,16 @@ public class MBoxMessage extends Message {
 		try {
 			referenceString = mimeMessage.getHeader("References", " ");
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			System.err.println("REFERENCES NOT FOUND");
+			logger.error("Field REFERENCES not found: ",e);
 		}
 		Set<String> references = new TreeSet<String>();
-		if (referenceString == null) {
-//			System.err.println("REFERENCES NULL");
+		if (referenceString == null || references.isEmpty()) {
+			logger.warn("Field REFERENCES is null or emtpy");
 			return references;
 		}
 		referenceString = referenceString.trim();
-		if (referenceString.length()==0) {
-//			System.err.println("REFERENCES ZERO LENGTH");
+		if (referenceString.isEmpty()) {
+			logger.warn("Field REFERENCES is empty");
 			return references;
 		}
 		for (String reference: referenceString.replaceAll("\\s", "").split(">")) {
@@ -171,31 +170,32 @@ public class MBoxMessage extends Message {
 	@Override
 	public Article toArticle() {
 		Article article = new Article();
-		article.setArticleId(getMessageId());
-		if (getDate()!=null)
-			article.setDate(getDate().toString());
-		article.setFrom(getFrom());
-		article.setSubject(getSubject());
-		for (String reference: getReferences())
-			article.addReference(reference);
+		if(mimeMessageParser!=null)
+		{
+			article.setArticleId(getMessageId());
+			if (getDate()!=null)
+				article.setDate(getDate().toString());
+			article.setFrom(getFrom());
+			article.setSubject(getSubject());
+			for (String reference: getReferences())
+				article.addReference(reference);
+		}
 		return article;
 	}
 
-	private void parse(String stringMessage, boolean verbose) {
-		if (verbose) {
-			System.out.println("Parsing string message");
-		}
+	private void parse(String stringMessage) {
+		logger.debug("Parsing message:"+stringMessage);
 		InputStream is = new ByteArrayInputStream(stringMessage.toString().getBytes(Charset.forName("UTF-8")));
 		try {
 			mimeMessage = new MimeMessage(session, is);
+			mimeMessageParser = new MimeMessageParser(mimeMessage);
+			try {
+				mimeMessageParser.parse();
+			} catch (Exception e) {
+				logger.error("Error while parsing MIME message: ", e);
+			}
 		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		mimeMessageParser = new MimeMessageParser(mimeMessage);
-		try {
-			mimeMessageParser.parse();
-		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error while converting message into MIME: ",e);
 		}
 	}
 	

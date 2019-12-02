@@ -15,14 +15,14 @@
 		<sink name="EmptySink" in="ResultsPublisher" />
 		
 		<type name="GhRepo">
-			<field name="repoUrl" type="String"/>
+			<datafield name="repoUrl" type="String"/>
 		</type>
 		
 		<type name="Result">
-			<field name="technology" type="String"/>
-			<field name="repos" type="Integer"/>
-			<field name="files" type="Integer"/>
-			<field name="authors" type="Integer"/>
+			<datafield name="technology" type="String"/>
+			<datafield name="repos" type="Integer"/>
+			<datafield name="files" type="Integer"/>
+			<datafield name="authors" type="Integer"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.examples.firstcommitment.ghrepo" genOutputFolder="src-gen" outputFolder="src"/>

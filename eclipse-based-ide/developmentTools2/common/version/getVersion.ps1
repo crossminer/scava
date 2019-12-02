@@ -1,7 +1,4 @@
 param(
-    [Parameter(HelpMessage="Ignore documentation")]
-    [switch]
-    $noDoc,
     [Parameter(HelpMessage="Ignore format of versions")]
     [switch]
     $ignoreFormat,
@@ -17,7 +14,6 @@ $versionPattern = "^(\d+)\.(\d+)\.(\d+)\.rev(\d+)$";
 $pluginManifestFilePath = "./org.eclipse.scava.root/bundles/org.eclipse.scava.plugin/META-INF/MANIFEST.MF"
 $featureXmlFilePath = "./org.eclipse.scava.root/features/org.eclipse.scava.feature/feature.xml"
 $updateSiteXmlFilePath = "./org.eclipse.scava.root/releng/org.eclipse.scava.update/category.xml"
-$docTexFilePath = "./doc/user-guide.tex"
 
 try{
     Push-Location "$PSScriptRoot/../../.."
@@ -61,30 +57,15 @@ try{
         Write-Host "Referenced feature version:`t$referencedFeatureVersion"
     }
 
-    # tex and pdf
-    if( !$noDoc ) {
-        (Get-Content $docTexFilePath) | ForEach-Object {
-            if( $_ -match "\\date\{Version\s+([^\{]*)\}" ) {
-                $docTexVersion = $Matches[1]
-            }
-        }
-        if( $setVariables ) {
-            Set-Variable -Name "docTexVersion" -Value $docTexVersion -Scope 1
-        }
-        if( $print ) {
-            Write-Host "Document version:`t`t$docTexVersion"
-        }
-    }
-
     # check if the read versions are in the required format
     if( !$ignoreFormat ) {
-        if( $pluginVersion -notmatch $versionPattern -or $featureVersion -notmatch $versionPattern -or $referencedFeatureVersion -notmatch $versionPattern -or (!$noDoc -and $docTexVersion -notmatch $versionPattern ) ) {
+        if( $pluginVersion -notmatch $versionPattern -or $featureVersion -notmatch $versionPattern -or $referencedFeatureVersion -notmatch $versionPattern ) {
             throw "The versions of some components do not match with the required pattern (0.0.0.rev0)"
         }
     }
 
     # check if the read versions are the same
-    if( $pluginVersion -ne $featureVersion -or $featureVersion -ne $referencedFeatureVersion -or ( !$noDoc -and $featureVersion -ne $docTexVersion ) ) {
+    if( $pluginVersion -ne $featureVersion -or $featureVersion -ne $referencedFeatureVersion ) {
         throw "Some component have different versions than others."
     }
 

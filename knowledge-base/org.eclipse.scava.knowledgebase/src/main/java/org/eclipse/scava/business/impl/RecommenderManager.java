@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.scava.business.impl;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -47,9 +49,6 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import static java.util.stream.Collectors.*;
-import static java.util.Map.Entry.*;
-
 /**
  * @author Juri Di Rocco
  *
@@ -68,8 +67,10 @@ public class RecommenderManager implements IRecommenderManager {
 	private IRecommendationProvider alternativeLibrariesRecommendationProvider;
 
 	@Autowired
-	@Qualifier("Focus")
-	private IRecommendationProvider focusRecomenderProvider;
+	private FocusContexAwareRecommender focusRecomenderProvider;
+	
+	@Autowired
+	private FocusCodeSnippetRecommender focusCodeSnippetRecommender;
 
 	@Autowired
 	@Qualifier("ApiCallRecommendation")
@@ -113,6 +114,8 @@ public class RecommenderManager implements IRecommenderManager {
 			return apiCallRecommendationProvider.getRecommendation(query);
 		if (rt.equals(RecommendationType.FOCUS))
 			return focusRecomenderProvider.getRecommendation(query);
+		if (rt.equals(RecommendationType.FOCUS_CODE_SNIPPET))
+			return focusCodeSnippetRecommender.getRecommendation(query);
 		if (rt.equals(RecommendationType.API_DOCUMENTATION))
 			return soRecommender.getRecommendation(query);
 		if (rt.equals(RecommendationType.VERSION))

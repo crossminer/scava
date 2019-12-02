@@ -15,11 +15,11 @@ public class DirectoryCacheTests {
 		NumberPair input = new NumberPair(1, 2);
 		input.setDestination("Additions");
 		NumberPair output = new NumberPair(2, 4);
-		output.setCorrelationId(input.getId());
+		output.setCorrelationId(input.getJobId());
 
 		DirectoryCache cache = new DirectoryCache();
 		MinimalWorkflow cacheWorkflow = new MinimalWorkflow();
-		cacheWorkflow.getSerializer().register(NumberPair.class);
+		cacheWorkflow.getSerializer().registerType(NumberPair.class);
 		cache.setWorkflow(cacheWorkflow);
 		File directory = cache.getDirectory();
 		cache.cache(input);
@@ -32,7 +32,7 @@ public class DirectoryCacheTests {
 
 		DirectoryCache fresh = new DirectoryCache(directory);
 		MinimalWorkflow freshWorkflow = new MinimalWorkflow();
-		freshWorkflow.getSerializer().register(NumberPair.class);
+		freshWorkflow.getSerializer().registerType(NumberPair.class);
 		fresh.setWorkflow(freshWorkflow);
 
 		assertTrue(fresh.hasCachedOutputs(input));
@@ -55,7 +55,7 @@ public class DirectoryCacheTests {
 		NumberPair input = new NumberPair(1, 2);
 		input.setDestination("Additions");
 		NumberPair output = new NumberPair(2, 4);
-		output.setCorrelationId(input.getId());
+		output.setCorrelationId(input.getJobId());
 
 		DirectoryCache cache = new DirectoryCache();
 		cache.setWorkflow(new MinimalWorkflow());

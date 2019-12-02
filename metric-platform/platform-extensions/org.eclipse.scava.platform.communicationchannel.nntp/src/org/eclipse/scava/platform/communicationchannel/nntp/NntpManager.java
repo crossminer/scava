@@ -10,6 +10,7 @@
 package org.eclipse.scava.platform.communicationchannel.nntp;
 
 import java.io.Reader;
+import java.util.List;
 
 import org.apache.commons.net.nntp.Article;
 import org.apache.commons.net.nntp.NNTPClient;
@@ -18,6 +19,7 @@ import org.eclipse.scava.platform.Date;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
 
@@ -26,6 +28,8 @@ import com.mongodb.DB;
 public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> {
 	
 	private final static long RETRIEVAL_STEP = 50;
+	
+	protected static OssmeterLogger logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.nntp");
 
 	@Override
 	public boolean appliesTo(CommunicationChannel newsgroup) {
@@ -44,8 +48,13 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 //		if (Integer.parseInt(newsgroup.getLastArticleChecked())<134500)
 //			newsgroup.setLastArticleChecked("134500"); //137500");
 
+		/*FIXME: Edge Hill. This will be always the original value
+		 * Readers cannot change values in the MongoDB
+		 * And therefore the reader will always start from the first article*/
+		//TODO: This means that it is necessary to create a variable that stores the last article checked
 		String lac = newsgroup.getLastArticleChecked();
-		if (lac == null || lac.equals("") || lac.equals("null")) lac = "-1";
+		if (lac == null || lac.equals("") || lac.equals("null"))
+			lac = "-1";
 		long lastArticleChecked = Long.parseLong(lac);
 		if (lastArticleChecked<0) lastArticleChecked = newsgroupInfo.getFirstArticleLong();
 
@@ -54,88 +63,119 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 
 		// FIXME: certain eclipse newsgroups return 0 for both FirstArticle and LastArticle which causes exceptions
 		if (lastArticleChecked == 0) {
+			logger.error("Last Article Checked is Zero. The client is closing and returning empty delta");
 			nntpClient.disconnect(); 
-			return null;
+			return delta;
 		}
 		
 		long retrievalStep = RETRIEVAL_STEP;
 		Boolean dayCompleted = false;
-		while (!dayCompleted) {
+		boolean continueArticleDate;
+		
+		while (!dayCompleted)
+		{
 			if (lastArticleChecked + retrievalStep > lastArticle) {
 				retrievalStep = lastArticle - lastArticleChecked;
 				dayCompleted = true;
 			}
-			Article[] articles;
+			List<Article> articles;
 			Date articleDate=date;
+			int numberArticles;
 			// The following loop discards messages for days earlier than the required one.
 			
-			//Edge Hill May 2019: This code breaks when javaArticleDate==null, I tried to avoid the null with javaArticleDate!=null,
-			//but that created an infinite loop
-//			do {
-				articles = NntpUtil.getArticleInfo(nntpClient, 
-						lastArticleChecked + 1, lastArticleChecked + retrievalStep);
-//				if (articles.length > 0) {
-//					Article lastArticleRetrieved = articles[articles.length-1];
-//					java.util.Date javaArticleDate = NntpUtil.parseDate(lastArticleRetrieved.getDate());
-//					if(javaArticleDate!=null)
-//					{
-//						articleDate = new Date(javaArticleDate);
-//						if (date.compareTo(articleDate) > 0)
-//							lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
-//					}
-//				}
-//			} while (date.compareTo(articleDate) > 0);
-
-			for (Article article: articles) {
-				java.util.Date javaArticleDate = NntpUtil.parseDate(article.getDate());
-				if (javaArticleDate!=null) {
-					articleDate = new Date(javaArticleDate);
-					if (date.compareTo(articleDate) < 0) {
-						dayCompleted = true;
-//						System.out.println("dayCompleted");
+			try
+			{
+				do
+				{	
+					articles = NntpUtil.getArticleInfo(nntpClient, lastArticleChecked + 1, lastArticleChecked + retrievalStep);
+					numberArticles=articles.size();
+					if(numberArticles>0)
+					{
+						continueArticleDate=true;
+						while (continueArticleDate)
+						{
+							Article lastArticleRetrieved = articles.get(numberArticles-1);
+							java.util.Date javaArticleDate = NntpUtil.parseDate(lastArticleRetrieved.getDate());
+							if(javaArticleDate==null)
+							{
+								articles.remove(numberArticles-1);
+								numberArticles=articles.size();
+								if(numberArticles==0)
+									continueArticleDate=false;
+							}
+							else
+							{
+								articleDate = new Date(javaArticleDate);
+								if (date.compareTo(articleDate) > 0)
+									lastArticleChecked = lastArticleRetrieved.getArticleNumberLong();
+								continueArticleDate=false;
+							}
+						}
 					}
-					else if (date.compareTo(articleDate) == 0) {
-						CommunicationChannelArticle communicationChannelArticle = new CommunicationChannelArticle();
-						communicationChannelArticle.setArticleId(article.getArticleId());
-						communicationChannelArticle.setArticleNumber(article.getArticleNumberLong());
-						communicationChannelArticle.setDate(javaArticleDate);
-//						I haven't seen any messageThreadIds on NNTP servers, yet.
-//						communicationChannelArticle.setMessageThreadId(article.messageThreadId());
-						NntpNewsGroup newNewsgroup = new NntpNewsGroup();
-						newNewsgroup.setUrl(newsgroup.getUrl());
-						newNewsgroup.setAuthenticationRequired(newsgroup.getAuthenticationRequired());
-						newNewsgroup.setUsername(newsgroup.getUsername());
-						newNewsgroup.setPassword(newsgroup.getPassword());
-						newNewsgroup.setNewsGroupName(newsgroup.getNewsGroupName());
-						newNewsgroup.setPort(newsgroup.getPort());
-						newNewsgroup.setInterval(newsgroup.getInterval());
-						communicationChannelArticle.setCommunicationChannel(newNewsgroup);
-						communicationChannelArticle.setReferences(article.getReferences());
-						communicationChannelArticle.setSubject(article.getSubject());
-						communicationChannelArticle.setUser(article.getFrom());
-						communicationChannelArticle.setText(
-								getContents(db, newNewsgroup, communicationChannelArticle));
-						delta.getArticles().add(communicationChannelArticle);
-						lastArticleChecked = article.getArticleNumberLong();
-//						System.out.println("dayNOTCompleted");
-					} 
-					else {
-
-							//TODO: In this case, there are unprocessed articles whose date is earlier than the date requested.
-							//      This means that the deltas of those article dates are incomplete, 
-							//		i.e. the deltas did not contain all articles of those dates.
-					}
-				} else {
-					// If an article has no correct date, then ignore it
-					System.err.println("\t\tUnparsable article date: " + article.getDate());
 				}
+				while (date.compareTo(articleDate) > 0);
+				
+				for (Article article: articles) {
+					java.util.Date javaArticleDate = NntpUtil.parseDate(article.getDate());
+					if (javaArticleDate!=null) {
+						articleDate = new Date(javaArticleDate);
+						if (date.compareTo(articleDate) < 0) {
+							dayCompleted = true;
+						}
+						else if (date.compareTo(articleDate) == 0)
+						{
+							CommunicationChannelArticle communicationChannelArticle = new CommunicationChannelArticle();
+							communicationChannelArticle.setArticleId(article.getArticleId());
+							communicationChannelArticle.setArticleNumber(article.getArticleNumberLong());
+							communicationChannelArticle.setDate(javaArticleDate);
+//							I haven't seen any messageThreadIds on NNTP servers, yet.
+//							communicationChannelArticle.setMessageThreadId(article.messageThreadId());
+							NntpNewsGroup newNewsgroup = new NntpNewsGroup();
+							newNewsgroup.setUrl(newsgroup.getUrl());
+							newNewsgroup.setAuthenticationRequired(newsgroup.getAuthenticationRequired());
+							newNewsgroup.setUsername(newsgroup.getUsername());
+							newNewsgroup.setPassword(newsgroup.getPassword());
+							newNewsgroup.setNewsGroupName(newsgroup.getNewsGroupName());
+							newNewsgroup.setPort(newsgroup.getPort());
+							newNewsgroup.setInterval(newsgroup.getInterval());
+							communicationChannelArticle.setCommunicationChannel(newNewsgroup);
+							communicationChannelArticle.setReferences(article.getReferences());
+							communicationChannelArticle.setSubject(article.getSubject());
+							communicationChannelArticle.setUser(article.getFrom());
+							communicationChannelArticle.setText(
+									getContents(db, newNewsgroup, communicationChannelArticle));
+							delta.getArticles().add(communicationChannelArticle);
+							lastArticleChecked = article.getArticleNumberLong();
+//							System.out.println("dayNOTCompleted");
+						} 
+						else {
+							logger.warn("It has been found an article that could mean previous deltas incomplete " + article.getDate());
+						}
+					}
+					else
+					{
+						logger.warn("Unparsable article date: " + article.getDate());
+					}
+				}
+			}
+			catch (NullPointerException e) {
+				String mainMessage="Article Date has been found to be null and it is impossible to recover. ";
+				if(delta.getArticles().size()==0)
+				{
+					logger.error(mainMessage+"Returning empty delta.");
+					nntpClient.disconnect();
+					return delta;
+				}
+				else
+				{
+					dayCompleted=true;
+					logger.error(mainMessage+"Returning partial delta.");
+				}	
 			}
 		}
 		nntpClient.disconnect(); 
 		newsgroup.setLastArticleChecked(lastArticleChecked+"");
-		System.out.println("delta ("+newsgroup.getNewsGroupName() + " on " + date.toString()+") contains:\t"+
-								delta.getArticles().size() + " nntp articles");
-		
+		logger.info(newsgroup.getNewsGroupName() + " on " + date.toString()+") contains:\t"+ delta.getArticles().size() + " nntp articles");
 		return delta;
 	}
 

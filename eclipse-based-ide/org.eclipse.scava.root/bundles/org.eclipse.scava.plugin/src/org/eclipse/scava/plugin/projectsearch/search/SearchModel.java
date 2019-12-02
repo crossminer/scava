@@ -14,21 +14,32 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
 
 import io.swagger.client.model.Artifact;
 
 public class SearchModel extends Model {
 	private final Set<Artifact> selectedProjects = new HashSet<>();
+	private final KnowledgeBaseAccess knowledgeBaseAccess;
+
+	public SearchModel(KnowledgeBaseAccess knowledgeBaseAccess) {
+		super();
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
+	}
 	
+	public KnowledgeBaseAccess getKnowledgeBaseAccess() {
+		return knowledgeBaseAccess;
+	}
+
 	public void addSelectedProject(Artifact project) {
 		selectedProjects.add(project);
 	}
-	
+
 	public void removeSelectedProject(Artifact project) {
 		selectedProjects.remove(project);
 	}
-	
+
 	public Set<Artifact> getSelectedProjects() {
 		return Collections.unmodifiableSet(selectedProjects);
 	}

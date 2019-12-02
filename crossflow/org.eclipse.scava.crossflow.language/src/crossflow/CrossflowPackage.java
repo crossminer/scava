@@ -120,13 +120,22 @@ public interface CrossflowPackage extends EPackage {
 	int WORKFLOW__LANGUAGES = 5;
 
 	/**
+	 * The feature id for the '<em><b>Serializer</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORKFLOW__SERIALIZER = 6;
+
+	/**
 	 * The number of structural features of the '<em>Workflow</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORKFLOW_FEATURE_COUNT = 6;
+	int WORKFLOW_FEATURE_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
@@ -148,13 +157,22 @@ public interface CrossflowPackage extends EPackage {
 	int STREAM__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STREAM__MANY = 1;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__TYPE = 1;
+	int STREAM__TYPE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Input Of</b></em>' reference list.
@@ -163,7 +181,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__INPUT_OF = 2;
+	int STREAM__INPUT_OF = 3;
 
 	/**
 	 * The feature id for the '<em><b>Output Of</b></em>' reference list.
@@ -172,7 +190,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM__OUTPUT_OF = 3;
+	int STREAM__OUTPUT_OF = 4;
 
 	/**
 	 * The number of structural features of the '<em>Stream</em>' class.
@@ -181,7 +199,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STREAM_FEATURE_COUNT = 4;
+	int STREAM_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.TopicImpl <em>Topic</em>}' class.
@@ -201,6 +219,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int TOPIC__NAME = STREAM__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TOPIC__MANY = STREAM__MANY;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -256,6 +283,15 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int QUEUE__NAME = STREAM__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUEUE__MANY = STREAM__MANY;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1292,6 +1328,133 @@ public interface CrossflowPackage extends EPackage {
 	int SCRIPTED_TASK_FEATURE_COUNT = TASK_FEATURE_COUNT + 3;
 
 	/**
+	 * The meta object id for the '{@link crossflow.impl.ReusableComponentImpl <em>Reusable Component</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.ReusableComponentImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getReusableComponent()
+	 * @generated
+	 */
+	int REUSABLE_COMPONENT = 12;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__NAME = TASK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Input</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__INPUT = TASK__INPUT;
+
+	/**
+	 * The feature id for the '<em><b>Output</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__OUTPUT = TASK__OUTPUT;
+
+	/**
+	 * The feature id for the '<em><b>Master Only</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__MASTER_ONLY = TASK__MASTER_ONLY;
+
+	/**
+	 * The feature id for the '<em><b>Parallel</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__PARALLEL = TASK__PARALLEL;
+
+	/**
+	 * The feature id for the '<em><b>Cached</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__CACHED = TASK__CACHED;
+
+	/**
+	 * The feature id for the '<em><b>Multiple Outputs</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__MULTIPLE_OUTPUTS = TASK__MULTIPLE_OUTPUTS;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__IMPL = TASK__IMPL;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__PARAMETERS = TASK__PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Languages</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__LANGUAGES = TASK__LANGUAGES;
+
+	/**
+	 * The feature id for the '<em><b>Configurations</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__CONFIGURATIONS = TASK__CONFIGURATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Component</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT__COMPONENT = TASK_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Reusable Component</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REUSABLE_COMPONENT_FEATURE_COUNT = TASK_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1299,7 +1462,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 12;
+	int TYPE = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1320,22 +1483,13 @@ public interface CrossflowPackage extends EPackage {
 	int TYPE__IMPL = 1;
 
 	/**
-	 * The feature id for the '<em><b>Is Many</b></em>' attribute.
+	 * The feature id for the '<em><b>Extending</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__IS_MANY = 2;
-
-	/**
-	 * The feature id for the '<em><b>Extending</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TYPE__EXTENDING = 3;
+	int TYPE__EXTENDING = 2;
 
 	/**
 	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -1344,7 +1498,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE__FIELDS = 4;
+	int TYPE__FIELDS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Type</em>' class.
@@ -1353,7 +1507,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_FEATURE_COUNT = 5;
+	int TYPE_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.FieldImpl <em>Field</em>}' class.
@@ -1363,7 +1517,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getField()
 	 * @generated
 	 */
-	int FIELD = 13;
+	int FIELD = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1375,22 +1529,13 @@ public interface CrossflowPackage extends EPackage {
 	int FIELD__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FIELD__TYPE = 1;
-
-	/**
 	 * The feature id for the '<em><b>Many</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD__MANY = 2;
+	int FIELD__MANY = 1;
 
 	/**
 	 * The number of structural features of the '<em>Field</em>' class.
@@ -1399,8 +1544,99 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = 3;
+	int FIELD_FEATURE_COUNT = 2;
 
+	/**
+	 * The meta object id for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.DataFieldImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getDataField()
+	 * @generated
+	 */
+	int DATA_FIELD = 15;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD__NAME = FIELD__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD__MANY = FIELD__MANY;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD__TYPE = FIELD_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Data Field</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.EnumFieldImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getEnumField()
+	 * @generated
+	 */
+	int ENUM_FIELD = 16;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__NAME = FIELD__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Many</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__MANY = FIELD__MANY;
+
+	/**
+	 * The feature id for the '<em><b>Values</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD__VALUES = FIELD_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Enum Field</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_FIELD_FEATURE_COUNT = FIELD_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
@@ -1410,7 +1646,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getLanguage()
 	 * @generated
 	 */
-	int LANGUAGE = 14;
+	int LANGUAGE = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1474,7 +1710,7 @@ public interface CrossflowPackage extends EPackage {
 	 * @see crossflow.impl.CrossflowPackageImpl#getParameter()
 	 * @generated
 	 */
-	int PARAMETER = 15;
+	int PARAMETER = 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1502,6 +1738,43 @@ public interface CrossflowPackage extends EPackage {
 	 * @ordered
 	 */
 	int PARAMETER_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link crossflow.impl.SerializerImpl <em>Serializer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see crossflow.impl.SerializerImpl
+	 * @see crossflow.impl.CrossflowPackageImpl#getSerializer()
+	 * @generated
+	 */
+	int SERIALIZER = 19;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERIALIZER__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERIALIZER__PARAMETERS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Serializer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERIALIZER_FEATURE_COUNT = 2;
 
 
 	/**
@@ -1581,6 +1854,17 @@ public interface CrossflowPackage extends EPackage {
 	EReference getWorkflow_Languages();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link crossflow.Workflow#getSerializer <em>Serializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Serializer</em>'.
+	 * @see crossflow.Workflow#getSerializer()
+	 * @see #getWorkflow()
+	 * @generated
+	 */
+	EReference getWorkflow_Serializer();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Stream <em>Stream</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1600,6 +1884,17 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getStream_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Stream#isMany <em>Many</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Many</em>'.
+	 * @see crossflow.Stream#isMany()
+	 * @see #getStream()
+	 * @generated
+	 */
+	EAttribute getStream_Many();
 
 	/**
 	 * Returns the meta object for the reference '{@link crossflow.Stream#getType <em>Type</em>}'.
@@ -1922,6 +2217,27 @@ public interface CrossflowPackage extends EPackage {
 	EReference getScriptedTask_OutputVariables();
 
 	/**
+	 * Returns the meta object for class '{@link crossflow.ReusableComponent <em>Reusable Component</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Reusable Component</em>'.
+	 * @see crossflow.ReusableComponent
+	 * @generated
+	 */
+	EClass getReusableComponent();
+
+	/**
+	 * Returns the meta object for the reference '{@link crossflow.ReusableComponent#getComponent <em>Component</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Component</em>'.
+	 * @see crossflow.ReusableComponent#getComponent()
+	 * @see #getReusableComponent()
+	 * @generated
+	 */
+	EReference getReusableComponent_Component();
+
+	/**
 	 * Returns the meta object for class '{@link crossflow.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1954,21 +2270,10 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getType_Impl();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Type#isIsMany <em>Is Many</em>}'.
+	 * Returns the meta object for the reference '{@link crossflow.Type#getExtending <em>Extending</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Many</em>'.
-	 * @see crossflow.Type#isIsMany()
-	 * @see #getType()
-	 * @generated
-	 */
-	EAttribute getType_IsMany();
-
-	/**
-	 * Returns the meta object for the reference list '{@link crossflow.Type#getExtending <em>Extending</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Extending</em>'.
+	 * @return the meta object for the reference '<em>Extending</em>'.
 	 * @see crossflow.Type#getExtending()
 	 * @see #getType()
 	 * @generated
@@ -2008,17 +2313,6 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getField_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link crossflow.Field#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see crossflow.Field#getType()
-	 * @see #getField()
-	 * @generated
-	 */
-	EAttribute getField_Type();
-
-	/**
 	 * Returns the meta object for the attribute '{@link crossflow.Field#isMany <em>Many</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2028,6 +2322,48 @@ public interface CrossflowPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getField_Many();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.DataField <em>Data Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Data Field</em>'.
+	 * @see crossflow.DataField
+	 * @generated
+	 */
+	EClass getDataField();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.DataField#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see crossflow.DataField#getType()
+	 * @see #getDataField()
+	 * @generated
+	 */
+	EAttribute getDataField_Type();
+
+	/**
+	 * Returns the meta object for class '{@link crossflow.EnumField <em>Enum Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Enum Field</em>'.
+	 * @see crossflow.EnumField
+	 * @generated
+	 */
+	EClass getEnumField();
+
+	/**
+	 * Returns the meta object for the attribute list '{@link crossflow.EnumField#getValues <em>Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Values</em>'.
+	 * @see crossflow.EnumField#getValues()
+	 * @see #getEnumField()
+	 * @generated
+	 */
+	EAttribute getEnumField_Values();
 
 	/**
 	 * Returns the meta object for class '{@link crossflow.Language <em>Language</em>}'.
@@ -2127,6 +2463,38 @@ public interface CrossflowPackage extends EPackage {
 	EAttribute getParameter_Value();
 
 	/**
+	 * Returns the meta object for class '{@link crossflow.Serializer <em>Serializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Serializer</em>'.
+	 * @see crossflow.Serializer
+	 * @generated
+	 */
+	EClass getSerializer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link crossflow.Serializer#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see crossflow.Serializer#getName()
+	 * @see #getSerializer()
+	 * @generated
+	 */
+	EAttribute getSerializer_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link crossflow.Serializer#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
+	 * @see crossflow.Serializer#getParameters()
+	 * @see #getSerializer()
+	 * @generated
+	 */
+	EReference getSerializer_Parameters();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2207,6 +2575,14 @@ public interface CrossflowPackage extends EPackage {
 		EReference WORKFLOW__LANGUAGES = eINSTANCE.getWorkflow_Languages();
 
 		/**
+		 * The meta object literal for the '<em><b>Serializer</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WORKFLOW__SERIALIZER = eINSTANCE.getWorkflow_Serializer();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.StreamImpl <em>Stream</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2223,6 +2599,14 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute STREAM__NAME = eINSTANCE.getStream_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STREAM__MANY = eINSTANCE.getStream_Many();
 
 		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
@@ -2485,6 +2869,24 @@ public interface CrossflowPackage extends EPackage {
 		EReference SCRIPTED_TASK__OUTPUT_VARIABLES = eINSTANCE.getScriptedTask_OutputVariables();
 
 		/**
+		 * The meta object literal for the '{@link crossflow.impl.ReusableComponentImpl <em>Reusable Component</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.ReusableComponentImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getReusableComponent()
+		 * @generated
+		 */
+		EClass REUSABLE_COMPONENT = eINSTANCE.getReusableComponent();
+
+		/**
+		 * The meta object literal for the '<em><b>Component</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REUSABLE_COMPONENT__COMPONENT = eINSTANCE.getReusableComponent_Component();
+
+		/**
 		 * The meta object literal for the '{@link crossflow.impl.TypeImpl <em>Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2511,15 +2913,7 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute TYPE__IMPL = eINSTANCE.getType_Impl();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Many</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TYPE__IS_MANY = eINSTANCE.getType_IsMany();
-
-		/**
-		 * The meta object literal for the '<em><b>Extending</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Extending</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -2553,20 +2947,48 @@ public interface CrossflowPackage extends EPackage {
 		EAttribute FIELD__NAME = eINSTANCE.getField_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute FIELD__TYPE = eINSTANCE.getField_Type();
-
-		/**
 		 * The meta object literal for the '<em><b>Many</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute FIELD__MANY = eINSTANCE.getField_Many();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.DataFieldImpl <em>Data Field</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.DataFieldImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getDataField()
+		 * @generated
+		 */
+		EClass DATA_FIELD = eINSTANCE.getDataField();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DATA_FIELD__TYPE = eINSTANCE.getDataField_Type();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.EnumFieldImpl <em>Enum Field</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.EnumFieldImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getEnumField()
+		 * @generated
+		 */
+		EClass ENUM_FIELD = eINSTANCE.getEnumField();
+
+		/**
+		 * The meta object literal for the '<em><b>Values</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ENUM_FIELD__VALUES = eINSTANCE.getEnumField_Values();
 
 		/**
 		 * The meta object literal for the '{@link crossflow.impl.LanguageImpl <em>Language</em>}' class.
@@ -2643,6 +3065,32 @@ public interface CrossflowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PARAMETER__VALUE = eINSTANCE.getParameter_Value();
+
+		/**
+		 * The meta object literal for the '{@link crossflow.impl.SerializerImpl <em>Serializer</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see crossflow.impl.SerializerImpl
+		 * @see crossflow.impl.CrossflowPackageImpl#getSerializer()
+		 * @generated
+		 */
+		EClass SERIALIZER = eINSTANCE.getSerializer();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SERIALIZER__NAME = eINSTANCE.getSerializer_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SERIALIZER__PARAMETERS = eINSTANCE.getSerializer_Parameters();
 
 	}
 

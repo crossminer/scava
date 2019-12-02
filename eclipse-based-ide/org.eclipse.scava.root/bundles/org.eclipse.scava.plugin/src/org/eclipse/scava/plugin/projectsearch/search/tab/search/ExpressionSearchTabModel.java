@@ -12,6 +12,8 @@ package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 
 import java.util.List;
 
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
+
 import io.swagger.client.ApiException;
 import io.swagger.client.api.ArtifactsRestControllerApi;
 import io.swagger.client.model.Artifact;
@@ -19,8 +21,8 @@ import io.swagger.client.model.Artifact;
 public class ExpressionSearchTabModel extends SearchTabModel {
 	private final String expression;
 
-	public ExpressionSearchTabModel(String expression) {
-		super();
+	public ExpressionSearchTabModel(KnowledgeBaseAccess knowledgeBaseAccess, String expression) {
+		super(knowledgeBaseAccess);
 		this.expression = expression;
 	}
 

@@ -47,7 +47,7 @@ public class RepositorySearcher extends OpinionatedRepositorySearcherBase {
 	public boolean acceptInput(RepoTechPair input) {
 		// TODO logic for accepting repos (if already cloned etc)
 		//
-		return false;
+		return true;
 	}
 	
 	// do not update a repo if folder already exists -- for development
@@ -204,8 +204,11 @@ public class RepositorySearcher extends OpinionatedRepositorySearcherBase {
 				Collections.singleton(tech.fileExt).toArray(new String[1]), true)).size();
 
 		AnalysisResult r = new AnalysisResult();
+		r.repository = new Repository();
 		r.repository.name = repositoryClone.name;
 		r.repository.url = repositoryClone.url;
+		r.technology = new Technology();
+		r.technology.techKey = tech.techKey;
 		r.technology.fileExt = tech.fileExt;
 		r.fileCount = fileCount;
 

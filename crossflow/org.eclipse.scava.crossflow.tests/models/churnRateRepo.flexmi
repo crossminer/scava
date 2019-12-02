@@ -12,14 +12,14 @@
 		<simple-sink name="ResultsSink"/>
 		
 		<type name="URL">
-			<field name="url" type="String"/>
+			<datafield name="url" type="String"/>
 			
 		</type>
 		
 	<type name="ChurnRate">
-			<field name="url" type="String"/>
-			<field name="branch" type="String"/>
-			<field name="churnRate" type="Double"/>
+			<datafield name="url" type="String"/>
+			<datafield name="branch" type="String"/>
+			<datafield name="churnRate" type="Double"/>
 			 
 		</type>
 

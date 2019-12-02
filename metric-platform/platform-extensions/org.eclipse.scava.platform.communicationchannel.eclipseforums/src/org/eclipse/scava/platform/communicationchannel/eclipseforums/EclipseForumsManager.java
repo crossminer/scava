@@ -38,38 +38,18 @@ import okhttp3.Response;
 
 public class EclipseForumsManager implements ICommunicationChannelManager<EclipseForum> {
 
-	public EclipseForumsManager() {
-
-		this.open_id = "";
-		this.callsRemaning = -1;
-		this.rateLimit = 0;
-		this.timeToReset = 0;
-		this.current_page = 0;
-		this.last_page = 0;
-		this.next_request_url = "";
-		//this.client = new OkHttpClient();
-		this.temporalFlag = false;
-		this.clientSet = false;
-		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.bugtrackingsystem.eclipseforums");
-	}
-
 	protected OssmeterLogger logger;
-	private boolean temporalFlag;
-	private int callsRemaning;
-	private int timeToReset;
-	private int rateLimit;
 	private final static String host = "https://api.eclipse.org/";
 	private final static String PAGE_SIZE = "100";
+	
 	private final static Pattern lastPagePattern = Pattern.compile("\\d>; rel=\"last\"");
 	private final static Pattern currentPagePattern = Pattern.compile("\\d>; rel=\"self\"");
 	private final static Pattern nextPageUrlPattern = Pattern.compile("(?<=\\<)(.*?)(?=\\>)>; rel=\"next\"");
-	private String next_request_url;
-	private int current_page;
-	private int last_page;
-	private String open_id;
-	//private OkHttpClient client;
-	private Boolean clientSet;
-	private ClientManager clientManager = new ClientManager();
+	
+	public EclipseForumsManager()
+	{
+		this.logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.eclipseforums");
+	}
 
 	@Override
 	public boolean appliesTo(CommunicationChannel eclipseForum) {
@@ -85,10 +65,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 		logger.info("Getting first date");
 		
-		if (this.clientSet == false) {
-			getClient(eclipseForum);
-		}
-
 		// GETS ALL TOPICS WITHIN FORUM
 		// ----------------------------------------------------------------------------------------------------------------------
 		logger.info("Getting topics from " + eclipseForum.getForum_name());
@@ -118,10 +94,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 
 	@Override
 	public CommunicationChannelDelta getDelta(DB db, EclipseForum forum, Date date) throws Exception {
-
-		if (this.clientSet == false) {
-			getClient(forum);
-		}
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
 
@@ -154,53 +126,53 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		return null;
 	}
 
-	/**
-	 * Retrieves information relating to a forum.
-	 * 
-	 * @param eclipseForum
-	 * @return forum
-	 */
-
-	@SuppressWarnings("unused")
-	private EclipseForumsForum getForum(EclipseForum eclipseForum) {
-
-		System.out.println("\t- Getting Forum");
-
-		HttpUrl.Builder getForumBuilder = HttpUrl.parse(host).newBuilder();
-		getForumBuilder.addEncodedPathSegment("forums");
-		getForumBuilder.addEncodedPathSegment("forum");
-		getForumBuilder.addPathSegment(eclipseForum.getForum_id());
-
-		Request getForum = new Request.Builder().url(getForumBuilder.build().toString()).build();
-		Response getForumResponse;
-		EclipseForumsForum forum = null;
-
-		try {
-			forum = new EclipseForumsForum();
-			getForumResponse =  clientManager.getClient(eclipseForum).newCall(getForum).execute();
-			checkHeader(getForumResponse.headers(), eclipseForum);
-			JsonNode jsonNode = new ObjectMapper().readTree(getForumResponse.body().string());
-
-			forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
-			forum.setCreation_date(EclipseForumUtils
-					.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValues("created_date").toString()))
-					.toJavaDate());
-			forum.setDescription(EclipseForumUtils.fixString(jsonNode.findValues("description").toString()));
-			forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
-			forum.setName(EclipseForumUtils.fixString(jsonNode.findValues("name").toString()));
-			forum.setPost_count(
-					Integer.parseInt(EclipseForumUtils.fixString(jsonNode.findValues("post_count").toString())));
-			forum.setTopic_count(
-					Integer.parseInt(EclipseForumUtils.fixString(jsonNode.findValues("topic_count").toString())));
-			forum.setUrl(EclipseForumUtils.fixString(jsonNode.findValues("html_url").toString()));
-			getForumResponse.close();
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-
-		return forum;
-	}
+//	/**
+//	 * Retrieves information relating to a forum.
+//	 * 
+//	 * @param eclipseForum
+//	 * @return forum
+//	 */
+//
+//	@SuppressWarnings("unused")
+//	private EclipseForumsForum getForum(EclipseForum eclipseForum) {
+//
+//		System.out.println("\t- Getting Forum");
+//
+//		HttpUrl.Builder getForumBuilder = HttpUrl.parse(host).newBuilder();
+//		getForumBuilder.addEncodedPathSegment("forums");
+//		getForumBuilder.addEncodedPathSegment("forum");
+//		getForumBuilder.addPathSegment(eclipseForum.getForum_id());
+//
+//		Request getForum = new Request.Builder().url(getForumBuilder.build().toString()).build();
+//		Response getForumResponse;
+//		EclipseForumsForum forum = null;
+//
+//		try {
+//			forum = new EclipseForumsForum();
+//			getForumResponse = ClientManager.executeRequest(eclipseForum, getForum);
+//			
+//			
+//			JsonNode jsonNode = new ObjectMapper().readTree(getForumResponse.body().string());
+//
+//			forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
+//			forum.setCreation_date(EclipseForumUtils
+//					.convertStringToDate(EclipseForumUtils.fixString(jsonNode.findValues("created_date").toString()))
+//					.toJavaDate());
+//			forum.setDescription(EclipseForumUtils.fixString(jsonNode.findValues("description").toString()));
+//			forum.setForum_id(EclipseForumUtils.fixString(jsonNode.findValues("id").toString()));
+//			forum.setName(EclipseForumUtils.fixString(jsonNode.findValues("name").toString()));
+//			forum.setPost_count(
+//					Integer.parseInt(EclipseForumUtils.fixString(jsonNode.findValues("post_count").toString())));
+//			forum.setTopic_count(
+//					Integer.parseInt(EclipseForumUtils.fixString(jsonNode.findValues("topic_count").toString())));
+//			forum.setUrl(EclipseForumUtils.fixString(jsonNode.findValues("html_url").toString()));
+//			getForumResponse.close();
+//		} catch (IOException | InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return forum;
+//	}
 
 	/**
 	 * retrieves all the posts from a topic between a specific date range and
@@ -214,8 +186,7 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 	 * @return
 	 */
 	private List<EclipseForumsPost> getPosts(EclipseForum eclipseForum, EclipseForumsTopic topic)
-			throws JsonProcessingException, IOException {
-
+	{
 		List<EclipseForumsPost> posts = new ArrayList<>();
 
 		HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
@@ -234,29 +205,45 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		}
 
 		getPostsBuilder.addQueryParameter("pagesize", PAGE_SIZE);
-
 		
-		if (this.callsRemaning == 0) {
-			waitUntilCallReset(this.timeToReset);
-		}
-
 		Request getPostsRequest = new Request.Builder().url(getPostsBuilder.build().toString()).build();
-		Response getPostsResponse =  clientManager.getClient(eclipseForum).newCall(getPostsRequest).execute();
-		checkHeader(getPostsResponse.headers(), eclipseForum);
-
-		for (EclipseForumsPost post : processPosts(getPostsResponse, eclipseForum, topic)) {
-			posts.add(post);
-		}
-
-		// pagination
-		while (this.current_page != this.last_page) {
-			System.out.println("\t\t-page " + this.current_page);
-			getPostsResponse = getNextPage(this.next_request_url, eclipseForum);
-
-			for (EclipseForumsPost post : processPosts(getPostsResponse, eclipseForum, topic)) {
-				posts.add(post);
+		Response getPostsResponse;
+		Pagination pagination;
+		boolean morePages;
+		do
+		{	
+			morePages=false;
+			try {
+				
+				getPostsResponse =  ClientManager.executeRequest(eclipseForum, getPostsRequest);
+				pagination = new Pagination(getPostsResponse.headers());
+			
+				try {
+					for (EclipseForumsPost post : processPosts(getPostsResponse, eclipseForum, topic))
+						posts.add(post);
+				}
+				catch (IOException e)
+				{
+					logger.error("Error while processing posts: ", e);
+				}
+				getPostsResponse.close();
+				
+				if(pagination.getCurrent_page()!=null && pagination.getLast_page()!=null)
+				{
+					if(pagination.getCurrent_page() != pagination.getLast_page())
+					{
+						morePages=true;
+						getPostsRequest =  new Request.Builder().url(pagination.getNext_request_url()).build();
+					}
+				}
+			
+			} catch (IOException | InterruptedException e) {
+				logger.error("Error while calling Eclipse Forums API: ", e);
 			}
+			
 		}
+		while(morePages);
+
 		return posts;
 	}
 
@@ -305,102 +292,71 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			throws JsonProcessingException, IOException {
 
 		List<EclipseForumsPost> posts = new ArrayList<>();
-		JsonNode jsonNode = new ObjectMapper().readTree(response.body().string()).get("result");
+		
+		JsonNode resultJson = new ObjectMapper().readTree(response.body().string()).get("result");
+		
 
-		if (jsonNode.isArray()) {
-			if (jsonNode.size() == 0) {
+		if (resultJson.isArray()) {
+			if (resultJson.size() == 0) {
 
-			} else if (jsonNode.size() == 1) {
-				posts.add(mapPost(jsonNode, forum, topic));
+			} else if (resultJson.size() == 1) {
+				posts.add(mapPost(resultJson, forum, topic));
 			} else {
-				for (JsonNode node : jsonNode) {
+				for (JsonNode node : resultJson) {
 					posts.add(mapPost(node, forum, topic));
 				}
 			}
 		}
-
 		return posts;
 	}
 
-	/**
-	 * Method for suspending the current thread until the call limit has been reset.
-	 * The time is based on the last received response.
-	 * 
-	 * @param timeToReset
-	 */
-	private void waitUntilCallReset(int timeToReset) {
 
-		try {
-			System.err.println("[Eclipse Forum] The rate limit has been reached. This thread will be suspended for "
-					+ this.timeToReset + " seconds until the limit has been reset");
-			Thread.sleep((this.timeToReset * 1000l) + 2);
-
-		} catch (InterruptedException e) {
-
-		}
-	}
-
-	/**
-	 * This method checks the HTTP response headers for current values associated
-	 * with the call limit of eclipse forums and updates them. It Also retrieves
-	 * information relating to pagination.
-	 * 
-	 * @param responseHeader
-	 * @param eclipseForum
-	 */
-	private void checkHeader(Headers responseHeader, EclipseForum eclipseForum) {
-
-		if (!(responseHeader.get("Link") == null)) {
-
-			Matcher matcher;
-			matcher = nextPageUrlPattern.matcher(responseHeader.get("Link"));
-
-			if (matcher.find()) {
-				String url = matcher.group(0);
-				String[] split = url.split(">");
-				url = split[0];
-				this.next_request_url = url;
-			}
-
-			matcher = currentPagePattern.matcher(responseHeader.get("Link"));
-
-			if (matcher.find()) {
-				String current = matcher.group(0);
-				String[] split = current.split(">");
-				current = split[0];
-				this.current_page = Integer.parseInt(current);
-			}
-
-			matcher = lastPagePattern.matcher(responseHeader.get("Link"));
-
-			if (matcher.find()) {
-				String last = matcher.group(0);
-				String[] split = last.split(">");
-				last = split[0];
-				this.last_page = Integer.parseInt(last);
+	private class Pagination
+	{
+		private String next_request_url=null;
+		private Integer current_page=null;
+		private Integer last_page=null;
+		
+		public Pagination(Headers header)
+		{	
+			if (!(header.get("Link") == null))
+			{
+				Matcher matcher;
+				matcher = nextPageUrlPattern.matcher(header.get("Link"));
+				if (matcher.find()) {
+					String url = matcher.group(0);
+					String[] split = url.split(">");
+					url = split[0];
+					this.next_request_url = url;
+				}
+				matcher = currentPagePattern.matcher(header.get("Link"));
+				if (matcher.find()) {
+					String current = matcher.group(0);
+					String[] split = current.split(">");
+					current = split[0];
+					this.current_page = Integer.parseInt(current);
+				}
+				matcher = lastPagePattern.matcher(header.get("Link"));
+				if (matcher.find()) {
+					String last = matcher.group(0);
+					String[] split = last.split(">");
+					last = split[0];
+					this.last_page = Integer.parseInt(last);
+				}
 			}
 		}
 
-		this.rateLimit = Integer.parseInt(responseHeader.get("X-Rate-Limit-Limit"));
-		this.callsRemaning = Integer.parseInt(responseHeader.get("X-Rate-Limit-Remaining"));
-		this.timeToReset = Integer.parseInt(responseHeader.get("X-Rate-Limit-Reset"));
-	}
-
-	/**
-	 * Retrieves the next page of a request
-	 * 
-	 * @param next_request_url
-	 * @return jsonNode
-	 * @throws IOException
-	 */
-	private Response getNextPage(String next_request_url, EclipseForum eclipseForum) throws IOException {
-		Request request = new Request.Builder().url(next_request_url).build();
-		if (this.callsRemaning == 0) {
-			this.waitUntilCallReset(this.timeToReset);
+		public String getNext_request_url() {
+			return next_request_url;
 		}
-		Response response =  clientManager.getClient(eclipseForum).newCall(request).execute();
-		this.checkHeader(response.headers(), eclipseForum);
-		return response;
+
+		public Integer getCurrent_page() {
+			return current_page;
+		}
+
+		public Integer getLast_page() {
+			return last_page;
+		}
 	}
 
 	/**
@@ -440,20 +396,6 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		return topicList;
 	}
 
-	private void getClient(EclipseForum eclipseForum) throws IOException {
-
-		logger.info("Getting Client");
-			// checks if a client for the ossmeterID exists in clientMap - if not it will create one.
-			if (clientManager.clientDataExists(eclipseForum) == true) {
-
-				clientManager.checkForRefresh(eclipseForum);
-
-			this.clientSet = true;
-		}
-
-	
-	}
-
 	private List<EclipseForumsTopic> getTopics(EclipseForum eclipseForum) throws IOException {
 
 		List<EclipseForumsTopic> topics = new ArrayList<EclipseForumsTopic>();
@@ -465,32 +407,45 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 		getTopicBuilder.addQueryParameter("pagesize", PAGE_SIZE);
 		getTopicBuilder.addQueryParameter("order_by", "ASC");
 
-		if (this.callsRemaning == 0) {
-			waitUntilCallReset(this.timeToReset);
-		}
+		Request getTopicsRequest = new Request.Builder().url(getTopicBuilder.build().toString()).build();
 
-		Request getTopicsRequest = new Request.Builder().url(getTopicBuilder.build().toString())
-				.header("Authorization", String.format("Bearer %s", this.open_id)).build();
-
-		Response getTopicResponse = clientManager.getClient(eclipseForum).newCall(getTopicsRequest).execute();
-
-		checkHeader(getTopicResponse.headers(), eclipseForum);
-		// first
-		for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
-			topics.add(topic);
-		}
-
-	
-		while (this.current_page != this.last_page) {
-			System.out.println("\t\t-page " + this.current_page);
-			getTopicResponse = getNextPage(this.next_request_url, eclipseForum);
-
-			for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum)) {
-				topics.add(topic);
+		Response getTopicResponse;
+		Pagination pagination;
+		boolean morePages;
+		do
+		{	
+			morePages=false;
+			try {
+				
+				getTopicResponse =  ClientManager.executeRequest(eclipseForum, getTopicsRequest);
+				pagination = new Pagination(getTopicResponse.headers());
+			
+				try {
+					for (EclipseForumsTopic topic : mapTopic(getTopicResponse, eclipseForum))
+						topics.add(topic);
+				}
+				catch (IOException e)
+				{
+					logger.error("Error while processing posts: ", e);
+				}
+				getTopicResponse.close();
+				
+				if(pagination.getCurrent_page()!=null && pagination.getLast_page()!=null)
+				{
+					if(pagination.getCurrent_page() != pagination.getLast_page())
+					{
+						morePages=true;
+						getTopicsRequest =  new Request.Builder().url(pagination.getNext_request_url()).build();
+					}
+				}
+			
+			} catch (IOException | InterruptedException e) {
+				logger.error("Error while calling Eclipse Forums API: ", e);
 			}
+			
 		}
-		getTopicResponse.close();
-
+		while(morePages);
+		
 		for (EclipseForumsTopic topic : topics) {
 
 			HttpUrl.Builder getPostsBuilder = HttpUrl.parse(host).newBuilder();
@@ -499,26 +454,26 @@ public class EclipseForumsManager implements ICommunicationChannelManager<Eclips
 			getPostsBuilder.addQueryParameter("order_by", "ASC");
 			getPostsBuilder.addEncodedPathSegment(topic.getRoot_post_id());
 
-		
-			if (this.callsRemaning == 0) {
-				waitUntilCallReset(this.timeToReset);
-			}
-
 			Request getRootPost = new Request.Builder().url(getPostsBuilder.build().toString()).build();
-			Response getRootPostResponse = clientManager.getClient(eclipseForum).newCall(getRootPost).execute();
-			checkHeader(getRootPostResponse.headers(), eclipseForum);
-			JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
-			if (!(postsJsonNode == null)) {
-				if (!postsJsonNode.isArray()) {
-					topic.setFirst_post_date(EclipseForumUtils
-							.convertStringToDate(
-									EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
-							.toJavaDate());
-					topic.setFirst_post_unix_timestamp(
-							EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
+			Response getRootPostResponse;
+			try {
+				getRootPostResponse = ClientManager.executeRequest(eclipseForum, getRootPost);
+				JsonNode postsJsonNode = new ObjectMapper().readTree(getRootPostResponse.body().string());
+				if (!(postsJsonNode == null)) {
+					if (!postsJsonNode.isArray()) {
+						topic.setFirst_post_date(EclipseForumUtils
+								.convertStringToDate(
+										EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()))
+								.toJavaDate());
+						topic.setFirst_post_unix_timestamp(
+								EclipseForumUtils.fixString(postsJsonNode.findValue("created_date").toString()));
+					}
 				}
+				getRootPostResponse.close();
+			} catch (InterruptedException e) {
+				logger.error("Error while searching first post in Eclipse Topic:", e);
 			}
-			getRootPostResponse.close();
+			
 
 		}
 

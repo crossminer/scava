@@ -10,6 +10,7 @@
 //Adrián was here
 package org.eclipse.scava.metricprovider.trans.bugs.emotions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -174,7 +175,9 @@ public class EmotionsTransMetricProvider implements ITransientMetricProvider<Bug
 		for (BugTrackerCommentsEmotionClassification btcdc:  bugtrackerCommentIt) {
 			bugtrackerCommentInEmotionClassification = btcdc;
 		}
-		return bugtrackerCommentInEmotionClassification.getEmotions();
+		if(bugtrackerCommentInEmotionClassification!=null)
+			return bugtrackerCommentInEmotionClassification.getEmotions();
+		return new ArrayList<String>(0);
 	}
 
 }

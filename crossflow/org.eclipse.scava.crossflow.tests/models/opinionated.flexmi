@@ -10,7 +10,7 @@
 			<param name="favouriteWord" type="String"/>
 		</opinionatedtask>
 		<type name="Word">
-			<field name="w" type="String"/>
+			<datafield name="w" type="String"/>
 		</type>
 				
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.opinionated" genOutputFolder="src-gen" outputFolder="src"/>

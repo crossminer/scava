@@ -13,3 +13,5 @@
 **/src-gen
 **/src-gen-py
 **/activemq-data
+
+*.pyc

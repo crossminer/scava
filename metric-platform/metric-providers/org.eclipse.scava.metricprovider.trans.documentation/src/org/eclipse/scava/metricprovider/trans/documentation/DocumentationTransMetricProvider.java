@@ -37,6 +37,7 @@ import org.eclipse.scava.platform.delta.vcs.VcsCommit;
 import org.eclipse.scava.platform.delta.vcs.VcsCommitItem;
 import org.eclipse.scava.platform.delta.vcs.VcsProjectDelta;
 import org.eclipse.scava.platform.delta.vcs.VcsRepositoryDelta;
+import org.eclipse.scava.platform.documentation.gitbased.utils.VcsDocumentationDelta;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyCheckoutException;
 import org.eclipse.scava.platform.vcs.workingcopy.manager.WorkingCopyFactory;
@@ -148,16 +149,24 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.setDocumentationId(documentationId);
 				documentation.setNextUpdateDate("");
 				db.getDocumentation().add(documentation);
+				documentation.setUpdated(false);
+				db.sync();
+			}
+			else
+			{
+				documentation.setUpdated(false);
 				db.sync();
 			}
 			
 			boolean needToReadAll=false;
+			
 			
 			if(documentation.getNextUpdateDate().isEmpty() || documentation.getNextUpdateDate().equals(nextDateDelta))
 				needToReadAll=true;
 			
 			if(needToReadAll)
 			{
+				documentation.setUpdated(true);
 				documentation.setNextUpdateDate(nextDateDelta);
 				File documentationStorage = createSystematicDocumentationStorage(project);
 				Crawler crawler = null;
@@ -195,7 +204,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						 		
 						 		if(!relativePath.equals(""))
 						 			relativePath=relativePath.replaceAll("\\\\", "/");		
-						 		System.err.println(relativePath);
 						 		processFile(file.toFile(), db, documentation, documentationId, relativePath);
 							}
 							file.toFile().delete();
@@ -216,6 +224,9 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 		
 		for(VcsRepositoryDelta vcsDelta : vcsProjectDelta.getRepoDeltas())
 		{
+			if(!(vcsDelta instanceof VcsDocumentationDelta))
+				return;
+			
 			List<VcsCommit> commits = vcsDelta.getCommits();
 			
 			if(commits.size()==0)
@@ -237,10 +248,14 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.setDocumentationId(repository.getUrl());
 				documentation.setLastRevisionAnalyzed("");
 				db.getDocumentation().add(documentation);
+				documentation.setUpdated(false);
 				db.sync();
 			}
-			
-			
+			else
+			{
+				documentation.setUpdated(false);
+				db.sync();
+			}
 			
 			//If the last commit analyzed does not match the commit previous to today, 
 			//then we need to read everything as in the meantime there was a change
@@ -255,6 +270,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				documentation.getEntriesId().clear();
 				documentation.getRemovedEntriesId().clear();
 				documentation.setLastUpdateDate(projectDelta.getDate().toString());
+				documentation.setUpdated(true);
 				
 				//As we are reading everything, then we can just read the last revision of today
 				VcsCommit commit = commits.get(commits.size()-1);
@@ -294,12 +310,10 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 						
 			        } catch (IOException e) {
 			        	logger.error("Error while reading file from local copy of documentation: ", e);
-						e.printStackTrace();
 					}
 				}
 				 catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 						logger.error("Error while creating local copy of documentation: ", e);
-						e.printStackTrace();
 				}
 			}
 			else if(commits.size()>0)
@@ -321,6 +335,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 				}
 				
 				documentation.setLastRevisionAnalyzed(lastRevision);
+				documentation.setUpdated(true);
 				
 				if(filesToProcess.size()>0 || filesToDelete.size()>0)
 				{
@@ -363,7 +378,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 											+ "i.e. \\ / : * ? \" < > |");
 								} catch (FileNotFoundException e) {
 									logger.error("File: "+relativePath+" couldn't be found in the working copy.", e);
-									e.printStackTrace();
 								} catch (Exception e) {
 									continue;
 								}
@@ -372,7 +386,6 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 							
 						} catch (WorkingCopyManagerUnavailable | WorkingCopyCheckoutException e) {
 							logger.error("Error while creating local copy of documentation: ", e);
-							e.printStackTrace();
 						}
 						
 					}
@@ -386,6 +399,7 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 	private void processFile(File file, DocumentationTransMetric db, Documentation documentation, String documentId, String entryId)
 	{
 		try {
+			logger.info("File " + entryId + " is being processed");
 			FileContent fileContent = FileParser.extractText(file);
 			
 			if(fileContent!=null)
@@ -408,6 +422,10 @@ public class DocumentationTransMetricProvider implements ITransientMetricProvide
 					
 				db.sync();
 	 		}
+			else
+			{
+				logger.info("File " + entryId + " was empty.");
+			}
 			
 		} catch (UnsupportedOperationException e) {
 			logger.error(e.getMessage()+" "+file.toString());

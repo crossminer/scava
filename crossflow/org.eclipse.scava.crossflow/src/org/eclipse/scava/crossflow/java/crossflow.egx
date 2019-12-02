@@ -1,248 +1,156 @@
 import "../util.eol";
 
-pre {
-	var datetime = Native("java.time.ZonedDateTime").now().toString();
-}
-
 rule Workflow2App
-	transform w : Workflow {
-	
-	parameters : Map{"w" = w,"package" = w.getPackageName()}
-	
+	transform w : CrossflowLanguageModel!Workflow {
+	parameters : w.getParameters("Workflow2App")
 	template : "workflow2app.egl"
-	
 	target : w.getImplPath() + w.name + "App.java"
-
 	overwrite : false
 }
 
 rule Workflow2TaskEnum
-	transform w : Workflow {
-	parameters : Map {
-		"genValue" = "Workflow2TaskEnum",
-		"genDate" = datetime
-	}
+	transform w : CrossflowLanguageModel!Workflow {
+	parameters : w.getParameters("Workflow2TaskEnum")
 	template : "workflow2taskenum.egl"
 	target : w.getPath() + w.name + "Tasks.java"
 }
 
 rule Config2ConfigSource
-	transform t : Type {
-	
-	guard : t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
-	
-	parameters : Map {
-		"w" = t.eContainer(),
-		"package" = t.eContainer().getPackageName(),
-		"t" = t.createSource(),
-		"genValue" = "Config2ConfigSource",
-		"genDate" = datetime
-	}
-	
+	transform t : CrossflowLanguageModel!Type {
+	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(CrossflowLanguageModel!Workflow) and t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
+	parameters  {
+		var params = t.createComponentBasedParameters("Config2ConfigSource");
+		params.put("t", t.createSource());
+		return params;
+	} 
 	template : "task2baseclass.egl"
-	
 	target : t.getPath() + t.name + ".java"
 }
 
 rule Workflow2Class 
-	transform w : Workflow {
-	
-	parameters : Map {
-		"w" = w,
-		"package" = w.getPackageName(),
-		"genValue" = "Workflow2Class",
-		"genDate" = datetime
+	transform w : CrossflowLanguageModel!Workflow {
+	parameters {
+		var params = w.createComponentBasedParameters("Workflow2Class");
+		return params;	
 	}
-	
 	template : "workflow2class.egl"
-	
 	target : w.getPath() + w.name + ".java"
 }
 
 rule Type2Class 
-	transform t : Type {
-		
-	guard : t.impl.isUndefined() //and s.csvFile.isUndefined()
-	
-	parameters : Map {
-		"w" = t.eContainer(),
-		"package" = t.eContainer().getPackageName(),
-		"genValue" = "Type2Class",
-		"genDate" = datetime
-	}
-	
+	transform t : CrossflowLanguageModel!Type {
+	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(CrossflowLanguageModel!Workflow) and t.impl.isUndefined() //and s.csvFile.isUndefined()
+	parameters : t.createComponentBasedParameters("Type2Class")
 	template : "type2class.egl"
-	
 	target : t.getPath() + t.name + ".java"
 }
 
 rule CsvSource2Source
-	transform t : CsvSource {
-
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
-
+	transform t : CrossflowLanguageModel!CsvSource {
+	parameters : t.getParameters("CsvSource2Source")
 	template : "csvsource2source.egl"
-	
 	target : t.getImplPath() + t.name + ".java"	
-	
 	overwrite : false
 }
 
 rule CsvSink2Sink
-	transform t : CsvSink {
-
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
-
+	transform t : CrossflowLanguageModel!CsvSink {
+	parameters : t.getParameters("CsvSink2Sink")
 	template : "csvsink2sink.egl"
-	
 	target : t.getImplPath() + t.name + ".java"	
-	
 	overwrite : false
 }
 
 @greedy
 rule CommitmentTask2BaseClass 
-	transform t : CommitmentTask {
-	
-	guard : t.isJavaTask()
-	
-	parameters : Map {
-		"w" = t.eContainer(),
-		"package" = t.eContainer().getPackageName(),
-		"genValue" = "CommitmentTask2BaseClass",
-		"genDate" = datetime
-	}
-	
+	transform t : CrossflowLanguageModel!Task {
+	guard : t.isJavaTask() and (t.isTypeOf(CrossflowLanguageModel!CommitmentTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isCommitmentComponent()))
+	parameters  {
+		var params = t.createComponentBasedParameters("CommitmentTask2BaseClass");
+		return params;
+	} 
 	template : "commitmenttask2baseclass.egl"
-	
 	target : t.getPath() + "Commitment" + t.name + "Base.java"	
 }
 
 @greedy
 rule OpinionatedTask2BaseClass 
-	transform t : OpinionatedTask {
-	
-	guard : t.isJavaTask()
-	
-	parameters : Map {
-		"w" = t.eContainer(),
-		"package" = t.eContainer().getPackageName(),
-		"genValue" = "OpinionatedTask2BaseClass",
-		"genDate" = datetime
-	}
-	
+	transform t : CrossflowLanguageModel!Task {
+	guard : t.isJavaTask() and (t.isTypeOf(CrossflowLanguageModel!OpinionatedTask) or (t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.component.isOpinionatedComponent()))
+	parameters  {
+		var params = t.createComponentBasedParameters("OpinionatedTask2BaseClass");
+		return params;
+	} 
 	template : "opinionatedtask2baseclass.egl"
-	
 	target : t.getPath() + "Opinionated" + t.name + "Base.java"	
 }
 
 @greedy
 rule Task2BaseClass 
-	transform t : Task {
-	
+	transform t : CrossflowLanguageModel!Task {
 	guard : t.isJavaTask()
-	
-	parameters : Map {
-		"w" = t.eContainer(),
-		"package" = t.eContainer().getPackageName(),
-		"genValue" = "Task2BaseClass",
-		"genDate" = datetime
-	}
-	
+	parameters : t.createComponentBasedParameters("Task2BaseClass")
 	template : "task2baseclass.egl"
-	
 	target : t.getPath() + t.name + "Base.java"	
 }
 
 @greedy
 rule Task2ImplClass 
-	transform t : Task {
-	
-	guard :	t.isJavaTask() and not t.isTypeOf(ScriptedTask)
-		
-	parameters : Map{"w" = t.eContainer(),"package" = t.eContainer().getPackageName()}
-	
+	transform t : CrossflowLanguageModel!Task {
+	guard :	not t.isTypeOf(CrossflowLanguageModel!ReusableComponent) and t.isJavaTask() and not t.isTypeOf(CrossflowLanguageModel!ScriptedTask)
+	parameters : t.getParameters("Task2ImplClass")
 	template : "task2implclass.egl"
-	
 	target : t.getImplPath() + t.name + ".java"
-	
 	overwrite : false
 }
 
 @greedy
+rule ReusableComponentTask2ImplClass 
+	transform t : CrossflowLanguageModel!ReusableComponent {
+	guard :	t.isJavaTask() and not t.isTypeOf(CrossflowLanguageModel!ScriptedTask)
+	parameters : t.createComponentBasedParameters("ReusableComponentTask2ImplClass")
+	template : "reusablecomponenttask2implclass.egl"
+	target : t.getPath() + t.name + ".java"
+}
+
+@greedy
 rule Steam2Class 
-	transform s : Stream {
-	
-	parameters : Map {
-		"w" = s.eContainer(),
-		"package" = s.eContainer().getPackageName(),
-		"genValue" = "Steam2Class",
-		"genDate" = datetime
-	}
-	
+	transform s : CrossflowLanguageModel!Stream {
+	guard : not s.inputOf.isEmpty()
+	parameters : s.createComponentBasedParameters("Steam2Class")
 	template : "stream2class.egl"
-	
 	target : s.getPath() + s.name + ".java"
 }
 
 @greedy
 rule Steam2Consumer 
-	transform s : Stream {
-	
-	parameters : Map {
-		"w" = s.eContainer(),
-		"package" = s.eContainer().getPackageName(),
-		"genValue" = "Steam2Consumer",
-		"genDate" = datetime
-	}
-	
+	transform s : CrossflowLanguageModel!Stream {
+	parameters : s.createComponentBasedParameters("Steam2Consumer")
 	template : "stream2consumer.egl"
-	
 	target : s.getPath() + s.name + "Consumer.java"
 }
 
-//
-
-operation Type findEligibleConfigurableTasks(){
-	return Task.all.select(t|t.configurations.exists(c|c=self));
+operation CrossflowLanguageModel!Type findEligibleConfigurableTasks(){
+	return CrossflowLanguageModel!Task.all.select(t|t.configurations.exists(c|c=self));
 }
 
-operation Any getPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-	
-	var lang = workflow.languages.select(l|l.isJava());
-	var langExists = not lang.isEmpty;
+@cached
+operation Any getParameters(ruleName : String) : Map {
+	return self.getParameters(ruleName, "java");
+}
 
-	var path = "src-gen/";
-	
-	if (langExists and lang.first.genOutputFolder.isDefined()) {
-		path = lang.first.genOutputFolder + "/";
+operation Any createComponentBasedParameters(name : String) : Map {
+	var params = self.getParameters(name);
+	var imports = new Set;
+	//
+	if(CrossflowLanguageModel!ReusableComponent.all.size>0){
+		for(cmp in CMS!Component.all){
+		    var name = cmp.fullyQualifiedName;
+			var package = name.substring(0,name.lastIndexOf("."));
+			imports.add(package);
+		}
 	}
-	
-	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-	
-	return path;
-}
-
-operation Any getImplPath() {
-	var workflow = self;
-	if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-	
-	var lang = workflow.languages.select(l|l.isJava());
-	var langExists = not lang.isEmpty;
-		
-	var path = "src/";
-		
-	if (langExists and lang.first.outputFolder.isDefined()) {
-		path = lang.first.outputFolder + "/";
-	}
-	
-	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-
-	return path;
-}
-
-operation Task isJavaTask() {
-	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+	//imports.println(name+":imports: ");
+	params.put("imports", imports);
+	return params;
 }

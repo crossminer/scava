@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2017 University of Manchester
- * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- ******************************************************************************/
 package org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.model;
 
 import com.googlecode.pongo.runtime.*;
@@ -24,6 +15,7 @@ public class NewsgroupsContentClassesTransMetric extends PongoDB {
 	
 	protected NewsgroupDataCollection newsgroups = null;
 	protected ContentClassCollection contentClasses = null;
+	protected NewsgroupArticleContentClassCollection articlesContentClass = null;
 	
 	// protected region custom-fields-and-methods on begin
 	// protected region custom-fields-and-methods end
@@ -37,6 +29,10 @@ public class NewsgroupsContentClassesTransMetric extends PongoDB {
 		return contentClasses;
 	}
 	
+	public NewsgroupArticleContentClassCollection getArticlesContentClass() {
+		return articlesContentClass;
+	}
+	
 	
 	@Override
 	public void setDb(DB db) {
@@ -45,5 +41,7 @@ public class NewsgroupsContentClassesTransMetric extends PongoDB {
 		pongoCollections.add(newsgroups);
 		contentClasses = new ContentClassCollection(db.getCollection("NewsgroupsContentClassesTransMetric.contentClasses"));
 		pongoCollections.add(contentClasses);
+		articlesContentClass = new NewsgroupArticleContentClassCollection(db.getCollection("NewsgroupsContentClassesTransMetric.articlesContentClass"));
+		pongoCollections.add(articlesContentClass);
 	}
 }

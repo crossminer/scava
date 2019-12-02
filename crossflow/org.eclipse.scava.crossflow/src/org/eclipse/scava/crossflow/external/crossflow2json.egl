@@ -4,15 +4,15 @@ var autoLayout = false;
 %]
 {
   "vertices": [
-[%for(task in w.tasks.select(t | t.isKindOf(Task))) {%]
+[%for(task in w.tasks.select(t | t.isKindOf(CrossflowLanguageModel!Task))) {%]
     [%=task.createVertex()%][%if(hasMore){%],
 [%}}%],
-[%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
+[%for(stream in w.streams.select(t | t.isKindOf(CrossflowLanguageModel!Stream))) {%]
     [%=stream.createVertex()%][%if(hasMore){%],
 [%}}%]
   ],
   "edges": [
-[%for(stream in w.streams.select(t | t.isKindOf(Stream))) {%]
+[%for(stream in w.streams.select(t | t.isKindOf(CrossflowLanguageModel!Stream))) {%]
     [%=stream.createEdges()%][%if(hasMore){%],
 [%}%]
 [%}%]  
@@ -25,7 +25,7 @@ var autoLayout = false;
  * to be created afterwards.
  */
 @template
-operation Task createVertex() {%]
+operation CrossflowLanguageModel!Task createVertex() {%]
 {
   "type": "Task",
   "label": "[%=self.name%]",
@@ -34,7 +34,7 @@ operation Task createVertex() {%]
 [%}
 
 @template
-operation Source createVertex() {%]
+operation CrossflowLanguageModel!Source createVertex() {%]
 {
   "type": "Source",
   "label": "[%=self.name%]",

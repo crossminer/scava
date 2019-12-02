@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.scava.plugin.Constants;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -56,7 +57,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			return;
 		}
 
-		SearchTabModel model = new ExpressionSearchTabModel(expression);
+		SearchTabModel model = new ExpressionSearchTabModel(getModel().getKnowledgeBaseAccess(), expression);
 		SearchTabView view = new SearchTabView();
 		SearchTabController controller = new SearchTabController(this, model, view);
 		controller.init();
@@ -96,7 +97,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 		if (routedEvent instanceof SearchSimilarsRequestEvent) {
 			SearchSimilarsRequestEvent event = (SearchSimilarsRequestEvent) routedEvent;
 
-			SearchTabModel model = new SimilarsSearchTabModel(event.getProject(), event.getSimilarityMethod());
+			SearchTabModel model = new SimilarsSearchTabModel(getModel().getKnowledgeBaseAccess(), event.getProject(), event.getSimilarityMethod());
 			SearchTabView view = new SearchTabView();
 			SearchTabController controller = new SearchTabController(this, model, view);
 			controller.init();
@@ -117,7 +118,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			controller.init();
 
 			getView().addSearchTab(
-					"Details of \"" + Optional.ofNullable(event.getProject().getFullName()).orElse("-") + "\"", view);
+					"Details of \"" + Optional.ofNullable(event.getProject().getFullName()).orElse(Constants.NO_DATA) + "\"", view);
 
 			return;
 		}

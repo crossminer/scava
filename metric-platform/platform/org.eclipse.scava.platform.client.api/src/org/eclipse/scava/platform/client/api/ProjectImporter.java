@@ -50,6 +50,14 @@ public class ProjectImporter {
 			System.out.println("url to import: " + url);
 			try {
 				EclipseProjectImporter importer = new EclipseProjectImporter();
+				ProjectRepository projectRepo = platform.getProjectRepositoryManager().getProjectRepository();
+				Properties eclipseClientId = projectRepo.getProperties().findOneByKey("eclipseClientId");
+				Properties eclipseClientSecret = projectRepo.getProperties().findOneByKey("eclipseClientSecret");
+				if (eclipseClientId != null && eclipseClientSecret!=null)
+					importer.setCredentials(new Credentials("eclipseForums", eclipseClientSecret.getValue(), eclipseClientId.getValue(), ""));
+				Properties githubToken = projectRepo.getProperties().findOneByKey("githubToken");
+				if(githubToken !=null)
+					importer.setCredentials(new Credentials("github", githubToken.getValue() , "", ""));
 				p = importer.importProject(url, platform);
 			} catch (Exception e) {
 				e.printStackTrace(); // FIXME better handling

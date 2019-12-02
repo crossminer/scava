@@ -273,15 +273,15 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : project.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
@@ -291,41 +291,58 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof SympaMailingList) {
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.has("password")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
@@ -342,15 +359,15 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
@@ -360,59 +377,70 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
 					communication = new SympaMailingList();
 					communication.setUrl(ccJson.get("url").asText());
-					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
-					((SympaMailingList) communication).setMailingListDescription(ccJson.get("mailingListDescription").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
 					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
 					communication = new Mbox();
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
 					communication = new EclipseForum();
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					break;
 				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						}
 					}
 					break;
 				default:
@@ -636,15 +664,15 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : githubRepository.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
@@ -654,41 +682,58 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof SympaMailingList) {
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.has("password")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
@@ -705,15 +750,15 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
@@ -723,61 +768,70 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
 					communication = new SympaMailingList();
 					communication.setUrl(ccJson.get("url").asText());
-					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
-					((SympaMailingList) communication)
-							.setMailingListDescription(ccJson.get("mailingListDescription").asText());
-					((SympaMailingList) communication)
-							.setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
 						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
 					communication = new Mbox();
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
 					communication = new EclipseForum();
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					break;
 				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						}
 					}
 					break;
 				default:
@@ -988,15 +1042,15 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : gitlabRepository.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
@@ -1006,41 +1060,58 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof SympaMailingList) {
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.has("password")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
@@ -1057,15 +1128,15 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
@@ -1075,61 +1146,70 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
 					communication = new SympaMailingList();
 					communication.setUrl(ccJson.get("url").asText());
-					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
-					((SympaMailingList) communication)
-							.setMailingListDescription(ccJson.get("mailingListDescription").asText());
-					((SympaMailingList) communication)
-							.setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
 						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
 					communication = new Mbox();
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
 					communication = new EclipseForum();
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					break;
 				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						}
 					}
 					break;
 				default:
@@ -1332,15 +1412,15 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : eclipseProject.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
@@ -1350,41 +1430,58 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
+					}
+					exist = true;
+					break;
+				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof SympaMailingList) {
+					communication.setUrl(ccJson.get("url").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
+					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
+					if (ccJson.has("username")) {
+						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
+					}
+					if (ccJson.has("password")) {
+						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof Mbox) {
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof EclipseForum) {
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					exist = true;
 					break;
 				} else if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof DocumentationSystematic) {
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
 						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
 						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
@@ -1401,15 +1498,15 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
-					if (ccJson.get("interval").asText() != null && !ccJson.get("interval").asText().equals("")) {
+					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
 					}
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((NntpNewsGroup) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((NntpNewsGroup) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
@@ -1419,59 +1516,70 @@ public class ProjectEditionResource extends ServerResource {
 					((Irc) communication).setName(ccJson.get("name").asText());
 					((Irc) communication).setDescription(ccJson.get("description").asText());
 					((Irc) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Irc) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Irc) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.sympa.SympaMailingList":
 					communication = new SympaMailingList();
 					communication.setUrl(ccJson.get("url").asText());
-					((SympaMailingList) communication).setMailingListName(ccJson.get("mailingListName").asText());
-					((SympaMailingList) communication).setMailingListDescription(ccJson.get("mailingListDescription").asText());
+					((SympaMailingList) communication).setMailingListName(ccJson.get("MailingListName").asText());
+					((SympaMailingList) communication).setMailingListDescription(ccJson.get("MailingListDescription").asText());
 					((SympaMailingList) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((SympaMailingList) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((SympaMailingList) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.mbox.Mbox":
 					communication = new Mbox();
 					communication.setUrl(ccJson.get("url").asText());
-					((Mbox) communication).setMboxName(ccJson.get("mboxName").asText());
-					((Mbox) communication).setMboxDescription(ccJson.get("mboxDescription").asText());
+					((Mbox) communication).setMboxName(ccJson.get("MboxName").asText());
+					((Mbox) communication).setMboxDescription(ccJson.get("MboxDescription").asText());
 					((Mbox) communication).setCompressedFileExtension(ccJson.get("compressedFileExtension").asText());
-					if (ccJson.get("username").asText() != null && !ccJson.get("username").asText().equals("")) {
+					if (ccJson.has("username")) {
 						((Mbox) communication).setUsername(ccJson.get("username").asText());
 					}
-					if (ccJson.get("password").asText() != null && !ccJson.get("password").asText().equals("")) {
+					if (ccJson.has("password")) {
 						((Mbox) communication).setPassword(ccJson.get("password").asText());
 					}
 					break;
 				case "org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum":
 					communication = new EclipseForum();
-					((EclipseForum) communication).setForum_id(ccJson.get("forumId").asText());
-					((EclipseForum) communication).setForum_name(ccJson.get("forumName").asText());
-					((EclipseForum) communication).setClient_id(ccJson.get("clientId").asText());
-					((EclipseForum) communication).setClient_secret(ccJson.get("clientSecret").asText());
+					((EclipseForum) communication).setForum_id(ccJson.get("forum_id").asText());
+					((EclipseForum) communication).setForum_name(ccJson.get("forum_name").asText());
+					((EclipseForum) communication).setClient_id(ccJson.get("client_id").asText());
+					((EclipseForum) communication).setClient_secret(ccJson.get("client_secret").asText());
 					break;
 				case "org.eclipse.scava.repository.model.documentation.systematic.DocumentationSystematic":
 					communication = new DocumentationSystematic();
 					if (ccJson.get("loginOption").asText().equals("option1")) {
 						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						if (ccJson.has("executionFrequency")) {
+							((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+						}
 					} else if (ccJson.get("loginOption").asText().equals("option2")) {
-						communication.setUrl(ccJson.get("url").asText());
-						((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
-						((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
-						((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
-						((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
-						((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
-						((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						if (!ccJson.has("username") || !ccJson.has("password")) {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+						} else {
+							communication.setUrl(ccJson.get("url").asText());
+							if (ccJson.has("executionFrequency")) {
+								((DocumentationSystematic) communication).setExecutionFrequency(Integer.parseInt(ccJson.get("executionFrequency").asText()));
+							}
+							((DocumentationSystematic) communication).setLoginURL(ccJson.get("loginURL").asText());
+							((DocumentationSystematic) communication).setUsername(ccJson.get("username").asText());
+							((DocumentationSystematic) communication).setUsernameFieldName(ccJson.get("usernameFieldName").asText());
+							((DocumentationSystematic) communication).setPassword(ccJson.get("password").asText());
+							((DocumentationSystematic) communication).setPasswordFieldName(ccJson.get("passwordFieldName").asText());
+						}
 					}
 					break;
 				default:

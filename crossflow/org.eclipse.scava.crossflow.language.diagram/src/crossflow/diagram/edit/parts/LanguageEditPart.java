@@ -317,6 +317,7 @@ public class LanguageEditPart extends ShapeNodeEditPart {
 		 * @generated
 		 */
 		public LanguageFigure() {
+			this.setBackgroundColor(THIS_BACK);
 			this.setBorder(new MarginBorder(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5), getMapMode().DPtoLP(5),
 					getMapMode().DPtoLP(5)));
 			createContents();
@@ -359,5 +360,10 @@ public class LanguageEditPart extends ShapeNodeEditPart {
 		}
 
 	}
+
+	/**
+	 * @generated
+	 */
+	static final Color THIS_BACK = new Color(null, 204, 204, 255);
 
 }

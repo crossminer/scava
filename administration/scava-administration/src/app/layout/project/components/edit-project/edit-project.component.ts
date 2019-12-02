@@ -6,8 +6,6 @@ import { Project } from '../../project.model';
 import { EditProjectService } from '../../../../shared/services/project-service/edit-project.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectorMgmtAddDialogComponent } from './add-connector/add-connector-dialog.component';
-import { CommunicationChannels } from '../create-project/communication-channels.model';
-
 
 @Component({
   selector: 'app-edit-project',

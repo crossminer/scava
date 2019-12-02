@@ -6,6 +6,7 @@ public enum RecommendationType {
 	API_CALL,
 	API_DOCUMENTATION,
 	FOCUS,
+	FOCUS_CODE_SNIPPET,
 	SO,
 	VERSION,
 	CROSSIndex_C,

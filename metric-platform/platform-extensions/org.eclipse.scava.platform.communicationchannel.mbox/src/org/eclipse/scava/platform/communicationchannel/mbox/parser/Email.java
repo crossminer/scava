@@ -4,17 +4,16 @@ import java.util.Date;
 
 public class Email {
 	
-	private String messageId;
-	private String from;
-	private String to;
-	private String subject;
-	private String text;
-	private String replyTo;
-	private Date date;
+	private String messageId="";
+	private String from="";
+	private String to="";
+	private String subject="";
+	private String text="";
+	private String replyTo="";
+	private Date date=null;
 	private String[] references;
 	
 	public Email(Message message) {
-		super();
 		messageId = message.getMessageId();
 		from = message.getFrom();
 		to = message.getTo();

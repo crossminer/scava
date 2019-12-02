@@ -15,6 +15,8 @@ public class Irc extends org.eclipse.scava.repository.model.CommunicationChannel
 		DESCRIPTION.setOwningType("org.eclipse.scava.repository.model.cc.irc.Irc");
 		NAME.setOwningType("org.eclipse.scava.repository.model.cc.irc.Irc");
 		COMPRESSEDFILEEXTENSION.setOwningType("org.eclipse.scava.repository.model.cc.irc.Irc");
+		setUsername("");
+		setPassword("");
 	}
 	
 	public static StringQueryProducer USERNAME = new StringQueryProducer("username"); 
@@ -82,7 +84,10 @@ public class Irc extends org.eclipse.scava.repository.model.CommunicationChannel
 		return getUrl();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return true;
+	}
 	
 	
 }

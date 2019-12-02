@@ -2,6 +2,8 @@
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.net.URI;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -11,18 +13,24 @@ import javax.annotation.Generated;
 
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.eclipse.scava.crossflow.runtime.BuiltinStream;
 import org.eclipse.scava.crossflow.runtime.Mode;
 import org.eclipse.scava.crossflow.runtime.ParallelTaskList;
-import org.eclipse.scava.crossflow.runtime.Serializer;
 import org.eclipse.scava.crossflow.runtime.Workflow;
+import org.eclipse.scava.crossflow.runtime.serialization.Serializer;
+[%if (w.getSerializer().~implClass <> null) {%]import org.eclipse.scava.crossflow.runtime.serialization.[%=w.getSerializer().~implClass%];[%}%]
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal;
 import org.eclipse.scava.crossflow.runtime.utils.ControlSignal.ControlSignals;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%for (p in w.parameters) { %]
 	@Parameter(names = { "-[%=p.name%]"}, description = "[%=p.name%] workflow parameter")
@@ -38,8 +46,14 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	
 	// Streams
-	[%for (s in w.streams) { %]
-	protected [%=s.name%] [%=s.name.ftlc()%];
+	[%for (s in w.streams) {
+		var type;
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}%]
+	protected [%=type%] [%=s.name.ftlc()%];
 	[%}%]
 	
 	// Tasks
@@ -91,10 +105,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	 */
 	@Override
 	public void run(long delay) throws Exception {
-		[%for (t in w.getParallelizableTasks()) {%]
-		[%=t.name.ftlc()%]s.init(this);
-		[%}%]
-	
+		this.getSerializer();
 		this.delay=delay;
 	
 		try {
@@ -118,12 +129,20 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				}
 			}
 	
-			connect();
-	
 			Thread.sleep(delay);
 		
-			[%for (s in w.streams) { %]
+			[%for (t in w.getParallelizableTasks()) {%]
+			[%=t.name.ftlc()%]s.init(this);
+			[%}%]
+	
+			[%for (s in w.streams) { 
+				if (s.inputOf.isEmpty()) {%]
+			[%=s.name.ftlc()%] = new BuiltinStream<[%=s.type.name%]>(this, "[%=s.name%]", [%=s.isTypeOf(Topic)%]);
+			[%=s.name.ftlc()%].init();
+				[%} else {%]
 			[%=s.name.ftlc()%] = new [%=s.name%]([%=w.name%].this, enablePrefetch);
+				[%}
+			%]
 			activeStreams.add([%=s.name.ftlc()%]);
 			[%}%]
 		
@@ -132,6 +151,8 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 				[%=t.setup()%]
 			[%}%]
 			}
+
+			connect();
 			
 			if (isWorker()) {
 			[%for (t in w.getWorkerTasks()){%]
@@ -144,7 +165,7 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 			if (isMaster()){
 			[%for (t in w.getNonConfigurationSources()){%]
 				// run all sources in parallel threads
-				new Thread(() -> {
+				Thread [%=t.name.ftlc()%]Thread = new Thread(() -> {
 					try {
 						setTaskInProgess([%=t.name.ftlc()%]);
 						[%=t.name.ftlc()%].produce();
@@ -152,19 +173,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 					} catch (Exception ex) {
 						reportInternalException(ex);
 						terminate();
+					}finally {
+						activeSources.remove(Thread.currentThread());
 					}
-				}).start();	
+				});
+				activeSources.add([%=t.name.ftlc()%]Thread);
+				[%=t.name.ftlc()%]Thread.start();	
 			[%}%]
 				sendConfigurations();
 			}
-				
-			// delay non-master connections to allow master to create the relevant listeners
-			// (in a multi-threaded parallel execution) to facilitate termination, by
-			// re-sending worker_added message
-			if (!isMaster()) {
-				Thread.sleep(1000);
-				controlTopic.send(new ControlSignal(ControlSignals.WORKER_ADDED, getName()));
-			}	
 					
 		} catch (Exception e) {
 			log(LogLevel.ERROR, e.getMessage());
@@ -186,8 +203,15 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	[%}%]
 	}
 	
-	[%for (s in w.streams) { %]
-	public [%=s.name%] get[%=s.name%]() {
+	[%for (s in w.streams) {
+		var type; 
+		if (s.inputOf.isEmpty()) {
+			type = "BuiltinStream<" + s.type.name + ">";
+		} else {
+			type = s.name;
+		}
+	%]
+	public [%=type%] get[%=s.name%]() {
 		return [%=s.name.ftlc()%];
 	}
 	[%}%]
@@ -234,12 +258,24 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	@Override
-	public Serializer setupSerializer() {
-	    Serializer serializer = new Serializer();
-	    [% for (t in w.types) {%]
-        serializer.register([%=t.name%].class);
-        [%}%]
-		return serializer;
+	protected Serializer createSerializer() {
+		[%if (w.getSerializer().~implClass == null) {%]
+		throw new IllegalStateException();
+		[%} else {%]
+		return new [%=w.getSerializer().~implClass%]();
+		[%}%]
+	}
+	
+	@Override
+	protected void registerCustomSerializationTypes(Serializer serializer) {
+		checkNotNull(serializer);
+		[% for (t in w.types) {%]
+		serializer.registerType([%=t.name%].class);
+		[%}%]
+		[%if(CrossflowLanguageModel!ReusableComponent.all.size>0){
+			for (t in CMS!Type.all) {%]
+		serializer.registerType([%=t.name%].class);
+		[%}}%]
 	}
 	
 	public static [%=w.name%] run(String[] args) throws Exception {
@@ -255,64 +291,60 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-	      // Parse all values into an temporary object
-        [%=w.name%] argsHolder = new [%=w.name%]();
-        JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
-        
-        try {
-            jct.parse(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-	    if(argsHolder.isHelp()) {
-            jct.setProgramName("[%=w.name%]");
-            jct.usage();
-            System.exit(0);
-        }
-	
+		// Parse all values into an temporary object
+		[%=w.name%] argsHolder = new [%=w.name%]();
+		JCommander jct = JCommander.newBuilder().addObject(argsHolder).build();
+		
+		try {
+			jct.parse(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		if(argsHolder.isHelp()) {
+			jct.setProgramName("[%=w.name%]");
+			jct.usage();
+			System.exit(0);
+			}
+			
 		run(args);
 	}
 	
 }	
 [%
-operation Task isJavaTask(){
-	return self.languages.isEmpty() or self.languages.exists(l|l.name.toLowerCase()=="java");
-}
-
-operation Workflow getNonConfigurationSources(){
-	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(Source));
+operation CrossflowLanguageModel!Workflow getNonConfigurationSources(){
+	var sources = self.tasks.select(t | t.isJavaTask() and t.isKindOf(CrossflowLanguageModel!Source));
 	sources.removeAll(w.getConfigurationSources());
 	return sources;
 }
 
-operation Workflow getConfigurationSources(){
+operation CrossflowLanguageModel!Workflow getConfigurationSources(){
 	return self.tasks.select(t | 
 		t.isJavaTask() 
-	and t.isKindOf(Source)
+	and t.isKindOf(CrossflowLanguageModel!Source)
 	and t.name.endsWith("ConfigSource") 
 	and t.output.size > 0
 	and t.output.first.name.endsWith("ConfigTopic"));
 }
 
-operation Workflow getParallelizableTasks() {
-	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getParallelizableTasks() {
+	return self.tasks.select(t | t.isJavaTask() and not (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getSingletonTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink)));
+operation CrossflowLanguageModel!Workflow getSingletonTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink)));
 }
 
-operation Workflow getMasterTasks() {
-	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(Source) or t.isKindOf(Sink) or t.masterOnly));
+operation CrossflowLanguageModel!Workflow getMasterTasks() {
+	return self.tasks.select(t | t.isJavaTask() and (t.isKindOf(CrossflowLanguageModel!Source) or t.isKindOf(CrossflowLanguageModel!Sink) or t.masterOnly));
 }
 
-operation Workflow getWorkerTasks() {
+operation CrossflowLanguageModel!Workflow getWorkerTasks() {
 	return self.tasks.excludingAll(self.getMasterTasks()).select(t | t.isJavaTask());
 }
 
 @template
-operation Task createTask() {
+operation CrossflowLanguageModel!Task createTask() {
 	if(w.getSingletonTasks().contains(self)){
 %]
 	[%=self.name.ftlc()%] = new [%=self.name%]();
@@ -333,7 +365,7 @@ operation Task createTask() {
 }
 
 @template
-operation Task setup() {
+operation CrossflowLanguageModel!Task setup() {
 
 	if(w.getSingletonTasks().contains(self)){
 %]

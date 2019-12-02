@@ -109,8 +109,8 @@ public class TypeExtendingReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult reorientSource() throws ExecutionException {
-		getOldSource().getExtending().remove(getOldTarget());
-		getNewSource().getExtending().add(getOldTarget());
+		getOldSource().setExtending(null);
+		getNewSource().setExtending(getOldTarget());
 		return CommandResult.newOKCommandResult(referenceOwner);
 	}
 
@@ -118,8 +118,7 @@ public class TypeExtendingReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult reorientTarget() throws ExecutionException {
-		getOldSource().getExtending().remove(getOldTarget());
-		getOldSource().getExtending().add(getNewTarget());
+		getOldSource().setExtending(getNewTarget());
 		return CommandResult.newOKCommandResult(referenceOwner);
 	}
 

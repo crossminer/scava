@@ -2,8 +2,12 @@
 package [%=package%];
 
 import javax.annotation.Generated;
+[%
+for(i in imports){%]
+import [%=i%].*;
+[%}%]
 
-@Generated(value = "org.eclipse.scava.crossflow.java.[%=genValue%]", date = "[%=genDate%]")
+@Generated(value = "org.eclipse.scava.crossflow.java.[%=genRule%]"[% if (genDate.isDefined()) { %], date = "[%=genDate%]"[%}%])
 public interface [%=s.name%]Consumer {
 	
 	void consume[%=s.name%]WithNotifications([%=s.type.name%] [%=s.type.name.ftlc()%]) throws Exception;

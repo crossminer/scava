@@ -9,6 +9,7 @@
 ******************************************************************************/
 package org.eclipse.scava.metricprovider.indexing.commits.document;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +27,7 @@ public class CommitDocument {
 	private Date created_at;
 	//NLP
 	private String plain_text;
-	private List<String> commits_references;
-	private List<String> bugs_references;
+	private ReferringTo referring_to;
 	
 	public CommitDocument(String projectName, String uid, String repository, VcsCommit commit) {
 		this.project_name = projectName;
@@ -48,38 +48,22 @@ public class CommitDocument {
 		this.plain_text = plain_text;
 	}
 
-	public List<String> getCommits_references() {
-		return commits_references;
+	public void addBugReference(String bugReference)
+	{
+		if(referring_to==null)
+			referring_to=new ReferringTo();
+		referring_to.addBug(bugReference);
 	}
-
-	public void setCommits_references(List<String> commits_references) {
-		if(this.commits_references.size()==0)
-			this.commits_references = commits_references;
-		else
-		{
-			for(String commitReference: commits_references)
-			{
-				if(!this.commits_references.contains(commitReference))
-					this.commits_references.add(commitReference);
-			}
-		}
+	
+	public void addCommitReference(String commitReference)
+	{
+		if(referring_to==null)
+			referring_to=new ReferringTo();
+		referring_to.addCommit(commitReference);
 	}
-
-	public List<String> getBugs_references() {
-		return bugs_references;
-	}
-
-	public void setBugs_references(List<String> bugs_references) {
-		if(this.bugs_references.size()==0)
-			this.bugs_references = bugs_references;
-		else
-		{
-			for(String bugReference: bugs_references)
-			{
-				if(!this.bugs_references.contains(bugReference))
-					this.bugs_references.add(bugReference);
-			}
-		}
+	
+	public ReferringTo getReferring_to() {
+		return referring_to;
 	}
 
 	public String getProject_name() {
@@ -114,6 +98,32 @@ public class CommitDocument {
 		return created_at;
 	}
 	
-	
+	public class ReferringTo
+	{
+		List<String> commits;
+		List<String> bugs;
+		
+		public void addCommit(String commitReference)
+		{
+			if(commits==null)
+				commits=new ArrayList<String>();
+			commits.add(commitReference);
+		}
+		
+		public void addBug(String bugReference)
+		{
+			if(bugs==null)
+				bugs=new ArrayList<String>();
+			bugs.add(bugReference);
+		}
+		
+		public List<String> getBugs() {
+			return bugs;
+		}
+		
+		public List<String> getCommits() {
+			return commits;
+		}
+	}
 
 }

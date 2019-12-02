@@ -103,7 +103,10 @@ public class DocumentationSystematic extends org.eclipse.scava.repository.model.
 		return getUrl();
 	}
 	
-	
+	@Override
+	public boolean needsLocalStorage() {
+		return false;
+	}
 	
 	
 }

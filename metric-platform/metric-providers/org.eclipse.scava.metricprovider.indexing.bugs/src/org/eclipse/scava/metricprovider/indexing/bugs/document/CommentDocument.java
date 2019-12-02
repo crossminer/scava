@@ -90,10 +90,10 @@ public class CommentDocument extends DocumentAbstract {
 		return created_at;
 	}
 
-	public void setEmotional_dimension(List<String> emotional_dimension) {
+	public void addEmotional_dimension(String emotional_dimension) {
 		if(this.emotional_dimension==null)
 			this.emotional_dimension = new ArrayList<String>();
-		this.emotional_dimension = emotional_dimension;
+		this.emotional_dimension.add(emotional_dimension);
 	}
 
 	public void setSentiment(String sentiment) {

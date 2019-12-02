@@ -30,6 +30,8 @@ public class PlainTextNewsgroupsSubject
 	
 	public static String process(String subject)
 	{
+		if(subject==null)
+			return "";
 		subject=subject1.matcher(subject).replaceAll("==");
 		subject=subject2.matcher(subject).replaceAll("");
 		subject=subject3.matcher(subject).replaceAll("");

@@ -149,6 +149,13 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CrossflowPackage.REUSABLE_COMPONENT: {
+				ReusableComponent reusableComponent = (ReusableComponent)theEObject;
+				T result = caseReusableComponent(reusableComponent);
+				if (result == null) result = caseTask(reusableComponent);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CrossflowPackage.TYPE: {
 				Type type = (Type)theEObject;
 				T result = caseType(type);
@@ -161,6 +168,20 @@ public class CrossflowSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CrossflowPackage.DATA_FIELD: {
+				DataField dataField = (DataField)theEObject;
+				T result = caseDataField(dataField);
+				if (result == null) result = caseField(dataField);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.ENUM_FIELD: {
+				EnumField enumField = (EnumField)theEObject;
+				T result = caseEnumField(enumField);
+				if (result == null) result = caseField(enumField);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CrossflowPackage.LANGUAGE: {
 				Language language = (Language)theEObject;
 				T result = caseLanguage(language);
@@ -170,6 +191,12 @@ public class CrossflowSwitch<T> extends Switch<T> {
 			case CrossflowPackage.PARAMETER: {
 				Parameter parameter = (Parameter)theEObject;
 				T result = caseParameter(parameter);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CrossflowPackage.SERIALIZER: {
+				Serializer serializer = (Serializer)theEObject;
+				T result = caseSerializer(serializer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -358,6 +385,21 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Reusable Component</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Reusable Component</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReusableComponent(ReusableComponent object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -388,6 +430,36 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Data Field</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Data Field</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDataField(DataField object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Enum Field</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Enum Field</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEnumField(EnumField object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Language</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -414,6 +486,21 @@ public class CrossflowSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseParameter(Parameter object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Serializer</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Serializer</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSerializer(Serializer object) {
 		return null;
 	}
 

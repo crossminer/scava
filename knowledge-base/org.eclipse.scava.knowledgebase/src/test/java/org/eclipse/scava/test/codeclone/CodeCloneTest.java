@@ -11,6 +11,8 @@ package org.eclipse.scava.test.codeclone;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
 import org.eclipse.scava.business.ICodeCloneDetector;
 import org.eclipse.scava.business.dto.ApiCallResult;
 import org.junit.Test;
@@ -41,10 +43,10 @@ public class CodeCloneTest {
 	private static final String right = "		numFiles=sum.getDuplicateFileCount();\n" + 
 			"blocks=sum.getDuplicateBlockCount()";
 	
-	
+	 
 	
 	@Test
-	public void crossSimCommutativeTest() {
+	public void crossSimCommutativeTest() throws IOException {
 		Options options = new Options();
 		options.setThreshold(2);
 		options.setOption(Option.REPORT_DUPLICATE_TEXT, true);

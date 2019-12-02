@@ -1,6 +1,6 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.0"
+		"mapping_version" : "1.1"
 	},
 	"properties" : {
 		"created_at" : {
@@ -30,13 +30,16 @@
 		"plain_text" : {
 			"type" : "text"
 		},
-		"commits_references" : {
-			"type" : "text"
-		},
-		"bugs_references" : {
-			"type" : "text"
-		}
-		
+		"referring_to" : {
+			"properties" : {
+				"bugs" : {
+					"type" : "text"
+				},
+				"commits" : { 
+					"type" : "text"
+				}
+			}
+		}	
 	}
 	
 }

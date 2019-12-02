@@ -1,6 +1,6 @@
 [%  
 var links = new Set();
-w.tasks.select(t | t.isKindOf(Task) ).collect(c | c.recursion());
+w.tasks.select(t | t.isKindOf(CrossflowLanguageModel!Task) ).collect(c | c.recursion());
 %]
 
 [%
@@ -10,7 +10,7 @@ for (l in links) {
 	[%
 }// for links
 
-operation Task recursion() : Collection{
+operation CrossflowLanguageModel!Task recursion() : Collection{
 
 var ret = new Set();
 

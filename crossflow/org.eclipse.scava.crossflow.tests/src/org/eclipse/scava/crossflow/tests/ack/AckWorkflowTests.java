@@ -38,7 +38,7 @@ public class AckWorkflowTests extends WorkflowTests {
 		worker1.setInstanceId("Pre-" + enable);
 		worker1.setName("Worker1");
 		worker1.setEnablePrefetch(enable);
-		worker1.run();
+		worker1.run(500);
 
 		Thread.sleep(3000);
 
@@ -47,7 +47,7 @@ public class AckWorkflowTests extends WorkflowTests {
 		worker2.setInstanceId("Pre-" + enable);
 		worker2.setName("Worker2");
 		worker2.setEnablePrefetch(enable);
-		worker2.run();
+		worker2.run(500);
 
 		waitFor(masterbare);
 

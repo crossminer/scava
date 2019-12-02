@@ -69,6 +69,7 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getFileName() {
 		return fileName;
 	}
@@ -78,6 +79,7 @@ public class CsvSourceImpl extends SourceImpl implements CsvSource {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFileName(String newFileName) {
 		String oldFileName = fileName;
 		fileName = newFileName;

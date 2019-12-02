@@ -1,0 +1,35 @@
+<?nsuri org.eclipse.scava.crossflow?>
+<?render-graphviz-dot graphviz.egl?>
+<_>
+	
+	<!-- Example wordcount workflow with python and Java tasks -->
+	<workflow name="WordCountWorkflow">
+	
+		<source name="LineSource" out="Lines"/>
+	
+		<queue name="Lines" type="Line"/>
+		
+		<task masterOnly="false" multipleOutputs="true" name="WordCounter" in="Lines" out="WordFrequencies"/>
+		
+		<queue name="WordFrequencies" type="WordFrequency"/>
+		
+		<task name="Filter" language="Python" in="WordFrequencies" out="Filtered"/>
+						
+		<queue name="Filtered" type="WordFrequency"/>
+
+		<sink name="WordCountSink" in="Filtered" />
+		
+		<type name="Line">
+			<datafield name="text" type="String"/>
+		</type>
+	
+		<type name="WordFrequency">
+			<datafield name="word" type="String"/>
+			<datafield name="frequency" type="int"/>
+		</type>
+	
+	<language name="Java" package="org.eclipse.scava.crossflow.examples.wordcount" genOutputFolder="src-gen" outputFolder="src"/>
+	<language name="Python" package="wordcount" genOutputFolder="py-gen" outputFolder="py"/>
+	</workflow>	
+	
+</_>

@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.scava.platform,
  org.eclipse.scava.nlp.tools.webcrawler,
  org.eclipse.scava.metricprovider.trans.indexing.preparation,
  org.eclipse.scava.repository.model.vcs.git,
- edu.uci.ics.crawler4j
+ edu.uci.ics.crawler4j,
+ org.eclipse.scava.platform.documentation.gitbased
 Bundle-Activator: org.eclipse.scava.metricprovider.trans.documentation.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -23,6 +23,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 			master = AdditionWorkflow.run(noBroker);
 		else
 			master = AdditionWorkflow.run(broker);
+		Thread.sleep(500);
 		AdditionWorkflow worker = AdditionWorkflow.run(new String[] { "-mode", "worker", "-instance", "aw1" });
 
 		waitFor(master);
@@ -49,7 +50,7 @@ public class AdditionWorkflowCommandLineTests extends WorkflowTests {
 				"-name", "m1" };
 
 		AdditionWorkflow master = AdditionWorkflow.run(createBroker ? broker : noBroker);
-
+		Thread.sleep(500);
 		AdditionWorkflow worker = AdditionWorkflow
 				.run(new String[] { "-parallelization", "" + p, "-mode", "worker", "-instance", "aw1", "-name", "w1" });
 

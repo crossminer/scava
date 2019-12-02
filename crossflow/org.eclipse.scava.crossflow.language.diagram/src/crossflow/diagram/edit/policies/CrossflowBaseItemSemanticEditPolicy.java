@@ -359,7 +359,7 @@ public class CrossflowBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		 */
 		public boolean canCreateTypeExtending_4004(Type source, Type target) {
 			if (source != null) {
-				if (source.getExtending().contains(target)) {
+				if (source.getExtending() != null) {
 					return false;
 				}
 			}

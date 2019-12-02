@@ -2,25 +2,24 @@ import "../util.eol";
 
 rule Workflow2Class 
 	transform w : Workflow {
-	parameters : Map {
-		"package" = w.getPackage()
-	}
+	guard : w.appliesTo()
+	parameters : w.getParameters("Workflow2Class")
 	template : "workflow2class.egl"
 	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + ".py"
 }
 
 rule Workflow2TaskEnum
 	transform w : Workflow {
+	guard : w.appliesTo()
+	parameters : w.getParameters("Workflow2TaskEnum")
 	template : "workflow2taskenum.egl"
 	target : w.getGenFolder() + "crossflow/" + w.getPackage().toPath() + w.name.toSnakeCaseLower() + "_tasks.py"
 }
 
 rule Type2Class 
 	transform t : Type {
-	guard : t.impl.isUndefined()
-	parameters : Map {
-	   "package" = t.getPackage()
-	}
+	guard : t.getWorkflow().appliesTo() and t.impl.isUndefined()
+	parameters : t.getParameters("Type2Class")
 	template : "type2class.egl"
 	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
 }
@@ -29,10 +28,10 @@ rule Type2Class
 rule Task2BaseClass 
 	transform t : Task {
 	guard : t.appliesTo()
-	parameters : Map {
-		"w" = t.getWorkflow(),
-		"package" = t.getPackage(),
-		"outputTypes" = t.getOutputTypes()
+	parameters {
+		var params = t.getParameters("Task2BaseClass");
+		params.put("outputTypes", t.getOutputTypes());
+		return params;
 	}
 	template : "task2baseclass.egl"
 	target : t.getGenFolder() + "crossflow/" + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"	
@@ -42,10 +41,10 @@ rule Task2BaseClass
 rule Task2ImplClass 
 	transform t : Task {
 	guard : t.appliesTo()
-	parameters : Map {
-		"w" = t.getWorkflow(),
-		"package" = t.getPackage(),
-		"outputTypes" = t.getOutputTypes()
+	parameters {
+		var params = t.getParameters("Task2ImplClass");
+		params.put("outputTypes", t.getOutputTypes());
+		return params;
 	}
 	template : "task2implclass.egl"
 	target : t.getOutFolder() + t.getPackage().toPath() + t.name.toSnakeCaseLower() + ".py"
@@ -55,44 +54,61 @@ rule Task2ImplClass
 @greedy
 rule Steam2Class 
 	transform s : Stream {
-	parameters : Map {
-		"w" = s.getWorkflow()
-	}
+	guard : s.getWorkflow().appliesTo() and not s.inputOf.isEmpty()
+	parameters : s.getParameters("Steam2Class")
 	template : "stream2class.egl"
 	target : s.getGenFolder() + "crossflow/" + s.getPackage().toPath() + s.name.toSnakeCaseLower() + ".py"
 }
 
 rule genRuntime
 	transform w : Workflow {
-	template: "runtime.py"
-	target: w.getGenFolder() + "crossflow/runtime.py"
+	guard : w.appliesTo()
+	template : "runtime.py"
+	target : w.getGenFolder() + "crossflow/runtime.py"
+}
+
+rule genSerialization
+	transform w : Workflow {
+	guard : w.appliesTo()
+	template : "serialization.py"
+	target : w.getGenFolder() + "crossflow/serialization.py"
 }
 
 rule genReqsTxt
 	transform w : Workflow {
-	template: "requirements.txt"
-	target: w.getSupportFolder() + "requirements.txt"
+	guard : w.appliesTo() and not w.isSkip("skipReqsTxt")
+	template : "requirements.txt"
+	target : w.getSupportFolder() + "requirements.txt"
+	overwrite : false
 }
 
 rule genMain
 	transform w : Workflow {
+	guard : w.appliesTo() and not w.isSkip("skipMain")
 	parameters : Map {
 		"package" = w.getPackage()
 	}
 	template: "genMain.egl"
-	target: w.getOutFolder() + "main.py"
-	overwrite: false
+	target : w.getOutFolder() + "main.py"
+	overwrite : false
 }
 
 rule generateReadme
 	transform w : Workflow {
-	template: "genReadme.egl"	
-	target: w.getSupportFolder() + "README.MD"
+	guard : w.appliesTo() and not w.isSkip("skipReadme")
+	template : "genReadme.egl"	
+	target : w.getSupportFolder() + "README.MD"
+	overwrite : false
 }
 
 /*
  * UTILITY FUNCTIONS
  */
+ 
+@cached
+operation Workflow appliesTo() : Boolean {
+	return self.getLanguage("python").isDefined();
+}
 
 @cached
 operation Any getPackage() : String {
@@ -134,9 +150,30 @@ operation String toPath() : String {
 }
 
 operation Task appliesTo() : Boolean {
-	return self.hasLanguage("python");
+	return self.getWorkflow().appliesTo() and self.hasLanguage("python");
 }
 
 operation Task getOutputTypes() : Set {
 	return self.output.collect(o|o.type).asSet();
 }
+
+@cached
+operation Any getParameters(ruleName : String) : Map {
+	return self.getParameters(ruleName, "python");
+}
+
+@cached
+operation Any getPython() : Language {
+	return self.getLanguage("python");
+}
+
+operation Any isSkip(param : String) : Boolean {
+	if (self.getPython().isDefined()) {
+		var skip = self.getPython().getLanguageParams().get(param);
+		if (skip.isDefined()) {
+			return skip.equalsIgnoreCase("true");
+		}
+	}
+	return false;
+}
+

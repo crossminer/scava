@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.scava.platform.Platform;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
@@ -33,13 +35,12 @@ import org.eclipse.scava.repository.model.Project;
 import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
-import org.eclipse.scava.repository.model.cc.forum.Forum;
-import org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup;
+import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
 import org.eclipse.scava.repository.model.cc.wiki.Wiki;
 import org.eclipse.scava.repository.model.eclipse.Documentation;
-import org.eclipse.scava.repository.model.eclipse.EclipsePlatform;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
 import org.eclipse.scava.repository.model.eclipse.MailingList;
+import org.eclipse.scava.repository.model.github.GitHubBugTracker;
 import org.eclipse.scava.repository.model.importer.IImporter;
 import org.eclipse.scava.repository.model.importer.dto.Credentials;
 import org.eclipse.scava.repository.model.importer.exception.ProjectUnknownException;
@@ -56,6 +57,11 @@ import org.jsoup.select.Elements;
 
 public class EclipseProjectImporter implements IImporter {
 	protected OssmeterLogger logger;
+	
+	private Pattern forumIdParser=Pattern.compile("frm_id=(\\d+)$");
+	private String clientSecret="";
+	private String clientId="";
+	private String githubToken="";
 
 	public EclipseProjectImporter() {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("importer.eclipse ");
@@ -199,15 +205,37 @@ public class EclipseProjectImporter implements IImporter {
 			if ((isNotNull(currentProg, "description")))
 				project.setDescription(
 						((JSONObject) ((JSONArray) currentProg.get("description")).get(0)).get("value").toString());
-			//The commented code enables to import the parent project
-//			if ((isNotNull(currentProg, "parent_project"))) {
-//				String parentProjectName = ((JSONObject) ((JSONArray) currentProg.get("parent_project")).get(0))
-//						.get("id").toString();
-//				if (parentProjectName != null) {
-//					project.setParent(importProject(parentProjectName, platform, false));
-//					logger.info("The project " + parentProjectName + " is parent of " + project.getShortName());
-//				}
-//			}
+			if((isNotNull(currentProg, "github_repos"))) {
+				JSONArray githubRepos = (JSONArray) currentProg.get("github_repos");
+				Iterator<JSONObject> iter = githubRepos.iterator();
+				GitHubBugTracker bt = null;
+				while (iter.hasNext()) {
+					bt = new GitHubBugTracker();
+					JSONObject entry = (JSONObject) iter.next();
+					String prjId = (String) entry.get("url");
+					prjId = prjId.replace("https://github.com/", "");
+					
+					String owner = prjId.split("/")[0];
+					String repo = prjId.split("/")[1];
+					
+					bt.setUrl("https://api.github.com/repos/" + projectId + "/issues");
+					logger.info("Creating a GitHub Bug Tracker Reader. Owner: "+owner+" Repository: "+repo);
+					{
+						if(githubToken.isEmpty())
+						{
+							logger.info("Creating a GitHub Bug Tracker with no authentication.");
+							bt.setProject(owner, repo);
+						}
+						else
+						{
+							logger.info("Creating a GitHub Bug Tracker with authentication.");
+							bt.setProject(githubToken, owner, repo);
+						}
+					}
+					project.getBugTrackingSystems().add(bt);
+					
+				}
+			}
 
 			if ((isNotNull(currentProg, "download_url")))
 				project.setDownloadsUrl(
@@ -231,6 +259,20 @@ public class EclipseProjectImporter implements IImporter {
 			if (projectToBeUpdated) {
 				project.getCommunicationChannels().clear();
 				platform.getProjectRepositoryManager().getProjectRepository().sync();
+			}
+			if ((isNotNullObj(currentProg, "dev_list"))) {
+				JSONObject devList = (JSONObject) currentProg.get("dev_list");
+				MailingList mailingList = null;
+			
+				mailingList = new MailingList();
+				mailingList.setName((String) devList.get("name"));
+				mailingList.setUrl((String) devList.get("url"));
+				if (mailingList.getUrl().startsWith("news://") || mailingList.getUrl().startsWith("git://")
+						|| mailingList.getUrl().startsWith("svn://"))
+					mailingList.setNonProcessable(false);
+				else
+					mailingList.setNonProcessable(true);
+				project.getCommunicationChannels().add(mailingList);
 			}
 
 			if ((isNotNull(currentProg, "documentation_url"))) {
@@ -273,39 +315,39 @@ public class EclipseProjectImporter implements IImporter {
 			}
 			if ((isNotNull(currentProg, "forums"))) {
 				JSONArray forums = (JSONArray) currentProg.get("forums");
+				@SuppressWarnings("unchecked")
 				Iterator<JSONObject> iter = forums.iterator();
-				Forum forum = null;
-				ArrayList<NntpNewsGroup> tempNntp = new ArrayList<NntpNewsGroup>();
-				String[] projectNameSplit = projectId.split("\\.");
-				String projectEffective = projectNameSplit[projectNameSplit.length - 1];
-				boolean nntpflag = false;
+				
+				EclipseForum eclipseForum=null;
+				URL FORUM_URL;
+				URLConnection connForum;
+				String forumStatus;
+				Matcher forumIdMatch;
+
 				while (iter.hasNext()) {
 					JSONObject entry = (JSONObject) iter.next();
-					forum = new Forum();
-					forum.setName((String) entry.get("name"));
-					forum.setUrl((String) entry.get("url"));
-					forum.setNonProcessable(true);
-					NntpNewsGroup NNTPuRL = new NntpNewsGroup();
-					NNTPuRL.setUsername("exquisitus");
-					NNTPuRL.setPassword("flinder1f7");
-					NNTPuRL.setPort(119);
-					NNTPuRL.setNewsGroupName((String) entry.get("name"));
-					NNTPuRL.setUrl("news.eclipse.org/");
-					NNTPuRL.setAuthenticationRequired(true);
-					NNTPuRL.setNonProcessable(false);
-					forum.setDescription((String) entry.get("description"));
-					String[] lastUrlSplit = ((String) entry.get("name")).split("\\.");
-					String lastUrl = lastUrlSplit[lastUrlSplit.length - 1];
-					if (projectEffective.toLowerCase().contains(lastUrl.toLowerCase())
-							|| lastUrl.toLowerCase().contains(projectEffective.toLowerCase())) {
-//						project.getCommunicationChannels().add(NNTPuRL);
-						nntpflag = true;
-					} else
-						tempNntp.add(NNTPuRL);
-					project.getCommunicationChannels().add(forum);
+					FORUM_URL = new URL((String) entry.get("url"));
+					connForum = FORUM_URL.openConnection();
+					forumStatus = connForum.getHeaderField("STATUS");
+					if (forumStatus != null && forumStatus.startsWith("404"))
+						logger.info("The project " + projectId + " does not seem to have a forum");
+					else
+					{
+						forumIdMatch=forumIdParser.matcher(connForum.getURL().getQuery());
+						if(!forumIdMatch.find())
+							logger.info("The project " + projectId + " does not seem to have a forum");
+						else
+						{
+							eclipseForum = new EclipseForum();
+							eclipseForum.setForum_id(forumIdMatch.group(1));
+							eclipseForum.setForum_name((String) entry.get("name"));
+							eclipseForum.setUrl((String) entry.get("url"));
+							eclipseForum.setClient_secret(clientSecret);
+							eclipseForum.setClient_id(clientId);
+							project.getCommunicationChannels().add(eclipseForum);
+						}
+					}
 				}
-				if (!nntpflag)
-					project.getCommunicationChannels().addAll(tempNntp);
 			}
 			if ((isNotNull(currentProg, "bugzilla"))) {
 				JSONArray bugzillaJsonArray = (JSONArray) currentProg.get("bugzilla");
@@ -536,7 +578,6 @@ public class EclipseProjectImporter implements IImporter {
 
 		Project projectTemp = null;
 		EclipseProject project = new EclipseProject();
-		Boolean projectToBeUpdated = false;
 		while (iprojects.hasNext()) {
 			projectTemp = iprojects.next();
 			if (projectTemp instanceof EclipseProject) {
@@ -619,5 +660,17 @@ public class EclipseProjectImporter implements IImporter {
 
 	@Override
 	public void setCredentials(Credentials credentials) {
+		if(credentials.getCredentialsId().equals("eclipseForums"))
+		{	
+			if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+				clientSecret=credentials.getAuthToken();
+			if(!credentials.getUsername().equals("") || credentials.getUsername()!=null)
+				clientId=credentials.getUsername();
+		}
+		if(credentials.getCredentialsId().equals("github"))
+		{
+			if(!credentials.getAuthToken().equals("") || credentials.getAuthToken() != null)
+				githubToken= credentials.getAuthToken();
+		}
 	}
 }

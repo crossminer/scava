@@ -25,5 +25,6 @@ class Documentation {
 	attr String lastUpdateDate;
 	attr String lastRevisionAnalyzed;
 	attr String nextUpdateDate;
+	attr boolean updated;
 }
 

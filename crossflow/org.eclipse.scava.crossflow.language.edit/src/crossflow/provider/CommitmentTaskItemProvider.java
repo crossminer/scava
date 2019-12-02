@@ -76,11 +76,11 @@ public class CommitmentTaskItemProvider extends TaskItemProvider {
 	 * This returns CommitmentTask.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/CommitmentTask"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/CommitmentTask.png"));
 	}
 
 	/**

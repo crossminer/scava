@@ -1,4 +1,4 @@
-package org.eclipse.scava.metricprovider.trans.commits.messagereferences.model;
+package org.eclipse.scava.metricprovider.trans.commits.message.references.model;
 
 @db(qualifiedCollectionNames="true")
 @customize

@@ -11,11 +11,11 @@
 		<simple-sink name="AdditionResultsSink"/>
 		
 		<type name="NumberPair">
-			<field name="a" type="int"/>
-			<field name="b" type="int"/>
+			<datafield name="a" type="int"/>
+			<datafield name="b" type="int"/>
 		</type>
 		<type name="Number">
-			<field name="n" type="int"/> 
+			<datafield name="n" type="int"/> 
 		</type>
 
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.addition" genOutputFolder="src-gen" outputFolder="src"/>

@@ -57,6 +57,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
+import crossflowComponents.Component;
+
 /**
  * @generated
  */
@@ -513,7 +515,20 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 	}
 
 	/**
-	* @generated
+	* @generated NOT
+	*/
+	private boolean canSave(Resource resource) {
+		// TODO is there a better way to identify component models? 
+		//maybe by identifying the diagram model itself and only saving it 
+		//instead of disallowing others explicitly?
+		for (EObject e : resource.getContents())
+			if (e instanceof Component)
+				return false;
+		return true;
+	}
+
+	/**
+	* @generated NOT
 	*/
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite)
 			throws CoreException {
@@ -535,7 +550,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 							NLS.bind(Messages.CrossflowDocumentProvider_SaveNextResourceTask, nextResource.getURI()));
 					if (nextResource.isLoaded() && !info.getEditingDomain().isReadOnly(nextResource)) {
 						try {
-							nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+							if (canSave(nextResource))
+								nextResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 						} catch (IOException e) {
 							fireElementStateChangeFailed(element);
 							throw new CoreException(new Status(IStatus.ERROR, CrossflowDiagramEditorPlugin.ID,
@@ -590,7 +606,8 @@ public class CrossflowDocumentProvider extends AbstractDocumentProvider implemen
 						return CommandResult.newOKCommandResult();
 					}
 				}.execute(monitor, null);
-				newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
+				if (canSave(newResource))
+					newResource.save(CrossflowDiagramEditorUtil.getSaveOptions());
 			} catch (ExecutionException e) {
 				fireElementStateChangeFailed(element);
 				throw new CoreException(

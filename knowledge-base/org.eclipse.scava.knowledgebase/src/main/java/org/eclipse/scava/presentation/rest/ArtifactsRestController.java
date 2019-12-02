@@ -10,23 +10,27 @@
  ******************************************************************************/
 package org.eclipse.scava.presentation.rest;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
-import org.checkerframework.checker.units.qual.m2;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
+import org.eclipse.scava.business.integration.LibBoostRepository;
 import org.eclipse.scava.business.integration.MetricForProjectRepository;
 import org.eclipse.scava.business.model.Artifact;
+import org.eclipse.scava.business.model.LibBoost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +46,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -62,14 +67,16 @@ public class ArtifactsRestController {
 	private IRecommenderManager recommenderManager;
 	@Autowired
 	private ArtifactRepository artifactRepository;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ArtifactsRestController.class);
 	@Autowired
 	private MetricForProjectRepository m4pRepository;
 	@Autowired
 	private OssmeterImporter ossmeterImporter;
 
-	
+	@Value("${migration.local.m3.files.path}")
+	private String localFile;
+
 	@Autowired
 	private GithubImporter importer;
 
@@ -91,32 +98,31 @@ public class ArtifactsRestController {
 	public @ResponseBody Artifact getArtifact(@PathVariable("artifact_id") String id) {
 		return artifactRepository.findOne(id);
 	}
-	
+
 	@ApiOperation(value = "Get metrics by user id")
-	@RequestMapping(value = "/m4p/pid//{user_id}", produces = { "application/json",
+	@RequestMapping(value = "/m4p/uid//{user_id}", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByUserId(@PathVariable("user_id") String userId) {
 		return m4pRepository.findByUserId(userId);
 	}
+
 	@ApiImplicitParams({ // FIXME
-		@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
-		@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
-		@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
-				+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
-	@ApiOperation(value = "This resource is used to retrieve the list of artifacts analyzed by the CROSSMINER ", response = Iterable.class)
-	@RequestMapping(value = "/m4p/", produces = { "application/json",
-			"application/xml" }, method = RequestMethod.GET)
+			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+			@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+			@ApiImplicitParam(name = "sort", dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+					+ "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
+	@ApiOperation(value = "This resource is used to retrieve the list of deplovelor acvtivity metrics", response = Iterable.class)
+	@RequestMapping(value = "/m4p/", produces = { "application/json", "application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody Page<MetricsForProject> getAllMetricForProject(Pageable pageable) {
 		return m4pRepository.findAll(pageable);
 	}
-	
+
 	@ApiOperation(value = "Get metrics by projectID id")
-	@RequestMapping(value = "/m4p/uid/{project_id}", produces = { "application/json",
+	@RequestMapping(value = "/m4p/pid/{project_id}", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.GET)
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByProjectId(@PathVariable("project_id") String id) {
 		return m4pRepository.findByProjectId(id);
 	}
-	
 
 //	@ApiOperation(value = "Search artifact to KB")
 //	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
@@ -168,11 +174,11 @@ public class ArtifactsRestController {
 		ossmeterImporter.importAll();
 		return true;
 	}
+
 	@ApiOperation(value = "Import projects from the metric provider platform from a specific url. The url should be <server_url>:<server_port>")
 	@RequestMapping(value = "add-mpp.by-url/", produces = { "application/json",
 			"application/xml" }, method = RequestMethod.POST)
-	public @ResponseBody boolean importMPPProjectsFromSpecificUrl(
-			@RequestParam("mppUrl") String mppUrl) {
+	public @ResponseBody boolean importMPPProjectsFromSpecificUrl(@RequestParam("mppUrl") String mppUrl) {
 		ossmeterImporter.importAll(mppUrl);
 		return true;
 	}
@@ -189,6 +195,39 @@ public class ArtifactsRestController {
 		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
 	}
 
+	@ApiOperation(value = "This API stores the lib boost values given as txt file")
+	@RequestMapping(value = "/storeLibsBoost/", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> storeLibBoosts(@RequestParam("file") MultipartFile file) {
+		try {
+			storeLibBoost(file);
+			logger.info("LibBoost has been imported");
+		} catch (IllegalStateException | IOException e) {
+			logger.error(e.getMessage());
+			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
+	}
+	
+	@Autowired
+	private LibBoostRepository libBoostRepo;
+
+	private void storeLibBoost(MultipartFile multipartFile) throws IOException {
+//		String fileName = Paths.get(localFile, multipartFile.getOriginalFilename()).toString();
+
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				String name = line.replace("/", "");
+				if (libBoostRepo.findOneByName(name) == null) {
+					libBoostRepo.save(new LibBoost(name));
+				}
+			}
+		}
+
+	}
 //	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 //	public @ResponseBody MetricsForProject temp(){
 //		MetricsForProject metric4project = new MetricsForProject();

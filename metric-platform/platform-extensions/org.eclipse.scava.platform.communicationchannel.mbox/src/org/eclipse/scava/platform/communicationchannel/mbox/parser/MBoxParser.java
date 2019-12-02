@@ -21,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 import org.apache.james.mime4j.mboxiterator.CharBufferWrapper;
 import org.apache.james.mime4j.mboxiterator.MboxIterator;
 import org.eclipse.scava.platform.communicationchannel.mbox.encoding.UTF8toASCII;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
 
 public class MBoxParser {
 	
@@ -33,35 +34,31 @@ public class MBoxParser {
 												   };
 	
 	private static SimpleDateFormat inputFormat1, inputFormat2, outputFormat1 ,outputFormat2;
+	private static OssmeterLogger logger;
 	//private static File outputFile;
 	
 	static{
-		
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.mbox.parser.MBoxParser");
 		inputFormat1 = new SimpleDateFormat("'Date:' EEE MMM dd HH:mm:ss yyyy");
 		inputFormat2 = new SimpleDateFormat("'Date:' EEE, dd MMM HH:mm:ss yyyy Z");
 		outputFormat1 = new SimpleDateFormat("'Date:' EEE, dd MMM yyyy HH:mm:ss");
 		outputFormat2 = new SimpleDateFormat("'Date:' EEE, dd MMM yyyy HH:mm:ss Z");
 	}
 	
-	public static List<String> parse(File mbox, boolean verbose) {
+	public static List<String> parse(File mbox) {
 		
-		if (verbose) {
-			System.out.println("PARSE MBOX: " + mbox);
-		}
+		logger.debug("PARSE MBOX: " + mbox);
 		List<String> messages = new ArrayList<String>();
 		
 		CharsetEncoder ENCODER = Charset.forName("UTF-8").newEncoder();
 		
 		try {
 			for (CharBufferWrapper message : MboxIterator.fromFile(mbox).charset(ENCODER.charset()).build()) {
-				if (verbose) {
-					System.out.println("MESSAGE!!!");
-					System.out.println(message);
-				}
+				logger.debug("Message found:" + message);
 				messages.add(message.toString());
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error while reading file", e);
 		}
 		
 		mbox.delete();
@@ -71,166 +68,163 @@ public class MBoxParser {
 		
 	}
 	
-	public static File preprocess(File file, boolean verbose) {
+	public static File preprocess(File file) {
 		
-		FileReader fileReader = null;
-		try {
-			fileReader = new FileReader(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		
-		String line;
-		BufferedWriter writer = null;
 		File outputFile = null;
 		try {
-			outputFile = File.createTempFile("temp", ".mbox");
-			writer = new BufferedWriter(new FileWriter(outputFile));
-			while((line = bufferedReader.readLine()) != null) {
-				
-				if (!UTF8toASCII.isPureAscii(line)) {
-					String encoded = UTF8toASCII.encodeQP(line);
-					if (verbose) {
-						System.out.println("non ASCII line: |" + line + "|");
-						System.out.println("encoded: |" + encoded + "|");
-						System.out.println("encoded no new lines: |" + UTF8toASCII.removeSoftNewLines(encoded) + "|");
-						System.out.println("decoded: |" + UTF8toASCII.decodeQP(encoded) + "|");
-						System.out.println("encodedText: |" + UTF8toASCII.encodeTextQP(line) + "|\n");
-					}
-					line =  UTF8toASCII.removeSoftNewLines(encoded);
-				}
-				
-				if (line.startsWith("Date: ")) {
-					if (verbose) {
-						System.out.println("Original Line: " + line);
-					}
-					line = correctDate(line);
-					if (verbose) {
-						System.out.println("Corrected Line: " + line);
-					}
-				}
-
-				if (line.startsWith("From: ") && (!line.contains("<"))) {
-					String addressString = line.replace("From: ", "").trim();
-					try {
-						new InternetAddress(addressString);
-					} catch (AddressException e) {
-						line = line.trim() + " <>";
-					}
-				}
-
-				for (String lineToDelete: linesToDelete) {
-					if (line.equals(lineToDelete)) {
-						line="";
-					}
-				}
-				if (line.startsWith("Content-Type: TEXT/PLAIN; charset=X-UNKNOWN")) {
-					line = line.replace("; charset=X-UNKNOWN", ";");
-				}
-				
-				if (line.equals("Content-Type: text/plain; charset=Any")) {
-					line = line.replace("; charset=Any", ";");
-				}
-								
-				if (line.startsWith("Content-Type: text/plain; charset=x-gbk")) {
-					line = line.replace("; charset=x-gbk", "; charset=gbk");
-				}
-				
-				if (line.contains("Content-Type:X-System-Of-Record")) {
-					line=line.replace("Content-Type:X-System-Of-Record", "Content-Type;X-System-Of-Record");
-				}
-				
-				if (line.startsWith("Content-Disposition: inline; filename=")) {
-					String filename = line.substring("Content-Disposition: inline; filename=".length());
-					if (filename.contains(" ") && (!filename.contains("\""))) {
-						line = "Content-Disposition: inline; filename=\"" + filename  +"\"";
-					}
-				}
-				
-				if (line.startsWith("	filename=")) {
-					String filename = line.substring("	filename=".length());
-					if (filename.contains(" ") && (!filename.contains("\""))) {
-						line = "	filename=\"" + filename  +"\"";
-					}
-				}
-						
-				if (line.startsWith("Content-Disposition: attachment; filename=")) {
-					String filename = line.substring("Content-Disposition: attachment; filename=".length());
-					if (filename.contains(" ") && (!filename.contains("\""))) {
-						line = "Content-Disposition: attachment; filename=\"" + filename  +"\"";
-					}
-					if (filename.contains("; size=")) {
-						filename = filename.substring(0, filename.indexOf("; size=")+1);
-						line = "Content-Disposition: attachment; filename=" + filename;
-					}
-				}
-
-				if (line.contains("Content-Disposition:References")) {
-					line=line.replace("Content-Disposition:References", "Content-Disposition;References");
-				}
-				
-				if (line.startsWith("To: \"") && line.endsWith("\"\"")) {
-					line = line.replace("\"\"", "\"");
-				}
-					
-				if (line.contains("Content-Transfer-Encoding:Message-Id") ||
-					line.contains("Content-Transfer-Encoding:Content-Type") ||
-					line.contains("Content-Transfer-Encoding:Content-Language") ||
-					line.contains("Content-Transfer-Encoding:Subject") ||
-					line.contains("Content-Transfer-Encoding:DKIM;") ||
-					line.contains("Content-Transfer-Encoding:MIME-Version") ||
-					line.contains("Content-Transfer-Encoding:Content-ID") ||
-					line.contains("Content-Transfer-Encoding:Date:")) {
-						line = line.replace("Content-Transfer-Encoding:", "Content-Transfer-Encoding;");
-				}
-				
-				if (line.contains("content-transfer-encoding:x-trusted-delivery") ||
-					line.contains("content-transfer-encoding:content-type:") ||
-					line.contains("content-transfer-encoding:subject:") ||
-					line.contains("content-transfer-encoding:in-reply-to") ||
-					line.contains("content-transfer-encoding:x-mailer") ||
-					line.contains("content-transfer-encoding:mime-version") ||
-					line.contains("content-transfer-encoding:content-language")) {
-						line=line.replace("content-transfer-encoding:", "content-transfer-encoding;");
-				}
-				
-				if (line.contains("content-transfer-encoding : mime-version") ||
-					line.contains("content-transfer-encoding : message-id")) {
-						line = line.replace("content-transfer-encoding :", "content-transfer-encoding ;");
-				}
-				
-				if (line.contains("charset=iso-8859-10")) {
-					line=line.replace("charset=iso-8859-10", "charset=iso-8859-1");
-				}
-
-				if (line.contains("charset=\"iso-8859-10\"")) {
-					line=line.replace("charset=\"iso-8859-10\"", "charset=\"iso-8859-1\"");
-				}
-				
-				if (line.contains("charset=\"iso-8859-14\"")) {
-					line=line.replace("charset=\"iso-8859-14\"", "charset=\"iso-8859-1\"");
-				}
-
-				if (line.contains("charset=ISO-8859-10")) {
-					line=line.replace("charset=ISO-8859-10", "charset=ISO-8859-1");
-				}
-
-				if (line.contains("charset=HZ-GB-2312")) {
-					line=line.replace("charset=HZ-GB-2312", "charset=UTF-8");
-				}
-				
-			    writer.write(line+"\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+			String line;
+			BufferedWriter writer = null;
 			try {
-				writer.close();
+				outputFile = File.createTempFile("temp", ".mbox");
+				writer = new BufferedWriter(new FileWriter(outputFile));
+				while((line = bufferedReader.readLine()) != null) {
+					
+					if (!UTF8toASCII.isPureAscii(line)) {
+						String encoded = UTF8toASCII.encodeQP(line);
+						logger.debug("non ASCII line: |" + line + "|");
+						logger.debug("encoded: |" + encoded + "|");
+						logger.debug("encoded no new lines: |" + UTF8toASCII.removeSoftNewLines(encoded) + "|");
+						logger.debug("decoded: |" + UTF8toASCII.decodeQP(encoded) + "|");
+						logger.debug("encodedText: |" + UTF8toASCII.encodeTextQP(line) + "|\n");
+						line =  UTF8toASCII.removeSoftNewLines(encoded);
+					}
+					
+					if (line.startsWith("Date: ")) {
+						logger.debug("Original Date line: "+line);
+						line = correctDate(line);
+						logger.debug("Corrected Date line: "+line);
+					}
+
+					if (line.startsWith("From: ") && (!line.contains("<"))) {
+						String addressString = line.replace("From: ", "").trim();
+						try {
+							new InternetAddress(addressString);
+						} catch (AddressException e) {
+							line = line.trim() + " <>";
+						}
+					}
+
+					for (String lineToDelete: linesToDelete) {
+						if (line.equals(lineToDelete)) {
+							line="";
+						}
+					}
+					if (line.startsWith("Content-Type: TEXT/PLAIN; charset=X-UNKNOWN")) {
+						line = line.replace("; charset=X-UNKNOWN", ";");
+					}
+					
+					if (line.equals("Content-Type: text/plain; charset=Any")) {
+						line = line.replace("; charset=Any", ";");
+					}
+									
+					if (line.startsWith("Content-Type: text/plain; charset=x-gbk")) {
+						line = line.replace("; charset=x-gbk", "; charset=gbk");
+					}
+					
+					if (line.contains("Content-Type:X-System-Of-Record")) {
+						line=line.replace("Content-Type:X-System-Of-Record", "Content-Type;X-System-Of-Record");
+					}
+					
+					if (line.startsWith("Content-Disposition: inline; filename=")) {
+						String filename = line.substring("Content-Disposition: inline; filename=".length());
+						if (filename.contains(" ") && (!filename.contains("\""))) {
+							line = "Content-Disposition: inline; filename=\"" + filename  +"\"";
+						}
+					}
+					
+					if (line.startsWith("	filename=")) {
+						String filename = line.substring("	filename=".length());
+						if (filename.contains(" ") && (!filename.contains("\""))) {
+							line = "	filename=\"" + filename  +"\"";
+						}
+					}
+							
+					if (line.startsWith("Content-Disposition: attachment; filename=")) {
+						String filename = line.substring("Content-Disposition: attachment; filename=".length());
+						if (filename.contains(" ") && (!filename.contains("\""))) {
+							line = "Content-Disposition: attachment; filename=\"" + filename  +"\"";
+						}
+						if (filename.contains("; size=")) {
+							filename = filename.substring(0, filename.indexOf("; size=")+1);
+							line = "Content-Disposition: attachment; filename=" + filename;
+						}
+					}
+
+					if (line.contains("Content-Disposition:References")) {
+						line=line.replace("Content-Disposition:References", "Content-Disposition;References");
+					}
+					
+					if (line.startsWith("To: \"") && line.endsWith("\"\"")) {
+						line = line.replace("\"\"", "\"");
+					}
+						
+					if (line.contains("Content-Transfer-Encoding:Message-Id") ||
+						line.contains("Content-Transfer-Encoding:Content-Type") ||
+						line.contains("Content-Transfer-Encoding:Content-Language") ||
+						line.contains("Content-Transfer-Encoding:Subject") ||
+						line.contains("Content-Transfer-Encoding:DKIM;") ||
+						line.contains("Content-Transfer-Encoding:MIME-Version") ||
+						line.contains("Content-Transfer-Encoding:Content-ID") ||
+						line.contains("Content-Transfer-Encoding:Date:")) {
+							line = line.replace("Content-Transfer-Encoding:", "Content-Transfer-Encoding;");
+					}
+					
+					if (line.contains("content-transfer-encoding:x-trusted-delivery") ||
+						line.contains("content-transfer-encoding:content-type:") ||
+						line.contains("content-transfer-encoding:subject:") ||
+						line.contains("content-transfer-encoding:in-reply-to") ||
+						line.contains("content-transfer-encoding:x-mailer") ||
+						line.contains("content-transfer-encoding:mime-version") ||
+						line.contains("content-transfer-encoding:content-language")) {
+							line=line.replace("content-transfer-encoding:", "content-transfer-encoding;");
+					}
+					
+					if (line.contains("content-transfer-encoding : mime-version") ||
+						line.contains("content-transfer-encoding : message-id")) {
+							line = line.replace("content-transfer-encoding :", "content-transfer-encoding ;");
+					}
+					
+					if (line.contains("charset=iso-8859-10")) {
+						line=line.replace("charset=iso-8859-10", "charset=iso-8859-1");
+					}
+
+					if (line.contains("charset=\"iso-8859-10\"")) {
+						line=line.replace("charset=\"iso-8859-10\"", "charset=\"iso-8859-1\"");
+					}
+					
+					if (line.contains("charset=\"iso-8859-14\"")) {
+						line=line.replace("charset=\"iso-8859-14\"", "charset=\"iso-8859-1\"");
+					}
+
+					if (line.contains("charset=ISO-8859-10")) {
+						line=line.replace("charset=ISO-8859-10", "charset=ISO-8859-1");
+					}
+
+					if (line.contains("charset=HZ-GB-2312")) {
+						line=line.replace("charset=HZ-GB-2312", "charset=UTF-8");
+					}
+					
+				    writer.write(line+"\n");
+				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Error while parsing file: ", e);
+			} finally {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					logger.error("Error while closing writer: ", e);
+				}
 			}
+			bufferedReader.close();
+		} catch (FileNotFoundException e) {
+			logger.error("File not found: ", e);
+		} catch (IOException e) {
+			logger.error("Error while closing buffered reader: ",e);
 		}
+		
 		return outputFile;
 	}
 	

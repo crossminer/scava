@@ -12,27 +12,24 @@ package org.eclipse.scava.plugin.apidocumentation;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.scava.plugin.apidocumentation.result.ApiDocumentationResultView;
+import org.eclipse.scava.plugin.mvc.view.IView;
 import org.eclipse.scava.plugin.mvc.view.ViewPartView;
-import org.eclipse.scava.plugin.ui.verticalList.VerticalList;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.layout.FillLayout;
 
 public class ApiDocumentationView extends ViewPartView<IApiDocumentationViewEventListener> {
 
 	public static final String ID = "org.eclipse.scava.plugin.apidocumentation.ApiDocumentation"; //$NON-NLS-1$
-	private VerticalList resultsVerticalList;
-	private ScrolledComposite resultsScrolledComposite;
 	private Composite defaultMessageComposite;
+	private Composite resultsComposite;
 
 	public ApiDocumentationView() {
 		setTitleImage(ResourceManager.getPluginImage("org.eclipse.scava.plugin",
@@ -61,18 +58,10 @@ public class ApiDocumentationView extends ViewPartView<IApiDocumentationViewEven
 		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		lblNewLabel.setText("Results of API documentation and Q&&A posts will be shown here.");
 
-		resultsScrolledComposite = new ScrolledComposite(getComposite(), SWT.BORDER | SWT.V_SCROLL);
-		resultsScrolledComposite.setAlwaysShowScrollBars(true);
-		resultsScrolledComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		resultsScrolledComposite.setExpandHorizontal(true);
-		resultsScrolledComposite.setExpandVertical(true);
-
-		resultsVerticalList = new VerticalList(resultsScrolledComposite, SWT.NONE);
-		resultsVerticalList.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		resultsScrolledComposite.setContent(resultsVerticalList);
-		resultsScrolledComposite.setMinSize(resultsVerticalList.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-
 		layout.topControl = defaultMessageComposite;
+
+		resultsComposite = new Composite(getComposite(), SWT.NONE);
+		resultsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		createActions();
 		initializeToolBar();
@@ -105,21 +94,17 @@ public class ApiDocumentationView extends ViewPartView<IApiDocumentationViewEven
 		// Set the focus
 	}
 
-	public void showResult(ApiDocumentationResultView view) {
+	public void showWebReferences(IView<?> view) {
 		Composite composite = view.getComposite();
 
-		resultsVerticalList.add(composite);
+		composite.setParent(resultsComposite);
 
 		StackLayout layout = (StackLayout) getComposite().getLayout();
-		layout.topControl = resultsScrolledComposite;
+		layout.topControl = resultsComposite;
 
-		view.getComposite().addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				if (resultsVerticalList.getChildren().length == 0)
-					layout.topControl = defaultMessageComposite;
-			}
+		Display.getDefault().asyncExec(() -> {
+			getComposite().requestLayout();
 		});
+
 	}
 }

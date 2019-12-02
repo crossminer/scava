@@ -70,7 +70,7 @@ class CrawlerCore extends WebCrawler {
         {
             Files.write(Paths.get(filename),page.getContentData());
             mappingPaths.put(uniqueName, pageName);
-            System.err.println("Stored: "+ pageName);
+            logger.info("Stored: "+page.getWebURL());
         } 
         catch (IOException e)
         {

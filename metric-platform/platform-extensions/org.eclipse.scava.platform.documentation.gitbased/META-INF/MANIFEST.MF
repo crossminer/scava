@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Github
 Bundle-SymbolicName: org.eclipse.scava.platform.documentation.gitbased;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: org.eclipse.scava.platform.documentation.gitbased
+Export-Package: org.eclipse.scava.platform.documentation.gitbased,
+ org.eclipse.scava.platform.documentation.gitbased.utils
 Require-Bundle: org.eclipse.scava.platform.vcs.git,
  org.eclipse.core.runtime,
  org.eclipse.scava.platform,

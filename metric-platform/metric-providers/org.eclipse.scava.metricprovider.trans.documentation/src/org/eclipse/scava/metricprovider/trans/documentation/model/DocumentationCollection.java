@@ -1,8 +1,13 @@
 package org.eclipse.scava.metricprovider.trans.documentation.model;
 
-import com.googlecode.pongo.runtime.*;
-import java.util.*;
-import com.mongodb.*;
+import java.util.Iterator;
+
+import com.googlecode.pongo.runtime.IteratorIterable;
+import com.googlecode.pongo.runtime.PongoCollection;
+import com.googlecode.pongo.runtime.PongoCursorIterator;
+import com.googlecode.pongo.runtime.PongoFactory;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 
 public class DocumentationCollection extends PongoCollection<Documentation> {
 	

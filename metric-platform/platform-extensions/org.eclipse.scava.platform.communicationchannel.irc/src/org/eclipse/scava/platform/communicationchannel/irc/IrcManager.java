@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -22,6 +23,10 @@ import org.eclipse.scava.platform.communicationchannel.irc.parser.Message;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
+import org.eclipse.scava.platform.logging.OssmeterLogger;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelData;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataManager;
+import org.eclipse.scava.platform.storage.communicationchannel.CommunicationChannelDataPath;
 import org.eclipse.scava.repository.model.CommunicationChannel;
 import org.eclipse.scava.repository.model.cc.irc.Irc;
 
@@ -29,8 +34,11 @@ import com.mongodb.DB;
 
 public class IrcManager implements ICommunicationChannelManager<Irc> {
 	
-	Path rootPath;
-	Boolean deltaFlag = false;
+	protected OssmeterLogger logger;
+	
+	public IrcManager() {
+		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.irc");
+	}
 
 	@Override
 	public boolean appliesTo(CommunicationChannel communicationChannel) {
@@ -59,27 +67,54 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	}
 	
 
-	private void getMessageData(Irc irc, Date date) {
+	private CommunicationChannelDataPath getMessageData(Irc irc, Date date) {
 		
-		String downloadLink = irc.getUrl();
-
-		if (!irc.getUrl().endsWith("/"))
-			downloadLink += "/";
-			
-		downloadLink += irc.getName() + "-" + date + irc.getCompressedFileExtension();
-
-		// Determines which download method to use i.e with or without authentication.
-		if (irc.getUsername().equals("null") || irc.getPassword().equals("null")) {
-
-			//.tar.gz
-			downloadMessage(downloadLink,  irc.getCompressedFileExtension());
-
-		} else {
-
-			//.tar.gz
-			downloadMessage(downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
-
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date.toJavaDate());
+		
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		
+		String extension = irc.getCompressedFileExtension();
+		
+		if(extension.isEmpty())
+		{
+			logger.error("File extension is empty. Returning empty delta.");
+			return null;
 		}
+		
+		CommunicationChannelData data = CommunicationChannelDataManager.getData(irc.getOSSMeterId());
+		
+		CommunicationChannelDataPath dataPath;
+		
+		if(!data.compareDate(day, month, year) || !data.fileExists())
+		{
+		
+			String downloadLink = irc.getUrl();
+			if (!irc.getUrl().endsWith("/"))
+				downloadLink += "/";
+				
+			downloadLink += irc.getName() + "-" + date + extension;
+	
+			// Determines which download method to use i.e with or without authentication.
+			if (irc.getUsername()!="" || irc.getPassword()!="") {
+				dataPath=downloadMessage(data.getTempDir(), downloadLink,  irc.getCompressedFileExtension());
+	
+			} else {
+				dataPath=downloadMessage(data.getTempDir(), downloadLink, irc.getUsername(), irc.getPassword(), irc.getCompressedFileExtension());
+	
+			}
+			if(dataPath!=null)
+			{
+				data.updateDataPath(dataPath, day, month, year);
+				CommunicationChannelDataManager.updateData(irc.getOSSMeterId(), data);
+			}
+		}
+		else
+			dataPath=data.getDataPath();
+		
+		return dataPath;
 		
 	}
 
@@ -88,49 +123,28 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * 
 	 * @param downloadURL
 	 */
-	private void downloadMessage(String downloadURL, String ext) {
+	private  CommunicationChannelDataPath downloadMessage(Path tempDir,String downloadURL, String ext) {
 
-		deltaFlag = false;
-		URL url = null;
-
+		CommunicationChannelDataPath dataPath=null;
 		try {
 
-			url = new URL(downloadURL);
+			URL url = new URL(downloadURL);
 			InputStream is = url.openStream();
-			rootPath = TgzExtractor.extract(is, ext);
+			dataPath = TgzExtractor.extract(tempDir, is, ext);
 			is.close();
 
 		} catch (MalformedURLException e) {
 
-			e.printStackTrace();
+			logger.error("Malformed URL: ", e);
 
 		} catch (FileNotFoundException e) {
-
-			// Wait for specified tmie and try again
-			try {
-
-				url = new URL(downloadURL);
-				InputStream is = url.openStream();
-				rootPath = TgzExtractor.extract(is, ext);
-				is.close();
-
-			} catch (MalformedURLException e1) {
-
-				e.printStackTrace();
-
-			} catch (FileNotFoundException e1) {
-
-				deltaFlag = true;
-
-			} catch (IOException e1) {
-
-				e.printStackTrace();
-			}
-
+			
+			logger.error("File not found: ", e);
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			logger.error("IO exception: ", e);
 		}
+		return dataPath;
 
 	}
 
@@ -141,51 +155,12 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	 * @param username
 	 * @param password
 	 */
-	private void downloadMessage(String downloadURL, String username, String password, String ext) {
+	private CommunicationChannelDataPath downloadMessage(Path tempDir, String downloadURL, String username, String password, String ext) {
 
 		MyAuthenticator.setPasswordAuthentication(username, password);
 		Authenticator.setDefault(new MyAuthenticator());
-		deltaFlag = false;
-		URL url = null;
-
-		try {
-
-			url = new URL(downloadURL);
-			InputStream is = url.openStream();
-			rootPath = TgzExtractor.extract(is, ext);
-			is.close();
-
-		} catch (MalformedURLException e) {
-
-			e.printStackTrace();
-
-		} catch (FileNotFoundException e) {
-
-			// Wait for specified tmie and try again
-			try {
-
-				url = new URL(downloadURL);
-				InputStream is = url.openStream();
-				rootPath = TgzExtractor.extract(is, ext);
-				is.close();
-
-			} catch (MalformedURLException e1) {
-
-				e.printStackTrace();
-
-			} catch (FileNotFoundException e1) {
-				deltaFlag = true;
-				System.err.println("no archive found at :" + downloadURL);
-			} catch (IOException e1) {
-
-				e.printStackTrace();
-			}
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-
+		
+		return downloadMessage(tempDir, downloadURL, ext);
 	}
 
 	/**
@@ -198,14 +173,13 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 	private List<IrcMessage> getAnalysisDateMessage(Irc irc, Date date) {
 
 		List<IrcMessage> analysisDateMessage = new ArrayList<>();
-		
-		getMessageData(irc, date);
-		
-		Stream<Path> filePaths;
+		CommunicationChannelDataPath dataPath = getMessageData(irc, date);
+		if(dataPath==null)
+			return analysisDateMessage;
 		
 		try {
 
-			filePaths = Files.walk(rootPath);
+			Stream<Path> filePaths = Files.walk(dataPath.getPath());
 
 			for (Path path : filePaths.filter(Files::isRegularFile).toArray(Path[]::new))
 
@@ -215,7 +189,7 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 				if (file.isDirectory())
 					continue;
 
-				DayChannel dayChannel = new DayChannel(file, date);
+				DayChannel dayChannel = new DayChannel(file, date, logger);
 				
 				Map<String, Message> articles = dayChannel.getMessages();
 				
@@ -230,14 +204,12 @@ public class IrcManager implements ICommunicationChannelManager<Irc> {
 				file.delete();
 			}
 			
-//			This reader clears up after it's self...
-//			File root = Paths.get(inputFolder).toFile();
-//			root.delete();
+			filePaths.close();
 			
 
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			logger.error("IO exception:", e);
 		}
 		
 		return analysisDateMessage;

@@ -1,83 +1,12 @@
+/**
+ * GENERAL
+ */
 @cached
-operation Task hasLanguage(language : String) : Boolean {
-	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
-}
-
-@cached
-operation Workflow hasLanguage(language : String) : Language {
-	return self.getLanguage(language).isDefined();
-}
-
-@cached
-operation Any getLanguage(language : String) : Language {
-	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
-}
-
-@cached
-operation Any getWorkflow() : Workflow {
-	if (self.isTypeOf(Workflow)) {
+operation Any getWorkflow() : CrossflowLanguageModel!Workflow {
+	if (self.isTypeOf(CrossflowLanguageModel!Workflow)) {
 		return self;
 	}
 	return self.eContainer().getWorkflow();
-}
-
-operation Type createSource(){
-    var source = new Source;
-    self.eContainer.tasks.add(source);
-    self.eContainer.types.add(self);
-    source.name = self.name+"ConfigSource";
-    var configTopic = new Topic;
-    self.eContainer.streams.add(configTopic);
-    configTopic.name = self.name+"ConfigTopic";
-    configTopic.type = self;
-    source.output.add(configTopic);
-    //self.findEligibleConfigurableTasks().input.add(configTopic);
-    for(t in self.findEligibleConfigurableTasks()){
-        t.input.add(configTopic);
-    }       
-    return source;  
-}
-
-operation Any getPath() {
-    var workflow = self;
-    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-    
-    var lang = workflow.languages.select(l|l.isJava());
-    var langExists = not lang.isEmpty;
-
-    var path = "src-gen/";
-    
-    if (langExists and lang.first.genOutputFolder.isDefined()) {
-        path = lang.first.genOutputFolder + "/";
-    }
-    
-    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-    
-    return path;
-}
-
-
-operation Any getImplPath() {
-    var workflow = self;
-    if (not self.isTypeOf(Workflow)) workflow = self.eContainer();
-    
-    var lang = workflow.languages.select(l|l.isJava());
-    var langExists = not lang.isEmpty;
-        
-    var path = "src/";
-        
-    if (langExists and lang.first.outputFolder.isDefined()) {
-        path = lang.first.outputFolder + "/";
-    }
-    
-    path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
-
-    return path;
-}
-
-
-operation Type findEligibleConfigurableTasks(){
-    return Task.all.select(t|t.configurations.exists(c|c=self));
 }
 
 operation String toSnakeCase() : String {
@@ -92,22 +21,228 @@ operation String toSnakeCaseLower() : String {
 	return self.toSnakeCase().toLowerCase();
 }
 
-operation Workflow getPackageName() {
-    var lang = self.languages.select(l | l.isJava());
-    var package;
-    if (not lang.isEmpty) {
-        package = lang.first.package;
-    }
-    else {
-        package = self.name.ftlc;
-    }
-    return package;
+/**
+ * LANGUAGES AND CONFIGURATION
+ */
+@cached
+operation CrossflowLanguageModel!Workflow hasLanguage(language : String) : CrossflowLanguageModel!Language {
+	return self.getLanguage(language).isDefined();
 }
 
-operation Task isJavaTask() {
-    return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+/**
+ * GENERATION CONFIGURATION
+ */
+// Return the language with the give name, ignoring case
+@cached
+operation Any getLanguage(language : String) : CrossflowLanguageModel!Language {
+	return self.getWorkflow().languages.selectOne(l|language.equalsIgnoreCase(l.name));
 }
 
-operation Language isJava() {
-    return self.name.toLowerCase() == "java";
+@cached
+operation CrossflowLanguageModel!Language getLanguageParams() : Map {
+	var m = new Map;
+	for (p in self.`parameters`) {
+		m.put(p.name, p.value);
+	}
+	return m;
 }
+
+// Return EGL parameters for the specified language
+@cached
+operation Any getParameters(ruleName : String, languageName : String) : Map {
+	var workflow = self.getWorkflow();
+	
+	var params = Map {};
+	params.put("w", workflow);
+	params.put("genRule", ruleName);
+	params.put("genDate", getGenTime());
+
+	// Language specific properties
+	var language = workflow.getLanguage(languageName);
+	if (language.isDefined()) {
+		// Package name
+		params.put("package", language.package);
+		
+		// Generation Timestamp flag
+		var genDateFlag = language.parameters.selectOne(p|p.name == "genDate");
+		if (genDateFlag.isDefined() and genDateFlag.value == "false") {
+			params.put("genDate", null);
+		}
+	} else {
+		// Default package name for undefined languages
+		params.put("package", workflow.name.ftlc);
+	}
+	
+	return params;
+}
+
+// Generate the current time in ISO-8061 format, for use with generation metadata 
+@cached
+operation getGenTime() : String {
+	return Native("java.time.Instant").now().toString();
+}
+
+// Returns whether the language parameter 'genDate' is set to true. Defaults to true
+@cached
+operation CrossflowLanguageModel!Language hasGenDate() : Boolean {
+	var genDate = self.parameters.selectOne(p|p.name == "genDate");
+	if (param.isDefined()) {
+		return param.name == "true";
+	}
+	return true;
+}
+
+/**
+ * TASKS
+ */
+@cached
+operation CrossflowLanguageModel!Task isJavaTask() {
+	return self.languages.isEmpty() or self.languages.exists(l | l.isJava());
+}
+ 
+@cached
+operation CrossflowLanguageModel!Task hasLanguage(language : String) : Boolean {
+	return self.languages.exists(l|language.equalsIgnoreCase(l.name));
+}
+
+@cached
+operation CrossflowLanguageModel!Task isSingleOut() : Boolean {
+	return not self.multipleOutputs and self.output.size==1;
+}
+
+@cached
+operation CrossflowLanguageModel!Task isSource() : Boolean {
+	return self.isKindOf(CrossflowLanguageModel!Source);
+}
+
+@cached
+operation CrossflowLanguageModel!Task isSink() : Boolean {
+	return self.isKindOf(CrossflowLanguageModel!Sink);
+}
+
+@cached
+operation CrossflowLanguageModel!Task hasConfiguration() : Boolean {
+	return self.input.exists(c|c.isConfigurationChannel());
+}
+
+/**
+ * STREAMS
+ */
+@cached
+operation CrossflowLanguageModel!Stream isConfigurationChannel() {
+	if(not self.name.endsWith("ConfigTopic")) return false;
+	var configurationName = self.name.substring(0,self.name.indexOf("ConfigTopic"));
+	return t.configurations.exists(c|c.name=configurationName);
+}
+
+/**
+ * TYPES
+ */
+operation CrossflowLanguageModel!Type createSource(){
+	var source = new CrossflowLanguageModel!Source;
+	self.eContainer.tasks.add(source);
+	self.eContainer.types.add(self);
+	source.name = self.name+"ConfigSource";
+	var configTopic = new CrossflowLanguageModel!Topic;
+	self.eContainer.streams.add(configTopic);
+	configTopic.name = self.name+"ConfigTopic";
+	configTopic.type = self;
+	source.output.add(configTopic);
+	//self.findEligibleConfigurableTasks().input.add(configTopic);
+	for(t in self.findEligibleConfigurableTasks()){
+		t.input.add(configTopic);
+	}	   
+	return source;  
+}
+
+operation CrossflowLanguageModel!Type findEligibleConfigurableTasks(){
+	return CrossflowLanguageModel!Task.all.select(t|t.configurations.exists(c|c=self));
+}
+
+/**
+ * OTHER - default helpers that set language to Java
+ * TODO: look at how these can be generified if possible
+ */
+operation Any getPath() {
+	var workflow = self;
+	if (not self.isTypeOf(CrossflowLanguageModel!Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+
+	var path = "src-gen/";
+	
+	if (langExists and lang.first.genOutputFolder.isDefined()) {
+		path = lang.first.genOutputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+	
+	return path;
+}
+
+operation Any getImplPath() {
+	var workflow = self;
+	if (not self.isTypeOf(CrossflowLanguageModel!Workflow)) workflow = self.eContainer();
+	
+	var lang = workflow.languages.select(l|l.isJava());
+	var langExists = not lang.isEmpty;
+		
+	var path = "src/";
+		
+	if (langExists and lang.first.outputFolder.isDefined()) {
+		path = lang.first.outputFolder + "/";
+	}
+	
+	path = path + workflow.getPackageName().replaceAll("\\.", "/") + "/";
+
+	return path;
+}
+
+operation CrossflowLanguageModel!Workflow getPackageName() {
+	var lang = self.languages.select(l | l.isJava());
+	var package;
+	if (not lang.isEmpty) {
+		package = lang.first.package;
+	}
+	else {
+		package = self.name.ftlc;
+	}
+	return package;
+}
+
+operation CrossflowLanguageModel!Language isJava() {
+	return self.name.equalsIgnoreCase("java");
+}
+
+operation CrossflowLanguageModel!Language isPython() {
+	return self.name.equalsIgnoreCase("python");
+}
+
+operation CrossflowLanguageModel!Component isOpinionatedComponent(){
+	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("opinionated") or self.componentType.name.equalsIgnorecase("opinionatedtask");
+}
+
+operation CrossflowLanguageModel!Component isCommitmentComponent(){
+	return self.componentType.isDefined and self.componentType.name.equalsIgnoreCase("commitment") or self.componentType.name.equalsIgnorecase("commitmenttask");
+}
+
+@cached
+operation CrossflowLanguageModel!Workflow getSerializer() : CrossflowLanguageModel!Serializer {
+	var s = self.serializer;
+	if (s.isUndefined()) {
+		s = new CrossflowLanguageModel!Serializer;
+		s.name = "json";
+	}
+	
+	if (s.name.equals("xml")) {
+		s.~implClass = "XstreamSerializer";
+	} else if (s.name.equals("json")) {
+		s.~implClass = "JsonSerializer";
+	} else {
+		s.~implClass = null;
+	}
+	
+	return s; 
+}
+
