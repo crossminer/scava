@@ -208,10 +208,10 @@
                 </div>
             </div>
             <div class="form-group" *ngIf="repository._type == 'org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup'">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" [(ngModel)]="repository.name" #nameInput="ngModel" required>
-                <div *ngIf="nameInput.dirty && nameInput.invalid">
-                    <small class="form-text text-danger" *ngIf="nameInput.errors.required">
+                <label for="newsGroupName">NewsGroup Name</label>
+                <input type="text" class="form-control" name="newsGroupName" [(ngModel)]="repository.newsGroupName" #newsGroupNameInput="ngModel" required>
+                <div *ngIf="newsGroupNameInput.dirty && newsGroupNameInput.invalid">
+                    <small class="form-text text-danger" *ngIf="newsGroupNameInput.errors.required">
                         This field is required.
                     </small>
                 </div>

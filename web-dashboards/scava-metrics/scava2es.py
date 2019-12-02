@@ -511,8 +511,14 @@ def enrich_dependencies(scava_dependencies, meta_info=None):
         # maven and osgi dependencies require specific processing
         if eitem['type'] in [DEP_MAVEN, DEP_OSGI]:
             dependency_raw = dependency_data['dependency']
-            eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
-            eitem['dependency_version'] = dependency_raw.split('/')[-1]
+
+            if dependency_raw.startswith('java+package:/'):
+                eitem['dependency_name'] = dependency_raw
+                eitem['dependency_version'] = None
+            else:
+                eitem['dependency_name'] = '/'.join(dependency_raw.split('/')[:-1])
+                eitem['dependency_version'] = dependency_raw.split('/')[-1]
+
             eitem['dependency_has_version'] = 1 if eitem['dependency_version'] else 0
 
         if meta_info:

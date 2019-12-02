@@ -273,7 +273,7 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : project.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -359,7 +359,7 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -664,7 +664,7 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : githubRepository.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -750,7 +750,7 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -1042,7 +1042,7 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : gitlabRepository.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -1128,7 +1128,7 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -1412,7 +1412,7 @@ public class ProjectEditionResource extends ServerResource {
 			for (CommunicationChannel communication : eclipseProject.getCommunicationChannels()) {
 				if (communication.getId().equals(ccJson.get("_id").asText()) && communication instanceof NntpNewsGroup) {
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
@@ -1498,7 +1498,7 @@ public class ProjectEditionResource extends ServerResource {
 				case "org.eclipse.scava.repository.model.cc.nntp.NntpNewsGroup":
 					communication = new NntpNewsGroup();
 					communication.setUrl(ccJson.get("url").asText());
-					((NntpNewsGroup) communication).setName(ccJson.get("name").asText());
+					((NntpNewsGroup) communication).setNewsGroupName(ccJson.get("newsGroupName").asText());
 					((NntpNewsGroup) communication).setPort(ccJson.get("port").asInt());
 					if (ccJson.has("interval")) {
 						((NntpNewsGroup) communication).setInterval(ccJson.get("interval").asInt());
