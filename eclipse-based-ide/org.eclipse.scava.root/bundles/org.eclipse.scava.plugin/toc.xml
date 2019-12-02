@@ -22,6 +22,8 @@
     <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/sourceCodeBasedRecommendations.html" label="Source Code Based Recommendations">
        <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/codeRecommendation.html" label="Code recommendation">
        </topic>
+       <topic href="html/AcquireRecommendations/SourceCodeBasedRecommendations/focusRecommendation.html" label="FOCUS recommendation">
+       </topic>
     </topic>
     <topic href="html/AcquireRecommendations/TextBasedRecommendations/textBasedRecommendations.html" label="Text Based Recommendations">
        <topic href="html/AcquireRecommendations/TextBasedRecommendations/apiDocumentationAndQnaPosts.html" label="API documentation and Q&amp;A posts">

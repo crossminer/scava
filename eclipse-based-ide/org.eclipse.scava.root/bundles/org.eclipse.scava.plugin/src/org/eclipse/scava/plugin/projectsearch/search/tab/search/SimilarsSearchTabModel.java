@@ -13,6 +13,7 @@ package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
 
 import io.swagger.client.ApiException;
@@ -23,8 +24,9 @@ public class SimilarsSearchTabModel extends SearchTabModel {
 	private final Artifact referenceProject;
 	private final SimilarityMethod method;
 
-	public SimilarsSearchTabModel(Artifact referenceProject, SimilarityMethod method) {
-		super();
+	public SimilarsSearchTabModel(KnowledgeBaseAccess knowledgeBaseAccess, Artifact referenceProject,
+			SimilarityMethod method) {
+		super(knowledgeBaseAccess);
 		this.referenceProject = referenceProject;
 		this.method = method;
 		hasNextPage = false;

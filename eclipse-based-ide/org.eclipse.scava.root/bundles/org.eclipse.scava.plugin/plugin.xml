@@ -27,6 +27,24 @@
          </activeWhen>
       </handler>
       <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.FocusApiCallRecommendationHandler"
+            commandId="org.eclipse.scava.plugin.commands.focus.apicallrecommendation">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.enabled">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="org.eclipse.scava.plugin.eclipse.handlers.FocusCodeSnippetRecommendationHandler"
+            commandId="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.enabled">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
             class="org.eclipse.scava.plugin.eclipse.handlers.ApiDocumentationHandler"
             commandId="org.eclipse.scava.plugin.commands.apidocumentation">
             <activeWhen>
@@ -100,6 +118,30 @@
                </visibleWhen>
             </command>
             <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.apicallrecommendation"
+                  icon="icons/features/crossminer_focus_api_call_recommendation_16x16.png"
+                  label="FOCUS API Call recommendation"
+                  mnemonic="F"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation"
+                  icon="icons/features/crossminer_focus_code_snippet_recommendation_16x16.png"
+                  label="FOCUS Code Snippet recommendation"
+                  mnemonic="S"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
                   commandId="org.eclipse.scava.plugin.commands.apidocumentation"
                   icon="icons/features/crossminer_code_api_recommend_16x16.png"
                   label="API Documentation and Q&amp;&amp;A posts for selected code chunk"
@@ -136,6 +178,30 @@
                <visibleWhen>
                   <reference
                         definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.apicallrecommendation"
+                  icon="icons/features/crossminer_focus_api_call_recommendation_16x16.png"
+                  label="Request FOCUS API Call recommendation"
+                  mnemonic="F"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation"
+                  icon="icons/features/crossminer_focus_code_snippet_recommendation_16x16.png"
+                  label="Request FOCUS Code Snippet recommendation"
+                  mnemonic="S"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
                   </reference>
                </visibleWhen>
             </command>
@@ -262,6 +328,30 @@
                <visibleWhen>
                   <reference
                         definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.apicallrecommendation"
+                  icon="icons/features/crossminer_focus_api_call_recommendation_16x16.png"
+                  label="FOCUS API Call recommendation"
+                  mnemonic="F"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation"
+                  icon="icons/features/crossminer_focus_code_snippet_recommendation_16x16.png"
+                  label="FOCUS Code Snippet recommendation"
+                  mnemonic="S"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
                   </reference>
                </visibleWhen>
             </command>
@@ -466,6 +556,22 @@
      </view>
      <view
            allowMultiple="false"
+           class="org.eclipse.scava.plugin.focus.apicall.FocusApiCallRecommendationView"
+           icon="icons/features/crossminer_focus_api_call_recommendation_16x16.png"
+           id="org.eclipse.scava.plugin.focus.apicallrecommendation.FocusRecommendation"
+           name="FOCUS API Call Recommendation"
+           restorable="false">
+     </view>
+     <view
+           allowMultiple="false"
+           class="org.eclipse.scava.plugin.focus.codesnippet.FocusCodeSnippetRecommendationView"
+           icon="icons/features/crossminer_focus_code_snippet_recommendation_16x16.png"
+           id="org.eclipse.scava.plugin.focus.codesnippetrecommendation.FocusRecommendation"
+           name="FOCUS Code Snippet Recommendation"
+           restorable="false">
+     </view>
+     <view
+           allowMultiple="false"
            class="org.eclipse.scava.plugin.libraryversions.apimigration.ApiMigrationCenterView"
            icon="icons/bulb.png"
            id="org.eclipse.scava.plugin.apimigration.ApiMigration"
@@ -479,6 +585,16 @@
            categoryId="org.eclipse.scava.plugin.commands.category"
            id="org.eclipse.scava.plugin.commands.coderecommendation"
            name="Code Recommendation">
+     </command>
+     <command
+           categoryId="org.eclipse.scava.plugin.commands.category"
+           id="org.eclipse.scava.plugin.commands.focus.apicallrecommendation"
+           name="FOCUS API Call Recommendation">
+     </command>
+     <command
+           categoryId="org.eclipse.scava.plugin.commands.category"
+           id="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation"
+           name="FOCUS Code Snippet Recommendation">
      </command>
      <command
            categoryId="org.eclipse.scava.plugin.commands.category"
@@ -643,6 +759,22 @@
            </reference>
         </or>
      </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.javaeditorbased.enabled">
+        <or>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+           </reference>
+        </or>
+     </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.javaeditorbased.visible">
+        <or>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.editor.active.java">
+           </reference>
+        </or>
+     </definition>
   </extension>
   <extension
         point="org.eclipse.ui.bindings">
@@ -651,6 +783,18 @@
            contextId="org.eclipse.jdt.ui.javaEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
            sequence="M1+M2+X C">
+     </key>
+     <key
+           commandId="org.eclipse.scava.plugin.commands.focus.apicallrecommendation"
+           contextId="org.eclipse.jdt.ui.javaEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+X F">
+     </key>
+     <key
+           commandId="org.eclipse.scava.plugin.commands.focus.codesnippetrecommendation"
+           contextId="org.eclipse.jdt.ui.javaEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+X S">
      </key>
   </extension>
   <extension

@@ -43,16 +43,16 @@ import io.swagger.client.model.RecommendedLibrary;
 
 public class LibrarySuggestionModel extends Model {
 	private final String pomLocation;
-	private final KnowledgeBaseAccess knowledgeBaseAccess = new KnowledgeBaseAccess();
+	private final KnowledgeBaseAccess knowledgeBaseAccess;
 
 	private final Collection<Library> usedLibraries = new HashSet<>();
 	private final Collection<Library> baseLibrariesForSearch = new HashSet<>();
 	private final Collection<Library> pickedLibraries = new HashSet<>();
 
-	public LibrarySuggestionModel(String pomLocation) {
+	public LibrarySuggestionModel(String pomLocation, KnowledgeBaseAccess knowledgeBaseAccess) {
 		super();
-
 		this.pomLocation = pomLocation;
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
 	}
 
 	@Override

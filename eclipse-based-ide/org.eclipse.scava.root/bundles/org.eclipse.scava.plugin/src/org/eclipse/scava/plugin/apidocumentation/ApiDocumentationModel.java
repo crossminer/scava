@@ -22,8 +22,9 @@ import io.swagger.client.model.Recommendation;
 public class ApiDocumentationModel extends Model {
 	private final KnowledgeBaseAccess knowledgeBaseAccess;
 
-	public ApiDocumentationModel() {
-		knowledgeBaseAccess = new KnowledgeBaseAccess();
+	public ApiDocumentationModel(KnowledgeBaseAccess knowledgeBaseAccess) {
+		super();
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
 	}
 
 	public IApiAsyncBuilder<Recommendation> requestApiDocumentationAsync(String methodCode) {
@@ -35,4 +36,5 @@ public class ApiDocumentationModel extends Model {
 			return recommenderRestController.getApiDocumentationRecommendationUsingPOSTAsync(query, apiCallback);
 		});
 	}
+
 }

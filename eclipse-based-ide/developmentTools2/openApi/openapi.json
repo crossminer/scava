@@ -531,12 +531,93 @@
                 }
             }
         },
-        "/api/artifacts/add/{project_name}": {
+        "/api/artifacts/add-mpp.by-url/": {
             "post": {
                 "tags": [
                     "artifacts-rest-controller"
                 ],
-                "summary": "Add github project to KB",
+                "summary": "Import projects from the metric provider platform from a specific url. The url should be <server_url>:<server_port>",
+                "operationId": "importMPPProjectsFromSpecificUrlUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "mppUrl",
+                        "in": "query",
+                        "description": "mppUrl",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/add-mpp/": {
+            "post": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Import projects from the metric provider platform",
+                "operationId": "importMPPProjectsUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/add/{project_name}/{access_token}": {
+            "post": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Add github project to KB. use <owner>--<repo>",
                 "operationId": "importGithubProjectUsingPOST",
                 "consumes": [
                     "application/json"
@@ -550,6 +631,13 @@
                         "name": "project_name",
                         "in": "path",
                         "description": "project_name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "access_token",
+                        "in": "path",
+                        "description": "access_token",
                         "required": true,
                         "type": "string"
                     }
@@ -672,6 +760,143 @@
                 }
             }
         },
+        "/api/artifacts/m4p/": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve the list of deplovelor acvtivity metrics",
+                "operationId": "getAllMetricForProjectUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Results page you want to retrieve (0..N)",
+                        "required": false,
+                        "type": "object"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Number of records per page.",
+                        "required": false,
+                        "type": "object"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Iterable"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/m4p/pid/{project_id}": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Get metrics by projectID id",
+                "operationId": "getMetricForProjectByProjectIdUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "project_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MetricsForProject"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/m4p/uid/{user_id}": {
+            "get": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "Get metrics by user id",
+                "operationId": "getMetricForProjectByUserIdUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MetricsForProject"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/artifacts/search/{artifact_query}": {
             "get": {
                 "tags": [
@@ -758,6 +983,50 @@
                         "schema": {
                             "$ref": "#/definitions/MetricsForProject"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/artifacts/storeLibsBoost/": {
+            "post": {
+                "tags": [
+                    "artifacts-rest-controller"
+                ],
+                "summary": "This API stores the lib boost values given as txt file",
+                "operationId": "storeLibBoostsUsingPOST",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "description": "file",
+                        "required": true,
+                        "type": "file"
                     }
                 ],
                 "responses": {
@@ -1111,6 +1380,53 @@
                 }
             }
         },
+        "/api/recommendation/focus-code-snippet/": {
+            "post": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource is used to retrieve recommendation about the next API function calls. It integrates FOCUS technology.",
+                "operationId": "getFocusCodeSnippetRecommendationUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "query",
+                        "description": "Query object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Query"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Recommendation"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/recommendation/focus/": {
             "post": {
                 "tags": [
@@ -1145,6 +1461,33 @@
                     },
                     "201": {
                         "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/recommendation/force-distance-matrices-computation": {
+            "get": {
+                "tags": [
+                    "recommender-rest-controller"
+                ],
+                "summary": "This resource forces tha KB to compute all similarity matrixes",
+                "operationId": "forceDistanceMatricesComputationUsingGET",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -1512,6 +1855,12 @@
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "licenseName": {
+                    "type": "string"
+                },
+                "licenseUrl": {
                     "type": "string"
                 },
                 "master_branch": {
@@ -1961,6 +2310,47 @@
             },
             "title": "PageOfArtifact"
         },
+        "PageOfMetricsForProject": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MetricsForProject"
+                    }
+                },
+                "first": {
+                    "type": "boolean"
+                },
+                "last": {
+                    "type": "boolean"
+                },
+                "number": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "numberOfElements": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "size": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "sort": {
+                    "$ref": "#/definitions/Sort"
+                },
+                "totalElements": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "totalPages": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "title": "PageOfMetricsForProject"
+        },
         "Parameter": {
             "type": "object",
             "properties": {
@@ -2095,6 +2485,9 @@
                 },
                 "artifact": {
                     "$ref": "#/definitions/Artifact"
+                },
+                "codeSnippet": {
+                    "type": "string"
                 },
                 "recommendationType": {
                     "type": "string"

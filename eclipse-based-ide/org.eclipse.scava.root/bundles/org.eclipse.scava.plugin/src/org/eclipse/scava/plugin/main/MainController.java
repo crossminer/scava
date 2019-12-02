@@ -22,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.scava.plugin.Activator;
@@ -49,6 +50,7 @@ public class MainController extends ModelController<MainModel> {
 	private Map<IWorkbenchPage, PageController> pageControllers = new HashMap<>();
 	private EventBus eventBus;
 	private UserMonitor userMonitor;
+	private KnowledgeBaseAccess knowledgeBaseAccess;
 
 	public MainController(Controller parent, MainModel model, EventBus eventBus) {
 		super(parent, model);
@@ -60,6 +62,8 @@ public class MainController extends ModelController<MainModel> {
 	@Override
 	public void init() {
 		super.init();
+
+		knowledgeBaseAccess = new KnowledgeBaseAccess();
 
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 
@@ -109,7 +113,7 @@ public class MainController extends ModelController<MainModel> {
 		PageController controller = pageControllers.get(page);
 
 		if (controller == null || controller.isDisposed()) {
-			PageModel model = new PageModel(page);
+			PageModel model = new PageModel(page, knowledgeBaseAccess);
 			controller = new PageController(this, model);
 
 			pageControllers.put(page, controller);
@@ -182,8 +186,10 @@ public class MainController extends ModelController<MainModel> {
 		pageControllers.clear();
 
 		eventBus.unregister(this);
-
+		
 		super.disposeController();
+		
+		knowledgeBaseAccess.dispose();
 	}
 
 	public UserMonitor getUserMonitor() {
