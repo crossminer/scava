@@ -31,7 +31,7 @@ public class MBoxMessage extends Message {
 		logger = (OssmeterLogger) OssmeterLogger.getLogger("platform.communicationchannel.mbox.parser");
 	}
 
-	public MBoxMessage(String stringMessage, boolean verbose) {
+	public MBoxMessage(String stringMessage) {
 		super();
 		Properties props = System.getProperties();
 		props.setProperty("mail.mime.address.strict", "false");
@@ -48,7 +48,7 @@ public class MBoxMessage extends Message {
 		props.setProperty("mail.mime.ignoremultipartencoding", "false");
 //		props.setProperty("mail.mime.allowencodedmessages", "true");
 		session = Session.getDefaultInstance(props);
-		parse(stringMessage, verbose);
+		parse(stringMessage);
 	}
 
 	@Override
@@ -183,8 +183,8 @@ public class MBoxMessage extends Message {
 		return article;
 	}
 
-	private void parse(String stringMessage, boolean verbose) {
-		logger.debug("Parsing message.");
+	private void parse(String stringMessage) {
+		logger.debug("Parsing message:"+stringMessage);
 		InputStream is = new ByteArrayInputStream(stringMessage.toString().getBytes(Charset.forName("UTF-8")));
 		try {
 			mimeMessage = new MimeMessage(session, is);
