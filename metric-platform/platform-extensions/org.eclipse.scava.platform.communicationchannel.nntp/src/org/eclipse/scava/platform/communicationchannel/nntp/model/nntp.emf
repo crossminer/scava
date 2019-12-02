@@ -1,0 +1,16 @@
+package org.eclipse.scava.platform.communicationchannel.nntp.model;
+
+@db(qualifiedCollectionNames="true")
+@customize
+class NntpDataManager {
+	@series
+	val NntpDatum[*] nntpData;
+}
+
+class NntpDatum {
+	@searchable
+	attr String ossmerterId;
+	attr long lastArticleChecked;
+	attr String date;
+}
+

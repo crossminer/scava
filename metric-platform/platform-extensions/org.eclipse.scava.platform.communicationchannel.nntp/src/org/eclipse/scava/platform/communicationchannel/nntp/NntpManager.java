@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 University of York
+ * Copyright (c) 2019 Edge Hill University
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,8 @@ import org.apache.commons.net.nntp.Article;
 import org.apache.commons.net.nntp.NNTPClient;
 import org.apache.commons.net.nntp.NewsgroupInfo;
 import org.eclipse.scava.platform.Date;
+import org.eclipse.scava.platform.communicationchannel.nntp.model.NntpDataManager;
+import org.eclipse.scava.platform.communicationchannel.nntp.model.NntpDatum;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelArticle;
 import org.eclipse.scava.platform.delta.communicationchannel.CommunicationChannelDelta;
 import org.eclipse.scava.platform.delta.communicationchannel.ICommunicationChannelManager;
@@ -42,20 +44,39 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 		
 		NewsgroupInfo newsgroupInfo = NntpUtil.selectNewsgroup(nntpClient, newsgroup);
 		long lastArticle = newsgroupInfo.getLastArticleLong();
+		NntpDataManager nntpDataManager = new NntpDataManager(db);
+		
+		NntpDatum data=null;
+		Iterable<NntpDatum> dataIt = nntpDataManager.getNntpData().find(NntpDatum.OSSMERTERID.eq(newsgroup.getOSSMeterId()));
+		long lastArticleChecked=-1;
+		for(NntpDatum nd : dataIt)
+		{
+			data=nd;
+		}
+		if(data==null)
+		{
+			data = new NntpDatum();
+			data.setDate(date.toString());
+			data.setOssmerterId(newsgroup.getOSSMeterId());
+			data.setLastArticleChecked(-1);
+			nntpDataManager.getNntpData().add(data);
+			nntpDataManager.sync();
+		}
+		else
+		{
+			if(date.compareTo(new Date(data.getDate()).addDays(1))<0)
+			{
+				data.setDate(date.toString());
+				data.setOssmerterId(newsgroup.getOSSMeterId());
+				data.setLastArticleChecked(-1);
+				nntpDataManager.sync();
+			}
+			else
+			{
+				lastArticleChecked=data.getLastArticleChecked();
+			}
+		}
 
-//		 The following statement is not really needed, but I added it to speed up running,
-//		 in the date is far latter than the first day of the newsgroup.
-//		if (Integer.parseInt(newsgroup.getLastArticleChecked())<134500)
-//			newsgroup.setLastArticleChecked("134500"); //137500");
-
-		/*FIXME: Edge Hill. This will be always the original value
-		 * Readers cannot change values in the MongoDB
-		 * And therefore the reader will always start from the first article*/
-		//TODO: This means that it is necessary to create a variable that stores the last article checked
-		String lac = newsgroup.getLastArticleChecked();
-		if (lac == null || lac.equals("") || lac.equals("null"))
-			lac = "-1";
-		long lastArticleChecked = Long.parseLong(lac);
 		if (lastArticleChecked<0) lastArticleChecked = newsgroupInfo.getFirstArticleLong();
 
 		CommunicationChannelDelta delta = new CommunicationChannelDelta();
@@ -149,7 +170,7 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 //							System.out.println("dayNOTCompleted");
 						} 
 						else {
-							logger.warn("It has been found an article that could mean previous deltas incomplete " + article.getDate());
+							logger.warn("It has been found an article that could mean previous deltas are incomplete " + article.getDate());
 						}
 					}
 					else
@@ -162,19 +183,19 @@ public class NntpManager implements ICommunicationChannelManager<NntpNewsGroup> 
 				String mainMessage="Article Date has been found to be null and it is impossible to recover. ";
 				if(delta.getArticles().size()==0)
 				{
-					logger.error(mainMessage+"Returning empty delta.");
-					nntpClient.disconnect();
-					return delta;
+					logger.error(mainMessage+"Returning empty delta.");	
 				}
 				else
 				{
-					dayCompleted=true;
 					logger.error(mainMessage+"Returning partial delta.");
 				}	
+				dayCompleted=true;
 			}
 		}
-		nntpClient.disconnect(); 
-		newsgroup.setLastArticleChecked(lastArticleChecked+"");
+		nntpClient.disconnect();
+		data.setLastArticleChecked(lastArticleChecked);
+		data.setDate(date.toString());
+		nntpDataManager.sync();
 		logger.info(newsgroup.getNewsGroupName() + " on " + date.toString()+") contains:\t"+ delta.getArticles().size() + " nntp articles");
 		return delta;
 	}
