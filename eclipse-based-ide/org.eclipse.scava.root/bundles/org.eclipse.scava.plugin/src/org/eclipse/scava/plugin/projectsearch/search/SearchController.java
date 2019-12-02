@@ -57,7 +57,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 			return;
 		}
 
-		SearchTabModel model = new ExpressionSearchTabModel(expression);
+		SearchTabModel model = new ExpressionSearchTabModel(getModel().getKnowledgeBaseAccess(), expression);
 		SearchTabView view = new SearchTabView();
 		SearchTabController controller = new SearchTabController(this, model, view);
 		controller.init();
@@ -97,7 +97,7 @@ public class SearchController extends ModelViewController<SearchModel, SearchVie
 		if (routedEvent instanceof SearchSimilarsRequestEvent) {
 			SearchSimilarsRequestEvent event = (SearchSimilarsRequestEvent) routedEvent;
 
-			SearchTabModel model = new SimilarsSearchTabModel(event.getProject(), event.getSimilarityMethod());
+			SearchTabModel model = new SimilarsSearchTabModel(getModel().getKnowledgeBaseAccess(), event.getProject(), event.getSimilarityMethod());
 			SearchTabView view = new SearchTabView();
 			SearchTabController controller = new SearchTabController(this, model, view);
 			controller.init();

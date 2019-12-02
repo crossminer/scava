@@ -1,5 +1,6 @@
 package org.eclipse.scava.plugin.ui.errorhandler;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.webreferenceviewer.reference.sites.StackOverflowErrorResponseException;
 import org.eclipse.scava.plugin.usermonitoring.ErrorType;
 import org.eclipse.swt.widgets.Shell;
+import org.rascalmpl.interpreter.asserts.ImplementationError;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,12 +25,15 @@ import io.swagger.client.ApiException;
 
 public class ErrorHandler {
 
-	public static String logAndGetMessage(Exception e) {
+	public static String logAndGetMessage(Throwable e) {
 		if (e instanceof ApiException) {
 			ApiException exception = (ApiException) e;
 			return logAndGetMessage(exception);
 		} else if (e instanceof StackOverflowErrorResponseException) {
 			StackOverflowErrorResponseException exception = (StackOverflowErrorResponseException) e;
+			return logAndGetMessage(exception);
+		} else if (e instanceof ImplementationError) {
+			ImplementationError exception = (ImplementationError) e;
 			return logAndGetMessage(exception);
 		} else {
 			log(Status.ERROR, "Unexpected error happened", e);
@@ -55,6 +60,9 @@ public class ErrorHandler {
 				}
 				if (cause instanceof SocketTimeoutException) {
 					userMessage.append("Connection timed out.\nProbably the host is unavailable or you have connection issues.\n");
+				}
+				if( cause instanceof ConnectException ) {
+					userMessage.append(cause.getMessage()+"\n");
 				}
 				userMessage.append("Please, check your settings in the preferences.\n");
 				break;
@@ -132,22 +140,38 @@ public class ErrorHandler {
 		message.append(e.getErrorMessage());
 		message.append("\n");
 
-		log(Status.ERROR, message.toString(), e);
-
 		if (e.getErrorId() == 502) {
 			message.append("Note: ");
 			message.append("You have reached the limit of daily requests of the Stackexchange API.");
 			message.append("\n");
 		}
+		
+		log(Status.ERROR, message.toString(), e);
 
 		return message.toString();
 	}
 
-	public static void logAndShowErrorMessage(Shell shell, Exception e) {
+	public static String logAndGetMessage(ImplementationError e) {
+		StringBuilder message = new StringBuilder();
+
+		message.append(e.getMessage());
+		message.append("\n");
+		message.append("Please check https://www.rascal-mpl.org/help/troubleshooting.html\n");
+		
+		log(Status.ERROR, message.toString(), e);
+		
+		StringBuilder userMessage = new StringBuilder();
+		userMessage.append(e.getMessage());
+		userMessage.append("\n");
+		userMessage.append("For more details see the log file.");
+		
+		return userMessage.toString();
+	}
+	public static void logAndShowErrorMessage(Shell shell, Throwable e) {
 		logAndShowErrorMessage(shell, "", e);
 	}
 	
-	public static void logAndShowErrorMessage(Shell shell, String message, Exception e) {
+	public static void logAndShowErrorMessage(Shell shell, String message, Throwable e) {
 		String userMessage = logAndGetMessage(e);
 		if( message.isEmpty() ) {
 			MessageDialog.openError(shell, "Error", userMessage);
@@ -156,14 +180,14 @@ public class ErrorHandler {
 		}
 	}
 
-	public static void handle(Shell shell, Exception exception, ErrorType errorType) {
+	public static void handle(Shell shell, Throwable exception, ErrorType errorType) {
 
 		StringBuilder userMessage = new StringBuilder();
 		userMessage.append(errorType.getErrorMessage());
 		MessageDialog.openError(shell, "Error", userMessage.toString());
 	}
 
-	private static void log(int severity, String logMessage, Exception e) {
+	private static void log(int severity, String logMessage, Throwable e) {
 		ILog logger = Platform.getLog(Activator.getDefault().getBundle());
 		logger.log(new Status(severity, Activator.PLUGIN_ID, Status.OK, logMessage.toString(), e));
 	}

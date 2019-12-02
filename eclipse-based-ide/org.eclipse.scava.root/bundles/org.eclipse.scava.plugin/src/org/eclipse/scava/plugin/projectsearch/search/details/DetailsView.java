@@ -296,6 +296,8 @@ public class DetailsView extends CompositeView<IDetailsViewEventListener> {
 				new Row("Year", Optional.ofNullable(project.getYear()).filter(y -> y != 0).map(y -> Integer.toString(y)).orElse(Constants.NO_DATA)),
 				new Row("Active", Optional.ofNullable(project.isActive()).map(a -> a ? "yes" : "no").orElse(Constants.NO_DATA)),
 				new Row("Homepage", Optional.ofNullable(project.getHomePage()).orElse(Constants.NO_DATA)),
+				new Row("License name", Optional.ofNullable(project.getLicenseName()).orElse(Constants.NO_DATA)),
+				new Row("License url", Optional.ofNullable(project.getLicenseUrl()).orElse(Constants.NO_DATA)),
 				new Row("Type", Optional.ofNullable(project.getType()).map(ArtifactType::getName).orElse(Constants.NO_DATA)),
 				new Row("Is it private?", Optional.ofNullable(project.isPrivate_()).map(p -> p ? "yes" : "no").orElse(Constants.NO_DATA)),
 				new Row("Is it a fork?", Optional.ofNullable(project.isFork()).map(f -> f ? "yes" : "no").orElse(Constants.NO_DATA)),

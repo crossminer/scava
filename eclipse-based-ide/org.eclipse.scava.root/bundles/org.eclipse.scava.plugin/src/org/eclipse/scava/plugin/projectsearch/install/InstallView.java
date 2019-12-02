@@ -203,8 +203,11 @@ public class InstallView extends TitleAreaDialogView<IInstallViewEventListener> 
 	}
 	
 	public void setEnabledInstall(boolean enabled) {
-		btnBrowse.setEnabled(enabled);
 		btnInstallAll.setEnabled(enabled);
+	}
+	
+	public void setEnabledChangeBasePath(boolean enabled) {
+		btnBrowse.setEnabled(enabled);
 	}
 	
 	public void setEnabledClose(boolean enabled) {

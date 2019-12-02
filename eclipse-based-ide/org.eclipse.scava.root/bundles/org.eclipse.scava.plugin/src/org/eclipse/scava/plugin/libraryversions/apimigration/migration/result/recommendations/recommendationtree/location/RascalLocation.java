@@ -23,8 +23,11 @@ public class RascalLocation implements ILocation, IJaccardComparable {
 	private final List<PathPart> parts;
 	private final Set<PathPart> jaccardInput;
 	private final String location;
+	private final String rascalLocation;
 
 	public RascalLocation(String location) {
+		rascalLocation = location;
+		
 		int indexOfSeparator;
 		if (location != null && !location.isEmpty() && (indexOfSeparator = location.indexOf(":///")) != -1) {
 			location = fixLocation(location);
@@ -62,6 +65,10 @@ public class RascalLocation implements ILocation, IJaccardComparable {
 	@Override
 	public String toString() {
 		return "RascalLocation [scheme=" + scheme + ", parts=" + parts + "]";
+	}
+	
+	public String getRascalLocation() {
+		return rascalLocation;
 	}
 
 	@Override

@@ -24,7 +24,12 @@ import io.swagger.client.model.Recommendation;
 
 public class CodeRecommendationModel extends Model {
 
-	private final KnowledgeBaseAccess knowledgeBaseAccess = new KnowledgeBaseAccess();
+	private final KnowledgeBaseAccess knowledgeBaseAccess;
+	
+	public CodeRecommendationModel(KnowledgeBaseAccess knowledgeBaseAccess) {
+		super();
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
+	}
 
 	public Collection<ApiCallResult> getApiCallResults(String sourceCode) throws ApiException {
 
@@ -37,4 +42,5 @@ public class CodeRecommendationModel extends Model {
 		return recommendation.getRecommendationItems().stream().map(r -> r.getApiCallRecommendation())
 				.collect(Collectors.toList());
 	}
+	
 }

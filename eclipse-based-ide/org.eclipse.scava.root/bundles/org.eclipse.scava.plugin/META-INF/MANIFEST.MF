@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CROSSMINER Eclipse-based IDE plug-in
 Bundle-SymbolicName: org.eclipse.scava.plugin;singleton:=true
-Bundle-Version: 1.15.275.rev0
+Bundle-Version: 1.18.0.rev0
 Bundle-Activator: org.eclipse.scava.plugin.Activator
 Bundle-Vendor: FrontEndART
 Require-Bundle: org.eclipse.ui,
@@ -22,10 +22,12 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jdt.core.dom,
+ org.eclipse.jdt.core.manipulation,
  org.eclipse.jdt.internal.ui.javaeditor,
  org.eclipse.ui.editors.text,
  org.eclipse.ui.texteditor
 Bundle-ClassPath: .,
  lib/swing2swt.jar,
  lib/org.eclipse.scava.plugin.dependencies.jar,
+ lib/org.eclipse.scava.java.m3-0.0.1-SNAPSHOT-jar-with-dependencies.jar,
  lib/nashorn.jar

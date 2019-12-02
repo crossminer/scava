@@ -43,6 +43,22 @@ public abstract class EclipseInterfaceEvent extends RoutedEvent {
 
 	}
 
+	public static class FocusApiCallRecommendationRequestEvent extends EclipseInterfaceEvent {
+
+		public FocusApiCallRecommendationRequestEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
+	public static class FocusCodeSnippetRecommendationRequestEvent extends EclipseInterfaceEvent {
+
+		public FocusCodeSnippetRecommendationRequestEvent(Controller source) {
+			super(source);
+		}
+
+	}
+
 	public static class ApiDocuemntationRequestEvent extends EclipseInterfaceEvent {
 
 		public ApiDocuemntationRequestEvent(Controller source) {

@@ -19,8 +19,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.packageview.PackageFragmentRootContainer;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jdt.ui.SharedASTProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
@@ -31,6 +35,11 @@ import org.eclipse.scava.plugin.apidocumentation.ApiDocumentationView;
 import org.eclipse.scava.plugin.coderecommendation.CodeRecommendationController;
 import org.eclipse.scava.plugin.coderecommendation.CodeRecommendationModel;
 import org.eclipse.scava.plugin.coderecommendation.CodeRecommendationView;
+import org.eclipse.scava.plugin.focus.FocusRecommendationModel;
+import org.eclipse.scava.plugin.focus.apicall.FocusApiCallRecommendationController;
+import org.eclipse.scava.plugin.focus.apicall.FocusApiCallRecommendationView;
+import org.eclipse.scava.plugin.focus.codesnippet.FocusCodeSnippetRecommendationController;
+import org.eclipse.scava.plugin.focus.codesnippet.FocusCodeSnippetRecommendationView;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.librarysuggestion.LibrarySuggestionController;
 import org.eclipse.scava.plugin.librarysuggestion.LibrarySuggestionModel;
@@ -47,6 +56,8 @@ import org.eclipse.scava.plugin.libraryversions.updater.LibraryVersionUpdaterMod
 import org.eclipse.scava.plugin.libraryversions.updater.LibraryVersionUpdaterView;
 import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.ApiDocuemntationRequestEvent;
 import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.CodeRecommendationRequestEvent;
+import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.FocusApiCallRecommendationRequestEvent;
+import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.FocusCodeSnippetRecommendationRequestEvent;
 import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.LibrarySearchRequestEvent;
 import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.LibraryVersionUpdaterRequestEvent;
 import org.eclipse.scava.plugin.main.EclipseInterfaceEvent.ProjectSearchRequestEvent;
@@ -55,6 +66,8 @@ import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
 import org.eclipse.scava.plugin.projectsearch.ProjectSearchController;
+import org.eclipse.scava.plugin.projectsearch.ProjectSearchModel;
+import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -67,6 +80,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class PageController extends ModelController<PageModel> {
 
 	private CodeRecommendationController codeRecommendationController;
+	private FocusApiCallRecommendationController focusApiCallRecommendationController;
+	private FocusCodeSnippetRecommendationController focusCodeSnippetRecommendationController;
 	private ApiDocumentationController apiDocumentationController;
 	private ApiMigrationCenterController apiMigrationCenterController;
 
@@ -80,7 +95,8 @@ public class PageController extends ModelController<PageModel> {
 		if (routedEvent instanceof ProjectSearchRequestEvent) {
 			ProjectSearchRequestEvent event = (ProjectSearchRequestEvent) routedEvent;
 
-			ProjectSearchController controller = new ProjectSearchController(this);
+			ProjectSearchModel model = new ProjectSearchModel(getModel().getKnowledgeBaseAccess());
+			ProjectSearchController controller = new ProjectSearchController(this, model);
 			controller.init();
 
 			return;
@@ -105,7 +121,7 @@ public class PageController extends ModelController<PageModel> {
 				return;
 			}
 
-			LibrarySuggestionModel model = new LibrarySuggestionModel(pomFile.getLocation().toOSString());
+			LibrarySuggestionModel model = new LibrarySuggestionModel(pomFile.getLocation().toOSString(), getModel().getKnowledgeBaseAccess());
 			LibrarySuggestionView view = new LibrarySuggestionView(Display.getDefault().getActiveShell());
 			LibrarySuggestionController controller = new LibrarySuggestionController(this, model, view);
 			controller.init();
@@ -136,7 +152,7 @@ public class PageController extends ModelController<PageModel> {
 				IFile file = ((FileEditorInput) editorInput).getFile();
 
 				if (codeRecommendationController == null || codeRecommendationController.isDisposed()) {
-					CodeRecommendationModel model = new CodeRecommendationModel();
+					CodeRecommendationModel model = new CodeRecommendationModel(getModel().getKnowledgeBaseAccess());
 					CodeRecommendationView view = CodeRecommendationView.open(CodeRecommendationView.ID);
 					codeRecommendationController = new CodeRecommendationController(this, model, view);
 
@@ -151,6 +167,100 @@ public class PageController extends ModelController<PageModel> {
 				e.printStackTrace();
 				MessageDialog.openError(getModel().getPage().getWorkbenchWindow().getShell(), "Error",
 						"Unexpected error:\n\n" + e);
+			}
+
+			return;
+		}
+		
+		if (routedEvent instanceof FocusApiCallRecommendationRequestEvent) {
+			FocusApiCallRecommendationRequestEvent event = (FocusApiCallRecommendationRequestEvent) routedEvent;
+
+			try {
+				IEditorPart activeEditor = getModel().getPage().getActiveEditor();
+
+				if (!(activeEditor instanceof AbstractTextEditor)) {
+					MessageDialog.openError(getModel().getPage().getWorkbenchWindow().getShell(), "Error",
+							"Put the cursor into the body of a method");
+					return;
+				}
+
+				ITextEditor editor = (ITextEditor) activeEditor;
+				ITextSelection textSelection = (ITextSelection) editor.getSelectionProvider().getSelection();
+				
+				IEditorInput editorInput = editor.getEditorInput();
+
+				if (!(editorInput instanceof FileEditorInput)) {
+					return;
+				}
+
+				IFile file = ((FileEditorInput) editorInput).getFile();
+				
+				ITypeRoot editorInputTypeRoot = JavaUI.getEditorInputTypeRoot(editorInput);
+				if( editorInputTypeRoot == null ) {
+					return;
+				}
+				
+				CompilationUnit ast = SharedASTProvider.getAST(editorInputTypeRoot, SharedASTProvider.WAIT_YES, null);
+				
+				if (focusApiCallRecommendationController == null || focusApiCallRecommendationController.isDisposed()) {
+					FocusRecommendationModel model = new FocusRecommendationModel(getModel().getKnowledgeBaseAccess());
+					FocusApiCallRecommendationView view = FocusApiCallRecommendationView.open(FocusApiCallRecommendationView.ID);
+					focusApiCallRecommendationController = new FocusApiCallRecommendationController(this, model, view);
+
+					focusApiCallRecommendationController.init();
+				}
+				
+				focusApiCallRecommendationController.request(file.getProject(), ast, textSelection);
+				FocusApiCallRecommendationView.open(FocusApiCallRecommendationView.ID);
+			} catch (Throwable e) {
+				ErrorHandler.logAndShowErrorMessage(getModel().getPage().getWorkbenchWindow().getShell(), e);
+			}
+
+			return;
+		}
+		
+		if (routedEvent instanceof FocusCodeSnippetRecommendationRequestEvent) {
+			FocusCodeSnippetRecommendationRequestEvent event = (FocusCodeSnippetRecommendationRequestEvent) routedEvent;
+
+			try {
+				IEditorPart activeEditor = getModel().getPage().getActiveEditor();
+
+				if (!(activeEditor instanceof AbstractTextEditor)) {
+					MessageDialog.openError(getModel().getPage().getWorkbenchWindow().getShell(), "Error",
+							"Put the cursor into the body of a method");
+					return;
+				}
+
+				ITextEditor editor = (ITextEditor) activeEditor;
+				ITextSelection textSelection = (ITextSelection) editor.getSelectionProvider().getSelection();
+				
+				IEditorInput editorInput = editor.getEditorInput();
+
+				if (!(editorInput instanceof FileEditorInput)) {
+					return;
+				}
+
+				IFile file = ((FileEditorInput) editorInput).getFile();
+				
+				ITypeRoot editorInputTypeRoot = JavaUI.getEditorInputTypeRoot(editorInput);
+				if( editorInputTypeRoot == null ) {
+					return;
+				}
+				
+				CompilationUnit ast = SharedASTProvider.getAST(editorInputTypeRoot, SharedASTProvider.WAIT_YES, null);
+				
+				if (focusCodeSnippetRecommendationController == null || focusCodeSnippetRecommendationController.isDisposed()) {
+					FocusRecommendationModel model = new FocusRecommendationModel(getModel().getKnowledgeBaseAccess());
+					FocusCodeSnippetRecommendationView view = FocusCodeSnippetRecommendationView.open(FocusCodeSnippetRecommendationView.ID);
+					focusCodeSnippetRecommendationController = new FocusCodeSnippetRecommendationController(this, model, view);
+
+					focusCodeSnippetRecommendationController.init();
+				}
+				
+				focusCodeSnippetRecommendationController.request(file.getProject(), ast, textSelection);
+				FocusCodeSnippetRecommendationView.open(FocusCodeSnippetRecommendationView.ID);
+			} catch (Throwable e) {
+				ErrorHandler.logAndShowErrorMessage(getModel().getPage().getWorkbenchWindow().getShell(), e);
 			}
 
 			return;
@@ -178,7 +288,7 @@ public class PageController extends ModelController<PageModel> {
 				}
 
 				if (apiDocumentationController == null || apiDocumentationController.isDisposed()) {
-					ApiDocumentationModel model = new ApiDocumentationModel();
+					ApiDocumentationModel model = new ApiDocumentationModel(getModel().getKnowledgeBaseAccess());
 					ApiDocumentationView view = ApiDocumentationView.open(ApiDocumentationView.ID);
 					apiDocumentationController = new ApiDocumentationController(this, model, view);
 

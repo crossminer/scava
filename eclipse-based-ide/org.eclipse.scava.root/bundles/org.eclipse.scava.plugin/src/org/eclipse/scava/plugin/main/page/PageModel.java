@@ -10,15 +10,22 @@
 
 package org.eclipse.scava.plugin.main.page;
 
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
 import org.eclipse.ui.IWorkbenchPage;
 
 public class PageModel extends Model {
 	private final IWorkbenchPage page;
+	private final KnowledgeBaseAccess knowledgeBaseAccess;
 
-	public PageModel(IWorkbenchPage page) {
+	public PageModel(IWorkbenchPage page, KnowledgeBaseAccess knowledgeBaseAccess) {
 		super();
 		this.page = page;
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
+	}
+
+	public KnowledgeBaseAccess getKnowledgeBaseAccess() {
+		return knowledgeBaseAccess;
 	}
 
 	public IWorkbenchPage getPage() {
