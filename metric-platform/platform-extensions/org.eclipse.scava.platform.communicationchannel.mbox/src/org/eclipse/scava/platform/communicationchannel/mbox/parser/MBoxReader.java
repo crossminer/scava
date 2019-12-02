@@ -32,13 +32,12 @@ public class MBoxReader {
 		List<String> stringMessages = MBoxParser.parse(MBoxParser.preprocess(file, verbose), verbose);
 		for (String stringMessage: stringMessages) {
 			MBoxMessage message = new MBoxMessage(stringMessage, verbose);
-			message.toArticle();
-//			message.print();
-			Email email = new Email(message);
-//			email.print();
-			emails.add(email);
+			if(message!=null)
+			{
+				Email email = new Email(message);
+				emails.add(email);
+			}
 		}
-//		System.err.println("ENDED-SUCCESSFULLY");
 		return emails;
 	}
 
