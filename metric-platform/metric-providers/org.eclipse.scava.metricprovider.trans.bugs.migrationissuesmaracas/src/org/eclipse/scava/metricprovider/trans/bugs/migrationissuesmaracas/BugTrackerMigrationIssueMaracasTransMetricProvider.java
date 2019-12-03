@@ -186,9 +186,12 @@ public class BugTrackerMigrationIssueMaracasTransMetricProvider implements ITran
 				}
 				counterPatterns++;
 			}
-			counterMatches/=counterPatterns;
-			if(counterMatches>0)
-				matchedMaracasText.addChange(maracasRegexData.getChange(), counterMatches);
+			if(counterPatterns>0)
+			{
+				counterMatches/=counterPatterns;
+				if(counterMatches>0)
+					matchedMaracasText.addChange(maracasRegexData.getChange(), counterMatches);
+			}
 		}
 		return matchedMaracasText;
 	}
