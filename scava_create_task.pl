@@ -92,7 +92,7 @@ my @metric_providers = (
     "org.eclipse.scava.metricprovider.historic.bugs.users.UsersHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.bugs.newusers.NewUsersHistoricMetricProvider",
 
-    "org.eclipse.scava.metricprovider.historic.documentation.sentiment.DocumentationSentimentHistoricMetricProvider",
+#    "org.eclipse.scava.metricprovider.historic.documentation.sentiment.DocumentationSentimentHistoricMetricProvider",
     
     "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
     "org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.SeveritySentimentHistoricMetricProvider",
