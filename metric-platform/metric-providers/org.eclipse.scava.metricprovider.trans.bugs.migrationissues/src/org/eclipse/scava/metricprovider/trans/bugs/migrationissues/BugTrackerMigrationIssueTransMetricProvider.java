@@ -156,6 +156,7 @@ public class BugTrackerMigrationIssueTransMetricProvider  implements ITransientM
 			migrationIssue = new BugTrackerMigrationIssue();
 			migrationIssue.setBugTrackerId(bugTrackerId);
 			migrationIssue.setBugId(bugId);
+			migrationIssue.setSummary(summary);
 			db.getBugTrackerMigrationIssues().add(migrationIssue);
 			db.sync();
 		}
