@@ -117,10 +117,10 @@ public class MBoxMessage extends Message {
 		String subject = "";
 		try {
 			subject = mimeMessageParser.getSubject();
-			if(subject.length()>300)
+			if(subject.length()>100)
 			{
-				logger.warn("Field SUBJECT longer than 300 characters. Truncating length.");
-				subject=subject.substring(0, 299);
+				logger.warn("Field SUBJECT longer than 100 characters. Truncating length.");
+				subject=subject.substring(0, 99);
 			}
 		} catch (Exception e) {
 			logger.error("Field SUBJECT not found: ",e);
