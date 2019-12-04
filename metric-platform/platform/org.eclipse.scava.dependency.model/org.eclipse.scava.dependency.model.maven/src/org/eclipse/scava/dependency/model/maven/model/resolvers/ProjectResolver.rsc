@@ -52,7 +52,7 @@ private map[str,str] getProjectParams(Node project) {
 
 public rel[loc,loc,map[str,str]] getProjectDependencies(loc logical, Node dom) {
 	rel[loc,loc,map[str,str]] dependencies = {};
-	if(/Node ds:element(_,"dependencies",_) := dom) {
+	for(/Node ds:element(_,"dependencies",_) := dom) {
 		for(/Node d:element(_,"dependency",_) := ds) {
 			groupId = getElementFromDOM("groupId",d);
 			artifactId = getElementFromDOM("artifactId",d);
