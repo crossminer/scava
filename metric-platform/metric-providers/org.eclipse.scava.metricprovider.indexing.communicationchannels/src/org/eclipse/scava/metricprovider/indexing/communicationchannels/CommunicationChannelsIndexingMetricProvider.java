@@ -81,7 +81,7 @@ public class CommunicationChannelsIndexingMetricProvider extends AbstractIndexin
 	public final static String IDENTIFIER = CommunicationChannelsIndexingMetricProvider.class.getCanonicalName();
 	public final static String SHORT_IDENTIFIER = "communication channels indexing metric";
 	public final static String FRIENDLY_NAME = "communication channels indexer";
-	public final static String DESCRIPTION = "This metric prepares and indexes documents realting to communication channels";
+	public final static String DESCRIPTION = "This metric prepares and indexes documents related to communication channels";
 
 	protected MetricProviderContext context;
 	protected List<IMetricProvider> uses;
