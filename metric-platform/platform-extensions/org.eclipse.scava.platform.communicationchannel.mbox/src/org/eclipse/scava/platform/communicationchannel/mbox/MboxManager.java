@@ -199,16 +199,10 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 	
 	private void readFile(File file, CommunicationChannelDelta delta, Date date, Mbox mbox)
 	{
-		for (Email email : MBoxReader.parseFile(file)) {
-
-			if(email.getDate()!=null) {
-
-				if (date.compareTo(new Date(email.getDate())) == 0) {
-
-					MboxEmail mboxEmail = new MboxEmail(email, mbox);
+		for (Email email : MBoxReader.parseFile(file, date))
+		{
+				MboxEmail mboxEmail = new MboxEmail(email, mbox);
 					delta.getArticles().add(mboxEmail);
-				}
-			}
 		}
 	}
 	
