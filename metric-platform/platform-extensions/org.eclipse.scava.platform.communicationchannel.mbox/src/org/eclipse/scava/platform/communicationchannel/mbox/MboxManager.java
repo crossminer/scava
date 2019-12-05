@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import org.eclipse.scava.platform.Date;
@@ -84,21 +85,97 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 		}
 		
 		CommunicationChannelDataPath dataPath;
-		if(!data.compareDate(month, year) || !data.fileExists())
-		{
-			String url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
-			if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
-				dataPath=downloadMbox(data.getTempDir(), url, extension);
-			else
-				dataPath=downloadMbox(data.getTempDir(),url, mbox.getUsername(), mbox.getPassword(),extension);
-			if(dataPath!=null)
+		//Case of dumps from Castalia
+		if(extension.equals(".mbox.gz"))
+		{	
+			//In this section, the months have to start from 1
+			boolean download=false;
+			int day=calendar.get(Calendar.DAY_OF_MONTH);
+			month+=1;	//Because months starts in 0
+			Long difference = data.differenceDays(day, month, year); 
+			
+			if(difference==null)
 			{
-				data.updateDataPath(dataPath, month, year);
-				CommunicationChannelDataManager.updateData(mbox.getOSSMeterId(), data);
+				//The files are updated each sunday at 2AM.
+				calendar.setTime(new java.util.Date());
+				calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+				int weekDay=calendar.get(Calendar.DAY_OF_WEEK);
+				//Thus we will update each Monday
+				calendar.add(weekDay, -(weekDay-2));
+				
+				data.updateDataPath(null, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+				
+				difference = data.differenceDays(day, month, year); 
+				download=true;
 			}
+			
+			if(difference<1)
+			{
+				
+				//The files are updated each sunday at 2AM.
+				calendar.setTime(new java.util.Date());
+				calendar.setTimeZone(TimeZone.getTimeZone("UTC"));	
+				int waiting=7-(calendar.get(Calendar.DAY_OF_WEEK)-2);
+				
+				try {
+					logger.info("The dumps need to be updated. The reader will have to wait for " + waiting
+							+ " days before downloading the new dumps.");
+					waiting*=24*60*60;
+					waiting-=(calendar.get(Calendar.HOUR_OF_DAY)*60*60)+(calendar.get(Calendar.MINUTE)*60);
+					logger.info("Exactly, the awaiting will be for "+waiting+" seconds.");
+					Thread.sleep((waiting * 1000l));
+		
+				} catch (InterruptedException e) {
+					logger.error("An error happened while waiting for the calls limit to renew", e);
+				}
+				download=true;
+			}
+			
+			if(download || !data.fileExists())
+			{
+				//The files are updated each sunday at 2AM.
+				calendar.setTime(new java.util.Date());
+				calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+				int weekDay=calendar.get(Calendar.DAY_OF_WEEK);
+				//Thus we will update each Monday
+				calendar.add(weekDay, -(weekDay-2));
+				
+				year = calendar.get(Calendar.YEAR);
+				month = calendar.get(Calendar.MONTH)+1;	//Remember day the months start in 0
+				day=calendar.get(Calendar.DAY_OF_MONTH);
+				
+			
+				String url = mbox.getUrl() + extension;
+				if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
+					dataPath=downloadMbox(data.getTempDir(), url, extension);
+				else
+					dataPath=downloadMbox(data.getTempDir(),url, mbox.getUsername(), mbox.getPassword(),extension);
+				if(dataPath!=null)
+				{
+					data.updateDataPath(dataPath, day, month, year);
+				}
+			}
+			else
+				dataPath=data.getDataPath();
 		}
 		else
-			dataPath=data.getDataPath();
+		{
+			if(!data.compareDate(month, year) || !data.fileExists())
+			{
+				String url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
+				if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
+					dataPath=downloadMbox(data.getTempDir(), url, extension);
+				else
+					dataPath=downloadMbox(data.getTempDir(),url, mbox.getUsername(), mbox.getPassword(),extension);
+				if(dataPath!=null)
+				{
+					data.updateDataPath(dataPath, month, year);
+					CommunicationChannelDataManager.updateData(mbox.getOSSMeterId(), data);
+				}
+			}
+			else
+				dataPath=data.getDataPath();
+		}
 		
 		if(dataPath==null)
 		{

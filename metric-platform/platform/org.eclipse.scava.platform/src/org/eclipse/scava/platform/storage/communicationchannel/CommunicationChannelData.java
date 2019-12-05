@@ -2,6 +2,8 @@ package org.eclipse.scava.platform.storage.communicationchannel;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class CommunicationChannelData {
 
@@ -33,6 +35,16 @@ public class CommunicationChannelData {
 	public boolean compareDate(int day, int month, int year)
 	{
 		return (this.month==month && this.year==year && this.day==day);
+	}
+	
+	public Long differenceDays(int day, int month, int year)
+	{
+		if(this.year==-1)
+			return null;
+		//Months must start from 1
+		LocalDate currentStored = LocalDate.of(this.year, this.month, this.day);
+		LocalDate searched = LocalDate.of(year, month, day);
+		return ChronoUnit.DAYS.between(searched, currentStored);
 	}
 	
 	private void deleteFile()
