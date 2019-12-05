@@ -36,6 +36,7 @@ import org.eclipse.scava.repository.model.Role;
 import org.eclipse.scava.repository.model.VcsRepository;
 import org.eclipse.scava.repository.model.bts.bugzilla.Bugzilla;
 import org.eclipse.scava.repository.model.cc.eclipseforums.EclipseForum;
+import org.eclipse.scava.repository.model.cc.mbox.Mbox;
 import org.eclipse.scava.repository.model.cc.wiki.Wiki;
 import org.eclipse.scava.repository.model.eclipse.Documentation;
 import org.eclipse.scava.repository.model.eclipse.EclipseProject;
@@ -262,17 +263,25 @@ public class EclipseProjectImporter implements IImporter {
 			}
 			if ((isNotNullObj(currentProg, "dev_list"))) {
 				JSONObject devList = (JSONObject) currentProg.get("dev_list");
-				MailingList mailingList = null;
-			
-				mailingList = new MailingList();
-				mailingList.setName((String) devList.get("name"));
-				mailingList.setUrl((String) devList.get("url"));
-				if (mailingList.getUrl().startsWith("news://") || mailingList.getUrl().startsWith("git://")
-						|| mailingList.getUrl().startsWith("svn://"))
+				
+				String url = (String) devList.get("url");
+				if(url.startsWith("news://") || url.startsWith("git://") || url.startsWith("svn://"))
+				{
+					MailingList mailingList = new MailingList();
+					mailingList.setName((String) devList.get("name"));
+					mailingList.setUrl((String) devList.get("url"));
 					mailingList.setNonProcessable(false);
+					project.getCommunicationChannels().add(mailingList);
+				}
 				else
-					mailingList.setNonProcessable(true);
-				project.getCommunicationChannels().add(mailingList);
+				{
+					Mbox mbox = new Mbox();
+					mbox.setUrl("https://download.eclipse.org/scava/datasets/eclipse_mls/mboxes/"+(String) devList.get("name"));
+					mbox.setMboxName((String) devList.get("name"));
+					mbox.setMboxDescription((String) devList.get("email") + "\t"+ url);
+					mbox.setCompressedFileExtension(".mbox.gz");
+					project.getCommunicationChannels().add(mbox);
+				}
 			}
 
 			if ((isNotNull(currentProg, "documentation_url"))) {
@@ -299,18 +308,30 @@ public class EclipseProjectImporter implements IImporter {
 			if ((isNotNull(currentProg, "mailing_lists"))) {
 				JSONArray mailingLists = (JSONArray) currentProg.get("mailing_lists");
 				Iterator<JSONObject> iter = mailingLists.iterator();
-				MailingList mailingList = null;
+				Mbox mbox;
+				MailingList mailingList;
+				String url;
 				while (iter.hasNext()) {
 					JSONObject entry = (JSONObject) iter.next();
-					mailingList = new MailingList();
-					mailingList.setName((String) entry.get("name"));
-					mailingList.setUrl((String) entry.get("url"));
-					if (mailingList.getUrl().startsWith("news://") || mailingList.getUrl().startsWith("git://")
-							|| mailingList.getUrl().startsWith("svn://"))
+					url=(String) entry.get("url");
+					if(url.startsWith("news://") || url.startsWith("git://") || url.startsWith("svn://"))
+					{
+						mailingList = new MailingList();
+						mailingList.setName((String) entry.get("name"));
+						mailingList.setUrl((String) entry.get("url"));
 						mailingList.setNonProcessable(false);
+						project.getCommunicationChannels().add(mailingList);
+					}
 					else
-						mailingList.setNonProcessable(true);
-					project.getCommunicationChannels().add(mailingList);
+					{
+						mbox = new Mbox();
+						mbox.setUrl("https://download.eclipse.org/scava/datasets/eclipse_mls/mboxes/"+(String) entry.get("name"));
+						mbox.setMboxName((String) entry.get("name"));
+						mbox.setMboxDescription((String) entry.get("email") + "\t"+ url);
+						mbox.setCompressedFileExtension(".mbox.gz");
+						project.getCommunicationChannels().add(mbox);
+					}
+					
 				}
 			}
 			if ((isNotNull(currentProg, "forums"))) {
