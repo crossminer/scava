@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Project, IProject } from '../../project.model';
 import { CreateProjectService } from '../../../../shared/services/project-service/create-project.service';
 import { Router } from '@angular/router';
-import { observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-project',
@@ -18,12 +17,11 @@ export class CreateProjectComponent implements OnInit {
   infosSouceExist: boolean;
   gitExists: boolean;
   gitBasedExists: boolean;
-  noLogin: string = '';
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private createProjectService: CreateProjectService,
+    private createProjectService: CreateProjectService
   ) {
   }
 
@@ -215,16 +213,6 @@ export class CreateProjectComponent implements OnInit {
       this.infosSouceExist = false;
       this.gitExists = false;
       this.gitBasedExists = false;
-    }
-  }
-
-  toggleSystematicLogin() {
-    if (this.noLogin == 'option1') {
-      this.noLogin = 'option2';
-    } else if (this.noLogin == 'option2') {
-      this.noLogin = 'option1';
-    } else {
-      this.noLogin = 'option1';
     }
   }
 
