@@ -9,9 +9,9 @@
 			"datatable" : {
 				"rows" : "$newsgrpTopics",
 				"cols" : [  { "name" : "Date", "field" : "$__date" }, 
-					{ "name" : "Topic", "field" : "$label" },
+					{ "name" : "Topics", "field" : "$labels" },
 					{ "name" : "Articles", "field" : "$numberOfDocuments" },
-					{ "name" : "Source (ArticleId)", "field" : "$historicArticlesId" } ]
+					{ "name" : "Source (ArticleId)", "field" : "$articlesId" } ]
 			},
 			"x" : "Date",
 			"y" : "Articles", 
