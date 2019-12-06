@@ -30,7 +30,6 @@ pipeline {
     stage('Build CROSSMINER IDE') {
       steps {
         dir(path: 'eclipse-based-ide/org.eclipse.scava.root') {
-          sh 'rm ./bundles/org.eclipse.scava.plugin/lib/org.eclipse.scava.java.m3*'
           sh 'wget -P ./bundles/org.eclipse.scava.plugin/lib/ -N "https://github.com/crossminer/java-m3/releases/download/0.0.1-SNAPSHOT/org.eclipse.scava.java.m3-0.0.1-SNAPSHOT-jar-with-dependencies.jar"'
           sh 'mvn clean install -DskipTests'
         }
