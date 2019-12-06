@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.scava.crossflow.examples.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.examples.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.examples.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.examples.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.restmule.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.restmule.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.restmule.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.restmule.feature" version="1.0.0.201912060322">
       <category name="restmule"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.language.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.language.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.language.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.language.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.runtime.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.runtime.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.runtime.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.runtime.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.web.feature_1.0.0.201911151527.jar" id="org.eclipse.scava.crossflow.web.feature" version="1.0.0.201911151527">
+   <feature url="features/org.eclipse.scava.crossflow.web.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.web.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
    <category-def name="crossflow" label="crossflow"/>
