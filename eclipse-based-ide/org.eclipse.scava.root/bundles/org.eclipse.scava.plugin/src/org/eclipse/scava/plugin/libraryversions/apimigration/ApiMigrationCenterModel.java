@@ -16,6 +16,7 @@ import org.eclipse.scava.plugin.async.api.ApiAsyncBuilder;
 import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.api.ApiMigrationRestControllerApi;
 
@@ -34,11 +35,7 @@ public class ApiMigrationCenterModel extends Model {
 	public IApiAsyncBuilder<File> getM3FromJarAsync(File jar) {
 		return ApiAsyncBuilder.build(apiCallback -> {
 			ApiMigrationRestControllerApi apiMigrationRestController = knowledgeBaseAccess
-					.getApiMigrationRestController();
-
-			apiMigrationRestController.getApiClient().setReadTimeout(1000 * 300);
-			apiMigrationRestController.getApiClient().setConnectTimeout(1000 * 300);
-			apiMigrationRestController.getApiClient().setWriteTimeout(1000 * 300);
+					.getApiMigrationRestController(Preferences.TIMEOUT_APIMIGRATION_M3);
 			
 			return apiMigrationRestController.getM3ModelUsingPOSTAsync(jar, apiCallback);
 		});

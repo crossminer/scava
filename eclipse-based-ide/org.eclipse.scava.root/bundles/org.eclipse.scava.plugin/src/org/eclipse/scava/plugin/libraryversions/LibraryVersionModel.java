@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 import org.eclipse.scava.plugin.properties.Properties;
 
 import com.google.gson.Gson;
@@ -80,10 +81,7 @@ public class LibraryVersionModel extends Model {
 		query.setProjectDependencies(
 				referenceLibraries.stream().map(this::mapLibraryToDependency).collect(Collectors.toList()));
 
-		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
-		recommenderRestController.getApiClient().setConnectTimeout(30000);
-		recommenderRestController.getApiClient().setWriteTimeout(30000);
-		recommenderRestController.getApiClient().setReadTimeout(30000);
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_APIMIGRATION_LIBRARY_SEARCH);
 		Recommendation results = recommenderRestController.getVersionsUsingPOST(query);
 
 		List<RecommendationItem> recommendationItems = results.getRecommendationItems();

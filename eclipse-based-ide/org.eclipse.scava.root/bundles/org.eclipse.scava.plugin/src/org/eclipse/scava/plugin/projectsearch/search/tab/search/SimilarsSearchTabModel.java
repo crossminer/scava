@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.knowledgebase.access.SimilarityMethod;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.RecommenderRestControllerApi;
@@ -38,7 +39,7 @@ public class SimilarsSearchTabModel extends SearchTabModel {
 			return Collections.emptyList();
 		}
 
-		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_PROJECTSEARCH);
 		List<Artifact> projects = recommenderRestController.getSimilarProjectUsingGET(method.name(),
 				referenceProject.getId(), pageSize);
 		nextPage++;

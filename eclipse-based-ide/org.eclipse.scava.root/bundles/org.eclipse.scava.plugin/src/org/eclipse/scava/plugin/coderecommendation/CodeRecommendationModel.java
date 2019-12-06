@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.RecommenderRestControllerApi;
@@ -33,7 +34,7 @@ public class CodeRecommendationModel extends Model {
 
 	public Collection<ApiCallResult> getApiCallResults(String sourceCode) throws ApiException {
 
-		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_CODERECOMMENDATION);
 
 		Query query = new Query();
 		query.setCurrentMethodCode(sourceCode);

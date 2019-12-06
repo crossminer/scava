@@ -49,7 +49,7 @@
             commandId="org.eclipse.scava.plugin.commands.apidocumentation">
             <activeWhen>
                <reference
-                     definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.enabled">
+                     definitionId="org.eclipse.scava.plugin.definitions.textbased.enabled">
                </reference>
          </activeWhen>
       </handler>
@@ -149,7 +149,7 @@
                   style="push">
                <visibleWhen>
                   <reference
-                        definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
+                        definitionId="org.eclipse.scava.plugin.definitions.textbased.visible">
                   </reference>
                </visibleWhen>
             </command>
@@ -213,7 +213,7 @@
                   style="push">
                <visibleWhen>
                   <reference
-                        definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
+                        definitionId="org.eclipse.scava.plugin.definitions.textbased.visible">
                   </reference>
                </visibleWhen>
             </command>
@@ -363,7 +363,7 @@
                   style="push">
                <visibleWhen>
                   <reference
-                        definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
+                        definitionId="org.eclipse.scava.plugin.definitions.textbased.visible">
                   </reference>
                </visibleWhen>
             </command>
@@ -529,6 +529,12 @@
            id="org.eclipse.scava.plugin.preferencespages.useractivityevents"
            name="User activity events">
      </page>
+     <page
+           category="org.eclipse.scava.plugin.preferencespages.general"
+           class="org.eclipse.scava.plugin.preferences.Timeout"
+           id="org.eclipse.scava.plugin.preferencespages.timeout"
+           name="Request timeouts">
+     </page>
   </extension>
   <extension
         point="org.eclipse.core.runtime.preferences">
@@ -664,6 +670,19 @@
         </and>
      </definition>
      <definition
+           id="org.eclipse.scava.plugin.definitions.text.selected">
+        <with
+             variable="selection">
+          <adapt
+                type="org.eclipse.jface.text.ITextSelection">
+             <test
+                   property="org.eclipse.scava.plugin.testers.textselection.nonEmpty"
+                   value="true">
+             </test>
+          </adapt>
+       </with>
+     </definition>
+     <definition
            id="org.eclipse.scava.plugin.definitions.libraryversionupdater.enabled">
         <and>
            <reference
@@ -739,16 +758,9 @@
            <reference
                  definitionId="org.eclipse.scava.plugin.definitions.sourcecodebased.visible">
            </reference>
-           <with
-                 variable="selection">
-              <adapt
-                    type="org.eclipse.jface.text.ITextSelection">
-                 <test
-                       property="org.eclipse.scava.plugin.testers.textselection.nonEmpty"
-                       value="true">
-                 </test>
-              </adapt>
-           </with>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.text.selected">
+           </reference>
         </and>
      </definition>
      <definition
@@ -758,6 +770,21 @@
                  definitionId="org.eclipse.scava.plugin.definitions.editor.active.java">
            </reference>
         </or>
+     </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.textbased.enabled">
+        <and>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.textbased.visible">
+           </reference>
+           <reference
+                 definitionId="org.eclipse.scava.plugin.definitions.text.selected">
+           </reference>
+        </and>
+     </definition>
+     <definition
+           id="org.eclipse.scava.plugin.definitions.textbased.visible">
+        <or></or>
      </definition>
      <definition
            id="org.eclipse.scava.plugin.definitions.javaeditorbased.enabled">

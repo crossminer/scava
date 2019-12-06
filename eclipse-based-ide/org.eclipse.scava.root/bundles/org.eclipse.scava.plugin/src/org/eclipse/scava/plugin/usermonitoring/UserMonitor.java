@@ -60,30 +60,32 @@ public class UserMonitor {
 	public IEvent startMetricCalculation(IEvent event) {
 		List<MetricsForProject> calculatedMetrics = metricManager.startMetricCalculation(event);
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-		String token = preferenceStore.getString(Preferences.USERMONITORING_USERTOKEN);
+		String token = preferenceStore.getString(Preferences.USER_AUTHENTICATION_TOKEN);
 
 		Collections.reverse(calculatedMetrics);
 
 		for (MetricsForProject metricsForProject : calculatedMetrics) {
-
-			metricsForProject.setId(token);
+			
+			
+			metricsForProject.setUserId(token);
 
 			try {
 				boolean succes = false;
 
 				for (int attempt = 0; attempt < MAXIMUM_ATTEMPT_COUNT; attempt++) {
 					succes = uploadMetricInformation(metricsForProject);
-					if (succes) {
+					
+					
+					
+					if (succes) {		
+						System.out.println(metricsForProject.getId());
 						break;
+					} else {
+						System.err.println("Metrics for " + metricsForProject.getProjectId() + " are failed to upload.");
 					}
+					
 				}
-
-				if (succes) {
-					System.out.println("Metrics for " + metricsForProject.getProjectId() + " are successfully uploaded.");
-				} else {
-					System.err.println("Metrics for " + metricsForProject.getProjectId() + " are failed to upload.");
-				}
-			} catch (ApiException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				ErrorHandler.handle(Display.getDefault().getActiveShell(), e, ErrorType.METRIC_UPLOAD_ERROR);
 			}
@@ -95,7 +97,7 @@ public class UserMonitor {
 	private boolean uploadMetricInformation(MetricsForProject metrics) throws ApiException {
 
 		KnowledgeBaseAccess access = new KnowledgeBaseAccess();
-		access.getArtifactRestControllerApi().storeIDEMetricsUsingPOST(metrics);
+		access.getArtifactRestControllerApi(Preferences.TIMEOUT_UPLOAD_METRICS).storeIDEMetricsUsingPOST(metrics);
 
 		return true;
 	}

@@ -13,6 +13,7 @@ package org.eclipse.scava.plugin.projectsearch.search.tab.search;
 import java.util.List;
 
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.ArtifactsRestControllerApi;
@@ -28,7 +29,7 @@ public class ExpressionSearchTabModel extends SearchTabModel {
 
 	@Override
 	public List<Artifact> getNextPageResults() throws ApiException {
-		ArtifactsRestControllerApi artifactsRestControllerApi = knowledgeBaseAccess.getArtifactRestControllerApi();
+		ArtifactsRestControllerApi artifactsRestControllerApi = knowledgeBaseAccess.getArtifactRestControllerApi(Preferences.TIMEOUT_PROJECTSEARCH);
 		List<Artifact> projects = artifactsRestControllerApi.getProjectUsingGET(expression, nextPage, pageSize,
 				pageSortAscending ? "ASC" : "DESC");
 		nextPage++;

@@ -186,7 +186,6 @@ public class MetricProvider {
 				MetricsForProject metricsForProject = new MetricsForProject();
 				metricsForProject.setProjectId(projectId);
 				metricsForProject.setMetricMilestoneSlice(remainMetricMilestoneSlices);
-				metricsForProject.setId("0");
 
 				remainMetricValues.add(metricsForProject);
 			}
@@ -194,7 +193,6 @@ public class MetricProvider {
 			MetricsForProject metricsForProject = new MetricsForProject();
 			metricsForProject.setProjectId(projectId);
 			metricsForProject.setMetricMilestoneSlice(metricMilestoneSlices);
-			metricsForProject.setId("0");
 
 			metricValues.add(metricsForProject);
 		}

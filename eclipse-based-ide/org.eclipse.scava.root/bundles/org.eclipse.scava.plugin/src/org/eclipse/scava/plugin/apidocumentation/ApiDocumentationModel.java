@@ -14,6 +14,7 @@ import org.eclipse.scava.plugin.async.api.ApiAsyncBuilder;
 import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.api.RecommenderRestControllerApi;
 import io.swagger.client.model.Query;
@@ -29,7 +30,7 @@ public class ApiDocumentationModel extends Model {
 
 	public IApiAsyncBuilder<Recommendation> requestApiDocumentationAsync(String methodCode) {
 		return ApiAsyncBuilder.build(apiCallback -> {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_APIDOCUMENTATION);
 
 			Query query = new Query();
 			query.setCompilationUnit(methodCode);

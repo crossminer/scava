@@ -61,16 +61,27 @@ public class KnowledgeBaseAccess {
 		apiClient.setBasePath(basePath);
 	}
 
-	public ArtifactsRestControllerApi getArtifactRestControllerApi() {
+	public ArtifactsRestControllerApi getArtifactRestControllerApi(String timeoutPreferenceKey) {
+		setTimeout(apiClient, timeoutPreferenceKey);
 		return new ArtifactsRestControllerApi(apiClient);
 	}
 
-	public RecommenderRestControllerApi getRecommenderRestController() {
+	public RecommenderRestControllerApi getRecommenderRestController(String timeoutPreferenceKey) {
+		setTimeout(apiClient, timeoutPreferenceKey);
 		return new RecommenderRestControllerApi(apiClient);
 	}
 
-	public ApiMigrationRestControllerApi getApiMigrationRestController() {
+	public ApiMigrationRestControllerApi getApiMigrationRestController(String timeoutPreferenceKey) {
+		setTimeout(apiClient, timeoutPreferenceKey);
 		return new ApiMigrationRestControllerApi(apiClient);
+	}
+	
+	private void setTimeout(ApiClient apiClient, String timeoutPreferenceKey) {
+		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
+		int timeoutValue = preferences.getInt(timeoutPreferenceKey);
+		apiClient.setConnectTimeout(timeoutValue);
+		apiClient.setReadTimeout(timeoutValue);
+		apiClient.setWriteTimeout(timeoutValue);
 	}
 
 	public void dispose() {

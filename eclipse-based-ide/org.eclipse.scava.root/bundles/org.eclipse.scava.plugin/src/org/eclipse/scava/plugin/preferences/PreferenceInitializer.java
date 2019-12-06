@@ -33,6 +33,17 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		preferences.setDefault(Preferences.USERMONITORING_ENABLED, false);
 		preferences.setDefault(Preferences.USER_AUTHENTICATION_TOKEN, "");
 		preferences.setDefault(Preferences.HELP_MENU_OPEN, true);
+		
+		preferences.setDefault(Preferences.TIMEOUT_PROJECTSEARCH, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_LIBRARYSEARCH, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_CODERECOMMENDATION, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_APIDOCUMENTATION, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_APIMIGRATION_LIBRARY_SEARCH, 15 * 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_APIMIGRATION_M3, 15 * 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_APIMIGRATION_RECOMMENDATIONS, 15 * 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_FOCUS_APICALL, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_FOCUS_CODESNIPPET, 60 * 1000);
+		preferences.setDefault(Preferences.TIMEOUT_UPLOAD_METRICS, 60 * 1000);
 
 		if (existDirectory(ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString() + File.separator + "OrientDataBase")) {
 			preferences.setDefault(Preferences.DATABASE_PATH, ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString() + File.separator + "OrientDataBase");

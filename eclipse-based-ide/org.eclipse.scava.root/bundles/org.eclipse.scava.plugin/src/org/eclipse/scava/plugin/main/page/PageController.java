@@ -72,6 +72,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
@@ -270,23 +271,22 @@ public class PageController extends ModelController<PageModel> {
 			ApiDocuemntationRequestEvent event = (ApiDocuemntationRequestEvent) routedEvent;
 
 			try {
-				IEditorPart activeEditor = getModel().getPage().getActiveEditor();
-
-				if (!(activeEditor instanceof AbstractTextEditor)) {
+				ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
+				
+				if( !(selection instanceof ITextSelection) ) {
 					MessageDialog.openError(getModel().getPage().getWorkbenchWindow().getShell(), "Error",
-							"Select a code chunk in a text editor");
+							"Select some text in a text editor");
 					return;
 				}
-
-				ITextEditor editor = (ITextEditor) activeEditor;
-				ITextSelection textSelection = (ITextSelection) editor.getSelectionProvider().getSelection();
-
+				
+				ITextSelection textSelection = (ITextSelection)selection;
+				
 				if (textSelection.getLength() < 1) {
 					MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
 							"There is no text selected");
 					return;
 				}
-
+				
 				if (apiDocumentationController == null || apiDocumentationController.isDisposed()) {
 					ApiDocumentationModel model = new ApiDocumentationModel(getModel().getKnowledgeBaseAccess());
 					ApiDocumentationView view = ApiDocumentationView.open(ApiDocumentationView.ID);

@@ -18,6 +18,7 @@ import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.libraryversions.apimigration.migration.ApiMigrationParameters;
 import org.eclipse.scava.plugin.libraryversions.apimigration.migration.result.ApiMigrationResultModel;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import io.swagger.client.api.ApiMigrationRestControllerApi;
 import io.swagger.client.model.Detection;
@@ -51,9 +52,7 @@ public class ApiMigrationRecommendationModel extends ApiMigrationResultModel {
 
 		return ApiAsyncBuilder.build(apiCallback -> {
 			ApiMigrationRestControllerApi apiMigrationRestController = knowledgeBaseAccess
-					.getApiMigrationRestController();
-
-			apiMigrationRestController.getApiClient().setReadTimeout(1 * 60 * 1000);
+					.getApiMigrationRestController(Preferences.TIMEOUT_APIMIGRATION_RECOMMENDATIONS);
 
 			return apiMigrationRestController.getDetectionUsingPOSTAsync(getApiMigrationParameters().getM3Model(),
 					getApiMigrationParameters().getOldLibraryVersion().toMavenCoord(),
@@ -83,9 +82,7 @@ public class ApiMigrationRecommendationModel extends ApiMigrationResultModel {
 
 		return ApiAsyncBuilder.build(apiCallback -> {
 			ApiMigrationRestControllerApi apiMigrationRestController = knowledgeBaseAccess
-					.getApiMigrationRestController();
-
-			apiMigrationRestController.getApiClient().setReadTimeout(1 * 60 * 1000);
+					.getApiMigrationRestController(Preferences.TIMEOUT_APIMIGRATION_RECOMMENDATIONS);
 
 			return apiMigrationRestController.getRecommendationSnippetUsingPOSTAsync(
 					getApiMigrationParameters().getM3Model(),

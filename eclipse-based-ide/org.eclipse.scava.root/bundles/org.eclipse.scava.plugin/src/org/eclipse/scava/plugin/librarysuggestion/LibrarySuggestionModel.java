@@ -30,6 +30,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.librarysuggestion.library.Library;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 
 import com.squareup.okhttp.Call;
 
@@ -123,7 +124,7 @@ public class LibrarySuggestionModel extends Model {
 			Query query = new Query();
 			query.setProjectDependencies(dependencies);
 
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_LIBRARYSEARCH);
 			call = recommenderRestController.getRecommendedLibrariesUsingPOSTAsync(query,
 					new ApiCallback<Recommendation>() {
 

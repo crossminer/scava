@@ -20,6 +20,7 @@ import org.eclipse.scava.plugin.async.api.ApiAsyncBuilder;
 import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
+import org.eclipse.scava.plugin.preferences.Preferences;
 import org.rascalmpl.interpreter.asserts.ImplementationError;
 
 import com.google.common.collect.Multimap;
@@ -64,13 +65,9 @@ public class FocusRecommendationModel extends Model {
 	public IApiAsyncBuilder<Recommendation> getFocusApiCallRecommendation(String activeDeclaration,
 			Multimap<String, String> methodInvocations) {
 		return ApiAsyncBuilder.build(apiCallback -> {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_APICALL);
 
 			Query query = buildQuery(activeDeclaration, methodInvocations);
-
-			recommenderRestController.getApiClient().setConnectTimeout(60 * 1000);
-			recommenderRestController.getApiClient().setReadTimeout(60 * 1000);
-			recommenderRestController.getApiClient().setWriteTimeout(60 * 1000);
 			return recommenderRestController.getNextApiCallsRecommendationUsingPOSTAsync(query, apiCallback);
 		});
 	}
@@ -78,13 +75,9 @@ public class FocusRecommendationModel extends Model {
 	public IApiAsyncBuilder<Recommendation> getFocusCodeSnippetRecommendation(String activeDeclaration,
 			Multimap<String, String> methodInvocations) {
 		return ApiAsyncBuilder.build(apiCallback -> {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController();
+			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_CODESNIPPET);
 
 			Query query = buildQuery(activeDeclaration, methodInvocations);
-
-			recommenderRestController.getApiClient().setConnectTimeout(60 * 1000);
-			recommenderRestController.getApiClient().setReadTimeout(60 * 1000);
-			recommenderRestController.getApiClient().setWriteTimeout(60 * 1000);
 			return recommenderRestController.getFocusCodeSnippetRecommendationUsingPOSTAsync(query, apiCallback);
 		});
 	}
