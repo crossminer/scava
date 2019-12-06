@@ -190,7 +190,7 @@ public class ArtifactsRestController {
 		try {
 			m4pRepository.save(metricForProject);
 		} catch (Exception e) {
-			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
 	}

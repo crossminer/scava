@@ -55,7 +55,7 @@ public class DataReaderTest {
     public void testReadArtifactFromPath() throws IOException
     {
     	Resource resource = new ClassPathResource("FOCUS/");
-    	List<Artifact> res = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+    	List<Artifact> res = dr.readArtifactsFromFolder(resource.getFile().getAbsolutePath());
     	logger.info("ARTIFACTS: "+ res.size());
     	assertNotNull(res);
     }
