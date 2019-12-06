@@ -9,3 +9,10 @@ srcgen.a_path="src-gen";
 
 if(classpath.c_classpathentry.select(e | e.a_kind="src" and e.a_path="src-gen").isEmpty)
 	classpath.appendChild(srcgen);
+
+var res = new t_classpathentry;
+res.a_kind="lib";
+res.a_path="resources";	
+	
+if(classpath.c_classpathentry.select(e | e.a_kind="lib" and e.a_path="resources").isEmpty)
+	classpath.appendChild(res);
