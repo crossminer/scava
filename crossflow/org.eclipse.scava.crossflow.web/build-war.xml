@@ -23,7 +23,7 @@
         <ivy:resolve
         	file="../org.eclipse.scava.crossflow.runtime.dependencies/ivy.xml"/>
 	 	<ivy:retrieve
-	 		pattern="../org.eclipse.scava.crossflow.runtime.dependencies/lib/[type]s/[artifact]-[revision].[ext]"
+	 		pattern="../org.eclipse.scava.crossflow.runtime.dependencies/lib/[type]s/[artifact]-[revision](-[classifier]).[ext]"
 	 		sync="true" />
     </target>
 	
@@ -33,7 +33,7 @@
         <ivy:resolve
             file="ivy.xml"/>
         <ivy:retrieve
-            pattern="WebContent/WEB-INF/lib/[type]s/[artifact]-[revision].[ext]"
+            pattern="WebContent/WEB-INF/lib/[type]s/[artifact]-[revision](-[classifier]).[ext]"
             sync="false" />
     </target>
 	

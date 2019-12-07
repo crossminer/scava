@@ -16,15 +16,15 @@ rule Workflow2TaskEnum
 }
 
 rule Config2ConfigSource
-	transform t : CrossflowLanguageModel!Type {
-	guard : t.eContainer().isDefined() and t.eContainer().isTypeOf(CrossflowLanguageModel!Workflow) and t.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(t)
+	transform ty : CrossflowLanguageModel!Type {
+	guard : ty.eContainer().isDefined() and ty.eContainer().isTypeOf(CrossflowLanguageModel!Workflow) and ty.eContainer().tasks.collect(c|c.configurations).flatten.asSet().contains(ty)
 	parameters  {
-		var params = t.createComponentBasedParameters("Config2ConfigSource");
-		params.put("t", t.createSource());
+		var params = ty.createComponentBasedParameters("Config2ConfigSource");
+		params.put("t", ty.createSource());
 		return params;
 	} 
 	template : "task2baseclass.egl"
-	target : t.getPath() + t.name + ".java"
+	target : ty.getPath() + ty.name + ".java"
 }
 
 rule Workflow2Class 
