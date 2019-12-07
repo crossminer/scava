@@ -50,7 +50,7 @@
             <configuration>
               <target xmlns:ivy="antlib:org.apache.ivy.ant">	
         <ivy:settings file="ivysettings.xml"/>		
-		<ivy:retrieve pattern="lib/[type]s/[artifact]-[revision].[ext]"/>
+		<ivy:retrieve pattern="lib/[type]s/[artifact]-[revision](-[classifier]).[ext]"/>
               </target>
             </configuration>
             <goals>

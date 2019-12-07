@@ -50,10 +50,6 @@ public class [%=t.name%] [%if(t.isJob()){%] extends [%if(t.extending.isUndefined
 }
 
 [%
-operation CrossflowLanguageModel!Type isJob() {
-	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self or s.type.closure(c|c.extending).contains(self));
-}
-
 operation CrossflowLanguageModel!Field getJavaType() {
 	if (self.many) {
 		return "Collection<" + self.type + ">";
@@ -78,36 +74,41 @@ operation CrossflowLanguageModel!Type genFieldDeclarations() {
 
 @template
 operation CrossflowLanguageModel!Type genConstructors() {%]
+/**
+ * Default Constructor
+ * <p>
+ * Deserialization requires an empty instance to modify
+ * </p>
+ */
 public [%=t.name%]() {
 	;
 }
 
-	[% if (not t.allFields().isEmpty()) {
-		out.print("public " + t.name + "(");
-		for (f in t.allFields()) {
-			out.print(f.~javaType + " " + f.name);
-			if (hasMore) out.print(",\n\t\t");
-		}
-		out.println(") {");
-		for (f in t.allFields()) {
-			out.println("\tthis." + f.name + " = " + f.name + ";");
-		}
-		out.println("}\n");
-	}
-	
-	if (t.isJob()) {
-		out.print("public " + t.name + "(");
-		for (f in t.allFields()) {
-			out.print(f.~javaType + " " + f.name + ",\n\t\t");
-		}
-		out.println("Job correlation) {");
-		for (f in t.allFields()) {
-			out.println("\tthis." + f.name + " = " + f.name + ";");
-		}
-		out.println("\tthis.correlationId = correlation.getCorrelationId();\n}\n");
-	}
-	
-	if (t.closure(e|e.extending).size > 0) {
+[% if (not t.allFields().isEmpty()) {%]
+/**
+ * Constructor allow initialization of all declared fields
+ */
+public [%=t.name%]([%
+	for (f in t.allFields()) {%]
+[%=f.~javaType%] [%=f.name%][%if (hasMore) {%], [%}%]
+	[%}%]) {
+	[%for (f in t.allFields()) {%]
+	this.[%=f.name%] = [%=f.name%];
+	[%}%]
+}
+[%}%]
+
+[% if (t.isJob()) {%] 
+public [%=t.name%]([%
+	for (f in t.allFields()) {%][%=f.~javaType%] [%=f.name%], [%}%]Job correlation) {
+	[%for (f in t.allFields()) {%]
+	this.[%=f.name%] = [%=f.name%];
+	[%}%]
+	this.correlationId = correlation.getCorrelationId();
+}
+[%}%]
+
+	[% if (t.closure(e|e.extending).size > 0) {
 		for(s in t.closure(e|e.extending)){%]
 public [%=t.name%]([%=s.name%] [%=s.name.ftlc%]) {
 		[%for (f in s.fields) { %]
@@ -139,12 +140,10 @@ public void set[%=f.name.ftuc()%]([%=f.~javaType%] [%=f.name%]) {
 @template
 operation CrossflowLanguageModel!EnumField genEnumType() {%]
 public enum [%=self.name.ftuc()%] {
-	[% var values = "";
-	for (v in self.values) {
-		values += v;
-		if (hasMore) values += ", ";
+	[%for (v in self.values) {%]
+	[%=v.toSnakeCaseUpper()%][%if (hasMore) {%],
+	[%} else {%];[%}
 	}%]
-	[%=values%];
 }
 
 [%}

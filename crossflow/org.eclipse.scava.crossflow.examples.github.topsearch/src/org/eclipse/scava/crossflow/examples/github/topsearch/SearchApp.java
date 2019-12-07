@@ -30,11 +30,11 @@ public class SearchApp {
 		}
 		
 		for (InternalException ex : master.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : master.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 		
 		// worker1
@@ -43,11 +43,11 @@ public class SearchApp {
 		}
 		
 		for (InternalException ex : worker1.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : worker1.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 		
 		// worker2
@@ -56,11 +56,11 @@ public class SearchApp {
 		}
 		
 		for (InternalException ex : worker2.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : worker2.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 		
 		System.out.println("Done");

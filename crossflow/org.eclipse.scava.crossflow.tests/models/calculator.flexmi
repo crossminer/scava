@@ -15,15 +15,18 @@
 			<datafield name="operator" type="String"/>
 		</type>
 		
-		<type name="CalculationResult">
-			<datafield name="a" type="int"/>
-			<datafield name="b" type="int"/>
-			<datafield name="operator" type="String"/>
+		<type name="CalculationResult" extending="Calculation">
 			<datafield name="worker" type="String"/>
 			<datafield name="result" type="String"/>
+			<enumfield name="workerLang" values="python,java"/>
 		</type>
 		
 	<language name="Java" package="org.eclipse.scava.crossflow.tests.calculator" genOutputFolder="src-gen" outputFolder="src"/>
+	<language name="Python" package="calculator">
+		<parameter name="skipReqsTxt" value="true"/>
+		<parameter name="skipReadme" value="true"/>
+		<parameter name="skipMain" value="true"/>
+	</language>
 	</workflow>	
 	
 </_>

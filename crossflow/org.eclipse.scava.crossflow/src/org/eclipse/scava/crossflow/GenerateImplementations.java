@@ -110,12 +110,12 @@ public class GenerateImplementations {
 
 	private void generateScriptLanguageCode(final EmfModel model, List<EmfModel> componentModels, String language)
 			throws Exception, URISyntaxException, EolRuntimeException {
-		System.out.println("generateScriptLanguageCode(" + language + ") called");
+		System.out.println("generateScriptLanguageCode(" + language.toLowerCase() + ") called");
 		IEolModule module = createModule();
 		module.getContext().getModelRepository().addModel(model);
 		for (EmfModel m : componentModels)
 			module.getContext().getModelRepository().addModels(m);
-		module.parse(getFileURI("scripting/" + language + "/crossflow.egx"));
+		module.parse(getFileURI("scripting/" + language.toLowerCase() + "/crossflow.egx"));
 		if (module.getParseProblems().size() > 0) {
 			System.err.println("Parse errors occured...");
 			for (ParseProblem problem : module.getParseProblems()) {

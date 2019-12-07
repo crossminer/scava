@@ -1,6 +1,6 @@
 package org.eclipse.scava.crossflow.runtime.serializer.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -151,7 +151,7 @@ public class JsonSerializerTest {
 
 	@Test
 	public void deserialize_should_return_ControlSignal_when_given_valid_json() throws Exception {
-		final String senderId = "JsonSerializerTest Sender";		
+		final String senderId = "JsonSerializerTest Sender";
 		for (ControlSignals signal : ControlSignals.values()) {
 			String json = jsonFromFile("ControlSignal-" + signal.name() + ".json");
 			ControlSignal actual = serializer.deserialize(json);
@@ -159,7 +159,7 @@ public class JsonSerializerTest {
 			assertEquals(expected, actual);
 		}
 	}
-	
+
 	@Test
 	public void serialize_should_return_correct_json_when_given_LogMessage_objects() throws Exception {
 		final long timestamp = 123456;
@@ -167,22 +167,17 @@ public class JsonSerializerTest {
 		final String workflow = "workflow 1";
 		final String task = "task a";
 		final String message = "this is a message";
-		
+
 		for (LogLevel level : LogLevel.values()) {
-			LogMessage logMessage = new LogMessage()
-					.level(level)
-					.timestamp(timestamp)
-					.instanceId(instanceId)
-					.workflow(workflow)
-					.task(task)
-					.message(message);
-	
+			LogMessage logMessage = new LogMessage().level(level).timestamp(timestamp).instanceId(instanceId)
+					.workflow(workflow).task(task).message(message);
+
 			String actual = serializer.serialize(logMessage);
 			String expected = jsonFromFile("LogMessage-" + level.name() + ".json");
 			assertEquals(expected, actual);
 		}
 	}
-	
+
 	@Test
 	public void deserialize_should_return_LogMessage_when_given_valid_json() throws Exception {
 		final long timestamp = 123456;
@@ -190,26 +185,21 @@ public class JsonSerializerTest {
 		final String workflow = "workflow 1";
 		final String task = "task a";
 		final String message = "this is a message";
-		
+
 		for (LogLevel level : LogLevel.values()) {
 			String json = jsonFromFile("LogMessage-" + level.name() + ".json");
 			LogMessage actual = serializer.deserialize(json);
-			LogMessage expected = new LogMessage()
-					.level(level)
-					.timestamp(timestamp)
-					.instanceId(instanceId)
-					.workflow(workflow)
-					.task(task)
-					.message(message);
+			LogMessage expected = new LogMessage().level(level).timestamp(timestamp).instanceId(instanceId)
+					.workflow(workflow).task(task).message(message);
 			assertEquals(expected, actual);
 		}
 	}
-	
+
 	@Test
 	public void serialize_should_return_correct_json_when_given_TaskStatus_objects() throws Exception {
 		final String caller = "JsonSerializerTest Sender";
 		final String reason = "A reason string";
-		
+
 		for (TaskStatuses status : TaskStatuses.values()) {
 			TaskStatus obj = new TaskStatus(status, caller, reason);
 			String actual = serializer.serialize(obj);
@@ -217,18 +207,90 @@ public class JsonSerializerTest {
 			assertEquals(expected, actual);
 		}
 	}
-	
+
 	@Test
 	public void deserialize_should_return_TaskStatus_when_given_valid_json() throws Exception {
 		final String caller = "JsonSerializerTest Sender";
 		final String reason = "A reason string";
-		
+
 		for (TaskStatuses status : TaskStatuses.values()) {
 			String json = jsonFromFile("TaskStatus-" + status.name() + ".json");
 			TaskStatus actual = serializer.deserialize(json);
 			TaskStatus expected = new TaskStatus(status, caller, reason);
 			assertEquals(expected, actual);
 		}
+	}
+
+	@Test
+	public void serialize_should_return_correct_json_when_given_java_InternalException_objects() throws Exception {
+		InternalException internalException = new InternalException("A reason", "The stacktrace",
+				"JsonSerializerTest Sender");
+		String actual = serializer.serialize(internalException);
+		String expected = jsonFromFile("InternalException-java.json");
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deserialize_should_return_InternalException_when_given_valid_json_for_java_exception()
+			throws Exception {
+		String json = jsonFromFile("InternalException-java.json");
+		InternalException actual = serializer.deserialize(json);
+		assertEquals("A reason", actual.getReason());
+		assertEquals("The stacktrace", actual.getStacktrace());
+		assertEquals("JsonSerializerTest Sender", actual.getSenderId());
+	}
+
+	@Test
+	public void deserialize_should_return_InternalException_when_given_valid_json_for_python_exception()
+			throws Exception {
+		String json = jsonFromFile("InternalException-python.json");
+		InternalException actual = serializer.deserialize(json);
+		assertEquals("ValueError: A value error message", actual.getReason());
+		assertEquals(
+				"ValueError: A nested value error message\n\nThe above exception was the direct cause of the following exception:\n\nValueError: A value error message",
+				actual.getStacktrace());
+		assertEquals("JsonSerializerTest Sender", actual.getSenderId());
+	}
+
+	@Test
+	public void serialize_should_return_correct_json_when_given_FailedJob_object() throws Exception {
+		Job job = new Job();
+		job.setJobId("123_job_id");
+		job.setCorrelationId("123_correlation_id");
+		FailedJob failedJob = new FailedJob();
+		failedJob.setJob(job);
+		failedJob.setReason("Failed Job Reason");
+		failedJob.setStacktrace("Failed Job Stacktrace");
+		failedJob.setTask("Failed Job Task");
+		failedJob.setWorkflow("Failed Job Workflow");
+
+		String actual = serializer.serialize(failedJob);
+		String expected = jsonFromFile("FailedJob.json");
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deserialize_should_return_InternalException_when_given_valid_json() throws Exception {
+		String json = jsonFromFile("FailedJob.json");
+		FailedJob actual = serializer.deserialize(json);
+		
+		Job job = new Job();
+		job.setJobId("123_job_id");
+		job.setCorrelationId("123_correlation_id");
+		
+		FailedJob expected = new FailedJob();
+		expected.setJob(job);
+		expected.setReason("Failed Job Reason");
+		expected.setStacktrace("Failed Job Stacktrace");
+		expected.setTask("Failed Job Task");
+		expected.setWorkflow("Failed Job Workflow");
+		
+		assertEquals(expected.getJob().getJobId(), actual.getJob().getJobId());
+		assertEquals(expected.getJob().getCorrelationId(), actual.getJob().getCorrelationId());
+		assertEquals(expected.getReason(), actual.getReason());
+		assertEquals(expected.getStacktrace(), actual.getStacktrace());
+		assertEquals(expected.getTask(), actual.getTask());
+		assertEquals(expected.getWorkflow(), actual.getWorkflow());
 	}
 
 	/**

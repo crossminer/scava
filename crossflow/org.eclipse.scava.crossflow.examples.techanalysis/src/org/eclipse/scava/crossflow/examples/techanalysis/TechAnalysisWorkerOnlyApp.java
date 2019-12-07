@@ -31,11 +31,11 @@ public class TechAnalysisWorkerOnlyApp {
 		}
 		
 		for (InternalException ex : worker.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : worker.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 		
 		System.out.println("Done");

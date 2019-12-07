@@ -19,6 +19,14 @@ public interface Serializer {
 	public boolean isStrict();
 
 	/**
+	 * Register the given classloader with this serializer
+	 * 
+	 * @param classLoader
+	 */
+	default public void setClassloader(ClassLoader classLoader) {
+	}
+
+	/**
 	 * Set strict mode
 	 * 
 	 * @param isStrict new mode
@@ -79,7 +87,7 @@ public interface Serializer {
 	 * @return the deserialized object of type <code>O</code>
 	 */
 	public <O> O deserialize(String input);
-	
+
 	public <O> O deserialize(File input);
 
 }

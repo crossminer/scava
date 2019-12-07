@@ -2,33 +2,52 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.Serializable;
 
+import org.eclipse.scava.crossflow.runtime.utils.ExceptionUtils;
+
 public class InternalException implements Serializable {
 
 	private static final long serialVersionUID = 3379426884982685293L;
 	
-	protected Exception exception;
-	protected String worker;
+	protected String reason;
+	protected String stacktrace;
+	protected String senderId;
+
+	public InternalException() {
+		;
+	}
 	
-	public InternalException(Exception exception, String worker) {
-		super();
-		this.exception = exception;
-		this.worker = worker;
+	public InternalException(String reason, String stacktrace, String senderId) {
+		this.reason = reason;
+		this.stacktrace = stacktrace;
+		this.senderId = senderId;
 	}
 
-	public Exception getException() {
-		return exception;
+	public InternalException(Exception exception, String senderId) {
+		this(exception.getMessage(), ExceptionUtils.getStackTrace(exception), senderId);
 	}
-	
-	public void setException(Exception exception) {
-		this.exception = exception;
+
+	public String getReason() {
+		return reason;
 	}
-	
-	public String getWorker() {
-		return worker;
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
-	
-	public void setWorker(String worker) {
-		this.worker = worker;
+
+	public String getStacktrace() {
+		return stacktrace;
 	}
-	
+
+	public void setStacktrace(String stacktrace) {
+		this.stacktrace = stacktrace;
+	}
+
+	public String getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(String senderId) {
+		this.senderId = senderId;
+	}
+
 }

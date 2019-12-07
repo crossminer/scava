@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.tests.calculator;
 
+import org.eclipse.scava.crossflow.tests.calculator.CalculationResult.WorkerLang;
 
 public class Calculator extends CalculatorBase {
 	
@@ -27,6 +28,7 @@ public class Calculator extends CalculatorBase {
 		calculationResult.setB(calculation.getB());
 		calculationResult.setOperator(calculation.getOperator());
 		calculationResult.setWorker(workflow.getName());
+		calculationResult.setWorkerLang(WorkerLang.JAVA);
 		calculationResult.setResult(result);
 		return calculationResult;
 		

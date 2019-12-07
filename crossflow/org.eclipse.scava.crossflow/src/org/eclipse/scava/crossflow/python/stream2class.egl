@@ -39,8 +39,8 @@ class [%=s.name%](JobStream):
                     consumer.consume[%=s.name%]WithNotifications(obj)
                     if ack_func is not None:
                         ack_func()
-                except Exception as e:
+                except Exception as ex:
                     self.workflow.local_logger.exception("")
-                    self.workflow.report_internal_exception(e, "")
+                    self.workflow.report_internal_exception(ex)
 
             self.subscribe(post_queue, handler)

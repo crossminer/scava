@@ -1,0 +1,6 @@
+{
+  "reason": "ValueError: A value error message",
+  "stacktrace": "ValueError: A nested value error message\n\nThe above exception was the direct cause of the following exception:\n\nValueError: A value error message",
+  "senderId": "JsonSerializerTest Sender",
+  "_type_": "InternalException"
+}

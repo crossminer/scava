@@ -2,25 +2,28 @@ package org.eclipse.scava.crossflow.runtime;
 
 import java.io.Serializable;
 
+import org.eclipse.scava.crossflow.runtime.utils.ExceptionUtils;
+
 public class FailedJob implements Serializable {
 
 	private static final long serialVersionUID = -8868868495593187850L;
 
 	protected Job job;
-	protected Exception exception;
-	protected String worker;
+	protected String reason;
+	protected String stacktrace;
 	protected String task;
-
-	public FailedJob(Job job, Exception exception, String worker, String task) {
-		super();
+	protected String workflow;
+	
+	public FailedJob() {
+		;
+	}
+	
+	public FailedJob(Job job, Exception exception, Task task) {
 		this.job = job;
-		// overwrite the original exception in case it contains information that XStream
-		// cannot serialize, keeping the trace and message
-		this.exception = new Exception(
-				"Workflow Failed Task Exception: " + (exception.getMessage() != null ? exception.getMessage() : ""));
-		this.exception.setStackTrace(exception.getStackTrace());
-		this.worker = worker;
-		this.task = task;
+		this.reason = exception.getMessage();
+		this.stacktrace = ExceptionUtils.getStackTrace(exception);
+		this.task = task.getName();
+		this.workflow = task.getWorkflow().getName();
 	}
 
 	public Job getJob() {
@@ -31,20 +34,20 @@ public class FailedJob implements Serializable {
 		this.job = job;
 	}
 
-	public Exception getException() {
-		return exception;
+	public String getReason() {
+		return reason;
 	}
 
-	public void setException(Exception exception) {
-		this.exception = exception;
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
-	public String getWorker() {
-		return worker;
+	public String getStacktrace() {
+		return stacktrace;
 	}
 
-	public void setWorker(String worker) {
-		this.worker = worker;
+	public void setStacktrace(String stacktrace) {
+		this.stacktrace = stacktrace;
 	}
 
 	public String getTask() {
@@ -55,8 +58,12 @@ public class FailedJob implements Serializable {
 		this.task = task;
 	}
 
-	public String toString() {
-		return job + " | " + exception + " " + worker + " " + task;
+	public String getWorkflow() {
+		return workflow;
+	}
+
+	public void setWorkflow(String workflow) {
+		this.workflow = workflow;
 	}
 
 }

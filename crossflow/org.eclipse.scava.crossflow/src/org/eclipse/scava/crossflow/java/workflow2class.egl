@@ -269,9 +269,12 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 	@Override
 	protected void registerCustomSerializationTypes(Serializer serializer) {
 		checkNotNull(serializer);
-		[% for (t in w.types) {%]
+		[% for (t in CrossflowLanguageModel!Type.all) {%]
 		serializer.registerType([%=t.name%].class);
-		[%}%]
+			[% for (e in t.fields.select(e|e.isTypeOf(CrossflowLanguageModel!EnumField))) {%]
+		serializer.registerType([%=t.name%].[%=e.name.ftuc()%].class);
+			[%}
+		}%]
 		[%if(CrossflowLanguageModel!ReusableComponent.all.size>0){
 			for (t in CMS!Type.all) {%]
 		serializer.registerType([%=t.name%].class);

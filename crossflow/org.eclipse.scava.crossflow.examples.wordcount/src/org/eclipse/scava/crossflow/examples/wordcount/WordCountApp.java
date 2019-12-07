@@ -50,11 +50,11 @@ public class WordCountApp {
 		master.awaitTermination();
 		
 		for (InternalException ex : master.getInternalExceptions()) {
-			ex.getException().printStackTrace();
+			System.err.println(ex.getStacktrace());
 		}
 		
 		for (FailedJob failed : master.getFailedJobs()) {
-			failed.getException().printStackTrace();
+			System.err.println(failed.getStacktrace());
 		}
 	
 		System.out.println("Done");

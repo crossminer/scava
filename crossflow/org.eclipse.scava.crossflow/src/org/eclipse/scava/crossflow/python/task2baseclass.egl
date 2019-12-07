@@ -109,18 +109,18 @@ class [%=t.name%]Base(Task):
                 
                 if send_failed:
                     [%=s.type.name.ftlc()%].setFailures(int([%=s.type.name.ftlc()%].getFailures()) + 1)
-                    self.workflow.failed_jobs_topic.send(FailedJob([%=s.type.name.ftlc()%], ex, self.workflow.name, "[%=t.name%]"))
+                    self.workflow.failed_jobs_topic.send(FailedJob.from_exception([%=s.type.name.ftlc()%], ex, self))
             
-            except Exception as e:
+            except Exception as ex:
                 self.workflow.local_logger.exception("")
-                self.workflow.report_internal_exception(e, "")
+                self.workflow.report_internal_exception(ex)
         
         finally:
             try:
                 self.workflow.set_task_waiting(self)
-            except Exception as e:
+            except Exception as ex:
                 self.workflow.local_logger.exception("")
-                self.workflow.report_internal_exception(e, "")
+                self.workflow.report_internal_exception(ex)
     
     def consume[%=s.name%](self, [%=s.type.name.ftlc()%]):
         pass
