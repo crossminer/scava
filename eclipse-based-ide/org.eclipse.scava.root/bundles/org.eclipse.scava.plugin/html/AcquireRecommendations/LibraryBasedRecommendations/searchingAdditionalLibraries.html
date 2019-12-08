@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Searching Additional Libraries</title>
+</head>
+
+<body>
+<h1>Searching Additional Libraries</h1>
+<div style="text-align: justify; margin: 30px">
+    To search for libraries that can be useful during the development of your
+    project, open the Library search dialog. For this, first you have to select the
+    project in the Package explorer view. This feature works only with Maven
+    projects, that contains their pom.xml file in their root folder. Then navigate
+    in the menu to the CROSSMINER menu and click on the Search libraries
+    option. This will bring up the Library search dialog.
+    <br>
+    <br>
+    This dialog is split into two parts. On the left side you can see the
+    currently used libraries in your project and on the right side there are the
+    suggested libraries. Both the left and the right side contains their libraries
+    in two separate groups. On the left side, in the upper group there are the
+    libraries that has been selected to be used as the base of the search. The
+    suggested libraries may vary by the different set of selected libraries. On
+    the bottom there are the libraries that has not been selected yet. On the
+    right side, in the lower group there are the libraries that the CROSSMINER
+    suggested for you to use in your project.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-search-results.png" width="100%">
+        <p>Library search dialog - results</p>
+    </div>
+
+    These libraries can be selected to be installed, and
+    if they are, then they move to the upper group which contains the libraries
+    that has been selected to be installed.
+
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-search-selected.png" width="100%">
+        <p>Library search dialog - selected to install</p>
+    </div>
+
+    Every time you change the search parameters, so the set of libraries that
+    are used as the base of the search, the suggested libraries will be reloaded. If
+    something goes wrong so the libraries cannot be retrieved from the CROSSMINER server, a Try again button will be shown and by clicking that you
+    can initiate a new request to load them.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-search-try-again.png" width="100%">
+        <p>Library search dialog - try again</p>
+    </div>
+
+    After selecting the set of libraries that you want to use in your project,
+    by clicking on the install button you can add them to your project. They
+    will show up among the dependencies in the project's pom.xml.
+
+
+</body>
+</html>
