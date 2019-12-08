@@ -317,7 +317,7 @@ public class DetailsView extends CompositeView<IDetailsViewEventListener> {
 		if( dependencies == null ) {
 			insertRows(dependenciesComposite, new Row(Constants.NO_DATA));
 		}else {
-			insertRows(dependenciesComposite, dependencies.stream().map(d -> new Row(d)).collect(Collectors.toList()));
+			insertRows(dependenciesComposite, dependencies.stream().distinct().map(d -> new Row(d)).collect(Collectors.toList()));
 		}
 		
 		insertRows(subprojectsComposite, new Row("currently not supported on client side"));
