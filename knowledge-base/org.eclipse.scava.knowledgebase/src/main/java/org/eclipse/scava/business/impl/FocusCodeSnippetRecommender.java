@@ -48,6 +48,8 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 	@Value("${focus.code.snippet.path}")	
 	private String jarPath;
 	Maracas maracas = new Maracas();
+	@Value("${focus.extension}")	
+	private String FOCUS_EXTENSION;
 
 	private static final Logger log = LoggerFactory.getLogger(FocusCodeSnippetRecommender.class);
 
@@ -62,14 +64,30 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 		SetView<String> union = Sets.union(querySet, projectSet);
 		return (2.0 * intersect.size()) / union.size();
 	}
-
+	boolean isVersionInSet(Set<String> set, String fullname) {
+		String[] name = fullname.split("/");
+		String withVers = name[name.length-1]
+				.replace("g_","")
+				.replace(".jar.txt", "");// /Users/juri/Desktop/focusImport/g_runtime-0.1.2-incubating.jar.txt
+		String noVers = withVers.substring(0, withVers.lastIndexOf("-"));
+		if(set.contains(noVers))
+			return true;
+		set.add(noVers);
+		return false;
+	}
 	public Map<Artifact, Double> getTopNSimilarProjects(List<String> query, int n) {
 		Map<Artifact, Double> v = getSimilarProjects(query);
-		return v.entrySet().stream().sorted(Map.Entry.<Artifact, Double>comparingByValue().reversed()).limit(n)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue,
+		Set<String> already = Sets.newHashSet();
+		return v.entrySet().stream()
+				.sorted(Map.Entry.<Artifact, Double>comparingByValue().reversed())
+				.filter(z -> !isVersionInSet(already, z.getKey().getFullName()))
+				.limit(n)
+				.collect(Collectors.toMap(Map.Entry::getKey, 
+						Map.Entry::getValue, 
+						(oldValue, newValue) -> oldValue,
 						LinkedHashMap::new));
-
 	}
+	
 
 	public Map<Artifact, Double> getSimilarProjects(List<String> methodInvolcationsQuery) {
 		List<Artifact> arts = simManger.appliableProjects(fsc);
@@ -131,7 +149,7 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 		List<String> result = Lists.newArrayList();
 		for (Entry<Artifact, String> ent : clientMethodMap.entrySet()) {
 			try {
-				String jarName = ent.getKey().getName().replace("g_", "").replace(".focus", "");
+				String jarName = ent.getKey().getName().replace("g_", "").replace(FOCUS_EXTENSION, "").replace(".jar", "-sources.jar");
 				String invocation = ent.getValue().replace("%5B%5D", "[]");
 				log.debug("\tlooking for {} in {}", invocation, jarName);
 				String methodQuery = "|java+method:///" + invocation + "|";
@@ -192,8 +210,8 @@ public class FocusCodeSnippetRecommender implements IRecommendationProvider {
 	}
 
 	public String getCode(String jarFile, String location) throws Exception {
-		if(!jarPath.endsWith("sources.jar"))
-			jarFile = jarFile.replace(".jar", "-sources.jar");
+//		if(!jarPath.endsWith("sources.jar"))
+//			jarFile = jarFile.replace(".jar", "-sources.jar");
 		String sources = getSources(jarFile);
 		String result = maracas.getCodeFromM3(sources, location);
 		return result;

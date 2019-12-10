@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import org.eclipse.scava.business.IRecommendationProvider;
 import org.eclipse.scava.business.ISimilarityManager;
@@ -22,11 +23,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Maps;
+
 @Service
 @Qualifier("Focus")
 public class FocusContexAwareRecommender implements IRecommendationProvider {
 	@Value("${focus.numberOfNeighbours}")
-	private static int NUM_OF_NEIGHBOURS;
+	private int NUM_OF_NEIGHBOURS;
 	@Autowired
 	private FOCUSSimilarityCalculator fsc;
 	@Autowired
@@ -45,7 +48,8 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		List<Artifact> listOfPRs = new ArrayList<>();
 		List<String> listOfMIs = new ArrayList<>();
 		Map<Artifact, Float> simScores = fsc.computeSimilarity(testingProject, trainingProjects);
-		byte matrix[][][] = buildUserItemContextMatrix(testingProject, listOfPRs, listOfMIs, simScores,
+		List<Artifact> simProjects = getTopNSimilarProjects(simScores, NUM_OF_NEIGHBOURS);
+		byte matrix[][][] = buildUserItemContextMatrix(testingProject, listOfPRs, listOfMIs, simProjects,
 				activeDeclaration);
 		Map<String, Float> mdSimScores = new HashMap<String, Float>();
 		// Compute the jaccard similarity between the testingMethod and every other
@@ -66,7 +70,7 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 		simSortedMap.putAll(mdSimScores);
 
 		// Compute the top-3 most similar methods
-		Map<String, Float> top3Sim = new HashMap<>();
+		Map<String, Float> top3Sim = Maps.newHashMap();
 		int count = 0;
 		for (String key : simSortedMap.keySet()) {
 			top3Sim.put(key, mdSimScores.get(key));
@@ -108,22 +112,26 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 				recommendations.put(methodInvocation, ratings[k]);
 			}
 		}
-
-		StringComparator bvc2 = new StringComparator(recommendations);
+		HashMap<String, Float> noJavaRecs = Maps.newHashMap();
+		recommendations.keySet().stream()
+			.filter(z -> !z.startsWith("java"))
+			.forEach(z -> noJavaRecs.put(z, recommendations.get(z)));
+		
+		StringComparator bvc2 = new StringComparator(noJavaRecs);
 		TreeMap<String, Float> recSortedMap = new TreeMap<>(bvc2);
-		recSortedMap.putAll(recommendations);
-		log.info("FOCUS computed recomendation for {} project with {} as active declaraion",
-				testingProject.getName(), activeDeclaration);
+		recSortedMap.putAll(noJavaRecs);
+		log.info("FOCUS computed recomendation for {} project with {} as active declaraion", testingProject.getName(),
+				activeDeclaration);
 		return recSortedMap;
 	}
 
 	public byte[][][] buildUserItemContextMatrix(Artifact testingProject, List<Artifact> listOfTrainingProjects,
-			List<String> listOfMethodInvocations, Map<Artifact, Float> simScores, String activeDeclaration)
+			List<String> listOfMethodInvocations, List<Artifact> simProjects, String activeDeclaration)
 			throws ActiveDeclarationNotFoundException {
 		log.info("Computing buildUserItemContextMatrix");
 		if (!getActiveDeclarationMIs(testingProject, activeDeclaration))
 			throw new ActiveDeclarationNotFoundException();
-		List<Artifact> simProjects = getTopNSimilarProjects(simScores, NUM_OF_NEIGHBOURS);
+		
 		Map<Artifact, Map<String, Set<String>>> allProjects = new HashMap<>();
 		List<Artifact> listOfPRs = new ArrayList<>();
 		Set<String> allMDs = new HashSet<>();
@@ -231,10 +239,11 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 	private List<Artifact> getTopNSimilarProjects(Map<Artifact, Float> simScores, int numOfNeighbours2) {
 		int count = 0;
 		List<Artifact> results = new ArrayList<>();
-		for (Map.Entry<Artifact, Float> iterable_element : simScores.entrySet()) {
+		for (Map.Entry<Artifact, Float> artifactSimValueMapEntry : simScores.entrySet()) {
 			if (!(count < numOfNeighbours2))
 				return results;
-			results.add(iterable_element.getKey());
+
+			results.add(artifactSimValueMapEntry.getKey());
 			count++;
 		}
 		return results;
@@ -259,19 +268,16 @@ public class FocusContexAwareRecommender implements IRecommendationProvider {
 
 	private Query cleanQuery(Query query) {
 		query.getFocusInput().getMethodDeclarations().replaceAll(x -> {
-				x.setName(cleanString(x.getName()));
-				return x;
-			});
+			x.setName(cleanString(x.getName()));
+			return x;
+		});
 		for (MethodDeclaration methodDeclaration : query.getFocusInput().getMethodDeclarations())
 			methodDeclaration.getMethodInvocations().replaceAll(x -> cleanString(x));
 		return query;
 	}
+
 	private String cleanString(String rascalString) {
-		return rascalString
-				.replace("|java+method:///", "")
-				.replace("|java+constructor:///", "")
-				.replace("|", "");
+		return rascalString.replace("|java+method:///", "").replace("|java+constructor:///", "").replace("|", "");
 	}
-	
 
 }

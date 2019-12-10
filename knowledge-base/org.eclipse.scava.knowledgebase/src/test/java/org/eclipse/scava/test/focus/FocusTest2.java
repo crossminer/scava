@@ -50,10 +50,10 @@ public class FocusTest2 {
 	
 	private Artifact testing;
 	
-//	@Before
+	@Before
 	public void init() throws IOException {
         artRepo.deleteAll();
-		dr.readArtifactsFromFolder("/Users/juri/Desktop/intiDemo");
+		dr.readArtifactsFromFolder("/Users/juri/Desktop/focusImport");
 	}
 
 	
@@ -88,9 +88,10 @@ public class FocusTest2 {
     }
     
     
-//    @Test
-//    public void test() throws Exception {
+    @Test
+    public void test() throws Exception {
+    	logger.info("JJ");
 //    	logger.info(car.getCode("/home/juri/Desktop/sourcesJar2/castor-xml-schema-1.3.3-rc1-sources.jar", "|java+method:///org/exolab/castor/xml/schema/reader/SchemaUnmarshaller/endElement(java.lang.String,java.lang.String)|"));
-//    }
+    }
     	
 }

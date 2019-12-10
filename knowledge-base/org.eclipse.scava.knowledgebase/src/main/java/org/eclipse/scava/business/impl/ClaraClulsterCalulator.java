@@ -51,7 +51,6 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	private List<Artifact> objects = null;
-	private Artifact[] medoids;
 	private Cluster[] clusters;
 	private ISimilarityCalculator sm;
 	
@@ -80,12 +79,10 @@ public class ClaraClulsterCalulator implements IClusterCalculator {
 			clusters = assignObjectsToClusters(medoids, this.objects);
 			quality = getClusteringQuality(clusters);
 			if (i == 0) {
-				this.medoids = medoids;
 				this.clusters = clusters;
 				oldQuality = quality;
 			} else {
 				if (quality < oldQuality) {
-					this.medoids = medoids;
 					this.clusters = clusters;
 					oldQuality = quality;
 				}
