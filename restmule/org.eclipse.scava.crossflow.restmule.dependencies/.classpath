@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jars/httpclient-cache-4.5.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jars/log4j-api-2.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jars/slf4j-api-1.7.21.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/commons-io-2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activation-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jars/activemq-all-5.15.8.jar"/>
@@ -110,9 +113,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/bundles/snappy-java-1.1.1.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bundles/stax2-api-3.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bundles/woodstox-core-5.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="man-lib/guava-26.0-jre.jar"/>
-	<classpathentry exported="true" kind="lib" path="man-lib/httpclient-4.5.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="man-lib/log4j-api-2.6.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
