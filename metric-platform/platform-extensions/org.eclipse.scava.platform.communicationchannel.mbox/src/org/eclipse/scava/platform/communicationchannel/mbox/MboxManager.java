@@ -180,7 +180,10 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 				if(dumpDateFormat.equalsIgnoreCase("gnome"))
 					url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
 				else
-					url = mbox.getUrl()+"/"+year+(month+1)+extension;
+				{
+					String monthFormatted=String.format("%02d", month+1);
+					url = mbox.getUrl()+"/"+year+monthFormatted+extension;
+				}
 				if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
 					dataPath=downloadMbox(data.getTempDir(), url, extension);
 				else
