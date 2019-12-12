@@ -1,6 +1,6 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.1"
+		"mapping_version" : "1.2"
 	},
 	"properties" : {
 		"created_at" : {
@@ -18,17 +18,29 @@
 		"revision" : {
 			"type" : "keyword"
 		},
-		"author" : {
+		"creator" : {
 			"type" : "keyword"
 		},
-		"author_email" : {
+		"creator_email" : {
 			"type" : "keyword"
 		},
 		"body" : {
-			"type" : "text"
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		},
 		"plain_text" : {
-			"type" : "text"
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		},
 		"referring_to" : {
 			"properties" : {

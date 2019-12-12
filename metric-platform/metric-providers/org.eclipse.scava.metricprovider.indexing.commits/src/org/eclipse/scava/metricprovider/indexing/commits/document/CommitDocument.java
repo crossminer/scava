@@ -21,8 +21,8 @@ public class CommitDocument {
 	private String uid;
 	private String repository;
 	private String revision;
-	private String author;
-	private String author_email;
+	private String creator;
+	private String creator_email;
 	private String body;
 	private Date created_at;
 	//NLP
@@ -34,9 +34,9 @@ public class CommitDocument {
 		this.uid = uid;
 		this.repository=repository;
 		this.revision = commit.getRevision();
-		this.author=commit.getAuthor();
+		this.creator=commit.getAuthor();
 		this.body=commit.getMessage();
-		this.author_email=commit.getAuthorEmail();
+		this.creator_email=commit.getAuthorEmail();
 		this.created_at=commit.getJavaDate();
 	}
 
@@ -87,11 +87,11 @@ public class CommitDocument {
 	}
 
 	public String getAuthor() {
-		return author;
+		return creator;
 	}
 
 	public String getAuthor_email() {
-		return author_email;
+		return creator_email;
 	}
 
 	public Date getCreated_at() {
