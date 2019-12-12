@@ -45,7 +45,7 @@ public class DataReaderTest {
     @Test
     public void testReadArtifactFromFile() throws IOException
     {
-    	Resource resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.m3.focus");
+    	Resource resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.m3.txt");
     	Artifact res = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
         res.getMethodDeclarations().forEach(x-> System.out.println(x));
     	assertNotNull(res);
