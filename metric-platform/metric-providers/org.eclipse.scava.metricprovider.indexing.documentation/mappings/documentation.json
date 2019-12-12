@@ -1,6 +1,6 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.0"
+		"mapping_version" : "1.1"
 	},
 	"properties" : {
 		"last_update" : {
@@ -10,7 +10,7 @@
 		"type" : "keyword"
 		},
 		"uid" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"documentation_id" : {
 			"type" : "keyword"

@@ -1,6 +1,6 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.0"
+		"mapping_version" : "1.1"
 	},
 	"properties" : {
 		"created_at" : {
@@ -19,16 +19,28 @@
 			"type" : "keyword"
 		},
 		"body" : {
-			"type" : "text"
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		},
 		"original_format_mime" : {
 			"type" : "keyword"
 		},
 		"original_format_name" : {
-			"type" : "text"
+			"type" : "keyword"
 		},
 		"plain_text" : {
-			"type" : "text"
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		},
 		"sentiment" : {
 			"type" : "keyword"
