@@ -1,6 +1,9 @@
 package org.eclipse.scava.repository.model.cc.mbox;
 
-import com.googlecode.pongo.runtime.querying.StringQueryProducer;
+import com.mongodb.*;
+import java.util.*;
+import com.googlecode.pongo.runtime.*;
+import com.googlecode.pongo.runtime.querying.*;
 
 
 public class Mbox extends org.eclipse.scava.repository.model.CommunicationChannel {
@@ -15,6 +18,7 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 		USERNAME.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		PASSWORD.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		COMPRESSEDFILEEXTENSION.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
+		DUMPDATEFORMAT.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		setUsername("");
 		setPassword("");
 	}
@@ -24,6 +28,7 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 	public static StringQueryProducer USERNAME = new StringQueryProducer("username"); 
 	public static StringQueryProducer PASSWORD = new StringQueryProducer("password"); 
 	public static StringQueryProducer COMPRESSEDFILEEXTENSION = new StringQueryProducer("compressedFileExtension"); 
+	public static StringQueryProducer DUMPDATEFORMAT = new StringQueryProducer("dumpDateFormat"); 
 	
 	
 	public String getMboxName() {
@@ -71,6 +76,15 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 		notifyChanged();
 		return this;
 	}
+	public String getDumpDateFormat() {
+		return parseString(dbObject.get("dumpDateFormat")+"", "");
+	}
+	
+	public Mbox setDumpDateFormat(String dumpDateFormat) {
+		dbObject.put("dumpDateFormat", dumpDateFormat);
+		notifyChanged();
+		return this;
+	}
 
 	@Override
 	public String getCommunicationChannelType() {
@@ -81,11 +95,13 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 	public String getInstanceId() {
 		return getUrl();
 	}
-	
+
 	@Override
 	public boolean needsLocalStorage() {
 		return true;
 	}
+	
+	
 	
 	
 }

@@ -12,5 +12,6 @@ class Mbox extends CommunicationChannel {
 	attr String username;
 	attr String password;
 	attr String compressedFileExtension;
+	attr String dumpDateFormat;
 }
 
