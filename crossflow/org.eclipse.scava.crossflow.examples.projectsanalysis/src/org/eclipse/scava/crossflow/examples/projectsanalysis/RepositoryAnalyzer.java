@@ -10,6 +10,7 @@ public class RepositoryAnalyzer extends OpinionatedRepositoryAnalyzerBase {
 		//	repositoryAnalysisResultInst.setSize_at_commit( String );
 		//	repositoryAnalysisResultInst.setLines_added( String );
 		//	repositoryAnalysisResultInst.setLines_deleted( String );
+		repositoryAnalysisResultInst.setRepoProject( repoProjectPair );
 		return repositoryAnalysisResultInst;
 	
 	}

@@ -13,10 +13,10 @@ public class RepositoryAnalysisResultSink extends RepositoryAnalysisResultSinkBa
 	public void consumeRepositoryAnalysisResults(RepositoryAnalysisResult repositoryAnalysisResult) {
 		try {
 			if ( writer1 == null ) {
-				writer1 = new CsvWriter(new File(workflow.getOutputDirectory(), "output.csv").getAbsolutePath(), "size_at_commit", "lines_added", "lines_deleted",  "cached");
+				writer1 = new CsvWriter(new File(workflow.getOutputDirectory(), "output.csv").getAbsolutePath(), "size_at_commit", "lines_added", "lines_deleted", "repoProject",  "cached");
 			}
 		
-			writer1.writeRecord( repositoryAnalysisResult.getSize_at_commit(), repositoryAnalysisResult.getLines_added(), repositoryAnalysisResult.getLines_deleted(),  repositoryAnalysisResult.isCached() );
+			writer1.writeRecord( repositoryAnalysisResult.getSize_at_commit(), repositoryAnalysisResult.getLines_added(), repositoryAnalysisResult.getLines_deleted(), repositoryAnalysisResult.getRepoProject(),  repositoryAnalysisResult.isCached() );
 			writer1.flush();
 		} catch (Exception e) {
 			workflow.log(LogLevel.ERROR, e.getMessage());
