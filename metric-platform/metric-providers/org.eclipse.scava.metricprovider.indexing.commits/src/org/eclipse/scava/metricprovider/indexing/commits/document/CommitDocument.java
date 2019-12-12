@@ -86,11 +86,11 @@ public class CommitDocument {
 		return body;
 	}
 
-	public String getAuthor() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public String getAuthor_email() {
+	public String getCreator_email() {
 		return creator_email;
 	}
 
