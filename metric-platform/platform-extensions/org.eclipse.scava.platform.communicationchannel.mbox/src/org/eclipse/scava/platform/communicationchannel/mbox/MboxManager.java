@@ -84,9 +84,23 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			return delta;
 		}
 		
+		String dumpDateFormat = mbox.getDumpDateFormat();
+		
+		if(dumpDateFormat.isEmpty())
+		{
+			//Ideally, in the future, this shouldn't be necessary
+			dumpDateFormat=getDumpDateFormat(mbox.getUrl());
+			if(dumpDateFormat.isEmpty())
+			{
+				logger.error("The reader cannot determine which format should be used for downloading the dumps");
+				return delta;
+			}
+		}
+		
 		CommunicationChannelDataPath dataPath;
+		
 		//Case of dumps from Castalia
-		if(extension.equals(".mbox.gz"))
+		if(extension.equals(".mbox.gz") && dumpDateFormat.equalsIgnoreCase("eclipse"))
 		{	
 			//In this section, the months have to start from 1
 			boolean download=false;
@@ -158,11 +172,15 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			else
 				dataPath=data.getDataPath();
 		}
-		else
+		else if(dumpDateFormat.equalsIgnoreCase("gnome") || dumpDateFormat.equalsIgnoreCase("apache"))
 		{
 			if(!data.compareDate(month, year) || !data.fileExists())
 			{
-				String url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
+				String url;
+				if(dumpDateFormat.equalsIgnoreCase("gnome"))
+					url = mbox.getUrl()+"/"+year+"-"+months.get(month)+extension;
+				else
+					url = mbox.getUrl()+"/"+year+(month+1)+extension;
 				if(mbox.getUsername().isEmpty() || mbox.getPassword().isEmpty())
 					dataPath=downloadMbox(data.getTempDir(), url, extension);
 				else
@@ -175,6 +193,11 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			}
 			else
 				dataPath=data.getDataPath();
+		}
+		else
+		{
+			logger.error("Impossible to determine how to download the file.");
+			return delta;
 		}
 		
 		if(dataPath==null)
@@ -195,6 +218,17 @@ public class MboxManager implements ICommunicationChannelManager<Mbox>{
 			filePaths.close();
 		}
 		return delta;
+	}
+	
+	private String getDumpDateFormat(String url)
+	{
+		if(url.contains("mail-archives.apache.org"))
+			return "apache";
+		if(url.contains("download.eclipse.org"))
+			return "eclipse";
+		if(url.contains("mail.gnome.org"))
+			return "gnome";
+		return "";
 	}
 	
 	private void readFile(File file, CommunicationChannelDelta delta, Date date, Mbox mbox)
