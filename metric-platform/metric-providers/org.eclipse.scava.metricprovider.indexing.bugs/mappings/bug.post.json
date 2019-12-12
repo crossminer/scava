@@ -6,7 +6,7 @@
 		"created_at" : { 
 			"type" : "date"
 		},
-		"summary" : {
+		"subject" : {
 			"type" : "text",
 			"fields": {
 		    	"keyword": {

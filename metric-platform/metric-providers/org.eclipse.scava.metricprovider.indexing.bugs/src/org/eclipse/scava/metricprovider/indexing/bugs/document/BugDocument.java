@@ -16,7 +16,7 @@ import java.util.List;
 public class BugDocument extends DocumentAbstract {
 
 	private Date created_at;
-	private String bug_summary;
+	private String subject;
 	private String severity;
 	private String bug_id;
 	private String project_name;
@@ -28,7 +28,7 @@ public class BugDocument extends DocumentAbstract {
 		this.uid = uid;
 		this.bug_id = bugID;
 		this.project_name = projectName;
-		this.bug_summary = summary;
+		this.subject = summary;
 		this.created_at = created_at;
 		this.creator = creator;
 	}
@@ -38,10 +38,10 @@ public class BugDocument extends DocumentAbstract {
 	}
 
 	/**
-	 * @return the summary
+	 * @return the subject
 	 */
-	public String getSummary() {
-		return bug_summary;
+	public String getSubject() {
+		return subject;
 	}
 
 	/**
