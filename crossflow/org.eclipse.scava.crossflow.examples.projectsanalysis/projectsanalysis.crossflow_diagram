@@ -16,9 +16,9 @@
       <fields xmi:type="cf:DataField" xmi:id="_R_3CkBzmEeqlBsMJwEYvzg" name="commit"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_ik5QQBzoEeqlBsMJwEYvzg" name="RepositoryAnalysisResult">
-      <fields xmi:type="cf:DataField" xmi:id="_k_7vUBzoEeqlBsMJwEYvzg" name="size_at_commit"/>
-      <fields xmi:type="cf:DataField" xmi:id="_sDZyEBzoEeqlBsMJwEYvzg" name="lines_added"/>
-      <fields xmi:type="cf:DataField" xmi:id="_tExIcBzoEeqlBsMJwEYvzg" name="lines_deleted"/>
+      <fields xmi:type="cf:DataField" xmi:id="_k_7vUBzoEeqlBsMJwEYvzg" name="size_at_commit" type="Integer"/>
+      <fields xmi:type="cf:DataField" xmi:id="_sDZyEBzoEeqlBsMJwEYvzg" name="lines_added" type="Integer"/>
+      <fields xmi:type="cf:DataField" xmi:id="_tExIcBzoEeqlBsMJwEYvzg" name="lines_deleted" type="Integer"/>
       <fields xmi:type="cf:DataField" xmi:id="_nPBtABz8Eeqq9eAVf2tx4w" name="repoProject" type="RepoProjectPair"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_6uBIMBzvEeqfhpqPfA_cCg" name="Repository">

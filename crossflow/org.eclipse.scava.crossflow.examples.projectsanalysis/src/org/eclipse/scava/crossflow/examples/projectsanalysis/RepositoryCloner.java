@@ -19,7 +19,6 @@ public class RepositoryCloner extends RepositoryClonerBase {
 				+ project.repo + File.separator + project.commit + File.separator);
 		pathToRepoClone.mkdirs(); // make directory if it doesn't yet exist
 
-
 		try {
 			// clone repository
 			workflow.log(LogLevel.INFO, "Cloning " + repoUrl + " ...");
