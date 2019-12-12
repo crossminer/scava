@@ -1,13 +1,19 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.0"
+		"mapping_version" : "1.1"
 	},
 	"properties" : {
 		"created_at" : { 
 			"type" : "date"
 		},
-		"bug_summary" : {
-			"type" : "text"
+		"summary" : {
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		},
 		"severity" : {
 			"type" : "keyword"
@@ -32,7 +38,13 @@
 				"problematic_changes" : {
 					"properties" : {
 						"change" : {
-							"type" : "text"
+							"type" : "text",
+							"fields": {
+						    	"keyword": {
+						        	"type": "keyword",
+						        	"ignore_above": 256
+						      	}
+						    }
 						},
 						"matching_score" : {
 							"type" : "double"
