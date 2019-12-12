@@ -15,12 +15,12 @@ import java.util.List;
 import org.eclipse.scava.business.dto.FocusInput;
 import org.eclipse.scava.business.dto.Query;
 import org.eclipse.scava.business.dto.Recommendation;
-import org.eclipse.scava.business.dto.RecommendationItem;
 import org.eclipse.scava.business.impl.DataReader;
 import org.eclipse.scava.business.impl.FocusCodeSnippetRecommender;
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -50,15 +50,15 @@ public class FocusTest2 {
 	
 	private Artifact testing;
 	
-//	@Before
-//	public void init() throws IOException {
-//        artRepo.deleteAll();
-//		dr.readArtifactsFromPath("/home/juri/Desktop/sourcesJar2/");
-//	}
-
+	
+	public void init() throws IOException {
+        artRepo.deleteAll();
+		dr.readArtifactsFromFolder("/Users/juri/Desktop/focusImport");
+	}
 
 	
-//    @Test
+    @Test
+    @Ignore
     public void testRecommendationWithMockito() throws Exception{
     	logger.info("start");
     	Resource resource = new ClassPathResource("FOCUS/castor-xml-schema-1.3.3-rc1.jar.focus");
@@ -72,7 +72,8 @@ public class FocusTest2 {
     	result.forEach(z -> logger.info(z));
     	
     }
-//    @Test
+    @Test
+    @Ignore
     public void testRecommendation() throws Exception{
     	logger.info("start");
     	Resource resource = new ClassPathResource("FOCUS/castor-xml-schema-1.3.3-rc1.jar.focus");
@@ -87,9 +88,11 @@ public class FocusTest2 {
     }
     
     
-//    @Test
-//    public void test() throws Exception {
+    @Test
+    @Ignore
+    public void test() throws Exception {
+    	logger.info("JJ");
 //    	logger.info(car.getCode("/home/juri/Desktop/sourcesJar2/castor-xml-schema-1.3.3-rc1-sources.jar", "|java+method:///org/exolab/castor/xml/schema/reader/SchemaUnmarshaller/endElement(java.lang.String,java.lang.String)|"));
-//    }
+    }
     	
 }

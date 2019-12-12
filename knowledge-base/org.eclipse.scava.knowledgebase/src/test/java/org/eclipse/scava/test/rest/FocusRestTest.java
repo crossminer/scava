@@ -88,7 +88,7 @@ public class FocusRestTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(recController).build();
       
         Resource resource = new ClassPathResource("FOCUS/");
-        List<Artifact> artifacts = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+        List<Artifact> artifacts = dr.readArtifactsFromFolder(resource.getFile().getAbsolutePath());
         testing = artifacts.get(4);
 		logger.info(testing.getFullName());
 		artifacts.remove(testing);

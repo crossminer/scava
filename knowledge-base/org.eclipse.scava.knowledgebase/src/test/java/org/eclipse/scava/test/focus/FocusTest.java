@@ -77,9 +77,9 @@ public class FocusTest {
 		MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(car).build();
         Resource resource = new ClassPathResource("FOCUS/");
-        trainings = dr.readArtifactsFromPath(resource.getFile().getAbsolutePath());
+        trainings = dr.readArtifactsFromFolder(resource.getFile().getAbsolutePath());
         logger.info("ARTIFACTS: " + trainings.size());
-        resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.m3.focus");
+        resource = new ClassPathResource("FOCUS/000a7d6989abec22bf0a8336d350d8a97ccda5fa.m3.txt");
         testing = dr.readArtifactFromFile(resource.getFile().getAbsolutePath());
 		
 		 

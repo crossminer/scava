@@ -22,12 +22,7 @@ public class Application {
 	
 	
     public static void main(String[] args) {
+    	logger.info("Starting Application");
     	SpringApplication.run(Application.class, args);
-        Application app = new Application();
-        app.init();
     }
-
-	private void init() {	
-	}
-    
 }

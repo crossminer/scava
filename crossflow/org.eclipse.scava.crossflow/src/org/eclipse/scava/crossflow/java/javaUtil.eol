@@ -1,8 +1,15 @@
 @cached
 operation CrossflowLanguageModel!DataField getBoxedName() : String {
-	if (self.type = "int") return "Integer";
-	if (self.type = "char") return "Character";
-	return self.type.ftuc();
+	switch (self.type) {
+		case "int": return "Integer";
+		case "char": return "Character";
+		case "long": return "Long";
+		case "byte": return "Byte";
+		case "short": return "Short";
+		case "float": return "Float";
+		case "double" : return "Double";
+	}
+	return self.type;
 }
 
 @cached

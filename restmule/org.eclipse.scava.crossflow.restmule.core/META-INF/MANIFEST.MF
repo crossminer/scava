@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: RestMule Core
 Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.scava.crossflow.restmule.dependencies;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

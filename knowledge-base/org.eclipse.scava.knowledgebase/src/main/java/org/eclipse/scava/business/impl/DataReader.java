@@ -8,8 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.eclipse.scava.business.integration.ArtifactRepository;
 import org.eclipse.scava.business.model.Artifact;
@@ -18,13 +16,15 @@ import org.eclipse.scava.business.model.MethodDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DataReader {
 
 	private static final Logger log = LoggerFactory.getLogger(DataReader.class);
-
+	@Value("${focus.extension}")	
+	private String FOCUS_EXTENSION;
 	@Autowired
 	private ArtifactRepository artifactRepo;
 
@@ -34,13 +34,17 @@ public class DataReader {
 		return results;
 	}
 
-	public List<Artifact> readArtifactsFromPath(String focucFilesFolder) {
+	public List<Artifact> readArtifactsFromFolder(String focucFilesFolder) {
 		List<Artifact> results = new ArrayList<>();
 
 		try {
 			Files.list(Paths.get(focucFilesFolder)).filter(Files::isRegularFile)
-				.filter(z -> z.toString().endsWith(".m3.focus")).forEach(z -> {
-						results.add(readArtifactFromFile(z.toString()));
+				.filter(z -> z.toString().endsWith(FOCUS_EXTENSION)).forEach(z -> {
+					try {
+							results.add(readArtifactFromFile(z.toString()));
+						} catch(Exception e) {
+							log.error("Fail importin {} data", z.toString());
+						}
 					});
 		} catch (IOException e) {
 			log.error("from path: {}", e.getMessage());

@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.xml.ws.soap.Addressing;
-
-import org.apache.commons.compress.utils.Lists;
 import org.bson.types.ObjectId;
 import org.eclipse.scava.business.IAggregatedSimilarityCalculator;
 import org.eclipse.scava.business.ISimilarityCalculator;

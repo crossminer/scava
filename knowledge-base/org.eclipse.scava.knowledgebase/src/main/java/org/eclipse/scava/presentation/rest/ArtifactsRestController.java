@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.scava.business.IRecommenderManager;
 import org.eclipse.scava.business.ISimilarityCalculator;
 import org.eclipse.scava.business.dto.metrics.MetricsForProject;
+import org.eclipse.scava.business.impl.DataReader;
 import org.eclipse.scava.business.impl.GithubImporter;
 import org.eclipse.scava.business.impl.OssmeterImporter;
 import org.eclipse.scava.business.integration.ArtifactRepository;
@@ -76,9 +77,19 @@ public class ArtifactsRestController {
 
 	@Value("${migration.local.m3.files.path}")
 	private String localFile;
+	
+	@Autowired
+	DataReader dataReader;
+	
+	@Value("${focus.code.snippet.path}")	
+	private String jarPath;
 
 	@Autowired
 	private GithubImporter importer;
+	
+	@Autowired
+	private LibBoostRepository libBoostRepo;
+
 
 	@ApiImplicitParams({ // FIXME
 			@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
@@ -123,12 +134,6 @@ public class ArtifactsRestController {
 	public @ResponseBody List<MetricsForProject> getMetricForProjectByProjectId(@PathVariable("project_id") String id) {
 		return m4pRepository.findByProjectId(id);
 	}
-
-//	@ApiOperation(value = "Search artifact to KB")
-//	@RequestMapping(value="search/{artifact_query}", produces = "application/json", method = RequestMethod.GET)
-//    public @ResponseBody List<Artifact> getProject(@PathVariable("artifact_query") String projectQuery) {
-//		return recommenderManager.getArtifactsByQuery(projectQuery);
-//    }
 
 	@ApiOperation(value = "Search artifact to KB")
 	@RequestMapping(value = "search/{artifact_query}", produces = { "application/json",
@@ -190,7 +195,7 @@ public class ArtifactsRestController {
 		try {
 			m4pRepository.save(metricForProject);
 		} catch (Exception e) {
-			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
 	}
@@ -201,57 +206,38 @@ public class ArtifactsRestController {
 		try {
 			storeLibBoost(file);
 			logger.info("LibBoost has been imported");
+			return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
 		} catch (IllegalStateException | IOException e) {
 			logger.error(e.getMessage());
-			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
+		
 	}
 	
-	@Autowired
-	private LibBoostRepository libBoostRepo;
-
+	@ApiOperation(value = "This API imports focus files")
+	@RequestMapping(value = "/focus/folder", method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<Object> importFocus() {
+		try {
+			dataReader.readArtifactsFromFolder(jarPath);
+			logger.info("LibBoost has been imported");
+			return new ResponseEntity<Object>(Boolean.TRUE, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	private void storeLibBoost(MultipartFile multipartFile) throws IOException {
-//		String fileName = Paths.get(localFile, multipartFile.getOriginalFilename()).toString();
-
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String name = line.replace("/", "");
-				if (libBoostRepo.findOneByName(name) == null) {
+				if (libBoostRepo.findOneByName(name) == null)
 					libBoostRepo.save(new LibBoost(name));
-				}
 			}
 		}
-
 	}
-//	@RequestMapping(value="/gargo", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
-//	public @ResponseBody MetricsForProject temp(){
-//		MetricsForProject metric4project = new MetricsForProject();
-//		metric4project.setProjectId("DEMO METRIC4PROJECT");
-//		List<MetricMilestoneSlice> metricMilestoneSlices = new ArrayList<MetricMilestoneSlice>();
-//		MetricMilestoneSlice metricMilestoneSlice = new MetricMilestoneSlice();
-//		metricMilestoneSlice.setBounder("DEMO BOUNDER");
-//		MetricBoundary metricBoundary = new MetricBoundary();
-//		metricBoundary.setBeginDate(new Date());
-//		metricBoundary.setEndDate(new Date());
-//		List<MetricBoundary> mbs = new ArrayList<MetricBoundary>();
-//		mbs.add(metricBoundary);
-//		metricMilestoneSlice.setBoundary(mbs);
-//		MetricDescriptor descriptor = new MetricDescriptor();
-//		Map<String,Double> map = new HashMap<String,Double>();
-//		map.put("name", 2.0);
-//		descriptor.setItemValuePairs(map);
-//		descriptor.setMetricName("DEMO METRICNAME");
-//		ArrayList<MetricDescriptor> mds = new ArrayList<>();
-//		mds.add(descriptor);
-//		metricBoundary.setMetricValues(mds);
-//		metricMilestoneSlices.add(metricMilestoneSlice);
-//		metric4project.setMetricMilestoneSlice(metricMilestoneSlices);
-//		return metric4project ;
-//	}
-
 }

@@ -18,6 +18,11 @@ public class XstreamSerializer extends AbstractSerializer {
 		xstream = new XStream(new DomDriver());
 		XStream.setupDefaultSecurity(xstream);
 	}
+	
+	@Override
+	public void setClassloader(ClassLoader classLoader) {
+		xstream.setClassLoader(classLoader);
+	}
 
 	@Override
 	protected void doRegisterType(Class<?> type) {

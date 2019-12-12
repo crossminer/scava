@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: restmule.client.github
 Bundle-SymbolicName: org.eclipse.scava.crossflow.restmule.client.github
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.scava.crossflow.restmule.core;bundle-version="0.0.1",
  org.eclipse.scava.crossflow.restmule.dependencies;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy

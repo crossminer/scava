@@ -138,6 +138,10 @@ operation CrossflowLanguageModel!Stream isConfigurationChannel() {
 /**
  * TYPES
  */
+operation CrossflowLanguageModel!Type isJob() : Boolean {
+	return CrossflowLanguageModel!Stream.all.exists(s|s.type=self or s.type.closure(c|c.extending).contains(self));
+}
+
 operation CrossflowLanguageModel!Type createSource(){
 	var source = new CrossflowLanguageModel!Source;
 	self.eContainer.tasks.add(source);

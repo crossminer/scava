@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="resources/lib/jars/byte-buddy-1.6.14.jar"/>
 	<classpathentry exported="true" kind="lib" path="resources/lib/jars/byte-buddy-agent-1.6.14.jar"/>
@@ -43,4 +43,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src-gen"/>
 	<classpathentry kind="output" path="bin"/>
+<classpathentry kind="lib" path="resources"/>
 </classpath>

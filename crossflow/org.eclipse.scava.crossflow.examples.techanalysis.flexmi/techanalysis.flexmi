@@ -25,11 +25,11 @@
 			<datafield name="fileExt" type="String"/>
 			<datafield name="techKey" type="String"/>
 		</type>
-		<type name="Repository" isMany="true" extending="Technology">
+		<type name="Repository" extending="Technology">
 			<datafield name="url" type="String"/>
 			<datafield name="name" type="String"/>
 		</type>
-		<type name="AnalysisResult" isMany="true" extending="Technology">
+		<type name="AnalysisResult" extending="Technology">
 			<datafield name="fileCount" type="int"/>
 			<datafield name="authorCount" type="int"/>
 			<datafield name="repository" type="String"/>
