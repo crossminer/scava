@@ -1,6 +1,6 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.1"
+		"mapping_version" : "1.2"
 	},
 	"properties" : { 
 		"comment_Id" : { 
@@ -50,6 +50,9 @@
 		}, 
 		"created_at" : { 
 			"type" : "date" 
+		},
+		"subject" : { 
+			"type" : "keyword" 
 		}, 
 		"uid" : { 
 			"type" : "keyword" 

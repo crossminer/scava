@@ -10,6 +10,7 @@
 package org.eclipse.scava.metricprovider.indexing.bugs;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.scava.index.indexer.Indexer;
@@ -158,28 +159,32 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 		
 		loadMetricsDB(project);
 		
+		HashMap<String, String> subjectsBugs;
+		
 		for (BugTrackingSystemDelta btsDelta : bugTrackingSystemProjectDelta.getBugTrackingSystemDeltas())
 		{
+			subjectsBugs = new HashMap<String, String>();
 			btsType=btsDelta.getBugTrackingSystem().getBugTrackerType();
 			
 			for (BugTrackingSystemBug bug : btsDelta.getNewBugs()) // NEW BUGS
 			{
-				processBugs(projectName, btsType, bug);
+				processBugs(projectName, btsType, bug, subjectsBugs);
 			}
 			for (BugTrackingSystemBug bug : btsDelta.getUpdatedBugs()) // UPDATED BUGS
 			{
-				processBugs(projectName, btsType, bug);
+				processBugs(projectName, btsType, bug, subjectsBugs);
 			}
 			for (BugTrackingSystemComment bugComment : btsDelta.getComments()) // COMMENTS
 			{ 
-				processComments(projectName, btsType, bugComment);
+				processComments(projectName, btsType, bugComment, subjectsBugs);
 			}
 
 		}
 	}
 	
-	private void processComments(String projectName, String bugTrackerType, BugTrackingSystemComment bugComment)
+	private void processComments(String projectName, String bugTrackerType, BugTrackingSystemComment bugComment, HashMap<String, String> subjectsBugs)
 	{
+		
 		String uid=generateUniqueDocumentId(projectName, bugComment.getCommentId(),bugTrackerType);
 		CommentDocument commentDocument = new CommentDocument(uid,
 															bugComment.getCommentId(),
@@ -187,14 +192,17 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 															projectName,
 															bugComment.getText(),
 															bugComment.getCreator(),
-															bugComment.getCreationTime());
+															bugComment.getCreationTime(),
+															subjectsBugs.get(bugComment.getBugId()));
 		enrichCommentDocument(bugComment, commentDocument);
 		indexing(bugTrackerType, "bug.comment", uid, commentDocument);
 		
 	}
 	
-	private void processBugs(String projectName, String bugTrackerType, BugTrackingSystemBug bug)
+	private void processBugs(String projectName, String bugTrackerType, BugTrackingSystemBug bug, HashMap<String, String> subjectsBugs)
 	{
+		if(!subjectsBugs.containsKey(bug.getBugId()))
+			subjectsBugs.put(bug.getBugId(), bug.getSummary());
 		String uid=generateUniqueDocumentId(projectName, bug.getBugId(),bugTrackerType);
 		BugDocument bugDocument = new BugDocument(uid,
 									bug.getBugId(),
@@ -202,7 +210,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 									bug.getSummary(),
 									bug.getCreationTime(),
 									bug.getCreator());
-		adrianEnrichment(bug, bugDocument);
+		enrichPost(bug, bugDocument);
 		indexing(bugTrackerType, "bug.post", uid, bugDocument);
 	}
 	
@@ -263,7 +271,7 @@ public class BugsIndexingMetricProvider extends AbstractIndexingMetricProvider {
 		}
 	}
 	
-	private void adrianEnrichment(BugTrackingSystemBug bug, BugDocument bd)
+	private void enrichPost(BugTrackingSystemBug bug, BugDocument bd)
 	{
 		for (String metricIdentifier : metricIdentifiers) 
 		{
