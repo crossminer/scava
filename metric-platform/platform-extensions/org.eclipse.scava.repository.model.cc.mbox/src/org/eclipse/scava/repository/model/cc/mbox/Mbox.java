@@ -18,6 +18,7 @@ public class Mbox extends org.eclipse.scava.repository.model.CommunicationChanne
 		DUMPDATEFORMAT.setOwningType("org.eclipse.scava.repository.model.cc.mbox.Mbox");
 		setUsername("");
 		setPassword("");
+		setDumpDateFormat("");
 	}
 	
 	public static StringQueryProducer MBOXNAME = new StringQueryProducer("MboxName"); 
