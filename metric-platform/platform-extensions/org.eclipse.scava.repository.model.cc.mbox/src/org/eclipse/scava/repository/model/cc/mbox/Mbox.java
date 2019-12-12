@@ -1,9 +1,6 @@
 package org.eclipse.scava.repository.model.cc.mbox;
 
-import com.mongodb.*;
-import java.util.*;
-import com.googlecode.pongo.runtime.*;
-import com.googlecode.pongo.runtime.querying.*;
+import com.googlecode.pongo.runtime.querying.StringQueryProducer;
 
 
 public class Mbox extends org.eclipse.scava.repository.model.CommunicationChannel {
