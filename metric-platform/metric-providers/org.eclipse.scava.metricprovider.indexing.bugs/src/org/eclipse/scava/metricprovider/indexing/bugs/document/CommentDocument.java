@@ -19,7 +19,7 @@ public class CommentDocument extends DocumentAbstract {
 	private String body;
 	private String bug_id;
 	private String project_name;
-	private String creator;
+	private String author;
 	private Date created_at;
 	// NLP
 	private List<String> emotional_dimension;
@@ -32,13 +32,13 @@ public class CommentDocument extends DocumentAbstract {
 	
 
 	public CommentDocument(String uid, String commentId, String bugId, String projectName, String body,
-			String creator, Date createdAt) {
+			String author, Date createdAt) {
 		this.uid = uid;
 		this.comment_id = commentId;
 		this.bug_id = bugId;
 		this.project_name = projectName;
 		this.body = body;
-		this.creator = creator;
+		this.author = author;
 		this.created_at = createdAt;
 	}
 
@@ -46,7 +46,7 @@ public class CommentDocument extends DocumentAbstract {
 		return comment_id;
 	}
 
-	public String getComment_body() {
+	public String getBody() {
 		return body;
 	}
 
@@ -82,8 +82,8 @@ public class CommentDocument extends DocumentAbstract {
 		return project_name;
 	}
 
-	public String getCreator() {
-		return creator;
+	public String getAuthor() {
+		return author;
 	}
 
 	public Date getCreated_at() {
