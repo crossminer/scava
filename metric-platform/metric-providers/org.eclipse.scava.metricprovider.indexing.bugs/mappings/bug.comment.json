@@ -1,13 +1,19 @@
 {
 	"_meta" : {
-		"mapping_version" : "1.0"
+		"mapping_version" : "1.1"
 	},
 	"properties" : { 
 		"comment_Id" : { 
 			"type" : "keyword" 
 		}, 
 		"body" : { 
-			"type" : "text" 
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    }
 		}, 
 		"emotional_dimension" : { 
 			"type" : "keyword" 
@@ -16,7 +22,13 @@
 			"type" : "keyword" 
 		}, 
 		"plain_text" : { 
-			"type" : "text" 
+			"type" : "text",
+			"fields": {
+		    	"keyword": {
+		        	"type": "keyword",
+		        	"ignore_above": 256
+		      	}
+		    } 
 		}, 
 		"request_reply_classification" : { 
 			"type" : "keyword" 

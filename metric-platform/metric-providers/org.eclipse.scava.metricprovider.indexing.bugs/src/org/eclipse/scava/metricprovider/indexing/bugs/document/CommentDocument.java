@@ -32,13 +32,13 @@ public class CommentDocument extends DocumentAbstract {
 	
 
 	public CommentDocument(String uid, String commentId, String bugId, String projectName, String body,
-			String author, Date createdAt) {
+			String creator, Date createdAt) {
 		this.uid = uid;
 		this.comment_id = commentId;
 		this.bug_id = bugId;
 		this.project_name = projectName;
 		this.body = body;
-		this.author = author;
+		this.author = creator;
 		this.created_at = createdAt;
 	}
 
