@@ -25,12 +25,12 @@ public class ArticleDocument extends DocumentAbstract {
 	private List<String> threads_id;
 
 	public ArticleDocument(String uid, String projectName, String collectionName,
-			String articleId,String subject, String messageBody, String creator, Date createdAt) {
+			String articleId,String subject, String body, String creator, Date createdAt) {
 
 		this.uid = uid;
 		this.article_id = articleId; 
 		this.project_name = projectName;
-		this.body = messageBody;
+		this.body = body;
 		this.creator = creator;
 		this.created_at = createdAt;
 		this.communication_channel_id = collectionName;
