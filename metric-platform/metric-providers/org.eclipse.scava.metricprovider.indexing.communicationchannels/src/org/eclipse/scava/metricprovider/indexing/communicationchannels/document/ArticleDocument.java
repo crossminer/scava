@@ -10,7 +10,7 @@ public class ArticleDocument extends DocumentAbstract {
 	private String article_id;
 	private String communication_channel_id;
 	private String project_name;
-	private String message_body;
+	private String body;
 	private String subject;
 	private String creator;
 	private Date created_at;
@@ -30,7 +30,7 @@ public class ArticleDocument extends DocumentAbstract {
 		this.uid = uid;
 		this.article_id = articleId; 
 		this.project_name = projectName;
-		this.message_body = messageBody;
+		this.body = messageBody;
 		this.creator = creator;
 		this.created_at = createdAt;
 		this.communication_channel_id = collectionName;
@@ -47,8 +47,8 @@ public class ArticleDocument extends DocumentAbstract {
 	public String getProject_name() {
 		return project_name;
 	}
-	public String getMessage_body() {
-		return message_body;
+	public String getBody() {
+		return body;
 	}
 	public String getCreator() {
 		return creator;
