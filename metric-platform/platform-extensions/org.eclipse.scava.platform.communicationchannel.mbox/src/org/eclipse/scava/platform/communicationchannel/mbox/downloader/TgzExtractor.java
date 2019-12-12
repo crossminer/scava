@@ -42,91 +42,98 @@ public class TgzExtractor {
 		if(file==null)
 			return dataPath;
 		
-	    try
-	    {
-	    	InputStream in = new FileInputStream(file);
-			try
-			{
-		        if(ext.equals(".txt.gz") || ext.equals(".mbox.gz"))
-		        {
-		        	GZIPInputStream gzis = new GZIPInputStream(in);
-		        	File textfile = createTempFile(tempDir, gzis, ".txt");
-			    	dataPath = new CommunicationChannelDataPath(textfile.toPath(), true);
-		        }
-		        else
-		        {
-		        	GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(in);
-		        	try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn))
-		        	{
-		        		String rootCreated="";
-		    	        TarArchiveEntry entry;
-		    	        
-		                HashMap<String, String> mappingFolders = new HashMap<String, String> ();
-		                
-		                Path path;
-		                String pathUntilNow;
-
-		                while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-		                    /** If the entry is a directory, create the directory. **/
-		                    if (!entry.isDirectory() && !entry.getName().contains("/.")) {
-		                        List<String> parsedPath = pathParser(entry.getName());
-		                        pathUntilNow="";
-		                        for(int i=0; i<parsedPath.size()-1; i++)
-		                        {
-		                       	
-		                            if(parsedPath.get(i).isEmpty())
-		                                continue;
-		                            if(mappingFolders.containsKey(parsedPath.get(i)))
-		                            {
-		                                pathUntilNow =mappingFolders.get(parsedPath.get(i));
-		                            }
-		                            else
-		                            {
-		                                if(rootCreated.isEmpty())
-		                                {
-		                                    path=Files.createTempDirectory(parsedPath.get(i) + "_");
-		                                    rootCreated=tempDir.toString()+"/"+path.toString();
-		                                }
-		                                else
-		                                {
-		                                    path=Files.createTempDirectory(Paths.get(pathUntilNow), parsedPath.get(i));                                
-		                                }
-		                                mappingFolders.put(parsedPath.get(i), path.toString());
-		                                pathUntilNow =path.toString();
-		                            }
-		                        }
-		                        path = createTempFileInTemporalDirectory(parsedPath.get(parsedPath.size()-1), pathUntilNow);
-		                        
-		                        int count;
-		                        byte data[] = new byte[BUFFER_SIZE];
-		                        FileOutputStream fos = new FileOutputStream(path.toFile(), false);
-		                        try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-		                            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-		                                dest.write(data, 0, count);
-		                            }
-		                        }
-		                    }
-		                }
-		                dataPath = new CommunicationChannelDataPath(Paths.get(rootCreated), false);
-		    	    } catch (IOException e) {
-		    	    	logger.error("Error while reading Tar file", e);
-		    		}
-		        	gzipIn.close();
-		        }
+		//No compression
+		if(ext.equals(".mbox") || ext.equals(".txt"))
+		{
+			dataPath= new CommunicationChannelDataPath(file.toPath(), true);
+		}
+		else
+		{
+		    try
+		    {
+		    	InputStream in = new FileInputStream(file);
+				try
+				{
+			        if(ext.equals(".txt.gz") || ext.equals(".mbox.gz"))
+			        {
+			        	GZIPInputStream gzis = new GZIPInputStream(in);
+			        	File textfile = createTempFile(tempDir, gzis, ".txt");
+				    	dataPath = new CommunicationChannelDataPath(textfile.toPath(), true);
+			        }
+			        else
+			        {
+			        	GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(in);
+			        	try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn))
+			        	{
+			        		String rootCreated="";
+			    	        TarArchiveEntry entry;
+			    	        
+			                HashMap<String, String> mappingFolders = new HashMap<String, String> ();
+			                
+			                Path path;
+			                String pathUntilNow;
+	
+			                while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+			                    /** If the entry is a directory, create the directory. **/
+			                    if (!entry.isDirectory() && !entry.getName().contains("/.")) {
+			                        List<String> parsedPath = pathParser(entry.getName());
+			                        pathUntilNow="";
+			                        for(int i=0; i<parsedPath.size()-1; i++)
+			                        {
+			                       	
+			                            if(parsedPath.get(i).isEmpty())
+			                                continue;
+			                            if(mappingFolders.containsKey(parsedPath.get(i)))
+			                            {
+			                                pathUntilNow =mappingFolders.get(parsedPath.get(i));
+			                            }
+			                            else
+			                            {
+			                                if(rootCreated.isEmpty())
+			                                {
+			                                    path=Files.createTempDirectory(parsedPath.get(i) + "_");
+			                                    rootCreated=tempDir.toString()+"/"+path.toString();
+			                                }
+			                                else
+			                                {
+			                                    path=Files.createTempDirectory(Paths.get(pathUntilNow), parsedPath.get(i));                                
+			                                }
+			                                mappingFolders.put(parsedPath.get(i), path.toString());
+			                                pathUntilNow =path.toString();
+			                            }
+			                        }
+			                        path = createTempFileInTemporalDirectory(parsedPath.get(parsedPath.size()-1), pathUntilNow);
+			                        
+			                        int count;
+			                        byte data[] = new byte[BUFFER_SIZE];
+			                        FileOutputStream fos = new FileOutputStream(path.toFile(), false);
+			                        try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
+			                            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
+			                                dest.write(data, 0, count);
+			                            }
+			                        }
+			                    }
+			                }
+			                dataPath = new CommunicationChannelDataPath(Paths.get(rootCreated), false);
+			    	    } catch (IOException e) {
+			    	    	logger.error("Error while reading Tar file", e);
+			    		}
+			        	gzipIn.close();
+			        }
+					
+				}
+				catch (IOException e) {
+					logger.error("Error while reading GZIP file", e);
+				}
+				
+				in.close();
+				file.delete();
 				
 			}
-			catch (IOException e) {
-				logger.error("Error while reading GZIP file", e);
+		    catch (FileNotFoundException e) {
+				logger.error("Error while reading temporal file",e);
 			}
-			
-			in.close();
-			file.delete();
-			
 		}
-	    catch (FileNotFoundException e) {
-			logger.error("Error while reading temporal file",e);
-		}
-	    
 	    return dataPath;
 	    
 	}
