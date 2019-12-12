@@ -20,6 +20,8 @@
       <fields xmi:type="cf:DataField" xmi:id="_sDZyEBzoEeqlBsMJwEYvzg" name="lines_added" type="Integer"/>
       <fields xmi:type="cf:DataField" xmi:id="_tExIcBzoEeqlBsMJwEYvzg" name="lines_deleted" type="Integer"/>
       <fields xmi:type="cf:DataField" xmi:id="_nPBtABz8Eeqq9eAVf2tx4w" name="repoProject" type="RepoProjectPair"/>
+      <fields xmi:type="cf:DataField" xmi:id="_Oi5ugB0dEeqeqphM5fyYEQ" name="numberOfCommits" type="Integer"/>
+      <fields xmi:type="cf:DataField" xmi:id="_Q7IxMB0dEeqeqphM5fyYEQ" name="numberOfFiles" type="Integer"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_6uBIMBzvEeqfhpqPfA_cCg" name="Repository">
       <fields xmi:type="cf:DataField" xmi:id="_E9PVQBzwEeqfhpqPfA_cCg" name="path"/>
@@ -171,6 +173,20 @@
           <styles xmi:type="notation:LineStyle" xmi:id="_nPCUExz8Eeqq9eAVf2tx4w"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_nPCUFBz8Eeqq9eAVf2tx4w"/>
         </children>
+        <children xmi:type="notation:Node" xmi:id="_OjeWQB0dEeqeqphM5fyYEQ" type="3008" element="_Oi5ugB0dEeqeqphM5fyYEQ">
+          <children xmi:type="notation:DecorationNode" xmi:id="_OjfkYB0dEeqeqphM5fyYEQ" type="5028"/>
+          <styles xmi:type="notation:DescriptionStyle" xmi:id="_OjeWQR0dEeqeqphM5fyYEQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_OjeWQh0dEeqeqphM5fyYEQ" fontName=".AppleSystemUIFont"/>
+          <styles xmi:type="notation:LineStyle" xmi:id="_OjeWQx0dEeqeqphM5fyYEQ"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OjeWRB0dEeqeqphM5fyYEQ"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_Q7J_UB0dEeqeqphM5fyYEQ" type="3008" element="_Q7IxMB0dEeqeqphM5fyYEQ">
+          <children xmi:type="notation:DecorationNode" xmi:id="_Q7J_VR0dEeqeqphM5fyYEQ" type="5028"/>
+          <styles xmi:type="notation:DescriptionStyle" xmi:id="_Q7J_UR0dEeqeqphM5fyYEQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_Q7J_Uh0dEeqeqphM5fyYEQ" fontName=".AppleSystemUIFont"/>
+          <styles xmi:type="notation:LineStyle" xmi:id="_Q7J_Ux0dEeqeqphM5fyYEQ"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Q7J_VB0dEeqeqphM5fyYEQ"/>
+        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_ik7FeBzoEeqlBsMJwEYvzg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_ik7FeRzoEeqlBsMJwEYvzg"/>
       </children>
@@ -178,7 +194,7 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_ik7FchzoEeqlBsMJwEYvzg" fontName=".AppleSystemUIFont"/>
       <styles xmi:type="notation:LineStyle" xmi:id="_ik7FcxzoEeqlBsMJwEYvzg"/>
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_ik7FdBzoEeqlBsMJwEYvzg"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ik7FdRzoEeqlBsMJwEYvzg" x="36" y="360" width="172" height="109"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ik7FdRzoEeqlBsMJwEYvzg" x="36" y="360" width="172" height="154"/>
     </children>
     <children xmi:type="notation:Node" xmi:id="_6uEykBzvEeqfhpqPfA_cCg" type="2011" element="_6uBIMBzvEeqfhpqPfA_cCg">
       <children xmi:type="notation:DecorationNode" xmi:id="_6uFZoBzvEeqfhpqPfA_cCg" type="5012"/>
