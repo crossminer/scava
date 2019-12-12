@@ -16,10 +16,10 @@
       <fields xmi:type="cf:DataField" xmi:id="_R_3CkBzmEeqlBsMJwEYvzg" name="commit"/>
     </types>
     <types xmi:type="cf:Type" xmi:id="_ik5QQBzoEeqlBsMJwEYvzg" name="RepositoryAnalysisResult">
-      <fields xmi:type="cf:DataField" xmi:id="_k_7vUBzoEeqlBsMJwEYvzg" name="size_at_commit" type="Integer"/>
-      <fields xmi:type="cf:DataField" xmi:id="_sDZyEBzoEeqlBsMJwEYvzg" name="lines_added" type="Integer"/>
-      <fields xmi:type="cf:DataField" xmi:id="_tExIcBzoEeqlBsMJwEYvzg" name="lines_deleted" type="Integer"/>
-      <fields xmi:type="cf:DataField" xmi:id="_nPBtABz8Eeqq9eAVf2tx4w" name="repoProject" type="RepoProjectPair"/>
+      <fields xmi:type="cf:DataField" xmi:id="_k_7vUBzoEeqlBsMJwEYvzg" name="sizeAtCommit" type="Long"/>
+      <fields xmi:type="cf:DataField" xmi:id="_sDZyEBzoEeqlBsMJwEYvzg" name="linesAdded" type="Integer"/>
+      <fields xmi:type="cf:DataField" xmi:id="_tExIcBzoEeqlBsMJwEYvzg" name="linesDeleted" type="Integer"/>
+      <fields xmi:type="cf:DataField" xmi:id="_nPBtABz8Eeqq9eAVf2tx4w" name="repo" type="Repository"/>
       <fields xmi:type="cf:DataField" xmi:id="_Oi5ugB0dEeqeqphM5fyYEQ" name="numberOfCommits" type="Integer"/>
       <fields xmi:type="cf:DataField" xmi:id="_Q7IxMB0dEeqeqphM5fyYEQ" name="numberOfFiles" type="Integer"/>
     </types>

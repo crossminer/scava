@@ -2,6 +2,7 @@ package org.eclipse.scava.crossflow.examples.projectsanalysis;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +30,7 @@ public class RepositoryAnalyzer extends OpinionatedRepositoryAnalyzerBase {
 	public RepositoryAnalysisResult consumeRepositoryAnalyses(RepoProjectPair repoProjectPair) throws Exception {
 
 		RepositoryAnalysisResult repositoryAnalysisResultInst = new RepositoryAnalysisResult();
-		repositoryAnalysisResultInst.setRepoProject(repoProjectPair);
+		repositoryAnalysisResultInst.setRepo(repoProjectPair.repo);
 
 		FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
 		repositoryBuilder.setMustExist(true);
@@ -45,12 +46,20 @@ public class RepositoryAnalyzer extends OpinionatedRepositoryAnalyzerBase {
 		int linesAdded = 0;
 		int linesDeleted = 0;
 
-		// count number of files in repository (the Java-way; unix-way may be faster: find REPO_DIR -type f | wc -l)
+		// count number of files and total file size (the Java-way; unix-way may be faster: find REPO_DIR -type f | wc -l)
 		try (Stream<Path> walk = Files.walk(Paths.get(repoProjectPair.repo.path))) {
 			List<String> repoFileList = walk.filter(Files::isRegularFile)
 					.map(x -> x.toString()).collect(Collectors.toList());
 			numberOfFiles = repoFileList.size();
-		}
+			
+			for (String fileLoc : repoFileList) {
+				FileChannel fileChannel = FileChannel.open(Paths.get(fileLoc));
+				sizeAtCommit += fileChannel.size();
+			}
+			// convert byte to megabyte
+		    long MEGABYTE = 1024L * 1024L;
+		    sizeAtCommit = sizeAtCommit / MEGABYTE;
+		}// try Stream<Path>
 		
 		// count number of commits in repository 
         try (RevWalk walk = new RevWalk(gitRepo)) {
@@ -69,7 +78,6 @@ public class RepositoryAnalyzer extends OpinionatedRepositoryAnalyzerBase {
 			oldTreeIter.reset(reader, oldHead);
 			CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
 			newTreeIter.reset(reader, head);
-			sizeAtCommit = reader.getObjectSize(head, ObjectReader.OBJ_ANY);
 
 			// finally get the list of changed files
 			try (Git git = new Git(gitRepo)) {
@@ -93,8 +101,11 @@ public class RepositoryAnalyzer extends OpinionatedRepositoryAnalyzerBase {
 			} // try Git
 		} // try ObbjectReader
 
-		repositoryAnalysisResultInst.setLines_added(linesAdded);
-		repositoryAnalysisResultInst.setLines_deleted(linesDeleted);
+		repositoryAnalysisResultInst.setLinesAdded(linesAdded);
+		repositoryAnalysisResultInst.setLinesDeleted(linesDeleted);
+		repositoryAnalysisResultInst.setSizeAtCommit(sizeAtCommit);
+		repositoryAnalysisResultInst.setNumberOfCommits(numberOfCommits);
+		repositoryAnalysisResultInst.setNumberOfFiles((int)numberOfFiles);
 
 		workflow.log(LogLevel.INFO,
 				"Completed analysis of " + repoProjectPair.repo.url + " :: numberOfCommits = " + numberOfCommits
