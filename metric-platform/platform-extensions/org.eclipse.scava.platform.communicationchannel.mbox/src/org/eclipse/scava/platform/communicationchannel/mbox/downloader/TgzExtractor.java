@@ -47,7 +47,7 @@ public class TgzExtractor {
 	    	InputStream in = new FileInputStream(file);
 			try
 			{
-		        if(ext.equals(".txt.gz"))
+		        if(ext.equals(".txt.gz") || ext.equals(".mbox.gz"))
 		        {
 		        	GZIPInputStream gzis = new GZIPInputStream(in);
 		        	File textfile = createTempFile(tempDir, gzis, ".txt");
