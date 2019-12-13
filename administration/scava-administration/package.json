@@ -35,7 +35,7 @@
         "ngx-bootstrap": "^3.0.1",
         "ngx-treeview": "6.0.0",
         "nodejs": "0.0.0",
-        "npm": "^6.10.1",
+        "npm": "^6.13.4",
         "popper.js": "^1.14.4",
         "primeicons": "^1.0.0-beta.10",
         "primeng": "^6.1.2",
