@@ -120,7 +120,7 @@ public class RecommenderRestController {
 	}
 	
 	@ApiOperation(value = "This resource is used to retrieve projects that are similar to a given project.")
-	@RequestMapping(value = "similar/p/{id}/m/{sim_method}/t/{treshold}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
+	@RequestMapping(value = "similar/p/{id}/m/{sim_method}/t/{treshold:.+}", produces = {"application/json", "application/xml"}, method = RequestMethod.GET)
 	public @ResponseBody List<ArtifactSimDto> getSimilarProjectByTreshold(
 			@ApiParam(value = "results are computed by using the similarity function specified as parameter.  "
 					+ "String value which can be Compound, CrossSim, Dependency, CrossRec, Readme, "
