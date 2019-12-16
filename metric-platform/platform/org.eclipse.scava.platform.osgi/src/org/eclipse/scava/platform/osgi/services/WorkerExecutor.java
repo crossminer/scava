@@ -18,7 +18,6 @@ import org.eclipse.scava.platform.analysis.data.model.AnalysisTask;
 import org.eclipse.scava.platform.analysis.data.model.Worker;
 import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 import org.eclipse.scava.platform.logging.OssmeterLogger;
-import org.eclipse.scava.platform.osgi.analysis.ProjectAnalyser;
 
 public class WorkerExecutor implements Runnable {
 
@@ -49,6 +48,9 @@ public class WorkerExecutor implements Runnable {
 		Thread workerThread = null;
 		String runningTask = null;
 		while (executeTasks) {
+			Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
+			worker.setHeartbeat(new Date());
+			platform.getAnalysisRepositoryManager().getRepository().sync();
 			if(workerThread == null) {
 				String analysisTaskId = platform.getAnalysisRepositoryManager().getSchedulingService().getOlderPendingAnalysiTask();
 				if (analysisTaskId != null) {
@@ -58,9 +60,6 @@ public class WorkerExecutor implements Runnable {
 						runningTask = analysisTaskId;
 					}
 				} else {			
-					Worker worker = platform.getAnalysisRepositoryManager().getRepository().getWorkers().findOneByWorkerId(WORKER_ID);
-					worker.setHeartbeat(new Date());
-					platform.getAnalysisRepositoryManager().getRepository().sync();
 					loggerOssmeter.info("Worker '" + WORKER_ID + "' Waiting new Tasks");		
 				}
 			}else {

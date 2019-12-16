@@ -21,7 +21,7 @@ import org.eclipse.scava.platform.analysis.data.types.AnalysisTaskStatus;
 public class TaskCheckExecutor implements Runnable {
 
     private static final Integer cycle = 10000;
-    private static final Integer heartbet = 3600*1000*24; // 24 hours
+    private static final Integer heartbet = 30000; // 30 seconds
 
 	private Boolean executeTasks;
 	private Platform platform;
