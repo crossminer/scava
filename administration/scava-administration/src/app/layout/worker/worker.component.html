@@ -101,6 +101,49 @@
     </div>
   </div>
 
+
+  <br />
+  <h2>Completed Tasks <small>({{completedTaskList?.length}})</small></h2>
+  <hr />
+  <ul *ngFor="let task of completedTaskList" class="list-group text-white mb-1">
+    <li class="list-group-item bg-secondary">
+      <div class="row">
+        <div class="col-sm">
+          <h5>Project : {{task.analysisTaskId.split(":")[0]}} <br> Task : {{task.label}}</h5>
+        </div>
+        <div class="col-sm">
+          <b> Task Start Date : </b> <span
+            *ngIf="task.scheduling.executionTaskStartDate">{{task.scheduling.executionTaskStartDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Task End Date : </b> <span
+            *ngIf="task.scheduling.executionTaskFinishDate">{{task.scheduling.executionTaskFinishDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Total Analysis Duration : </b> <span
+            *ngIf="task.scheduling.totalAnalysisDuration">{{displayTime(task.scheduling.totalAnalysisDuration)}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <b> Kind :</b> {{task.type}}
+        </div>
+        <div class="col-sm">
+          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation"
+            (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range Start Date : </b> <span
+            *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="col-sm">
+          <b> Analysis Range End Date : </b> <span
+            *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  
   <br />
   <h2>Pending Tasks <small>({{pendingTaskList?.length}})</small></h2>
   <hr />
@@ -150,48 +193,6 @@
         </div>
         <div class="col-3">
 
-        </div>
-      </div>
-    </li>
-  </ul>
-
-  <br />
-  <h2>Completed Tasks <small>({{completedTaskList?.length}})</small></h2>
-  <hr />
-  <ul *ngFor="let task of completedTaskList" class="list-group text-white mb-1">
-    <li class="list-group-item bg-secondary">
-      <div class="row">
-        <div class="col-sm">
-          <h5>Project : {{task.analysisTaskId.split(":")[0]}} <br> Task : {{task.label}}</h5>
-        </div>
-        <div class="col-sm">
-          <b> Task Start Date : </b> <span
-            *ngIf="task.scheduling.executionTaskStartDate">{{task.scheduling.executionTaskStartDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
-        </div>
-        <div class="col-sm">
-          <b> Task End Date : </b> <span
-            *ngIf="task.scheduling.executionTaskFinishDate">{{task.scheduling.executionTaskFinishDate.$date | date: 'dd/MM/yyyy, h:mm a'}}</span>
-        </div>
-        <div class="col-sm">
-          <b> Total Analysis Duration : </b> <span
-            *ngIf="task.scheduling.totalAnalysisDuration">{{displayTime(task.scheduling.totalAnalysisDuration)}}</span>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm">
-          <b> Kind :</b> {{task.type}}
-        </div>
-        <div class="col-sm">
-          <b> Metrics : </b> <a [routerLink]="" title="Metrics Execution With visualisation"
-            (click)="showMetricProviderList(task)">{{task.metricExecutions.length}} Metrics</a>
-        </div>
-        <div class="col-sm">
-          <b> Analysis Range Start Date : </b> <span
-            *ngIf="task.endDate">{{task.startDate.$date | date: 'dd/MM/yyyy'}}</span>
-        </div>
-        <div class="col-sm">
-          <b> Analysis Range End Date : </b> <span
-            *ngIf="task.endDate">{{task.endDate.$date | date: 'dd/MM/yyyy'}}</span>
         </div>
       </div>
     </li>
