@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Library Version Updater</title>
+</head>
+
+<body>
+<h1>Library Version Check</h1>
+<div style="text-align: justify; margin: 30px">
+    If any of the libraries that are used in your Maven project can be updated to a newer version the CROSSMINER IDE will notify you by putting the "[new lib version available]" label after the project's name. This check is preformed at the start of the Eclipse IDE.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-version-checker.png" width="100%">
+        <p>Library version updater - check</p>
+    </div>
+
+</div>
+
+<h1>Library Version Updater</h1>
+<div style="text-align: justify; margin: 30px">
+    To update the libraries that are used in your Maven project use the Library version updater feature. For this, first you have to select your project in the Package explorer view, then in the context menu navigate to the CROSSMINER submenu and click on the "search updates for libraries" option. This will open the Library version updater dialog.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-version-updater.png" width="100%">
+        <p>Library version updater - updater</p>
+    </div>
+
+    The libraries that can be updated to a newer version are listed in the center of the dialog. The different versions can be selected from the dropdown menus and the libraries will be updated to the selected versions.
+    <br>
+    <br>
+    There are three buttons on the bottom, which can be used to quickly select the wanted versions. These buttons provide the functionality to select the currently used, the next available or the latest versions with a click.
+    <br>
+    <br>
+    After selecting the versions to be installed and accepting the confirmation dialogs, the selected versions of the libraries are going to be installed to your project.
+</div>
+
+
+<h1>Filtering the results of Library Version Updater</h1>
+<div style="text-align: justify; margin: 30px">
+    The listed versions in the Library Version Updater can be filtered by creating rules in the Library update version rules property page that can be accessed by opening the context menu over your project, clicking on the Properties option and navigating under the CROSSMINER pages.
+    <br>
+    <br>
+    Any number of rules can be added, removed or edited in this page. To create a new rule click on the Add new rule button. A box will appear in the center of the page with three text fields. These fields are the Group ID, the Artifact ID and the Version. Each field can be filled with regular expressions and they are interpreted just the same way as in Java. If a text field has been leaved empty it will be interpreted as to match with every value.
+    <br>
+    <br>
+    The rules can be removed by clicking on the "Delete rule" button in the rule's box.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-version-rules.png" width="100%">
+        <p>Library version rules</p>
+    </div>
+
+    This property page and an example rule can be seen above. With this one rule we restrict the library version search to care only about the libraries with a group ID that matches with 'junit', an artifact ID, that matches with 'junit' and a version with a '4.' prefix.
+    <br>
+    <br>
+    The interpretation of the rules is the following:
+    if there are no rules at all, then no filtering will be applied.
+    After adding at least one rule, then the library versions will be tested against every rule until at least one of them is matching. If none of the rules matched a library version, then that one will not be seen among the available library versions. A filtered list of library versions with the previous rules can be seen on the following illustration.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-version-updater-filtered.png" width="100%">
+        <p>Library version updater - filtered</p>
+    </div>
+
+</div>
+
+
+<h1>API Migration</h1>
+<div style="text-align: justify; margin: 30px">
+    The API Migration feature may help you to upgrade your project to use newer versions of the selected libraries. In order, to use this feature you have to provide the CROSSMINER Eclipse-based IDE an exported JAR file from your project. This jar file can be created by the the Eclipse's built-in jar export function. After the export has been finished, paste the file's absolute path to the field in the API Migration section on the Library Version Updater dialog, or you can use the Browse button next to the field to locate the file in your filesystem.
+    
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/library-version-updater-apimigration.png" width="100%">
+        <p>Library version updater - api migration</p>
+    </div>
+
+    If you do not want to use the API Migration feature, just leave this field empty.
+    <br>
+    <br>
+    After the API Migration feature has loaded, the API Migration view is going to show the results.
+    If multiple libraries have been choosen to be updated, each of them will be displayed on it's own tab in the API Migration view. Inside each migration tab, there are two inner tabs, namely the 'API documentation and Q&A posts' and the 'Recommendations' tab.
+    
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/api-migration-tree.png" width="100%">
+        <p>API Migration - tree</p>
+    </div>
+
+    On the Recommendations tab you can see the source code and API usage related issues and recommendations provided by the CROSSMINER API Migration feature. They are displayed in a tree, representing the hierarchical structure of your project. Elements of the tree with bold names represent suspicious elements of your project. For example, it can be a method that uses an API from the old version of the lib that is now broken.
+    <br>
+    <br>
+    Their direct children are groups of the types of the issues detected in them. For example, it can be DEPRECATED, which could mean that in our method there is a API call which has been made deprecated. To get the concrete migration issue, expand these type group tree elements. Their children are presented with red labels and they describe the issue that has been detected near the element. And the children of these issues in the tree are the occurences of these issues in our project. If it is possible, these occurences are going to be highlighted in your editor as well. Most of the migrational issues can be located easily by double clicking on the tree elements in the tree and if it is possible the Eclipse will navigate you to the marked location. 
+    <br>
+    <br>
+    There is another type of recommendations, which is the 'Recommended code snippets' and they can also be found under the bold named tree elements. These are recommended code snippets that somehow could be relevant to the given method or type. By clicking on these snippets they can be shown on the right side of the migration tab. There you can examine and select parts of them.
+    <br>
+    <br>
+    On any of the tree elements can be a context menu opened containing operations to ignore a set of recommendations. After ignoring some of the elements they will be thrown away, so they will neither be displayed in the tree view nor in the editor by highlights.
+ 
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/api-migration-highlight.png" width="100%">
+        <p>API Migration - API Documentation and Q&A Posts</p>
+    </div>
+
+    By hovering your mouse pointer over the highlighted parts of the source code in the editor a Quickfix menu can be opened with the following operations. The highlighted element can be ignored, this has the same effect as the previously described ignore operations in the tree view. The highlighted element can be shown in the tree view or the related API documentation and Q&A posts can be shown.
+
+    <div style="text-align: center; margin-bottom: 30px; margin-top: 30px">
+        <img src="../../images/api-migration-documentation.png" width="100%">
+        <p>API Migration - API Documentation and Q&A Posts</p>
+    </div>
+
+    On the API documentation and Q&A posts tab you can see some web pages, blog posts that can be relevant to you and useful during the migration process. By clicking on them they can opened in the web browser that is set in the preferences page.
+    <br>
+    <br>
+    By closing the API Migration view or the migration tab the migration process can be aborted.
+</div>
+
+</body>
+</html>
