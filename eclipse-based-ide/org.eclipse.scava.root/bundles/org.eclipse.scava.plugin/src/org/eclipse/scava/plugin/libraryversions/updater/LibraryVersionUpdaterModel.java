@@ -68,15 +68,15 @@ public class LibraryVersionUpdaterModel extends LibraryVersionModel {
 						dependency.setVersion(newVersion.getVersion());
 						return;
 					}
-					
+
 					foundVersion = dependency.getVersion();
 					break;
 				}
 			}
 
-			String propertyName = foundVersion.substring(2, foundVersion.length()-1);
+			String propertyName = foundVersion.substring(2, foundVersion.length() - 1);
 			java.util.Properties properties = model.getProperties();
-			if( properties.containsKey(propertyName) ) {
+			if (properties.containsKey(propertyName)) {
 				properties.setProperty(propertyName, newVersion.getVersion());
 			}
 		});

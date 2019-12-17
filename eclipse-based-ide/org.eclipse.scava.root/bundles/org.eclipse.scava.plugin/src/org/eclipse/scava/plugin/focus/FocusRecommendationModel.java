@@ -11,6 +11,7 @@
 package org.eclipse.scava.plugin.focus;
 
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.scava.java.m3.M3Java;
 import org.eclipse.scava.plugin.async.api.ApiAsyncBuilder;
 import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
 import org.eclipse.scava.plugin.preferences.Preferences;
@@ -40,6 +42,7 @@ public class FocusRecommendationModel extends Model {
 
 	private final KnowledgeBaseAccess knowledgeBaseAccess;
 	private final M3Java extractor;
+	private Map<Object, FeedbackResource> feedbackResources;
 
 	public FocusRecommendationModel(KnowledgeBaseAccess knowledgeBaseAccess) throws ImplementationError {
 		super();
@@ -57,29 +60,29 @@ public class FocusRecommendationModel extends Model {
 
 	public Set<String> gettAllMethodDeclarations(IValue m3) {
 		ISet declarations = ((ISet) ((IConstructor) m3).asWithKeywordParameters().getParameter("declarations"));
-		return declarations.stream().map(ITuple.class::cast).map(t -> t.get(0)).map(ISourceLocation.class::cast).filter(sl -> !sl.toString().isEmpty())
-				.filter(sl -> sl.getScheme().equals("java+method")).map(ISourceLocation::toString)
-				.collect(Collectors.toSet());
+		return declarations.stream().map(ITuple.class::cast).map(t -> t.get(0)).map(ISourceLocation.class::cast)
+				.filter(sl -> !sl.toString().isEmpty()).filter(sl -> sl.getScheme().equals("java+method"))
+				.map(ISourceLocation::toString).collect(Collectors.toSet());
 	}
 
 	public IApiAsyncBuilder<Recommendation> getFocusApiCallRecommendation(String activeDeclaration,
 			Multimap<String, String> methodInvocations) {
-		return ApiAsyncBuilder.build(apiCallback -> {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_APICALL);
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess
+				.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_APICALL);
 
-			Query query = buildQuery(activeDeclaration, methodInvocations);
-			return recommenderRestController.getNextApiCallsRecommendationUsingPOSTAsync(query, apiCallback);
-		});
+		Query query = buildQuery(activeDeclaration, methodInvocations);
+		return ApiAsyncBuilder.build(apiCallback -> recommenderRestController
+				.getNextApiCallsRecommendationUsingPOSTAsync(query, apiCallback), query);
 	}
 
 	public IApiAsyncBuilder<Recommendation> getFocusCodeSnippetRecommendation(String activeDeclaration,
 			Multimap<String, String> methodInvocations) {
-		return ApiAsyncBuilder.build(apiCallback -> {
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_CODESNIPPET);
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess
+				.getRecommenderRestController(Preferences.TIMEOUT_FOCUS_CODESNIPPET);
 
-			Query query = buildQuery(activeDeclaration, methodInvocations);
-			return recommenderRestController.getFocusCodeSnippetRecommendationUsingPOSTAsync(query, apiCallback);
-		});
+		Query query = buildQuery(activeDeclaration, methodInvocations);
+		return ApiAsyncBuilder.build(apiCallback -> recommenderRestController
+				.getFocusCodeSnippetRecommendationUsingPOSTAsync(query, apiCallback), query);
 	}
 
 	private Query buildQuery(String activeDeclaration, Multimap<String, String> methodInvocations) {
@@ -98,4 +101,13 @@ public class FocusRecommendationModel extends Model {
 		query.setFocusInput(focusInput);
 		return query;
 	}
+
+	public Map<Object, FeedbackResource> getFeedbackResources() {
+		return feedbackResources;
+	}
+
+	public void setFeedbackResources(Map<Object, FeedbackResource> feedbackResources) {
+		this.feedbackResources = feedbackResources;
+	}
+
 }

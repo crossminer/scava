@@ -87,7 +87,7 @@ public class FocusCodeSnippetRecommendationView extends ViewPartView<IFocusCodeS
 		resultsComposite = new Composite(getComposite(), SWT.NONE);
 		resultsComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		focusCodeSnippetContent = new FocusCodeSnippetViewContentComposite(resultsComposite, SWT.NONE);
+		focusCodeSnippetContent = new FocusCodeSnippetViewContentComposite(resultsComposite, SWT.NONE, eventManager);
 
 		createActions();
 		initializeToolBar();

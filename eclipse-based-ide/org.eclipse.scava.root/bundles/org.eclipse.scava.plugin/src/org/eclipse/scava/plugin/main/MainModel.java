@@ -10,8 +10,25 @@
 
 package org.eclipse.scava.plugin.main;
 
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.mvc.model.Model;
 
 public class MainModel extends Model {
+	private KnowledgeBaseAccess knowledgeBaseAccess;
 
+	public void setKnowledgeBaseAccess(KnowledgeBaseAccess knowledgeBaseAccess) {
+		this.knowledgeBaseAccess = knowledgeBaseAccess;
+	}
+
+	public KnowledgeBaseAccess getKnowledgeBaseAccess() {
+		return knowledgeBaseAccess;
+	}
+
+	@Override
+	public void dispose() {
+		if (knowledgeBaseAccess != null) {
+			knowledgeBaseAccess.dispose();
+		}
+		super.dispose();
+	}
 }

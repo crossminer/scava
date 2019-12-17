@@ -10,8 +10,8 @@
 
 package org.eclipse.scava.plugin.coderecommendation;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -29,6 +29,7 @@ import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationRes
 import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationResultsModel;
 import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationResultsView;
 import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationSelectedEvent;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -37,10 +38,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -81,7 +80,7 @@ public class CodeRecommendationController extends ModelViewController<CodeRecomm
 
 	public void request(IFile file, int startLine, int endLine, String sourceCode) {
 		try {
-			Collection<ApiCallResult> apiCallResults = getModel().getApiCallResults(sourceCode);
+			Map<ApiCallResult, FeedbackResource> apiCallResults = getModel().getApiCallResults(sourceCode);
 
 			if (apiCallResults.isEmpty()) {
 				MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
@@ -92,8 +91,9 @@ public class CodeRecommendationController extends ModelViewController<CodeRecomm
 						sourceCode, target);
 				target.getCodeRecommendationsRequests().add(request);
 
-				apiCallResults.forEach(aps -> {
-					CodeRecommendation codeRecommendation = new CodeRecommendation(request, aps);
+				apiCallResults.forEach((apiCallResult, feedbackResource) -> {
+					CodeRecommendation codeRecommendation = new CodeRecommendation(request, apiCallResult,
+							feedbackResource);
 					request.getCodeRecommendations().add(codeRecommendation);
 				});
 

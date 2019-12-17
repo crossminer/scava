@@ -36,12 +36,12 @@ public class WebReferenceViewerController extends ModelViewController<WebReferen
 		getSubControllers(WebReferenceController.class).forEach(Controller::dispose);
 	}
 
-	public void showStackOverflowReferences(Collection<String> postIds) {
+	public void showStackOverflowReferences(Collection<WebReferenceWithFeedback> references) {
 		Display display = Display.getCurrent();
-		if (postIds.isEmpty()) {
+		if (references.isEmpty()) {
 			display.asyncExec(() -> getView().showError("No results to show"));
 		} else {
-			StackOverflowReferenceModel.getModelsAsync(postIds, model -> {
+			StackOverflowReferenceModel.getModelsAsync(references, model -> {
 				display.asyncExec(() -> {
 					WebReferenceView view = new WebReferenceView();
 					WebReferenceController controller = new WebReferenceController(this, model, view);

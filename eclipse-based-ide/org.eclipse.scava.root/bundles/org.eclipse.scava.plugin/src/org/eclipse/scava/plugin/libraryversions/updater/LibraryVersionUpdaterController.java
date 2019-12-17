@@ -27,7 +27,6 @@ import org.eclipse.scava.plugin.libraryversions.checker.RefreshAvailableLibraryU
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
-import org.eclipse.swt.widgets.Display;
 
 import io.swagger.client.ApiException;
 

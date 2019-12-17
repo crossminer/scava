@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class WebReferenceView extends CompositeView<IWebReferenceViewEventListener> {
@@ -35,7 +36,7 @@ public class WebReferenceView extends CompositeView<IWebReferenceViewEventListen
 		super(SWT.NONE);
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		setLayout(new GridLayout(2, false));
+		setLayout(new GridLayout(3, false));
 
 		lblTitle = new Label(this, SWT.WRAP);
 		lblTitle.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
@@ -49,6 +50,18 @@ public class WebReferenceView extends CompositeView<IWebReferenceViewEventListen
 			public void mouseDown(MouseEvent e) {
 				eventManager.invoke(l -> l.onOpenUrl());
 			}
+		});
+
+		Label lblFeedback = new Label(this, SWT.NONE);
+		lblFeedback.setImage(
+				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/feedbackIcon_32_32.png"));
+		lblFeedback.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 2));
+		lblFeedback.setToolTipText("Send feedback");
+		lblFeedback.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+		lblFeedback.addMouseListener(new MouseAdapter() {
+			public void mouseDown(MouseEvent e) {
+				eventManager.invoke(l -> l.onLeaveFeedback());
+			};
 		});
 
 		txtUrl = new Text(this, SWT.WRAP);

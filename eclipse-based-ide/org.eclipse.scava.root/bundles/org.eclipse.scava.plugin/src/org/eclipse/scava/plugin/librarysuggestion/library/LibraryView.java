@@ -18,10 +18,10 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Composite;
 
 public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 	private Label lblArtifactId;
@@ -35,6 +35,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 	private Label lblGroupId_1;
 	private Label lblVersion_1;
 	private Composite composite;
+	private CLabel lblFeedback;
 
 	/**
 	 * Create the composite.
@@ -46,7 +47,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 		super(SWT.BORDER);
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		GridLayout gridLayout = new GridLayout(7, false);
+		GridLayout gridLayout = new GridLayout(8, false);
 		gridLayout.verticalSpacing = 4;
 		setLayout(gridLayout);
 
@@ -152,6 +153,23 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/install_not_icon_32x32.png"));
 		lblDoNotInstall.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 
+		GridData gd_lblFeedback = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblFeedback.verticalIndent = 1;
+
+		lblFeedback = new CLabel(this, SWT.NONE);
+		lblFeedback.setLayoutData(gd_lblFeedback);
+		lblFeedback.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				eventManager.invoke(l -> l.onLeaveFeedback());
+			}
+		});
+
+		lblFeedback.setToolTipText("Send feedback");
+		lblFeedback.setImage(
+				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/feedbackIcon_32_32.png"));
+		lblFeedback.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+
 	}
 
 	@Override
@@ -191,6 +209,11 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 		layoutData.exclude = !value;
 	}
 
+	private void setEnableFeedback(boolean value) {
+		GridData layoutData = (GridData) lblFeedback.getLayoutData();
+		layoutData.exclude = !value;
+	}
+
 	private void setHighlight(Color color) {
 		setBackground(color);
 	}
@@ -201,6 +224,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 			setEnableDoNotUseForSearch(false);
 			setEnablePickForInstall(false);
 			setEnableUnpickForInstall(true);
+			setEnableFeedback(true);
 			setEnableUseForSearch(false);
 			setHighlight(SWTResourceManager.getColor(217, 234, 242));
 			break;
@@ -208,6 +232,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 			setEnableDoNotUseForSearch(false);
 			setEnablePickForInstall(true);
 			setEnableUnpickForInstall(false);
+			setEnableFeedback(true);
 			setEnableUseForSearch(false);
 			setHighlight(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 			break;
@@ -215,6 +240,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 			setEnableDoNotUseForSearch(true);
 			setEnablePickForInstall(false);
 			setEnableUnpickForInstall(false);
+			setEnableFeedback(false);
 			setEnableUseForSearch(false);
 			setHighlight(SWTResourceManager.getColor(217, 234, 242));
 			break;
@@ -222,6 +248,7 @@ public class LibraryView extends CompositeView<ILibraryViewEventListener> {
 			setEnableDoNotUseForSearch(false);
 			setEnablePickForInstall(false);
 			setEnableUnpickForInstall(false);
+			setEnableFeedback(false);
 			setEnableUseForSearch(true);
 			setHighlight(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 			break;

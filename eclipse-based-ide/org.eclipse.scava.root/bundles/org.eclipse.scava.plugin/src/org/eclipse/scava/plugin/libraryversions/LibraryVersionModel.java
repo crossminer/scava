@@ -53,7 +53,8 @@ public class LibraryVersionModel extends Model {
 		knowledgeBaseAccess = new KnowledgeBaseAccess();
 	}
 
-	public Collection<Library> getUsedLibrariesFromPom(String pomLocation) throws FileNotFoundException, IOException, XmlPullParserException {
+	public Collection<Library> getUsedLibrariesFromPom(String pomLocation)
+			throws FileNotFoundException, IOException, XmlPullParserException {
 		MavenXpp3Reader reader = new MavenXpp3Reader();
 		org.apache.maven.model.Model model = reader.read(new FileReader(pomLocation));
 		List<Dependency> dependencies = model.getDependencies();
@@ -63,8 +64,8 @@ public class LibraryVersionModel extends Model {
 			String artifactId = Optional.ofNullable(dependency.getArtifactId()).orElse("");
 			String version;
 			if (dependency.getVersion().matches("\\$\\{[^\\}]+\\}")) {
-				version = model.getProperties().getProperty(
-						dependency.getVersion().substring(2, dependency.getVersion().length() - 1), "");
+				version = model.getProperties()
+						.getProperty(dependency.getVersion().substring(2, dependency.getVersion().length() - 1), "");
 			} else {
 				version = Optional.ofNullable(dependency.getVersion()).orElse("");
 			}
@@ -81,7 +82,8 @@ public class LibraryVersionModel extends Model {
 		query.setProjectDependencies(
 				referenceLibraries.stream().map(this::mapLibraryToDependency).collect(Collectors.toList()));
 
-		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_APIMIGRATION_LIBRARY_SEARCH);
+		RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess
+				.getRecommenderRestController(Preferences.TIMEOUT_APIMIGRATION_LIBRARY_SEARCH);
 		Recommendation results = recommenderRestController.getVersionsUsingPOST(query);
 
 		List<RecommendationItem> recommendationItems = results.getRecommendationItems();
@@ -89,8 +91,8 @@ public class LibraryVersionModel extends Model {
 		Stream<Library> recommendedLibraries = recommendationItems.stream()
 				.map(RecommendationItem::getRecommendedLibrary).map(this::mapRecommendedLibraryToLibrary);
 
-		Map<Library, List<Library>> groupedLibraries = recommendedLibraries.collect(
-				Collectors.groupingBy(library -> groupByGroupIdAndArtifactId(referenceLibraries, library)));
+		Map<Library, List<Library>> groupedLibraries = recommendedLibraries
+				.collect(Collectors.groupingBy(library -> groupByGroupIdAndArtifactId(referenceLibraries, library)));
 
 		groupedLibraries.entrySet().forEach(referenceLibRecommendedLibs -> {
 			Library reference = referenceLibRecommendedLibs.getKey();

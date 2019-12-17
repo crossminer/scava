@@ -27,6 +27,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
 import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.librarysuggestion.library.Library;
 import org.eclipse.scava.plugin.mvc.model.Model;
@@ -74,7 +75,7 @@ public class LibrarySuggestionModel extends Model {
 			usedLibraries = dependencies.stream()
 					.map(dependency -> new Library(Optional.ofNullable(dependency.getGroupId()).orElse(""),
 							Optional.ofNullable(dependency.getArtifactId()).orElse(""),
-							Optional.ofNullable(dependency.getVersion()).orElse(""), null))
+							Optional.ofNullable(dependency.getVersion()).orElse(""), null, null))
 					.collect(Collectors.toList());
 
 		} catch (IOException | XmlPullParserException e1) {
@@ -124,7 +125,8 @@ public class LibrarySuggestionModel extends Model {
 			Query query = new Query();
 			query.setProjectDependencies(dependencies);
 
-			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess.getRecommenderRestController(Preferences.TIMEOUT_LIBRARYSEARCH);
+			RecommenderRestControllerApi recommenderRestController = knowledgeBaseAccess
+					.getRecommenderRestController(Preferences.TIMEOUT_LIBRARYSEARCH);
 			call = recommenderRestController.getRecommendedLibrariesUsingPOSTAsync(query,
 					new ApiCallback<Recommendation>() {
 
@@ -138,7 +140,7 @@ public class LibrarySuggestionModel extends Model {
 							List<RecommendationItem> recommendationItems = arg0.getRecommendationItems();
 
 							List<Library> suggestions = recommendationItems.stream()
-									.map(LibrarySuggestionModel.this::parseRecommendationItemToLibrary)
+									.map(item -> parseRecommendationItemToLibrary(item, query))
 									.collect(Collectors.toList());
 
 							resultsConsumer.accept(suggestions);
@@ -189,7 +191,7 @@ public class LibrarySuggestionModel extends Model {
 		return dependency;
 	}
 
-	private Library parseRecommendationItemToLibrary(RecommendationItem recommendationItem) {
+	private Library parseRecommendationItemToLibrary(RecommendationItem recommendationItem, Query query) {
 		RecommendedLibrary recommendedLibrary = recommendationItem.getRecommendedLibrary();
 
 		String[] libraryInfo = recommendedLibrary.getLibraryName().split(":");
@@ -198,7 +200,7 @@ public class LibrarySuggestionModel extends Model {
 		String version = libraryInfo.length > 2 ? libraryInfo[2] : "";
 		String url = recommendedLibrary.getUrl();
 
-		return new Library(groupId, artifactId, version, url);
+		return new Library(groupId, artifactId, version, url, new FeedbackResource(query, recommendationItem));
 	}
 
 }

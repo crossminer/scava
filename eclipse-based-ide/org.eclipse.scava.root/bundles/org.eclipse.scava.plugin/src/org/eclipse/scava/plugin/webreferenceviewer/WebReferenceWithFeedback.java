@@ -8,32 +8,25 @@
 * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
 
-package org.eclipse.scava.plugin.webreferenceviewer.reference;
+package org.eclipse.scava.plugin.webreferenceviewer;
 
 import org.eclipse.scava.plugin.feedback.FeedbackResource;
-import org.eclipse.scava.plugin.mvc.model.Model;
 
-public abstract class WebReferenceModel extends Model {
-	private final String url;
-	private final String title;
+public class WebReferenceWithFeedback {
+	private final String id;
 	private final FeedbackResource feedbackResource;
 
-	public WebReferenceModel(String url, String title, FeedbackResource feedbackResource) {
+	public WebReferenceWithFeedback(String id, FeedbackResource feedbackResource) {
 		super();
-		this.url = url;
-		this.title = title;
+		this.id = id;
 		this.feedbackResource = feedbackResource;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public String getTitle() {
-		return title;
 	}
 
 	public FeedbackResource getFeedbackResource() {
 		return feedbackResource;
+	}
+
+	public String getId() {
+		return id;
 	}
 }

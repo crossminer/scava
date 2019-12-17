@@ -43,7 +43,7 @@ public class FocusRecommendationController<ViewType extends ViewPartView<? exten
 					"Could not extract any method method declarations from your project.");
 			return null;
 		}
-		
+
 		NodeFinder nodeFinder = new NodeFinder(ast, textSelection.getOffset(), textSelection.getLength());
 		ASTNode node = nodeFinder.getCoveringNode();
 

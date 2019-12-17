@@ -75,7 +75,7 @@ public class KnowledgeBaseAccess {
 		setTimeout(apiClient, timeoutPreferenceKey);
 		return new ApiMigrationRestControllerApi(apiClient);
 	}
-	
+
 	private void setTimeout(ApiClient apiClient, String timeoutPreferenceKey) {
 		IPreferenceStore preferences = Activator.getDefault().getPreferenceStore();
 		int timeoutValue = preferences.getInt(timeoutPreferenceKey);

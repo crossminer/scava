@@ -14,11 +14,9 @@ import java.util.Map.Entry;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -28,12 +26,13 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.scava.plugin.mvc.view.ViewPartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -58,6 +57,7 @@ public class FocusApiCallRecommendationView extends ViewPartView<IFocusApiCallRe
 	private TableColumn tblclmnRanking;
 	private TableViewerColumn tableViewerColumnRanking;
 	private ApiCallComperator apiCallComperator;
+	private Label lblFeedback;
 
 	public FocusApiCallRecommendationView() {
 		setTitleImage(ResourceManager.getPluginImage("org.eclipse.scava.plugin",
@@ -107,19 +107,33 @@ public class FocusApiCallRecommendationView extends ViewPartView<IFocusApiCallRe
 		layout.topControl = defaultMessageComposite;
 
 		resultsComposite = new Composite(getComposite(), SWT.NONE);
-		TableColumnLayout tcl_resultsComposite = new TableColumnLayout();
-		resultsComposite.setLayout(tcl_resultsComposite);
+		resultsComposite.setLayout(new GridLayout(1, false));
+
+		lblFeedback = new Label(resultsComposite, SWT.NONE);
+		lblFeedback.setImage(
+				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/feedbackIcon_32_32.png"));
+		lblFeedback.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblFeedback.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				eventManager.invoke(l -> l.onLeaveFeedback());
+			}
+
+		});
+		lblFeedback.setToolTipText("Send feedback");
+		lblFeedback.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 
 		tableViewer = new TableViewer(resultsComposite,
 				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		table = tableViewer.getTable();
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		tableViewer.setComparator(apiCallComperator = new ApiCallComperator());
 
 		tableViewerColumnRanking = new TableViewerColumn(tableViewer, SWT.NONE);
 		tblclmnRanking = tableViewerColumnRanking.getColumn();
-		tcl_resultsComposite.setColumnData(tblclmnRanking, new ColumnPixelData(150, true, true));
 		tblclmnRanking.setText("Rank");
 		tableViewerColumnRanking.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -131,7 +145,6 @@ public class FocusApiCallRecommendationView extends ViewPartView<IFocusApiCallRe
 
 		tableViewerColumnApiCall = new TableViewerColumn(tableViewer, SWT.NONE);
 		tblclmnApiCall = tableViewerColumnApiCall.getColumn();
-		tcl_resultsComposite.setColumnData(tblclmnApiCall, new ColumnPixelData(150, true, true));
 		tblclmnApiCall.setText("API Call");
 		tableViewerColumnApiCall.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -290,9 +303,10 @@ public class FocusApiCallRecommendationView extends ViewPartView<IFocusApiCallRe
 
 		tableViewer.setInput(apiCalls.toArray());
 		tableViewer.refresh();
-		tableViewerColumnApiCall.getColumn().pack();
 
 		Display.getDefault().asyncExec(() -> {
+			tableViewerColumnRanking.getColumn().pack();
+			tableViewerColumnApiCall.getColumn().pack();
 			getComposite().requestLayout();
 		});
 

@@ -18,14 +18,11 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
-
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.scava.plugin.Activator;
+import org.eclipse.scava.plugin.knowledgebase.access.KnowledgeBaseAccess;
 import org.eclipse.scava.plugin.main.page.PageController;
 import org.eclipse.scava.plugin.main.page.PageModel;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
@@ -33,6 +30,7 @@ import org.eclipse.scava.plugin.mvc.controller.ModelController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
 import org.eclipse.scava.plugin.mvc.event.routed.RoutedEvent;
 import org.eclipse.scava.plugin.preferences.Preferences;
+import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
 import org.eclipse.scava.plugin.usermonitoring.UserMonitor;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -45,12 +43,15 @@ import org.eclipse.ui.PlatformUI;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import io.swagger.client.ApiException;
+import io.swagger.client.api.RecommenderRestControllerApi;
+import io.swagger.client.model.RecommendationFeedback;
+
 public class MainController extends ModelController<MainModel> {
 
 	private Map<IWorkbenchPage, PageController> pageControllers = new HashMap<>();
 	private EventBus eventBus;
 	private UserMonitor userMonitor;
-	private KnowledgeBaseAccess knowledgeBaseAccess;
 
 	public MainController(Controller parent, MainModel model, EventBus eventBus) {
 		super(parent, model);
@@ -63,7 +64,7 @@ public class MainController extends ModelController<MainModel> {
 	public void init() {
 		super.init();
 
-		knowledgeBaseAccess = new KnowledgeBaseAccess();
+		getModel().setKnowledgeBaseAccess(new KnowledgeBaseAccess());
 
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 
@@ -113,7 +114,7 @@ public class MainController extends ModelController<MainModel> {
 		PageController controller = pageControllers.get(page);
 
 		if (controller == null || controller.isDisposed()) {
-			PageModel model = new PageModel(page, knowledgeBaseAccess);
+			PageModel model = new PageModel(page, getModel().getKnowledgeBaseAccess());
 			controller = new PageController(this, model);
 
 			pageControllers.put(page, controller);
@@ -159,6 +160,34 @@ public class MainController extends ModelController<MainModel> {
 			return;
 		}
 
+		if (routedEvent instanceof SendFeedbackRequestEvent) {
+			SendFeedbackRequestEvent event = (SendFeedbackRequestEvent) routedEvent;
+
+			RecommendationFeedback feedback = new RecommendationFeedback();
+
+			feedback.setQuery(event.getFeedbackResource().getQuery());
+			feedback.setRecommendation(event.getFeedbackResource().getRecommendation());
+			feedback.setFeedback(event.getMessage());
+			feedback.setStars(event.getRating());
+
+			RecommenderRestControllerApi recommenderRestController = getModel().getKnowledgeBaseAccess()
+					.getRecommenderRestController(Preferences.TIMEOUT_FEEDBACK);
+			try {
+				boolean result = recommenderRestController.storeRecommendationFeedbackUsingPOST(feedback);
+				
+				if (!result) {
+					MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
+							"The server responded with false for uploading the feedback.");
+				}
+				event.setDone(result);
+			} catch (ApiException e) {
+				ErrorHandler.logAndShowErrorMessage(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), e);
+				event.setDone(false);
+			}
+
+			return;
+		}
+
 		super.onReceiveRoutedEventFromSubController(routedEvent, forwarderController);
 	}
 
@@ -186,10 +215,8 @@ public class MainController extends ModelController<MainModel> {
 		pageControllers.clear();
 
 		eventBus.unregister(this);
-		
+
 		super.disposeController();
-		
-		knowledgeBaseAccess.dispose();
 	}
 
 	public UserMonitor getUserMonitor() {

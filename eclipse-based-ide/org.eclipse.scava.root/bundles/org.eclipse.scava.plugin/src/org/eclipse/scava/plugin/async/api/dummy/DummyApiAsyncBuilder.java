@@ -10,6 +10,7 @@
 
 package org.eclipse.scava.plugin.async.api.dummy;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.scava.plugin.async.AsyncBuilderBase;
@@ -17,6 +18,7 @@ import org.eclipse.scava.plugin.async.IAsyncExecutor;
 import org.eclipse.scava.plugin.async.api.IApiAsyncBuilder;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.model.Query;
 
 public class DummyApiAsyncBuilder<T> extends AsyncBuilderBase<T, ApiException> implements IApiAsyncBuilder<T> {
 	private T response;
@@ -41,6 +43,11 @@ public class DummyApiAsyncBuilder<T> extends AsyncBuilderBase<T, ApiException> i
 	@Override
 	public IApiAsyncBuilder<T> onSuccess(Consumer<T> consumer) {
 		return (IApiAsyncBuilder<T>) super.onSuccess(consumer);
+	}
+
+	@Override
+	public IApiAsyncBuilder<T> onSuccessWithQuery(BiConsumer<T, Query> consumer) {
+		return (IApiAsyncBuilder<T>) super.onSuccess(result -> consumer.accept(result, null));
 	}
 
 	@Override

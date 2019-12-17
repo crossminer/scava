@@ -22,7 +22,7 @@ public interface ICodeRecommendationResultsViewEventListener extends IViewEventL
 	void onTargetDoubleClicked(CodeRecommendationTarget target);
 
 	void onDrop(CodeRecommendation codeRecommendation);
-	
+
 	void onDrop(CodeRecommendationRequest codeRecommendationRequest);
 
 	void onDrop(CodeRecommendationTarget target);

@@ -16,6 +16,7 @@ import org.eclipse.scava.plugin.mvc.view.IView;
 import org.eclipse.scava.plugin.mvc.view.ViewPartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.layout.FillLayout;
 
 public class ApiDocumentationView extends ViewPartView<IApiDocumentationViewEventListener> {
 

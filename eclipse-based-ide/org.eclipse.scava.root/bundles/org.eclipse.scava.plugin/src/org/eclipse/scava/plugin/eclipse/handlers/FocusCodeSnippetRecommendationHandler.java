@@ -20,7 +20,8 @@ public class FocusCodeSnippetRecommendationHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Activator.getDefault().getEventBus().post(new EclipseInterfaceEvent.FocusCodeSnippetRecommendationRequestEvent(null));
+		Activator.getDefault().getEventBus()
+				.post(new EclipseInterfaceEvent.FocusCodeSnippetRecommendationRequestEvent(null));
 		return null;
 	}
 

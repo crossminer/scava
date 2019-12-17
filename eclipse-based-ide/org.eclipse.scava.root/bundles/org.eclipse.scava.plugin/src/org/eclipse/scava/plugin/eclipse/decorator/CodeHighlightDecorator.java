@@ -28,7 +28,7 @@ import org.eclipse.swt.graphics.FontData;
 
 @SuppressWarnings("restriction")
 public class CodeHighlightDecorator extends LabelProvider implements ILightweightLabelDecorator {
-	
+
 	private static final String ICON = "/icons/icon-16-white.png";
 	private static final String SOURCE_CODE_HIGHLIGHT_MARKER_ID = "org.eclipse.scava.plugin.markers.sourcecodehighlight";
 	private static final IMarker[] EMPTY_MARKER_ARRAY = new IMarker[0];
@@ -43,29 +43,29 @@ public class CodeHighlightDecorator extends LabelProvider implements ILightweigh
 			decorateResource(decoration, resource);
 		}
 	}
-	
+
 	private void decorateNamedMember(IDecoration decoration, NamedMember namedMember) {
 		try {
-			if( !namedMember.exists() )
+			if (!namedMember.exists())
 				return;
-			
+
 			IResource resource = namedMember.getResource();
-			
-			if (resource == null )
+
+			if (resource == null)
 				return;
-			
+
 			IMarker[] markers = getMarkersOfResource(resource, IResource.DEPTH_ZERO);
-						
+
 			ISourceRange range = namedMember.getSourceRange();
-			
+
 			int numberOfMarkersInRange = 0;
-			
+
 			for (IMarker marker : markers) {
 				if (isMarkerInRange(range, marker)) {
 					numberOfMarkersInRange++;
 				}
 			}
-			
+
 			if (numberOfMarkersInRange > 0) {
 				applyDecorationOnContainer(decoration, numberOfMarkersInRange);
 			}
@@ -73,29 +73,29 @@ public class CodeHighlightDecorator extends LabelProvider implements ILightweigh
 			e.printStackTrace();
 		}
 	}
-	
+
 	private boolean isMarkerInRange(ISourceRange range, IMarker marker) {
 		return marker.getAttribute(IMarker.CHAR_START, Integer.MAX_VALUE) <= range.getOffset() + range.getLength()
 				&& marker.getAttribute(IMarker.CHAR_END, Integer.MIN_VALUE) >= range.getOffset();
 	}
-	
+
 	private void decorateResource(IDecoration decoration, IResource resource) {
 		IMarker[] markers = getMarkersOfResource(resource, IResource.DEPTH_INFINITE);
-		
+
 		if (markers.length == 0)
 			return;
-		
+
 		if (isMarkedResource(resource)) {
 			applyDecorationOnContainer(decoration, markers.length);
 		} else {
 			applyDecorationOnParent(decoration, markers.length);
 		}
 	}
-	
+
 	private boolean isMarkedResource(IResource resource) {
 		return getMarkersOfResource(resource, IResource.DEPTH_ZERO).length > 0;
 	}
-	
+
 	private IMarker[] getMarkersOfResource(IResource resource, int depth) {
 		try {
 			return resource.findMarkers(SOURCE_CODE_HIGHLIGHT_MARKER_ID, true, depth);
@@ -103,25 +103,25 @@ public class CodeHighlightDecorator extends LabelProvider implements ILightweigh
 			return EMPTY_MARKER_ARRAY;
 		}
 	}
-	
+
 	private void applyDecorationOnParent(IDecoration decoration, int founds) {
 		decoration.setForegroundColor(new Color(null, 230, 0, 230));
 		decoration.setFont(new Font(null, new FontData("Arial", 9, SWT.NORMAL)));
 		decoration.addSuffix(" [CROSSMINER: " + founds + " recommendations" + pluralSign(founds) + "]");
 		setIcon(decoration);
 	}
-	
+
 	private void applyDecorationOnContainer(IDecoration decoration, int founds) {
 		decoration.setForegroundColor(new Color(null, 255, 0, 255));
 		decoration.setFont(new Font(null, new FontData("Arial", 9, SWT.BOLD)));
 		decoration.addSuffix(" [CROSSMINER: " + founds + " recommendation" + pluralSign(founds) + "]");
 		setIcon(decoration);
 	}
-	
+
 	private void setIcon(IDecoration decoration) {
 		decoration.addOverlay(ImageDescriptor.createFromFile(getClass(), ICON));
 	}
-	
+
 	private String pluralSign(int number) {
 		return number > 1 ? "s" : "";
 	}

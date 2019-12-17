@@ -13,12 +13,17 @@ package org.eclipse.scava.plugin.focus.apicall;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.scava.plugin.async.api.ApiAsyncRequestController;
+import org.eclipse.scava.plugin.feedback.FeedbackController;
+import org.eclipse.scava.plugin.feedback.FeedbackModel;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+import org.eclipse.scava.plugin.feedback.FeedbackView;
 import org.eclipse.scava.plugin.focus.FocusRecommendationController;
 import org.eclipse.scava.plugin.focus.FocusRecommendationModel;
 import org.eclipse.scava.plugin.libraryversions.apimigration.migration.result.recommendations.recommendationtree.location.RascalLocation;
@@ -29,6 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import com.google.common.collect.Multimap;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.model.Query;
 import io.swagger.client.model.Recommendation;
 import io.swagger.client.model.RecommendationItem;
 import io.usethesource.vallang.IValue;
@@ -41,8 +47,8 @@ public class FocusApiCallRecommendationController extends FocusRecommendationCon
 			FocusApiCallRecommendationView view) {
 		super(parent, model, view);
 
-		recommendationRequestController = new ApiAsyncRequestController<>(this,
-				b -> b.onSuccess(this::onSuccess).onFail(this::onFail).executeWith(Display.getDefault()::asyncExec));
+		recommendationRequestController = new ApiAsyncRequestController<>(this, b -> b
+				.onSuccessWithQuery(this::onSuccess).onFail(this::onFail).executeWith(Display.getDefault()::asyncExec));
 	}
 
 	@Override
@@ -55,7 +61,8 @@ public class FocusApiCallRecommendationController extends FocusRecommendationCon
 			IValue m3 = getModel().getM3(project);
 			Multimap<String, String> methodInvocations = getModel().getMethodInvocations(m3);
 			Set<String> gettAllMethodDeclarations = getModel().gettAllMethodDeclarations(m3);
-			RascalLocation activeDeclaration = getActiveDeclaration(gettAllMethodDeclarations, methodInvocations, ast, textSelection);
+			RascalLocation activeDeclaration = getActiveDeclaration(gettAllMethodDeclarations, methodInvocations, ast,
+					textSelection);
 			if (activeDeclaration != null) {
 				recommendationRequestController.execute(getModel()
 						.getFocusApiCallRecommendation(activeDeclaration.getRascalLocation(), methodInvocations));
@@ -66,11 +73,20 @@ public class FocusApiCallRecommendationController extends FocusRecommendationCon
 		}
 	}
 
-	private void onSuccess(Recommendation recommendation) {
-		List<Entry<String, Float>> apiCalls = recommendation.getRecommendationItems().stream()
-				.map(RecommendationItem::getApiFunctionCallFOCUS).map(r -> r.entrySet()).flatMap(Set::stream)
-				.map(this::processApiCall).collect(Collectors.toList());
-		getView().showFunctionCallRecommendations(apiCalls);
+	private void onSuccess(Recommendation recommendation, Query query) {
+		RecommendationItem recommendationItem = recommendation.getRecommendationItems().get(0);
+
+		if (recommendationItem == null || recommendationItem.getApiFunctionCallFOCUS().isEmpty()) {
+			getView().showErrorMessage("There are no recommended API calls");
+		} else {
+			List<Entry<String, Float>> apiCalls = recommendationItem.getApiFunctionCallFOCUS().entrySet().stream()
+					.map(this::processApiCall).collect(Collectors.toList());
+
+			getModel().setFeedbackResources(apiCalls.stream().collect(
+					Collectors.toMap(Function.identity(), apiCall -> new FeedbackResource(query, recommendationItem))));
+
+			getView().showFunctionCallRecommendations(apiCalls);
+		}
 	}
 
 	private static class ApiCallEntry implements Entry<String, Float> {
@@ -118,5 +134,14 @@ public class FocusApiCallRecommendationController extends FocusRecommendationCon
 
 	private void onFail(ApiException e) {
 		getView().showErrorMessage(ErrorHandler.logAndGetMessage(e));
+	}
+
+	@Override
+	public void onLeaveFeedback() {
+		FeedbackResource feedbackResource = getModel().getFeedbackResources().values().iterator().next();
+		FeedbackModel feedbackModel = new FeedbackModel(feedbackResource);
+		FeedbackView feedbackView = new FeedbackView(getView().getSite().getShell());
+		FeedbackController feedbackController = new FeedbackController(this, feedbackModel, feedbackView);
+		feedbackController.init();
 	}
 }

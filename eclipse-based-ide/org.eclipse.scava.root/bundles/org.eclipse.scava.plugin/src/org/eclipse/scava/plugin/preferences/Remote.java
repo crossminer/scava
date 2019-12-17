@@ -18,7 +18,6 @@ import org.eclipse.scava.plugin.Activator;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.eclipse.jface.preference.BooleanFieldEditor;
 
 public class Remote extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -34,10 +33,13 @@ public class Remote extends FieldEditorPreferencePage implements IWorkbenchPrefe
 
 	@Override
 	protected void createFieldEditors() {
-		addField(new StringFieldEditor(Preferences.KNOWLEDGEBASE_SERVER_ADDRESS, "KnowledgeBase server address", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(Preferences.KNOWLEDGEBASE_SERVER_PORT, "KnowledgeBase server port", getFieldEditorParent()));
-		addField(new StringFieldEditor(Preferences.WEBDASHBOARD_BASE_PATH, "WebDashboard base path", getFieldEditorParent()));
-		
+		addField(new StringFieldEditor(Preferences.KNOWLEDGEBASE_SERVER_ADDRESS, "KnowledgeBase server address",
+				getFieldEditorParent()));
+		addField(new IntegerFieldEditor(Preferences.KNOWLEDGEBASE_SERVER_PORT, "KnowledgeBase server port",
+				getFieldEditorParent()));
+		addField(new StringFieldEditor(Preferences.WEBDASHBOARD_BASE_PATH, "WebDashboard base path",
+				getFieldEditorParent()));
+
 	}
 
 }

@@ -10,16 +10,21 @@
 
 package org.eclipse.scava.plugin.coderecommendation;
 
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+
 import io.swagger.client.model.ApiCallResult;
 
 public class CodeRecommendation implements Comparable<CodeRecommendation>, IPreviewable, ICodeRecommendationElement {
 	private final CodeRecommendationRequest codeRecommendationRequest;
 	private final ApiCallResult recommendation;
+	private final FeedbackResource feedbackResource;
 
-	public CodeRecommendation(CodeRecommendationRequest codeRecommendationRequest, ApiCallResult recommendation) {
+	public CodeRecommendation(CodeRecommendationRequest codeRecommendationRequest, ApiCallResult recommendation,
+			FeedbackResource feedbackResource) {
 		super();
 		this.codeRecommendationRequest = codeRecommendationRequest;
 		this.recommendation = recommendation;
+		this.feedbackResource = feedbackResource;
 	}
 
 	public CodeRecommendationRequest getCodeRecommendationRequest() {
@@ -54,6 +59,10 @@ public class CodeRecommendation implements Comparable<CodeRecommendation>, IPrev
 	@Override
 	public boolean canBeInserted() {
 		return true;
+	}
+
+	public FeedbackResource getFeedbackResource() {
+		return feedbackResource;
 	}
 
 }

@@ -16,9 +16,12 @@ import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.scava.plugin.Activator;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
+import org.eclipse.scava.plugin.preferences.Preferences;
 import org.eclipse.scava.plugin.projectsearch.ProjectSearchInstallFinishedEvent;
 import org.eclipse.scava.plugin.projectsearch.ProjectSearchSearchRequestEvent;
 import org.eclipse.scava.plugin.projectsearch.install.installable.DefaultBasePathRequestEvent;
@@ -58,8 +61,13 @@ public class InstallController extends ModelViewController<InstallModel, Install
 			getView().addInstallable(view);
 		}
 
-		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-		onChangeBasePath(workspacePath);
+		String basePath;
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		if (!preferenceStore.contains(Preferences.PROJECT_INSTALL_BASE_PATH)
+				|| !isValidBasePath((basePath = preferenceStore.getString(Preferences.PROJECT_INSTALL_BASE_PATH)))) {
+			basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		}
+		onChangeBasePath(basePath);
 	}
 
 	@Override
@@ -150,9 +158,7 @@ public class InstallController extends ModelViewController<InstallModel, Install
 
 	@Override
 	public void onChangeBasePath(String path) {
-		File file = new File(path);
-
-		if (!file.exists() || !file.isDirectory()) {
+		if (!isValidBasePath(path)) {
 			MessageDialog.openError(getView().getShell(), "Error",
 					"The path " + path + " does not exist or is not a directory.\nPlease check the base path!");
 			return;
@@ -160,7 +166,15 @@ public class InstallController extends ModelViewController<InstallModel, Install
 
 		getModel().setBasePath(path);
 		getView().setBasePath(path);
+
+		Activator.getDefault().getPreferenceStore().setValue(Preferences.PROJECT_INSTALL_BASE_PATH, path);
+
 		routeEventToSubControllers(new NewBaseDestinationPathGivenEvent(this, path));
+	}
+
+	private boolean isValidBasePath(String path) {
+		File file = new File(path);
+		return file.exists() && file.isDirectory();
 	}
 
 	@Override
