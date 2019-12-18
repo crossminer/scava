@@ -23,7 +23,7 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
         visitedFile = []
         committerList = []
-        fileLocCache = {} # may be redundant (remove anything related for performance)
+        fileLocCache = {}
 
         firstCommitDate = datetime.datetime.now()
         lastCommitDate = datetime.datetime.now()
@@ -64,6 +64,16 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
                     else:
                         fileLocCache.update({modification.new_path: 0})
+
+            # remove visited files from cache (already added to totalLOC)
+            for file in list(fileLocCache):
+                if file in visitedFile:
+                    del fileLocCache[file]
+
+            # add remaining to totalLOC
+            for file, fileLoc in fileLocCache.items():
+                if file != None and fileLoc != None:
+                    totalLOC += fileLoc
 
             repository_analysis_results_python_repository_analysis_result = PythonRepositoryAnalysisResult()
             repository_analysis_results_python_repository_analysis_result.linesAdded = totalAddedLOC
