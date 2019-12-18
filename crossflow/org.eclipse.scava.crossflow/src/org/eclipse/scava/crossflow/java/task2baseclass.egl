@@ -6,6 +6,7 @@ var hasOutputs = not t.output.isEmpty();
 /** This class was automatically generated and should not be modified */
 package [%=package%];
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Generated;
@@ -63,6 +64,10 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 			[%}
 		}
 	}
+	
+	%]
+	protected HashMap<String,ListenableFuture<?>> currentRunnables= new HashMap();
+	[%
 	
 	// Configuration streams if applicable
 	var configStreams = t.input.select(s|s.isConfigurationChannel());
@@ -192,6 +197,16 @@ public abstract class [%=t.name%]Base extends Task [%if(t.input.notEmpty()){%] i
 		}%]
 	[%=s.createEndOfConsumeMethod()%]
 	[%}%]
+	
+	public boolean cancelJob(String id) {
+		if (currentRunnables.containsKey(id)) {
+			boolean ret = currentRunnables.get(id).cancel(true);
+			currentRunnables.remove(id);
+			return ret;
+		}
+		return false;
+	}
+		
 }
 
 [%
@@ -262,6 +277,9 @@ operation CrossflowLanguageModel!Stream createEndOfConsumeMethod() {%]
 				hasProcessed[%=self.name%] = true;
 				[%}%]
 				workflow.setTaskWaiting(this);
+				
+				//after job finishes clear the current job
+				currentRunnables.remove([%=self.type.name.ftlc()%].getJobId());
 			} catch (Exception e) {
 				workflow.reportInternalException(e);
 			}
@@ -271,9 +289,14 @@ operation CrossflowLanguageModel!Stream createEndOfConsumeMethod() {%]
 	
 	ListenableFuture<?> consumerFuture = workflow.get[%=t.name%]s().getExecutor().submit(consumer);
 	long timeout = [%=self.type.name.ftlc()%].getTimeout() > 0 ? [%=self.type.name.ftlc()%].getTimeout() : this.timeout;
+	
+	//track current job execution (for cancellation)
+	currentRunnables.put([%=self.type.name.ftlc()%].getJobId(),consumerFuture);	
+	
 	if (timeout > 0) {
 		Futures.withTimeout(consumerFuture, [%=self.type.name.ftlc()%].getTimeout(), TimeUnit.SECONDS, workflow.getTimeoutManager());
 	}
+
 	[%}%]
 }
 

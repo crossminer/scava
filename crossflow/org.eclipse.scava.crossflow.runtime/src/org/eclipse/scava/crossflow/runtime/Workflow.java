@@ -323,6 +323,11 @@ public abstract class Workflow<E extends Enum<E>> {
 						unrecoverableException(e);
 					}
 				}
+
+				if (signal.getSignal().equals(ControlSignals.CANCEL_JOB)) {
+					cancelLocalJobs(signal.getSenderId());
+					System.out.println("cancel job called on: " + getName() + " for job: " + signal.getSenderId());
+				}
 			}
 
 		});
@@ -491,7 +496,8 @@ public abstract class Workflow<E extends Enum<E>> {
 
 				@Override
 				public void consume(InternalException internalException) {
-					System.err.println("Workflow forwarding internal exception from " + internalException.getSenderId() + ":");
+					System.err.println(
+							"Workflow forwarding internal exception from " + internalException.getSenderId() + ":");
 					System.err.println(internalException.getReason());
 					System.err.println(internalException.getStacktrace());
 					internalExceptions.add(internalException);
@@ -1212,7 +1218,7 @@ public abstract class Workflow<E extends Enum<E>> {
 	 * @param serializer the serializer to register types
 	 */
 	protected abstract void registerCustomSerializationTypes(Serializer serializer);
-	
+
 	protected void registerDefaultSerializationTypes(Serializer serializer) {
 		checkNotNull(serializer);
 		// o.e.s.c.runtime.*
@@ -1221,7 +1227,7 @@ public abstract class Workflow<E extends Enum<E>> {
 		serializer.registerType(Job.class);
 		serializer.registerType(LoggingStrategy.class);
 		serializer.registerType(Mode.class);
-		
+
 		// o.e.s.c.runtime.utils.*
 		serializer.registerType(ControlSignal.class);
 		serializer.registerType(ControlSignals.class);
@@ -1264,6 +1270,30 @@ public abstract class Workflow<E extends Enum<E>> {
 	 */
 	public boolean isHelp() {
 		return help;
+	}
+
+	/**
+	 * Internal method used by the current Workflow instance to cancel its own tasks
+	 * (called by the control topic)
+	 * 
+	 * @param id
+	 * @return
+	 */
+	protected abstract boolean cancelLocalJobs(String id);
+
+	/**
+	 * Instructs all instances of this Workflow to cancel any currently executing
+	 * tasks with this input jobId (using the control topic)
+	 * 
+	 * @param id
+	 */
+	public void cancelAllJobs(String id) {
+		try {
+			controlTopic.send(new ControlSignal(ControlSignals.CANCEL_JOB, id));
+		} catch (Exception e) {
+			System.err.println("error in sending job cancellation signal:");
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -33,7 +33,13 @@ context Type {
 
 context ReusableComponent {
 
+	constraint HasComponent {
+		check : self.component.isDefined()
+		message : "The required feature 'component' of '"+self.eContainer.name+"::"+self.name+"' must be set"
+	}
+
 	constraint SingleInputWellFormed {
+		guard : self.satisfies("HasComponent")
 		check : self.input.size==1 and self.input.first.type.isCompatibleWith(self.component.consumes)
 		message { 
 			var ret = "ReusableComponent:input size:"+self.input.size;
@@ -49,6 +55,7 @@ context ReusableComponent {
 	}
 	
 	constraint SingleOutputWellFormed {
+		guard : self.satisfies("HasComponent")
 		check : self.output.size==1 and self.output.first.type.isCompatibleWith(self.component.produces)
 		message { 
 			var ret = "ReusableComponent:output size:"+self.output.size;
@@ -64,6 +71,7 @@ context ReusableComponent {
 	}
 	
 	constraint matchingMultipleOutput {
+		guard : self.satisfies("HasComponent")	
 		check : self.multipleOutputs==self.component.multipleOutputs
 		message : "ReusableComponent has mismatching multipleOutputs: "+self.multipleOutputs+", with its definition: "+self.component.multipleOutputs 
 	}
