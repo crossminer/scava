@@ -17,7 +17,8 @@ lastCommitDate = datetime.datetime.now()
 totalAddedLOC = 0
 totalDeletedLOC = 0
 
-repoPath = '/tmp/REPO-CLONES/lawloretienne/HackerNews/5d9732690f100da4dbcdbd482cbcf2d3b6af5b28'
+repoPath = '/tmp/REPO-CLONES/lawloretienne/HackerNews/5d9732690f100da4dbcdbd482cbcf2d3b6af5b28' # small repo
+# repoPath = '/tmp/REPO-CLONES/facebook/osquery/68cb40bae1c38f663b3ab7b029b2d5ae97bb9928' # large repo
 
 # iterate through repo commits
 for commit in RepositoryMining(repoPath).traverse_commits():
@@ -34,8 +35,9 @@ for commit in RepositoryMining(repoPath).traverse_commits():
         noOfModifications += 1
         if modification.new_path != None:
             visitedFile.append(modification.new_path) # add file to list of visited files
-            totalLOC += modification.nloc
-            fileLocCache.update( { modification.new_path : modification.nloc } )
+            if modification.nloc != None:
+                totalLOC += modification.nloc
+                fileLocCache.update( { modification.new_path : modification.nloc } )
 
             gr = GitRepository(repoPath)
             parsed_lines = gr.parse_diff(modification.diff)

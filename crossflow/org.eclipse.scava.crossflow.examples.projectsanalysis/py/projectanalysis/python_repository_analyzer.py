@@ -51,8 +51,9 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
                     noOfModifications += 1
                     if modification.new_path != None:
                         visitedFile.append(modification.new_path)  # add file to list of visited files
-                        totalLOC += modification.nloc
-                        fileLocCache.update({modification.new_path: modification.nloc})
+                        if modification.nloc != None:
+                            totalLOC += modification.nloc
+                            fileLocCache.update({modification.new_path: modification.nloc})
 
                         gr = GitRepository(java_repository_analysis_result.path)
                         parsed_lines = gr.parse_diff(modification.diff)
