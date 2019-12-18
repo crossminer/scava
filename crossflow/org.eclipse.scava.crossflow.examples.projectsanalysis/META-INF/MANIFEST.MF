@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Blah
+Bundle-SymbolicName: org.eclipse.scava.crossflow.examples.projectsanalysis
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: blah
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.scava.crossflow.runtime

@@ -10,13 +10,13 @@ public class RepositoryAnalysisResultSink extends RepositoryAnalysisResultSinkBa
 	protected CsvWriter writer1;
 	
 	@Override
-	public void consumeRepositoryAnalysisResults(RepositoryAnalysisResult repositoryAnalysisResult) {
+	public void consumeRepositoryAnalysisResults(PythonRepositoryAnalysisResult pythonRepositoryAnalysisResult) {
 		try {
 			if ( writer1 == null ) {
-				writer1 = new CsvWriter(new File(workflow.getOutputDirectory(), "output.csv").getAbsolutePath(), "sizeAtCommit", "linesAdded", "linesDeleted", "repo", "numberOfCommits", "numberOfFiles",  "cached");
+				writer1 = new CsvWriter(new File(workflow.getOutputDirectory(), "output.csv").getAbsolutePath(), "linesAdded", "linesDeleted", "numberOfCommits", "numOfDevs", "projectDuration", "projectLOC",  "cached");
 			}
 		
-			writer1.writeRecord( repositoryAnalysisResult.getSizeAtCommit(), repositoryAnalysisResult.getLinesAdded(), repositoryAnalysisResult.getLinesDeleted(), repositoryAnalysisResult.getRepo().url, repositoryAnalysisResult.getNumberOfCommits(), repositoryAnalysisResult.getNumberOfFiles(),  repositoryAnalysisResult.isCached() );
+			writer1.writeRecord( pythonRepositoryAnalysisResult.getLinesAdded(), pythonRepositoryAnalysisResult.getLinesDeleted(), pythonRepositoryAnalysisResult.getNumberOfCommits(), pythonRepositoryAnalysisResult.getNumOfDevs(), pythonRepositoryAnalysisResult.getProjectDuration(), pythonRepositoryAnalysisResult.getProjectLOC(),  pythonRepositoryAnalysisResult.isCached() );
 			writer1.flush();
 		} catch (Exception e) {
 			workflow.log(LogLevel.ERROR, e.getMessage());

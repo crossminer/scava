@@ -1,13 +1,15 @@
 <experiment
-	title="ProjectsAnalysisWorkflow"
-	class="org.eclipse.scava.crossflow.examples.projectsanalysis.ProjectsAnalysisWorkflow"
+	title="ProjectsAnalysis"
+	class="org.eclipse.scava.crossflow.examples.projectsanalysis.ProjectsAnalysis"
 	jar="org.eclipse.scava.crossflow.examples.projectsanalysis.jar"
-	input="experiment/in"
-	output="experiment/out"
-	summary="Projects analysis workflow based on smartSHARK case study"
+	input="in"
+	output="out"
+	summary="Optional summary of the Experiment goes here."
 	webServer="localhost:8080"
 >
 	<input path="input.csv" title="Input"/>
-	<output path="output.csv" title="Output"></output>
-	<description>Projects analysis workflow based on smartSHARK case study</description>
+	<output path="output.csv" title="Output"/>
+	<description>
+		Optional description of the Experiment goes here.
+	</description>
 </experiment>
