@@ -22,17 +22,21 @@ public class RepositoryCloner extends RepositoryClonerBase {
 		try {
 			// clone repository
 			workflow.log(LogLevel.INFO, "Cloning " + repoUrl + " ...");
-			Git git = Git.cloneRepository().setURI(repoUrl).setDirectory(pathToRepoClone).call();
-			workflow.log(LogLevel.INFO, "SUCCESSFULLY cloned " + repoUrl + " !\n");
-
-			if ( project.commit != null && !project.commit.isEmpty() ) {
-				// checkout specific commit by its ID (see: http://bit.ly/2LRlr5g)
-				workflow.log(LogLevel.INFO, "Checking out commit " + project.commit + " ...");
-				git.checkout().setName(project.commit).call();
-				workflow.log(LogLevel.INFO, "SUCCESSFULLY checked out commit " + project.commit + " !\n");
+			if ( !pathToRepoClone.exists() ) {
+				Git git = Git.cloneRepository().setURI(repoUrl).setDirectory(pathToRepoClone).call();
+				workflow.log(LogLevel.INFO, "SUCCESSFULLY cloned " + repoUrl + " !\n");
+	
+				if ( project.commit != null && !project.commit.isEmpty() ) {
+					// checkout specific commit by its ID (see: http://bit.ly/2LRlr5g)
+					workflow.log(LogLevel.INFO, "Checking out commit " + project.commit + " ...");
+					git.checkout().setName(project.commit).call();
+					workflow.log(LogLevel.INFO, "SUCCESSFULLY checked out commit " + project.commit + " !\n");
+				}
+	
+				git.close();
+			} else {
+				workflow.log(LogLevel.INFO, "Repository clone already exists for " + repoUrl + " !\n");
 			}
-
-			git.close();
 
 			repositoryInst.setPath(pathToRepoClone.getAbsolutePath());
 			repositoryInst.setUrl(repoUrl);
