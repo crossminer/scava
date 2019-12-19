@@ -21,9 +21,15 @@ import org.restlet.service.LogService;
 
 public class Activator implements BundleActivator {
 
-    private Component component;
+    private Component component; 
+    private static BundleContext context;
+    
+    static BundleContext getContext() {
+		return context;
+	}
 
     public void start(BundleContext context) throws Exception {
+		Activator.context = context;
 		context.addServiceListener(new ServiceListener() {
 					
 			@Override
@@ -49,6 +55,7 @@ public class Activator implements BundleActivator {
 
     public void stop(BundleContext context) throws Exception {
         if (component != null && component.isStarted()) component.stop();
+        Activator.context = null;
     }
 
 }
