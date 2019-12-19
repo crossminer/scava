@@ -1,5 +1,6 @@
 package org.eclipse.scava.crossflow.examples.projectsanalysis;
 
+import java.io.File;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,11 +14,9 @@ import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBase {
 
 	@Override
-	public JavaRepositoryAnalysisResult consumeRepositories(Repository repository) throws Exception {
+	public void consumeRepositories(Repository repository) throws Exception {
 
-		JavaRepositoryAnalysisResult javaRepositoryAnalysisResultInst = new JavaRepositoryAnalysisResult();
-		javaRepositoryAnalysisResultInst.setPath(repository.getPath());
-		javaRepositoryAnalysisResultInst.setUrl(repository.getUrl());
+		JavaRepositoryAnalysisResult javaRepositoryAnalysisResultInst = new JavaRepositoryAnalysisResult(repository);
 
 		long sizeAtCommit = 0;
 		long numberOfFiles = 0; // offset hidden files?
@@ -43,16 +42,14 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 
 		workflow.log(LogLevel.INFO, "Completed initial Java analysis of " + repository.getPath()
 				+ " :: numberOfFiles = " + numberOfFiles + " ; sizeAtCommit = " + sizeAtCommit + "\n");
-
-		return javaRepositoryAnalysisResultInst;
+		
+		sendToInitialRepositoryAnalyses(javaRepositoryAnalysisResultInst);		
 
 	}// consumeRepositories
 
 	@Override
 	public boolean acceptInput(Repository input) {
-		// TODO: logic for when to accept tasks for this instance of
-		// JavaRepositoryAnalyzer goes here.
-		return true;
+		return new File(input.path + RepositoryCloner.CROSSFLOW_CLONED_FILE).exists();
 	}// acceptInput
 
 }

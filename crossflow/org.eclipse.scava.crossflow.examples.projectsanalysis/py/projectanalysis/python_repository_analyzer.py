@@ -18,6 +18,8 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
     def consumeInitialRepositoryAnalyses(self, java_repository_analysis_result: JavaRepositoryAnalysisResult):
 
+        print('consumeInitialRepositoryAnalyses with path: ' + java_repository_analysis_result.path)
+
         noOfCommits = 0
         noOfModifications = 0
         totalLOC = 0
@@ -77,6 +79,10 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
                     totalLOC += fileLoc
 
             repository_analysis_results_python_repository_analysis_result = PythonRepositoryAnalysisResult()
+            repository_analysis_results_python_repository_analysis_result.url = java_repository_analysis_result.url
+            repository_analysis_results_python_repository_analysis_result.size_at_commit = java_repository_analysis_result.size_at_commit
+            repository_analysis_results_python_repository_analysis_result.number_of_files = java_repository_analysis_result.number_of_files
+
             repository_analysis_results_python_repository_analysis_result.linesAdded = totalAddedLOC
             repository_analysis_results_python_repository_analysis_result.linesDeleted = totalDeletedLOC
             repository_analysis_results_python_repository_analysis_result.projectLOC = totalLOC
@@ -85,6 +91,10 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
             timeDelta = relativedelta.relativedelta(lastCommitDate, firstCommitDate)
             repository_analysis_results_python_repository_analysis_result.projectDuration = timeDelta.years * 12 + timeDelta.months + timeDelta.days / 30.4167 + timeDelta.hours / 730.001 + timeDelta.minutes / 43800
+
+            print('url: ' + str(java_repository_analysis_result.url))
+            print('size_at_commit: ' + str(java_repository_analysis_result.size_at_commit))
+            print('number_of_files: ' + str(java_repository_analysis_result.number_of_files))
 
             print('noOfCommits: ' + str(noOfCommits))
             print('noOfModifications: ' + str(noOfModifications))
@@ -96,6 +106,7 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
             print('firstCommitDate: ' + str(firstCommitDate))
             print('lastCommitDate: ' + str(lastCommitDate))
             print('projectLength: ' + str(repository_analysis_results_python_repository_analysis_result.projectDuration))
+            print('timestamp: ' + str(datetime.datetime.now()))
             print('')
             
             conf = Confirmation()
@@ -105,7 +116,6 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
             self.sendToRepositoryAnalysisResults(repository_analysis_results_python_repository_analysis_result)
         else:
-            #print('path does NOT exist: ' + java_repository_analysis_result.path)
 
             # not found on local machine, sending it back to origin queue
             self.workflow.getInitialRepositoryAnalyses().send(java_repository_analysis_result,"JavaRepositoryAnalyzer")

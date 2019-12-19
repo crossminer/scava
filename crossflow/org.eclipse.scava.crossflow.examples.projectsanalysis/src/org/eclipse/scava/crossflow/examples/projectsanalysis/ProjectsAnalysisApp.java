@@ -26,8 +26,8 @@ public class ProjectsAnalysisApp {
 		
 		//master.setParallelization(4);
 		
-		master.setInputDirectory(new File("experiment/in"));
-		master.setOutputDirectory(new File("experiment/out"));
+//		master.setInputDirectory(new File("in"));
+//		master.setOutputDirectory(new File("out"));
 		
 //		master.setInstanceId("Example ProjectsAnalysis Instance");
 		master.setName("ProjectsAnalysis");

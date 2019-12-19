@@ -1,15 +1,23 @@
 package org.eclipse.scava.crossflow.examples.projectsanalysis;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.scava.crossflow.runtime.utils.LogLevel;
 
 public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 
+	private static final int BLOCKING_SIZE = 2;
+
+//	private static final int SLEEP_DURATION = 100;
+
+	public static final String CROSSFLOW_CLONED_FILE = ".CROSSFLOW_CLONED";
+
 	public static String CLONE_PATH_PREFIX = "/tmp/REPO-CLONES";
 
-	private String blockingRepository = null;
+	private Set<String> blockingRepository = new HashSet();
 
 	@Override
 	public void consumeProjects(Project project) throws Exception {
@@ -40,6 +48,8 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 				workflow.log(LogLevel.INFO, "Repository clone already exists for " + repoUrl + " !\n");
 			}
 
+			new File(pathToRepoClone + CROSSFLOW_CLONED_FILE).createNewFile();
+
 			repositoryInst.setPath(pathToRepoClone.getAbsolutePath());
 			repositoryInst.setUrl(repoUrl);
 
@@ -49,7 +59,7 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 			e.printStackTrace();
 		}
 
-		blockingRepository = repositoryInst.getUrl();
+		blockingRepository.add(repositoryInst.getUrl());
 
 		sendToRepositories(repositoryInst);
 
@@ -57,14 +67,27 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 
 	@Override
 	public void consumeRepositorySyncTopic(Confirmation confirmation) throws Exception {
-		//System.err.println(blockingRepository + " | " + confirmation.getRepositoryName());
-		if (blockingRepository != null && blockingRepository.equals(confirmation.getRepositoryName()))
-			blockingRepository = null;
+		System.err.println("consumeRepositorySyncTopic called... "+ blockingRepository + " | " + confirmation.getRepositoryName());
+		blockingRepository.remove(confirmation.getRepositoryName());
 	}
+
+	int i =0;
 
 	@Override
 	public boolean acceptInput(Project input) {
-		return blockingRepository == null;
+//		try {
+//			Thread.sleep(SLEEP_DURATION);
+//			if (i==30) {
+//				System.err.println("acceptInput called... blockingRepository: "+blockingRepository + " | " + "Project: " + "https://github.com/" + input.owner + "/" + input.repo + ".git");
+//				i=0;
+//			} else {
+//				i++;
+//			}
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		return blockingRepository.size() < BLOCKING_SIZE;
 	}
 
 	@Override
