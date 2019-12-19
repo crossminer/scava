@@ -18,8 +18,6 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
 
     def consumeInitialRepositoryAnalyses(self, java_repository_analysis_result: JavaRepositoryAnalysisResult):
 
-        print('consumeInitialRepositoryAnalyses with path: ' + java_repository_analysis_result.path)
-
         noOfCommits = 0
         noOfModifications = 0
         totalLOC = 0

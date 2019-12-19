@@ -11,7 +11,7 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 
 	private static final int BLOCKING_SIZE = 2;
 
-//	private static final int SLEEP_DURATION = 100;
+	private static final int SLEEP_DURATION = 100;
 
 	public static final String CROSSFLOW_CLONED_FILE = ".CROSSFLOW_CLONED";
 
@@ -67,7 +67,7 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 
 	@Override
 	public void consumeRepositorySyncTopic(Confirmation confirmation) throws Exception {
-		System.err.println("consumeRepositorySyncTopic called... "+ blockingRepository + " | " + confirmation.getRepositoryName());
+//		System.err.println("consumeRepositorySyncTopic called... "+ blockingRepository + " | " + confirmation.getRepositoryName());
 		blockingRepository.remove(confirmation.getRepositoryName());
 	}
 
@@ -75,18 +75,11 @@ public class RepositoryCloner extends OpinionatedRepositoryClonerBase {
 
 	@Override
 	public boolean acceptInput(Project input) {
-//		try {
-//			Thread.sleep(SLEEP_DURATION);
-//			if (i==30) {
-//				System.err.println("acceptInput called... blockingRepository: "+blockingRepository + " | " + "Project: " + "https://github.com/" + input.owner + "/" + input.repo + ".git");
-//				i=0;
-//			} else {
-//				i++;
-//			}
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+		Thread.sleep(SLEEP_DURATION);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return blockingRepository.size() < BLOCKING_SIZE;
 	}
 
