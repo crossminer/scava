@@ -5,6 +5,7 @@ from crossflow.projectanalysis.python_repository_analyzer import PythonRepositor
 
 from crossflow.projectanalysis.java_repository_analysis_result import JavaRepositoryAnalysisResult
 from crossflow.projectanalysis.python_repository_analysis_result import PythonRepositoryAnalysisResult
+from crossflow.projectanalysis.confirmation import Confirmation
 from dateutil import relativedelta
 
 from pydriller import RepositoryMining, GitRepository
@@ -85,9 +86,26 @@ class PythonRepositoryAnalyzer(PythonRepositoryAnalyzerBase):
             timeDelta = relativedelta.relativedelta(lastCommitDate, firstCommitDate)
             repository_analysis_results_python_repository_analysis_result.projectDuration = timeDelta.years * 12 + timeDelta.months + timeDelta.days / 30.4167 + timeDelta.hours / 730.001 + timeDelta.minutes / 43800
 
+            print('noOfCommits: ' + str(noOfCommits))
+            print('noOfModifications: ' + str(noOfModifications))
+            print('totalAddedLOC: ' + str(totalAddedLOC))
+            print('totalDeletedLOC: ' + str(totalDeletedLOC))
+            print('totalLOC: ' + str(totalLOC))
+            print('numberOfDevs: ', len(committerList))
+            
+            print('firstCommitDate: ' + str(firstCommitDate))
+            print('lastCommitDate: ' + str(lastCommitDate))
+            print('projectLength: ' + str(repository_analysis_results_python_repository_analysis_result.projectDuration))
+            print('')
+            
+            conf = Confirmation()
+            conf.repository_name = java_repository_analysis_result.url
+            
+            self.workflow.getRepositorySyncTopic().send(conf,"PythonRepositoryAnalyzer")
+
             self.sendToRepositoryAnalysisResults(repository_analysis_results_python_repository_analysis_result)
         else:
-            print('path does NOT exist: ' + java_repository_analysis_result.path)
+            #print('path does NOT exist: ' + java_repository_analysis_result.path)
 
             # not found on local machine, sending it back to origin queue
             self.workflow.getInitialRepositoryAnalyses().send(java_repository_analysis_result,"JavaRepositoryAnalyzer")

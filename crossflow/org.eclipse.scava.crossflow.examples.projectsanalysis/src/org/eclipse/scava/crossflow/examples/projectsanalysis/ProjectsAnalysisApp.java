@@ -11,12 +11,13 @@ public class ProjectsAnalysisApp {
 		ProjectsAnalysis master = new ProjectsAnalysis(Mode.MASTER_BARE);
 		master.createBroker(true);
 		master.setMaster("localhost");
-		master.setInstanceId("ProjectsAnalysis");
+		master.setInstanceId("projectsanalysis");
 		master.setEnableTermination(false);
 		master.enableStreamMetadataTopic(false);
+		master.enableTaskMetadataTopic(false);
 		
 		ProjectsAnalysis worker1 = new ProjectsAnalysis(Mode.WORKER);
-		worker1.setInstanceId("ProjectsAnalysis");
+		worker1.setInstanceId("projectsanalysis");
 		worker1.setMaster("localhost");
 //		
 //		ProjectsAnalysis worker2 = new ProjectsAnalysis(Mode.WORKER);

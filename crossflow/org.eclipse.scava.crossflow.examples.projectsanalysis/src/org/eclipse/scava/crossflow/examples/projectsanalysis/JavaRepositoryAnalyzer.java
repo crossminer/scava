@@ -17,6 +17,7 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 
 		JavaRepositoryAnalysisResult javaRepositoryAnalysisResultInst = new JavaRepositoryAnalysisResult();
 		javaRepositoryAnalysisResultInst.setPath(repository.getPath());
+		javaRepositoryAnalysisResultInst.setUrl(repository.getUrl());
 
 		long sizeAtCommit = 0;
 		long numberOfFiles = 0; // offset hidden files?
@@ -37,8 +38,8 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 			sizeAtCommit = sizeAtCommit / MEGABYTE;
 		} // try Stream<Path>
 
-		javaRepositoryAnalysisResultInst.setSizeAtCommit((int) sizeAtCommit);
-		javaRepositoryAnalysisResultInst.setNumberOfFiles((int) numberOfFiles);
+		javaRepositoryAnalysisResultInst.setSizeAtCommit(sizeAtCommit);
+		javaRepositoryAnalysisResultInst.setNumberOfFiles(numberOfFiles);
 
 		workflow.log(LogLevel.INFO, "Completed initial Java analysis of " + repository.getPath()
 				+ " :: numberOfFiles = " + numberOfFiles + " ; sizeAtCommit = " + sizeAtCommit + "\n");

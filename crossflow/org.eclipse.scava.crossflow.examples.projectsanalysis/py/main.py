@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('-name', default='ProjectsAnalysisPython', help='The name of the workflow')
     parser.add_argument('-brokerHost', default='localhost', help='Host of the JMX broker')
     parser.add_argument('-stompPort', default=61613, help='Port to use for stomp based messages')
-    parser.add_argument('-instance', default='ProjectsAnalysis', help='The instance of the master (to contribute to)')
+    parser.add_argument('-instance', default='projectsanalysis', help='The instance of the master (to contribute to)')
     parser.add_argument('-mode', default='WORKER', help='must be one of WORKER or API')
 
     parsedArgs = parser.parse_args(sys.argv[1:len(sys.argv)])
