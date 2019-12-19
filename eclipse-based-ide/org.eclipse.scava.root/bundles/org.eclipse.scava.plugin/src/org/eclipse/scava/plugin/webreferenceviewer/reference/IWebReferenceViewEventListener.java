@@ -14,4 +14,6 @@ import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
 public interface IWebReferenceViewEventListener extends IViewEventListener {
 	void onOpenUrl();
+
+	void onLeaveFeedback();
 }

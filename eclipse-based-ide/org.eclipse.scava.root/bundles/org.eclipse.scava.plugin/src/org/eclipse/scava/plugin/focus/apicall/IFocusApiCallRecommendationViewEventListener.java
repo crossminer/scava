@@ -13,5 +13,5 @@ package org.eclipse.scava.plugin.focus.apicall;
 import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
 public interface IFocusApiCallRecommendationViewEventListener extends IViewEventListener {
-
+	void onLeaveFeedback();
 }

@@ -1,3 +1,13 @@
+/*********************************************************************
+* Copyright c 2017 FrontEndART Software Ltd.
+*
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse PublicLicense 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
+
 package org.eclipse.scava.plugin.preferences;
 
 import java.io.File;
@@ -59,10 +69,13 @@ public class ButtonFieldEditor extends StringButtonFieldEditor {
 
 		File file = new File(Activator.getDefault().getPreferenceStore().getString(Preferences.DATABASE_PATH));
 
-		boolean openConfirm = MessageDialog.openConfirm(Activator.getDefault().getWorkbench().getDisplay().getActiveShell(), "Restart", "This action need an eclipse restart.");
+		boolean openConfirm = MessageDialog.openConfirm(
+				Activator.getDefault().getWorkbench().getDisplay().getActiveShell(), "Restart",
+				"This action need an eclipse restart.");
 		if (openConfirm) {
 			try {
-				Activator.getDefault().getMainController().getUserMonitor().getGremlinAdapter().closeDatabaseConnection();
+				Activator.getDefault().getMainController().getUserMonitor().getGremlinAdapter()
+						.closeDatabaseConnection();
 				deleteDirectory(file);
 				PlatformUI.getWorkbench().restart();
 			} catch (Exception e) {

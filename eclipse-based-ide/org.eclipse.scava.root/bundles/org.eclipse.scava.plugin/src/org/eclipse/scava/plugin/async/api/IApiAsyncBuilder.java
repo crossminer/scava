@@ -10,11 +10,13 @@
 
 package org.eclipse.scava.plugin.async.api;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.scava.plugin.async.IAsyncBuilder;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.model.Query;
 
 public interface IApiAsyncBuilder<T> extends IAsyncBuilder<T, ApiException> {
 
@@ -23,5 +25,7 @@ public interface IApiAsyncBuilder<T> extends IAsyncBuilder<T, ApiException> {
 	IApiAsyncBuilder<T> onFail(Consumer<ApiException> consumer);
 
 	IApiAsyncBuilder<T> executeWith(Consumer<Runnable> executor);
+
+	IApiAsyncBuilder<T> onSuccessWithQuery(BiConsumer<T, Query> consumer);
 
 }

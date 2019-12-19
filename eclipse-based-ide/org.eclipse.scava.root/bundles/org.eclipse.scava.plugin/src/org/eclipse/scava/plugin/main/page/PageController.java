@@ -122,7 +122,8 @@ public class PageController extends ModelController<PageModel> {
 				return;
 			}
 
-			LibrarySuggestionModel model = new LibrarySuggestionModel(pomFile.getLocation().toOSString(), getModel().getKnowledgeBaseAccess());
+			LibrarySuggestionModel model = new LibrarySuggestionModel(pomFile.getLocation().toOSString(),
+					getModel().getKnowledgeBaseAccess());
 			LibrarySuggestionView view = new LibrarySuggestionView(Display.getDefault().getActiveShell());
 			LibrarySuggestionController controller = new LibrarySuggestionController(this, model, view);
 			controller.init();
@@ -172,7 +173,7 @@ public class PageController extends ModelController<PageModel> {
 
 			return;
 		}
-		
+
 		if (routedEvent instanceof FocusApiCallRecommendationRequestEvent) {
 			FocusApiCallRecommendationRequestEvent event = (FocusApiCallRecommendationRequestEvent) routedEvent;
 
@@ -187,7 +188,7 @@ public class PageController extends ModelController<PageModel> {
 
 				ITextEditor editor = (ITextEditor) activeEditor;
 				ITextSelection textSelection = (ITextSelection) editor.getSelectionProvider().getSelection();
-				
+
 				IEditorInput editorInput = editor.getEditorInput();
 
 				if (!(editorInput instanceof FileEditorInput)) {
@@ -195,22 +196,23 @@ public class PageController extends ModelController<PageModel> {
 				}
 
 				IFile file = ((FileEditorInput) editorInput).getFile();
-				
+
 				ITypeRoot editorInputTypeRoot = JavaUI.getEditorInputTypeRoot(editorInput);
-				if( editorInputTypeRoot == null ) {
+				if (editorInputTypeRoot == null) {
 					return;
 				}
-				
+
 				CompilationUnit ast = SharedASTProvider.getAST(editorInputTypeRoot, SharedASTProvider.WAIT_YES, null);
-				
+
 				if (focusApiCallRecommendationController == null || focusApiCallRecommendationController.isDisposed()) {
 					FocusRecommendationModel model = new FocusRecommendationModel(getModel().getKnowledgeBaseAccess());
-					FocusApiCallRecommendationView view = FocusApiCallRecommendationView.open(FocusApiCallRecommendationView.ID);
+					FocusApiCallRecommendationView view = FocusApiCallRecommendationView
+							.open(FocusApiCallRecommendationView.ID);
 					focusApiCallRecommendationController = new FocusApiCallRecommendationController(this, model, view);
 
 					focusApiCallRecommendationController.init();
 				}
-				
+
 				focusApiCallRecommendationController.request(file.getProject(), ast, textSelection);
 				FocusApiCallRecommendationView.open(FocusApiCallRecommendationView.ID);
 			} catch (Throwable e) {
@@ -219,7 +221,7 @@ public class PageController extends ModelController<PageModel> {
 
 			return;
 		}
-		
+
 		if (routedEvent instanceof FocusCodeSnippetRecommendationRequestEvent) {
 			FocusCodeSnippetRecommendationRequestEvent event = (FocusCodeSnippetRecommendationRequestEvent) routedEvent;
 
@@ -234,7 +236,7 @@ public class PageController extends ModelController<PageModel> {
 
 				ITextEditor editor = (ITextEditor) activeEditor;
 				ITextSelection textSelection = (ITextSelection) editor.getSelectionProvider().getSelection();
-				
+
 				IEditorInput editorInput = editor.getEditorInput();
 
 				if (!(editorInput instanceof FileEditorInput)) {
@@ -242,22 +244,25 @@ public class PageController extends ModelController<PageModel> {
 				}
 
 				IFile file = ((FileEditorInput) editorInput).getFile();
-				
+
 				ITypeRoot editorInputTypeRoot = JavaUI.getEditorInputTypeRoot(editorInput);
-				if( editorInputTypeRoot == null ) {
+				if (editorInputTypeRoot == null) {
 					return;
 				}
-				
+
 				CompilationUnit ast = SharedASTProvider.getAST(editorInputTypeRoot, SharedASTProvider.WAIT_YES, null);
-				
-				if (focusCodeSnippetRecommendationController == null || focusCodeSnippetRecommendationController.isDisposed()) {
+
+				if (focusCodeSnippetRecommendationController == null
+						|| focusCodeSnippetRecommendationController.isDisposed()) {
 					FocusRecommendationModel model = new FocusRecommendationModel(getModel().getKnowledgeBaseAccess());
-					FocusCodeSnippetRecommendationView view = FocusCodeSnippetRecommendationView.open(FocusCodeSnippetRecommendationView.ID);
-					focusCodeSnippetRecommendationController = new FocusCodeSnippetRecommendationController(this, model, view);
+					FocusCodeSnippetRecommendationView view = FocusCodeSnippetRecommendationView
+							.open(FocusCodeSnippetRecommendationView.ID);
+					focusCodeSnippetRecommendationController = new FocusCodeSnippetRecommendationController(this, model,
+							view);
 
 					focusCodeSnippetRecommendationController.init();
 				}
-				
+
 				focusCodeSnippetRecommendationController.request(file.getProject(), ast, textSelection);
 				FocusCodeSnippetRecommendationView.open(FocusCodeSnippetRecommendationView.ID);
 			} catch (Throwable e) {
@@ -271,22 +276,23 @@ public class PageController extends ModelController<PageModel> {
 			ApiDocuemntationRequestEvent event = (ApiDocuemntationRequestEvent) routedEvent;
 
 			try {
-				ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
-				
-				if( !(selection instanceof ITextSelection) ) {
+				ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+						.getSelection();
+
+				if (!(selection instanceof ITextSelection)) {
 					MessageDialog.openError(getModel().getPage().getWorkbenchWindow().getShell(), "Error",
 							"Select some text in a text editor");
 					return;
 				}
-				
-				ITextSelection textSelection = (ITextSelection)selection;
-				
+
+				ITextSelection textSelection = (ITextSelection) selection;
+
 				if (textSelection.getLength() < 1) {
 					MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
 							"There is no text selected");
 					return;
 				}
-				
+
 				if (apiDocumentationController == null || apiDocumentationController.isDisposed()) {
 					ApiDocumentationModel model = new ApiDocumentationModel(getModel().getKnowledgeBaseAccess());
 					ApiDocumentationView view = ApiDocumentationView.open(ApiDocumentationView.ID);

@@ -10,18 +10,22 @@
 
 package org.eclipse.scava.plugin.librarysuggestion.library;
 
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+
 public class Library {
 	private final String groupId;
 	private final String artifactId;
 	private final String version;
 	private final String url;
+	private final FeedbackResource feedbackResource;
 
-	public Library(String groupId, String artifactId, String version, String url) {
+	public Library(String groupId, String artifactId, String version, String url, FeedbackResource feedbackResource) {
 		super();
 		this.groupId = groupId;
 		this.artifactId = artifactId;
 		this.version = version;
 		this.url = url;
+		this.feedbackResource = feedbackResource;
 	}
 
 	public String getGroupId() {
@@ -38,6 +42,10 @@ public class Library {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public FeedbackResource getFeedbackResource() {
+		return feedbackResource;
 	}
 
 	@Override

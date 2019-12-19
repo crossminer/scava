@@ -1,0 +1,52 @@
+plugins {
+	id "base"
+	id "java"
+	id "java-library"
+	id "com.palantir.docker" version "0.22.1"
+	
+	ext {
+		dockerRepo = "[%=w.name%]"
+	}
+	
+	sourceSets {
+		main {
+			java {
+				srcDirs = ["[%=srcDir%]", "[%=genDir%]"]
+			}
+		}
+	}
+	
+	jar {
+		manifest {
+			attributes "Main-Class": "[%=package%].[%=w.name%]"
+		}
+		archiveName "[%=w.name%]"
+	}
+	
+	docker {
+	dependsOn shadowJar
+	name "${project.name}"
+	tag 'latest', "${dockerRepo}/${project.name}:latest"
+	files tasks.shadowJar.outputs
+	copySpec.with {
+		from('build/libs/') {
+			include '**/*'
+			into('build/libs/')
+		}
+	}
+
+	assemble.dependsOn("jar", "shadowJar")
+	
+	dependencies {
+		implementation "org.acpache.activemq:activemq-all:5.15.8"
+		implementation "com.thoughtworks.xstream:xstream:1.4.11.1"
+		implementation "com.google.code.gson:gson:2.8.5"
+		implementation "com.beust:jcommander:1.72"
+		implementation "org.apache.commons:commons-csv:1.6"
+		implementation "commons-codec:commons-codec:1.11"
+		implementation "commons-io:commons-io:2.6"
+		implementation "org.eclipse.jgit:org.eclipse.jgit:5.2.0.201812061821-r"
+		implementation "com.google.guava:guava:28.1-jre"
+		implementation "org.renjin:renjin-script-engine:0.9.2726"
+	}
+}

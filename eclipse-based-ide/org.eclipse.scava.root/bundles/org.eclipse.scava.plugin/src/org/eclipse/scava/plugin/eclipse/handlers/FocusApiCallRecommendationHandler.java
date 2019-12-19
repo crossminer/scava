@@ -20,7 +20,8 @@ public class FocusApiCallRecommendationHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Activator.getDefault().getEventBus().post(new EclipseInterfaceEvent.FocusApiCallRecommendationRequestEvent(null));
+		Activator.getDefault().getEventBus()
+				.post(new EclipseInterfaceEvent.FocusApiCallRecommendationRequestEvent(null));
 		return null;
 	}
 

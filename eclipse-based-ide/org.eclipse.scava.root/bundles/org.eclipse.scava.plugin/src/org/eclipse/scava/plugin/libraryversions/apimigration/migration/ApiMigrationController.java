@@ -61,7 +61,8 @@ public class ApiMigrationController extends ModelViewController<ApiMigrationMode
 							ContentChangeListenerResourceDeltaVisitor contentChangeListenerResourceDeltaVisitor = new ContentChangeListenerResourceDeltaVisitor();
 							event.getDelta().accept(contentChangeListenerResourceDeltaVisitor);
 							if (contentChangeListenerResourceDeltaVisitor.contentChangesHappened) {
-								//routeEventToSubControllers(new ReparseRequestEvent(ApiMigrationController.this));
+								// routeEventToSubControllers(new
+								// ReparseRequestEvent(ApiMigrationController.this));
 							}
 						} catch (CoreException e) {
 							e.printStackTrace();

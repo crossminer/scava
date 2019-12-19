@@ -148,14 +148,14 @@ public class CodeRecommendationResultsView extends CompositeView<ICodeRecommenda
 		if (selected instanceof CodeRecommendationRequest) {
 			CodeRecommendationRequest request = (CodeRecommendationRequest) selected;
 
-			contextMenu.add(
-					new Action("Drop recommendations for this request", ImageDescriptor.createFromImage(ResourceManager
-							.getPluginImage("org.eclipse.scava.plugin", "icons/control/drop_recommendation_history.png"))) {
-						@Override
-						public void run() {
-							eventManager.invoke(l -> l.onDrop(request));
-						}
-					});
+			contextMenu.add(new Action("Drop recommendations for this request",
+					ImageDescriptor.createFromImage(ResourceManager.getPluginImage("org.eclipse.scava.plugin",
+							"icons/control/drop_recommendation_history.png"))) {
+				@Override
+				public void run() {
+					eventManager.invoke(l -> l.onDrop(request));
+				}
+			});
 		}
 
 		if (selected instanceof CodeRecommendationTarget) {
@@ -291,7 +291,8 @@ public class CodeRecommendationResultsView extends CompositeView<ICodeRecommenda
 				CodeRecommendationRequest request = (CodeRecommendationRequest) element;
 
 				StyledString styledString = new StyledString(request.toString());
-				styledString.append(" : " + request.getCodeRecommendations().size() + " suggestion(s)", StyledString.COUNTER_STYLER);
+				styledString.append(" : " + request.getCodeRecommendations().size() + " suggestion(s)",
+						StyledString.COUNTER_STYLER);
 				return styledString;
 			}
 

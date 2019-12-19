@@ -22,4 +22,6 @@ public interface ILibraryViewEventListener extends IViewEventListener {
 	void onPickForInstall();
 
 	void onUnpickForInstall();
+
+	void onLeaveFeedback();
 }

@@ -35,7 +35,7 @@ public class CodeHighlighterModel extends Model {
 
 		IMarker marker = resource.createMarker(markerID);
 		marker.setAttributes(attributes);
-		
+
 		markers.add(marker);
 		return marker;
 	}

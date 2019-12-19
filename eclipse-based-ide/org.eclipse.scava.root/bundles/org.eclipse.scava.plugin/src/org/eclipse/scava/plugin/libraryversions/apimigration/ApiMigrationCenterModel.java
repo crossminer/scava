@@ -36,7 +36,7 @@ public class ApiMigrationCenterModel extends Model {
 		return ApiAsyncBuilder.build(apiCallback -> {
 			ApiMigrationRestControllerApi apiMigrationRestController = knowledgeBaseAccess
 					.getApiMigrationRestController(Preferences.TIMEOUT_APIMIGRATION_M3);
-			
+
 			return apiMigrationRestController.getM3ModelUsingPOSTAsync(jar, apiCallback);
 		});
 	}

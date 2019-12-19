@@ -1,5 +1,26 @@
 import "../util.eol";
 
+rule GenerateGradle
+	transform w : CrossflowLanguageModel!Workflow {
+	parameters {
+		var params = w.getParameters("GenerateGradle");
+		params.put("genDir", w.getPath());
+		params.put("srcDir", w.getImplPath());
+		return params;
+	}
+	template : "build.gradle.egl"
+	target : "build.gradle"
+	overwrite :false
+}
+
+rule GenerateDockerfile
+	transform w : CrossflowLanguageModel!Workflow {
+	parameters :w.getParameters("Dockerfile")
+	template : "Dockerfile.egl"
+	target : "java.Dockerfile"
+	overwrite : false
+}
+
 rule Workflow2App
 	transform w : CrossflowLanguageModel!Workflow {
 	parameters : w.getParameters("Workflow2App")

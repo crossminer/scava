@@ -10,13 +10,12 @@
 
 package org.eclipse.scava.plugin.main;
 
-
 import org.eclipse.scava.plugin.usermonitoring.UserMonitor;
 
 public interface IMainController {
 
 	void startUserMonitoring();
-	
+
 	UserMonitor getUsermonitor();
 
 	static class OpenArtifactSearchEvent {

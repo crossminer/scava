@@ -10,6 +10,10 @@
 
 package org.eclipse.scava.plugin.librarysuggestion.library;
 
+import org.eclipse.scava.plugin.feedback.FeedbackController;
+import org.eclipse.scava.plugin.feedback.FeedbackModel;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+import org.eclipse.scava.plugin.feedback.FeedbackView;
 import org.eclipse.scava.plugin.main.OpenInExternalBrowserRequestEvent;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
@@ -85,5 +89,14 @@ public class LibraryController extends ModelViewController<LibraryModel, Library
 		}
 
 		super.onReceiveRoutedEventFromParentController(routedEvent);
+	}
+
+	@Override
+	public void onLeaveFeedback() {
+		FeedbackResource feedbackResource = getModel().getLibrary().getFeedbackResource();
+		FeedbackModel feedbackModel = new FeedbackModel(feedbackResource);
+		FeedbackView feedbackView = new FeedbackView(getView().getShell());
+		FeedbackController feedbackController = new FeedbackController(this, feedbackModel, feedbackView);
+		feedbackController.init();
 	}
 }

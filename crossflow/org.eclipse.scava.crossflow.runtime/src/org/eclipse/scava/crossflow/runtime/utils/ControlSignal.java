@@ -7,7 +7,7 @@ public class ControlSignal implements Serializable {
 	private static final long serialVersionUID = 6410095687416313726L;
 
 	public enum ControlSignals {
-		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED
+		TERMINATION, ACKNOWLEDGEMENT, WORKER_ADDED, WORKER_REMOVED, CANCEL_JOB
 	}
 	
 	private ControlSignals signal;

@@ -12,6 +12,8 @@ package org.eclipse.scava.plugin.coderecommendation.preview;
 
 import org.eclipse.scava.plugin.mvc.view.CompositeView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -19,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class CodeRecommendationPreviewView extends CompositeView<ICodeRecommendationPreviewViewEventListener> {
@@ -26,6 +29,7 @@ public class CodeRecommendationPreviewView extends CompositeView<ICodeRecommenda
 	private Label lblPatternName;
 	private Button btnInsertAtCursor;
 	private Label lblNewLabel;
+	private Label lblFeedback;
 
 	/**
 	 * Create the composite.
@@ -37,7 +41,7 @@ public class CodeRecommendationPreviewView extends CompositeView<ICodeRecommenda
 		super(SWT.NONE);
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		GridLayout gridLayout = new GridLayout(2, false);
+		GridLayout gridLayout = new GridLayout(3, false);
 		gridLayout.marginWidth = 4;
 		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
@@ -56,12 +60,28 @@ public class CodeRecommendationPreviewView extends CompositeView<ICodeRecommenda
 		btnInsertAtCursor.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnInsertAtCursor.setText("Insert snippet at cursor");
 
+		lblFeedback = new Label(this, SWT.NONE);
+		lblFeedback.setImage(
+				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/feedbackIcon_32_32.png"));
+		lblFeedback.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				eventManager.invoke(l -> l.onLeaveFeedback());
+			}
+
+		});
+		lblFeedback.setToolTipText("Send feedback");
+		lblFeedback.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+
 		lblNewLabel = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
-		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		lblNewLabel.setText("New Label");
+		new Label(this, SWT.NONE);
 
 		txtSourceCode = new Text(this, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
-		txtSourceCode.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		txtSourceCode.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+		new Label(this, SWT.NONE);
 
 	}
 

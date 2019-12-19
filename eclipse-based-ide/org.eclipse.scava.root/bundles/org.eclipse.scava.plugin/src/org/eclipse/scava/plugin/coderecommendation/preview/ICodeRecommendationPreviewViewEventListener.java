@@ -14,4 +14,6 @@ import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
 public interface ICodeRecommendationPreviewViewEventListener extends IViewEventListener {
 	void onInsertAtCursor();
+
+	void onLeaveFeedback();
 }

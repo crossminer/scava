@@ -16,6 +16,10 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.scava.plugin.coderecommendation.IPreviewable;
 import org.eclipse.scava.plugin.coderecommendation.results.CodeRecommendationDroppedEvent;
+import org.eclipse.scava.plugin.feedback.FeedbackController;
+import org.eclipse.scava.plugin.feedback.FeedbackModel;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+import org.eclipse.scava.plugin.feedback.FeedbackView;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
 import org.eclipse.scava.plugin.mvc.controller.ModelViewController;
 import org.eclipse.scava.plugin.mvc.event.routed.IRoutedEvent;
@@ -101,5 +105,14 @@ public class CodeRecommendationPreviewController
 			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error",
 					"Unexpected error during code insertion:\n" + e);
 		}
+	}
+
+	@Override
+	public void onLeaveFeedback() {
+		FeedbackResource feedbackResource = getModel().getFeedbackResource();
+		FeedbackModel feedbackModel = new FeedbackModel(feedbackResource);
+		FeedbackView feedbackView = new FeedbackView(getView().getShell());
+		FeedbackController feedbackController = new FeedbackController(this, feedbackModel, feedbackView);
+		feedbackController.init();
 	}
 }

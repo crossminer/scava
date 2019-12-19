@@ -27,7 +27,7 @@ public class RascalLocation implements ILocation, IJaccardComparable {
 
 	public RascalLocation(String location) {
 		rascalLocation = location;
-		
+
 		int indexOfSeparator;
 		if (location != null && !location.isEmpty() && (indexOfSeparator = location.indexOf(":///")) != -1) {
 			location = fixLocation(location);
@@ -66,7 +66,7 @@ public class RascalLocation implements ILocation, IJaccardComparable {
 	public String toString() {
 		return "RascalLocation [scheme=" + scheme + ", parts=" + parts + "]";
 	}
-	
+
 	public String getRascalLocation() {
 		return rascalLocation;
 	}

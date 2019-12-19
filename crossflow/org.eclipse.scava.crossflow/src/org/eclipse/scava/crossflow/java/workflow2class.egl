@@ -313,6 +313,16 @@ public class [%=w.name%] extends Workflow<[%=w.name%]Tasks> {
 		run(args);
 	}
 	
+	protected boolean cancelLocalJobs(String id) {
+		boolean ret = false;
+	[%for (t in w.getParallelizableTasks()) {%]
+		for([%=t.name%] v : [%=t.name.ftlc()%]s){
+			ret = v.cancelJob(id) || ret;
+		}
+	[%}%]
+		return ret;				
+	}
+	
 }	
 [%
 operation CrossflowLanguageModel!Workflow getNonConfigurationSources(){

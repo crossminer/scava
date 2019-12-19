@@ -18,13 +18,17 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
+import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceWithFeedback;
 import org.eclipse.scava.plugin.webreferenceviewer.reference.WebReferenceModel;
 
 import com.google.gson.GsonBuilder;
@@ -34,14 +38,17 @@ import com.google.gson.JsonSyntaxException;
 
 public class StackOverflowReferenceModel extends WebReferenceModel {
 
-	private StackOverflowReferenceModel(String url, String title) {
-		super(url, title);
+	private StackOverflowReferenceModel(String url, String title, FeedbackResource feedbackResource) {
+		super(url, title, feedbackResource);
 	}
 
-	public static void getModelsAsync(Collection<String> postIds, Consumer<StackOverflowReferenceModel> successConsumer,
-			Consumer<Exception> failConsumer) {
+	public static void getModelsAsync(Collection<WebReferenceWithFeedback> references,
+			Consumer<StackOverflowReferenceModel> successConsumer, Consumer<Exception> failConsumer) {
 		new Thread(() -> {
 			try {
+				List<String> postIds = references.stream().map(WebReferenceWithFeedback::getId)
+						.collect(Collectors.toList());
+
 				String postsAPIAddress = "/2.2/posts/{ids}?site=stackoverflow";
 				JsonArray postItems = requestItems(postsAPIAddress, postIds);
 
@@ -92,12 +99,13 @@ public class StackOverflowReferenceModel extends WebReferenceModel {
 					questionIdToTitle.put(questionId, title);
 				});
 
-				postIds.forEach(postId -> {
-					String url = postIdToLink.get(postId);
-					String questionId = postIdToQuestionId.get(postId);
+				references.forEach(reference -> {
+					String url = postIdToLink.get(reference.getId());
+					String questionId = postIdToQuestionId.get(reference.getId());
 					String title = StringEscapeUtils.unescapeHtml4(questionIdToTitle.get(questionId));
-					
-					successConsumer.accept(new StackOverflowReferenceModel(url, title));
+
+					successConsumer
+							.accept(new StackOverflowReferenceModel(url, title, reference.getFeedbackResource()));
 				});
 
 			} catch (JsonSyntaxException | IOException | StackOverflowErrorResponseException e) {

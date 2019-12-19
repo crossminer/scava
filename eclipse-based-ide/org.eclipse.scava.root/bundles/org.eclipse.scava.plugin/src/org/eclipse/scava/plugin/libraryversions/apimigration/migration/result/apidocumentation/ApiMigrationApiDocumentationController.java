@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.scava.plugin.async.api.ApiAsyncRequestController;
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
 import org.eclipse.scava.plugin.libraryversions.apimigration.migration.result.ApiMigrationResultController;
 import org.eclipse.scava.plugin.libraryversions.apimigration.migration.result.ApiMigrationResultView;
 import org.eclipse.scava.plugin.mvc.controller.Controller;
@@ -21,9 +22,11 @@ import org.eclipse.scava.plugin.ui.errorhandler.ErrorHandler;
 import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerController;
 import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerModel;
 import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceViewerView;
+import org.eclipse.scava.plugin.webreferenceviewer.WebReferenceWithFeedback;
 import org.eclipse.swt.widgets.Display;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.model.Query;
 import io.swagger.client.model.Recommendation;
 import io.swagger.client.model.RecommendationItem;
 
@@ -38,11 +41,11 @@ public class ApiMigrationApiDocumentationController
 		super(parent, model, view);
 
 		recommendationRequestController = new ApiAsyncRequestController<>(this,
-				getModel().requestRecommendationAsync().onSuccess(this::onRecommendationSuccess)
+				getModel().requestRecommendationAsync().onSuccessWithQuery(this::onRecommendationSuccess)
 						.onFail(this::onRecommendationFail).executeWith(Display.getDefault()::asyncExec));
 	}
 
-	protected void onRecommendationSuccess(Recommendation results) {
+	protected void onRecommendationSuccess(Recommendation results, Query query) {
 		WebReferenceViewerModel model = new WebReferenceViewerModel();
 		WebReferenceViewerView view = new WebReferenceViewerView();
 		webReferenceController = new WebReferenceViewerController(this, model, view);
@@ -51,9 +54,10 @@ public class ApiMigrationApiDocumentationController
 		getView().showResults(view);
 
 		List<RecommendationItem> recommendationItems = results.getRecommendationItems();
-		List<String> postIds = recommendationItems.stream().map(RecommendationItem::getApiDocumentationLink)
+		List<WebReferenceWithFeedback> references = recommendationItems.stream().map(
+				item -> new WebReferenceWithFeedback(item.getApiDocumentationLink(), new FeedbackResource(query, item)))
 				.collect(Collectors.toList());
-		webReferenceController.showStackOverflowReferences(postIds);
+		webReferenceController.showStackOverflowReferences(references);
 	}
 
 	protected void onRecommendationFail(ApiException exception) {

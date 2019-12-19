@@ -10,16 +10,19 @@
 
 package org.eclipse.scava.plugin.webreferenceviewer.reference;
 
+import org.eclipse.scava.plugin.feedback.FeedbackResource;
 import org.eclipse.scava.plugin.mvc.model.Model;
 
 public abstract class WebReferenceModel extends Model {
 	private final String url;
 	private final String title;
+	private final FeedbackResource feedbackResource;
 
-	public WebReferenceModel(String url, String title) {
+	public WebReferenceModel(String url, String title, FeedbackResource feedbackResource) {
 		super();
 		this.url = url;
 		this.title = title;
+		this.feedbackResource = feedbackResource;
 	}
 
 	public String getUrl() {
@@ -30,4 +33,7 @@ public abstract class WebReferenceModel extends Model {
 		return title;
 	}
 
+	public FeedbackResource getFeedbackResource() {
+		return feedbackResource;
+	}
 }

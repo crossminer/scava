@@ -21,9 +21,9 @@ public class TextSelectionTester extends PropertyTester {
 		if (NonEmptyProperty.equals(property)) {
 			ITextSelection iTextSelection = (ITextSelection) receiver;
 			boolean nonEmpty = iTextSelection.getLength() != 0;
-			return nonEmpty == (boolean)expectedValue;
+			return nonEmpty == (boolean) expectedValue;
 		}
-		
+
 		return false;
 	}
 

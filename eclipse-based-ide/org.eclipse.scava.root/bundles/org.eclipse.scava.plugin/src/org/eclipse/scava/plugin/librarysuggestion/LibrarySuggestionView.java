@@ -264,7 +264,7 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 
 		suggestedVerticalList = new VerticalList(composite_1, SWT.NONE);
 		suggestedVerticalList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-		
+
 		lblNoLibrariesWere = new Label(composite_1, SWT.NONE);
 		lblNoLibrariesWere.setAlignment(SWT.CENTER);
 		lblNoLibrariesWere.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -293,7 +293,7 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 		btnTryAgain.setText("Try again");
 		suggestionsScrolledComposite.setContent(composite_1);
 		suggestionsScrolledComposite.setMinSize(composite_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		
+
 		return area;
 	}
 
@@ -316,7 +316,7 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 		btnInstall = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
 		btnInstall.setText("Install");
 		btnCancel = createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, true);
-		
+
 		btnCancel.setFocus();
 	}
 
@@ -354,7 +354,7 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 		lblLoadingResults.setVisible(false);
 		lblCouldNotLoad.setVisible(false);
 		btnTryAgain.setVisible(false);
-		
+
 		suggestedVerticalList.add(view.getComposite());
 		ScrolledComposites.updateOnlyVerticalScrollableComposite(suggestionsScrolledComposite);
 
@@ -378,7 +378,7 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 		btnTryAgain.setVisible(true);
 		lblNoLibrariesWere.setVisible(false);
 	}
-	
+
 	public void showNoResults() {
 		lblLoadingResults.setVisible(false);
 		lblCouldNotLoad.setVisible(false);
@@ -401,21 +401,25 @@ public class LibrarySuggestionView extends TitleAreaDialogView<ILibrarySuggestio
 	public void setNumberOfLibsUsedInProject(int number) {
 		lblUsedInYour.setText(setCounterOnString(lblUsedInYour.getText(), number));
 	}
+
 	public void setNumberOfLibsSearchBasedOn(int number) {
 		lblSearchBasedOn.setText(setCounterOnString(lblSearchBasedOn.getText(), number));
 	}
+
 	public void setNumberOfLibsSuggested(int number) {
 		lblSuggestedLibraries.setText(setCounterOnString(lblSuggestedLibraries.getText(), number));
 	}
+
 	public void setNumberOfLibsPickedForInstall(int number) {
 		lblSelectedLibrariesTo.setText(setCounterOnString(lblSelectedLibrariesTo.getText(), number));
 	}
+
 	private String setCounterOnString(String text, int count) {
 		int lastIndexOf = text.lastIndexOf(" (");
-		if( lastIndexOf != -1 ) {
+		if (lastIndexOf != -1) {
 			text = text.substring(0, lastIndexOf);
 		}
-		
+
 		return text + " (" + count + ")";
 	}
 }

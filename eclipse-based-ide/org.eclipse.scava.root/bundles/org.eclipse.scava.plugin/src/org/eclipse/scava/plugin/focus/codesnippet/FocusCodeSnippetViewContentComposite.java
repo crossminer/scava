@@ -10,9 +10,12 @@
 
 package org.eclipse.scava.plugin.focus.codesnippet;
 
+import org.eclipse.scava.plugin.mvc.event.direct.EventManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,6 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class FocusCodeSnippetViewContentComposite extends Composite {
@@ -33,6 +37,7 @@ public class FocusCodeSnippetViewContentComposite extends Composite {
 	private Composite previewComposite;
 	private Composite composite;
 	private Label lblRecommendedCodeSnippets;
+	private Label lblFeedback;
 
 	/**
 	 * Create the composite.
@@ -40,7 +45,8 @@ public class FocusCodeSnippetViewContentComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public FocusCodeSnippetViewContentComposite(Composite parent, int style) {
+	public FocusCodeSnippetViewContentComposite(Composite parent, int style,
+			EventManager<IFocusCodeSnippetRecommendationViewEventListener> eventManager) {
 		super(parent, style);
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -85,18 +91,33 @@ public class FocusCodeSnippetViewContentComposite extends Composite {
 		lblSelectARecomennded.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_DARK_SHADOW));
 
 		previewCodeSnippetComposite = new Composite(previewComposite, SWT.NONE);
-		previewCodeSnippetComposite.setLayout(new GridLayout(1, false));
+		previewCodeSnippetComposite.setLayout(new GridLayout(2, false));
 
 		Label lblPreviewOfThe = new Label(previewCodeSnippetComposite, SWT.NONE);
 		lblPreviewOfThe.setText("Preview of the selected code snippet");
 
+		lblFeedback = new Label(previewCodeSnippetComposite, SWT.NONE);
+		lblFeedback.setImage(
+				ResourceManager.getPluginImage("org.eclipse.scava.plugin", "icons/control/feedbackIcon_32_32.png"));
+		lblFeedback.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblFeedback.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				eventManager.invoke(l -> l.onLeaveFeedback(snippetList.getSelection()[0]));
+			}
+
+		});
+		lblFeedback.setToolTipText("Send feedback");
+		lblFeedback.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+
 		Label label = new Label(previewCodeSnippetComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		label.setText("New Label");
 
 		textCodeSnippetPreview = new Text(previewCodeSnippetComposite,
 				SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
-		textCodeSnippetPreview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		textCodeSnippetPreview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		sashForm.setWeights(new int[] { 1, 1 });
 
 	}

@@ -21,6 +21,7 @@ public class Preferences {
 	public static final String USERMONITORING_ENABLED = "USERMONITORING_ENABLED";
 	public static final String USER_AUTHENTICATION_TOKEN = "USER_AUTHENTICATION_TOKEN";
 	public static final String HELP_MENU_OPEN = "HELP_MENU_OPEN";
+	public static final String PROJECT_INSTALL_BASE_PATH = "PROJECT_INSTALL_BASE_PATH";
 
 	public static final String TIMEOUT_PROJECTSEARCH = "TIMEOUT_PROJECTSEARCH";
 	public static final String TIMEOUT_LIBRARYSEARCH = "TIMEOUT_LIBRARYSEARCH";
@@ -32,5 +33,5 @@ public class Preferences {
 	public static final String TIMEOUT_FOCUS_APICALL = "TIMEOUT_FOCUSAPICALL";
 	public static final String TIMEOUT_FOCUS_CODESNIPPET = "TIMEOUT_FOCUSCODESNIPPET";
 	public static final String TIMEOUT_UPLOAD_METRICS = "TIMEOUT_UPLOAD_METRICS";
-
+	public static final String TIMEOUT_FEEDBACK = "TIMEOUT_FEEDBACK";
 }

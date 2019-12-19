@@ -13,5 +13,5 @@ package org.eclipse.scava.plugin.focus.codesnippet;
 import org.eclipse.scava.plugin.mvc.view.IViewEventListener;
 
 public interface IFocusCodeSnippetRecommendationViewEventListener extends IViewEventListener {
-
+	void onLeaveFeedback(String snippet);
 }
