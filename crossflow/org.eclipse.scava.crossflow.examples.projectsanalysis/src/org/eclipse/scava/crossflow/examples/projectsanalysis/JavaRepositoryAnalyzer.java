@@ -20,12 +20,12 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 
 		long sizeAtCommit = 0;
 		long numberOfFiles = 0; // offset hidden files?
-		int numberOfCommits = 0;
 
-		// count number of files and total file size (the Java-way; unix-way may be faster: find REPO_DIR -type f | wc -l)
+		// count number of files and total file size (the Java-way; unix-way may be
+		// faster: find REPO_DIR -type f | wc -l)
 		try (Stream<Path> walk = Files.walk(Paths.get(repository.getPath()))) {
-			List<String> repoFileList = walk.filter(Files::isRegularFile)
-					.map(x -> x.toString()).collect(Collectors.toList());
+			List<String> repoFileList = walk.filter(Files::isRegularFile).map(x -> x.toString())
+					.collect(Collectors.toList());
 			numberOfFiles = repoFileList.size();
 
 			for (String fileLoc : repoFileList) {
@@ -35,15 +35,13 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 			// convert byte to megabyte
 			long MEGABYTE = 1024L * 1024L;
 			sizeAtCommit = sizeAtCommit / MEGABYTE;
-		}// try Stream<Path>
+		} // try Stream<Path>
 
-		javaRepositoryAnalysisResultInst.setSizeAtCommit( (int)sizeAtCommit );
-		javaRepositoryAnalysisResultInst.setNumberOfFiles( (int)numberOfFiles );
+		javaRepositoryAnalysisResultInst.setSizeAtCommit((int) sizeAtCommit);
+		javaRepositoryAnalysisResultInst.setNumberOfFiles((int) numberOfFiles);
 
-		workflow.log(LogLevel.INFO,
-				"Completed analysis of " + repository.getPath() + " :: numberOfCommits = " + numberOfCommits
-				+ " ; numberOfFiles = " + numberOfFiles + " ; sizeAtCommit = " + sizeAtCommit
-				+ "\n");
+		workflow.log(LogLevel.INFO, "Completed initial Java analysis of " + repository.getPath()
+				+ " :: numberOfFiles = " + numberOfFiles + " ; sizeAtCommit = " + sizeAtCommit + "\n");
 
 		return javaRepositoryAnalysisResultInst;
 
@@ -51,7 +49,8 @@ public class JavaRepositoryAnalyzer extends OpinionatedJavaRepositoryAnalyzerBas
 
 	@Override
 	public boolean acceptInput(Repository input) {
-		// TODO: logic for when to accept tasks for this instance of JavaRepositoryAnalyzer goes here.
+		// TODO: logic for when to accept tasks for this instance of
+		// JavaRepositoryAnalyzer goes here.
 		return true;
 	}// acceptInput
 

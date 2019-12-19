@@ -22,7 +22,7 @@ public class RepositoryCloner extends RepositoryClonerBase {
 		try {
 			// clone repository
 			workflow.log(LogLevel.INFO, "Cloning " + repoUrl + " ...");
-			if ( !pathToRepoClone.exists() ) {
+			if ( pathToRepoClone.list().length == 0 ) {
 				Git git = Git.cloneRepository().setURI(repoUrl).setDirectory(pathToRepoClone).call();
 				workflow.log(LogLevel.INFO, "SUCCESSFULLY cloned " + repoUrl + " !\n");
 	
