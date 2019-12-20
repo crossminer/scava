@@ -94,11 +94,12 @@ public abstract class AbstractDataSet<T> implements IDataSet<T> {
 
 	public synchronized void addElements(List<T> elements) {
 		tester();
-		for (T element : elements) {
-			status = Status.ADDING;
-			subject.onNext(element);
-			count++;
-		}
+		if (elements != null)
+			for (T element : elements) {
+				status = Status.ADDING;
+				subject.onNext(element);
+				count++;
+			}
 
 		// handle incoming elements from the last page when the total is unknown (i.e.
 		// the TraversePages method is called instead of the Traverse one)

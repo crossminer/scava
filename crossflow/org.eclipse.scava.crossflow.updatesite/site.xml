@@ -3,7 +3,7 @@
    <feature url="features/org.eclipse.scava.crossflow.examples.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.examples.feature" version="1.0.0.201912060322">
       <category name="crossflow"/>
    </feature>
-   <feature url="features/org.eclipse.scava.crossflow.restmule.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.restmule.feature" version="1.0.0.201912060322">
+   <feature url="features/org.eclipse.scava.crossflow.restmule.feature_1.0.0.201912201240.jar" id="org.eclipse.scava.crossflow.restmule.feature" version="1.0.0.201912201240">
       <category name="restmule"/>
    </feature>
    <feature url="features/org.eclipse.scava.crossflow.feature_1.0.0.201912060322.jar" id="org.eclipse.scava.crossflow.feature" version="1.0.0.201912060322">

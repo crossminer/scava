@@ -222,6 +222,12 @@ public abstract class AbstractInterceptor {
 								}
 							}
 
+							if(code == HttpStatus.SC_NOT_FOUND) {
+								LOG.error("RESTMULE WARNING: http error code: " + code + ", returning nothing for request: " + request.url());
+								System.err.println("WARNING: http error code: " + code + ", returning nothing for request: " + request.url());
+								return response;							
+							}
+							
 							if (!response.networkResponse().isSuccessful()) {
 								LOG.error("RESTMULE ERROR: http error code: " + code + " RESTMULE CAN ONLY HANDLE: " + HttpStatus.SC_FORBIDDEN + " and " + retryCodes);
 								response.close();
