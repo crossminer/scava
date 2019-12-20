@@ -1,0 +1,1064 @@
+{
+  "Historic Metric Providers": {
+    "Bug Trackers": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.bugs.BugsHistoricMetricProvider",
+        "label": "Number Of Bugs Per Day Per Bug Tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.comments.CommentsHistoricMetricProvider",
+        "label": "Number Of Bug Comments Per Day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.emotions.EmotionsHistoricMetricProvider",
+        "label": "Number of emotions per day per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.migrationissues.BugTrackerMigrationIssueHistoricMetricProvider",
+        "label": "Migration Issues Detection in Bug Trackers per day per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasHistoricMetricProvider",
+        "label": "Migration Issues Detection along with Maracas in Bug Trackers per day per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.newbugs.NewBugsHistoricMetricProvider",
+        "label": "Number of new bugs per day per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.newusers.NewUsersHistoricMetricProvider",
+        "label": "Number of new users per day per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.opentime.OpenTimeHistoricMetricProvider",
+        "label": "Average duration to close an open bug"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.patches.PatchesHistoricMetricProvider",
+        "label": "Number of bug patches per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.RequestsRepliesHistoricMetricProvider",
+        "label": "Number of requests and replies in bug comments per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.requestsreplies.average.RequestsRepliesHistoricMetricProvider",
+        "label": "Average number of requests and replies in bug comments per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.responsetime.ResponseTimeHistoricMetricProvider",
+        "label": "Average response time to open bugs per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.sentiment.SentimentHistoricMetricProvider",
+        "label": "Overall Sentiment of Bugs"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.severity.SeverityHistoricMetricProvider",
+        "label": "Number of bugs per severity level per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.severitybugstatus.SeverityBugStatusHistoricMetricProvider",
+        "label": "Number of each bug status per bug severity level"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
+        "label": "Average response time to bugs per severity level per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.severitysentiment.SeveritySentimentHistoricMetricProvider",
+        "label": "Average sentiment per bugs severity level per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.status.StatusHistoricMetricProvider",
+        "label": "Number of bugs per bug status per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.topics.TopicsHistoricMetricProvider",
+        "label": "Labels of topics clusters in bug comments per bug tracker"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.unansweredbugs.UnansweredThreadsHistoricMetricProvider",
+        "label": "Number of unanswered bugs per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.bugs.users.UsersHistoricMetricProvider",
+        "label": "Number of users, active and inactive per day per bug tracker"
+      }
+    ],
+    "Newsgroups and Forums": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.articles.ArticlesHistoricMetricProvider",
+        "label": "Number of articles per day per news group"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.emotions.EmotionsHistoricMetricProvider",
+        "label": "Number of emotions per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.migrationissues.NewsgroupsMigrationIssueHistoricMetricProvider",
+        "label": "Migration Issues Detection in articles per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.migrationissuesmaracas.NewsgroupMigrationIssueMaracasHistoricMetricProvider",
+        "label": "Migration Issues Detection along with Maracas in articles per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.newthreads.NewThreadsHistoricMetricProvider",
+        "label": "Number of new threads per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.newusers.NewUsersHistoricMetricProvider",
+        "label": "Number of new users per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.RequestsRepliesHistoricMetricProvider",
+        "label": "Number of requests and replies in comments per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.requestsreplies.average.RequestsRepliesAverageHistoricMetricProvider",
+        "label": "Average number of articles, requests and replies per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.responsetime.ResponseTimeHistoricMetricProvider",
+        "label": "Average response time to threads per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.sentiment.SentimentHistoricMetricProvider",
+        "label": "Overall sentiment of newsgroup articles"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.severity.SeverityHistoricMetricProvider",
+        "label": "Number of each severity level in newsgroup threads per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.severityresponsetime.SeverityResponseTimeHistoricMetricProvider",
+        "label": "Sentiment Per Newsgroup Thread Severity Levels Per Day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.severitysentiment.SeveritySentimentHistoricMetricProvider",
+        "label": "Average sentiment in threads per severity level per day"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.threads.ThreadsHistoricMetricProvider",
+        "label": "Number of threads per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.topics.TopicsHistoricMetricProvider",
+        "label": "Labels of newsgroup topics per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.unansweredthreads.UnansweredThreadsHistoricMetricProvider",
+        "label": "Number of unanswered threads per day per newsgroup"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.newsgroups.users.UsersHistoricMetricProvider",
+        "label": "Number of users, active and inactive per day per newsgroup"
+      }
+    ],
+    "Commits and Committers": [
+      {
+        "metricProviderId": "rascal.generic.churn.commitsToday.historic",
+        "label": "Historic commitsToday"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.churnToday.historic",
+        "label": "Historic commitsToday"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.churnPerCommitInTwoWeeks.historic",
+        "label": "Historic churnPerCommitInTwoWeeks"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.filesPerCommit.historic",
+        "label": "Historic numberOfFilesPerCommit"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.churnPerCommit.historic",
+        "label": "Historic churnPerCommit"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.churnPerCommitter.historic",
+        "label": "Historic churnPerCommitter"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.commitsInTwoWeeks.historic",
+        "label": "Historic commitsInTwoWeeks"
+      },
+      {
+        "metricProviderId": "rascal.generic.churn.churnInTwoWeeks.historic",
+        "label": "Historic churnInTwoWeeks"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.commits.messages.topics.CommitsMessagesTopicsHistoricMetricProvider",
+        "label": "Labels of topics in commits messages analyzed in the last 30 days."
+      }
+    ],
+    "Documentation": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.documentation.readability.DocumentationReadabilityHistoricMetricProvider",
+        "label": "Documentation readability Historic Metric"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.documentation.sentiment.DocumentationSentimentHistoricMetricProvider",
+        "label": "Documentation sentiment polarity Historic Metric"
+      }
+    ],
+    "Generic Source Code": [
+      {
+        "metricProviderId": "trans.rascal.clones.cloneLOCPerLanguage.historic",
+        "label": "Historic cloneLOCPerLanguage"
+      },
+      {
+        "metricProviderId": "trans.rascal.readability.fileReadabilityQuartiles.historic",
+        "label": "Historic fileReadabilityQ"
+      },
+      {
+        "metricProviderId": "trans.rascal.comments.commentLinesPerLanguage.historic",
+        "label": "Historic commentLinesPerLanguage"
+      },
+      {
+        "metricProviderId": "trans.rascal.comments.commentedOutCodePerLanguage.historic",
+        "label": "Historic commentedOutCodePerLanguage"
+      },
+      {
+        "metricProviderId": "trans.rascal.comments.headerPercentage.historic",
+        "label": "Historic headerPercentage"
+      },
+      {
+        "metricProviderId": "trans.rascal.LOC.genericLOCoverFiles.historic",
+        "label": "Historic giniLOCOverFiles"
+      },
+      {
+        "metricProviderId": "trans.rascal.LOC.locPerLanguage.historic",
+        "label": "Historic locPerLanguage"
+      }
+    ],
+    "Java Code": [
+      {
+        "metricProviderId": "style.filesWithErrorProneness.historic",
+        "label": "Historic filesWithErrorProneness"
+      },
+      {
+        "metricProviderId": "style.filesWithUnderstandabilityIssues.historic",
+        "label": "Historic filesWithUnderstandabilityIssues"
+      },
+      {
+        "metricProviderId": "style.spreadOfStyleViolations.historic",
+        "label": "Historic spreadOfStyleViolations"
+      },
+      {
+        "metricProviderId": "style.filesWithInefficiencies.historic",
+        "label": "Historic filesWithInefficiencies"
+      },
+      {
+        "metricProviderId": "style.filesWithStyleViolations.historic",
+        "label": "Historic filesWithStyleViolations"
+      },
+      {
+        "metricProviderId": "style.spreadOfUnderstandabilityIssues.historic",
+        "label": "Historic spreadOfUnderstandabilityIssues"
+      },
+      {
+        "metricProviderId": "style.spreadOfInefficiencies.historic",
+        "label": "Historic spreadOfInefficiencies"
+      },
+      {
+        "metricProviderId": "style.spreadOfErrorProneness.historic",
+        "label": "Historic spreadOfErrorProneness"
+      },
+      {
+        "metricProviderId": "rascal.testability.java.TestOverPublicMethods.historic",
+        "label": "Historic percentageOfTestedPublicMethods"
+      },
+      {
+        "metricProviderId": "rascal.testability.java.NumberOfTestMethods.historic",
+        "label": "Historic numberOfTestMethods"
+      },
+      {
+        "metricProviderId": "rascal.testability.java.TestCoverage.historic",
+        "label": "Historic estimateTestCoverage"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.Ca-Java-Quartiles.historic",
+        "label": "Historic Ca_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.CF-Java.historic",
+        "label": "Historic CF_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.DAC-Java-Quartiles.historic",
+        "label": "Historic DAC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.MPC-Java-Quartiles.historic",
+        "label": "Historic MPC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.PF-Java.historic",
+        "label": "Historic PF_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.RFC-Java-Quartiles.historic",
+        "label": "Historic RFC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.I-Java-Quartiles.historic",
+        "label": "Historic I_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.MIF-Java-Quartiles.historic",
+        "label": "Historic MIF_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.MHF-Java.historic",
+        "label": "Historic MHF_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.AHF-Java.historic",
+        "label": "Historic AHF_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.LCOM-Java-Quartiles.historic",
+        "label": "Historic LCOM_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.A-Java.historic",
+        "label": "Historic A_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.DIT-Java-Quartiles.historic",
+        "label": "Historic DIT_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.TCC-Java-Quartiles.historic",
+        "label": "Historic TCC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.LCOM4-Java-Quartiles.historic",
+        "label": "Historic LCOM4_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.SR-Java.historic",
+        "label": "Historic SR_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.AIF-Java-Quartiles.historic",
+        "label": "Historic AIF_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.NOC-Java-Quartiles.historic",
+        "label": "Historic NOC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.RR-Java.historic",
+        "label": "Historic RR_Java"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.LCC-Java-Quartiles.historic",
+        "label": "Historic LCC_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.Ce-Java-Quartiles.historic",
+        "label": "Historic Ce_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.NOM-Java-Quartiles.historic",
+        "label": "Historic NOM_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.NOA-Java-Quartiles.historic",
+        "label": "Historic NOA_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.OO.java.CBO-Java-Quartiles.historic",
+        "label": "Historic CBO_Java_Q"
+      },
+      {
+        "metricProviderId": "trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJavaQuartiles.historic",
+        "label": "Historic countUsesOfAdvancedLanguageFeaturesQ"
+      },
+      {
+        "metricProviderId": "trans.rascal.CC.java.CCHistogramJava.historic",
+        "label": "Historic CCHistogramJava"
+      },
+      {
+        "metricProviderId": "trans.rascal.CC.java.CCOverJavaMethods.historic",
+        "label": "Historic giniCCOverMethodsJava"
+      }
+    ],
+    "OSGi Dependencies": [
+      {
+        "metricProviderId": "trans.rascal.dependency.osgi.numberOSGiBundleDependencies.historic",
+        "label": "Historic numberOSGiBundleDependencies"
+      }
+    ],
+    "Maven Dependencies": [
+      {
+        "metricProviderId": "trans.rascal.dependency.maven.numberMavenDependencies.historic",
+        "label": "Historic numberMavenDependencies"
+      }
+    ],
+    "Docker Dependencies": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.configuration.docker.dependencies",
+        "label": "Historic Docker Dependencies Metric"
+      }
+    ],
+    "Puppet Dependencies": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.configuration.puppet.dependencies",
+        "label": "Historic Puppet Dependencies Metric"
+      }
+    ],
+    "Docker Smells": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.configuration.docker.smells",
+        "label": "Historic Docker Smells Metric"
+      }
+    ],
+    "Puppet Smells": [
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.configuration.puppet.designsmells",
+        "label": "Historic Puppet Design Smells Metric"
+      },
+      {
+        "metricProviderId": "org.eclipse.scava.metricprovider.historic.configuration.puppet.implementationsmells",
+        "label": "Historic Puppet Implementation Smells Metric"
+      }
+    ]
+  },
+  "Transient Metric Providers": {
+    "Bug Trackers" : [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.activeusers.ActiveUsersTransMetricProvider",
+    	"label": "Number of users with new bug comment in the last 15 days"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.bugmetadata.BugMetadataTransMetricProvider",
+    	"label": "Bug header metadata"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.comments.CommentsTransMetricProvider",
+    	"label": "Number of bug comments"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.contentclasses.ContentClassesTransMetricProvider",
+    	"label": "Content classes in bug comments"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.dailyrequestsreplies.DailyRequestsRepliesTransMetricProvider",
+    	"label": "Number of bug comments, requests and replies per day"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.emotions.EmotionsTransMetricProvider",
+    	"label": "Emotions in bug comments"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.hourlyrequestsreplies.HourlyRequestsRepliesTransMetricProvider",
+    	"label": "Number of bug comments, requests and replies per hour"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.migrationissues.BugTrackerMigrationIssueTransMetricProvider",
+    	"label": "Migration Issues Detection in Bug Trackers"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.migrationissuesmaracas.BugTrackerMigrationIssueMaracasTransMetricProvider",
+    	"label": "Migration Issues Detection Maracas in Bug Trackers"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.newbugs.NewBugsTransMetricProvider",
+    	"label": "Number of new bugs"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.patches.PatchesTransMetricProvider",
+    	"label": "Number of patches per bug"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.reference.BugsReferenceTransMetricProvider",
+    	"label": "Bugs References"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.bugs.requestsreplies.BugsRequestsRepliesTransMetricProvider",
+    	"label": "Bug Statistics (answered?, answeredDuration)"
+  	}],
+    "Newsgroups and Forums":  [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.activeusers.ActiveUsersTransMetricProvider",
+    	"label": "Number of users with new comment in the last 15 days"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.articles.ArticlesTransMetricProvider",
+    	"label": "Number of articles per newsgroup"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.contentclasses.ContentClassesTransMetricProvider",
+    	"label": "Content classes in newsgroup articles"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.dailyrequestsreplies.DailyRequestsRepliesTransMetricProvider",
+    	"label": "Number of articles, requests and replies per day"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.emotions.EmotionsTransMetricProvider",
+    	"label": "Emotions in newsgroup articles"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.hourlyrequestsreplies.HourlyRequestsRepliesTransMetricProvider",
+    	"label": "Number of articles, requests and replies per hour"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissues.NewsgroupsMigrationIssueTransMetricProvider",
+    	"label": "Migration Issues Detection in Communication Channels"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.migrationissuesmaracas.NewsgroupsMigrationIssueMaracasTransMetricProvider",
+    	"label": "Migration Issues Detection Maracas in Newsgroups"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.sentiment.SentimentTransMetricProvider",
+    	"label": "Average sentiment in newsgroup threads"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.threads.ThreadsTransMetricProvider",
+    	"label": "Assigns newsgroup articles to threads"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newsgroups.threadsrequestsreplies.ThreadsRequestsRepliesTransMetricProvider",
+    	"label": "Thread statistics (answered?, response time)"
+  	}],
+    "Documentation":  [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.DocumentationTransMetricProvider",
+    	"label": "Documentation processing"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.classification.DocumentationClassificationTransMetricProvider",
+    	"label": "Documentation classification"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.detectingcode.DocumentationDetectingCodeTransMetricProvider",
+    	"label": "Documentation detection of code"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.plaintext.DocumentationPlainTextTransMetricProvider",
+    	"label": "Documentation plain text processor"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.readability.DocumentationReadabilityTransMetricProvider",
+    	"label": "Documentation calculation of readability"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.documentation.sentiment.DocumentationSentimentTransMetricProvider",
+    	"label": "Documentation Sentiment Analysis"
+  	}],
+    "Natural Language Processing" : [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.detectingcode.DetectingCodeTransMetricProvider",
+    	"label": "Distinguishes between code and natural language"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.emotionclassification.EmotionClassificationTransMetricProvider",
+    	"label": "Emotion Classifier"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.plaintextprocessing.PlainTextProcessingTransMetricProvider",
+    	"label": "Plain Text Processing"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.requestreplyclassification.RequestReplyClassificationTransMetricProvider",
+    	"label": "Request/Reply Classification"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.sentimentclassification.SentimentClassificationTransMetricProvider",
+    	"label": "Sentiment Classification"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.severityclassification.SeverityClassificationTransMetricProvider",
+    	"label": "Severity Classification"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.topics.TopicsTransMetricProvider",
+    	"label": "Topic Clustering"
+  	}],
+    "Commits and Committers": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.commits.message.plaintext.CommitsMessagePlainTextTransMetricProvider",
+    	"label": "Commits message plain text"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.commits.message.references.CommitsMessageReferencesTransMetricProvider",
+    	"label": "Commits Messages References"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.commits.message.topics.CommitsMessageTopicsTransMetricProvider",
+    	"label": "Commits Messages Topic Clustering"
+  	},{
+    	"metricProviderId": "rascal.generic.churn.commitsToday",
+    	"label": "Number of commits today"
+  	},{
+    	"metricProviderId": "rascal.generic.churn.churnToday",
+    	"label": "Churn of today"
+  	},{
+    	"metricProviderId": "rascal.generic.churn.churnPerCommitInTwoWeeks",
+    	"label": "Churn per commit in two weeks"
+  	},{
+    	"metricProviderId": "rascal.generic.churn.churnActivity",
+    	"label": "Churn over the last two weeks"
+  	},{
+    	"metricProviderId": "rascal.generic.churn.commitActivity",
+    	"label": "Commits in last two weeks"
+  	}],
+    "Generic Source Code": [{
+    	"metricProviderId": "trans.rascal.readability.fileReadability",
+    	"label": "File readability"
+  	},{
+    	"metricProviderId": "trans.rascal.readability.fileReadabilityQuartiles",
+    	"label": "File readability quartiles"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.headerCounts",
+    	"label": "Number of appearances of estimated unique headers"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.commentedOutCode",
+    	"label": "Lines of commented out code per file"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.commentLOC",
+    	"label": "Number of lines containing comments per file"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.commentLinesPerLanguage",
+    	"label": "Number of lines containing comments per language (excluding headers)"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.commentedOutCodePerLanguage",
+    	"label": "Lines of commented out code per language"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.headerLOC",
+    	"label": "Header size per file"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.matchingLicenses",
+    	"label": "Used licenses (from selected list of known licenses)"
+  	},{
+    	"metricProviderId": "trans.rascal.comments.headerPercentage",
+    	"label": "Percentage of files with headers."
+  	},{
+    	"metricProviderId": "trans.rascal.LOC.genericLOC",
+    	"label": "Language independent physical lines of code"
+  	},{
+    	"metricProviderId": "trans.rascal.LOC.genericLOCoverFiles",
+    	"label": "Spread of code over files"
+  	},{
+    	"metricProviderId": "trans.rascal.LOC.locPerLanguage",
+    	"label": "Physical lines of code per language"
+  	},{
+    	"metricProviderId": "trans.rascal.clones.cloneLOCPerLanguage",
+    	"label": "Lines of code in Type I clones larger than 6 lines, per language"
+  	}],
+    "Java Code": [{
+    	"metricProviderId": "style.filesWithErrorProneness",
+    	"label": "Files with style violations which make the code error prone. This is basic metric which can not be easily compared between projects."
+  	},{
+    	"metricProviderId": "style.understandability",
+    	"label": "Inefficient code"
+  	},{
+    	"metricProviderId": "style.inefficiencies",
+    	"label": "Inefficient code"
+  	},{
+    	"metricProviderId": "style.filesWithUnderstandabilityIssues",
+    	"label": "Files with style violations which make the code harder to understand"
+  	},{
+    	"metricProviderId": "style.errorProneness",
+    	"label": "Error proneness"
+  	},{
+    	"metricProviderId": "style.spreadOfStyleViolations",
+    	"label": "Spread of style violations over files"
+  	},{
+    	"metricProviderId": "style.filesWithInefficiencies",
+    	"label": "Files with style violations which indicate inefficiencies. This is a basic metric which can not be easily compared between projects"
+  	},{
+    	"metricProviderId": "style.filesWithStyleViolations",
+    	"label": "Counts the number of files with any kind of style violation. This metric can not be easily compared between projects"
+  	},{
+    	"metricProviderId": "style.spreadOfUnderstandabilityIssues",
+    	"label": "Spread of understandability issues over files"
+  	},{
+    	"metricProviderId": "style.spreadOfInefficiencies",
+    	"label": "Spread of inefficiencies over files"
+  	},{
+    	"metricProviderId": "style.styleViolations",
+    	"label": "All style violations"
+  	},{
+    	"metricProviderId": "style.spreadOfErrorProneness",
+    	"label": "Spread of error proneness style violations over files"
+  	},{
+    	"metricProviderId": "rascal.testability.java.TestOverPublicMethods",
+    	"label": "Number of JUnit tests averaged over the total number of public methods"
+  	},{
+    	"metricProviderId": "rascal.testability.java.NumberOfTestMethods",
+    	"label": "Number of JUnit test methods. This is an intermediate absolute metric used to compute others. The bare metric is hard to compare between projects"
+  	},{
+    	"metricProviderId": "rascal.testability.java.TestCoverage",
+    	"label": "Static Estimation of test coverage"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.MIF-Java",
+    	"label": "Method inheritance factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.Ca-Java-Quartiles",
+    	"label": "Afferent coupling quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.DAC-Java",
+    	"label": "Data abstraction coupling (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.CF-Java",
+    	"label": "Coupling factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.I-Java",
+    	"label": "Instability (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.DAC-Java-Quartiles",
+    	"label": "Data abstraction coupling quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.MPC-Java-Quartiles",
+    	"label": "Message passing coupling quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOM-Java",
+    	"label": "Number of methods (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCOM-Java",
+    	"label": "Lack of cohesion in methods (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.CBO-Java",
+    	"label": "Coupling between objects (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.Ce-Java",
+    	"label": "Efferent coupling (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.PF-Java",
+    	"label": "Polymorphism factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.RFC-Java-Quartiles",
+    	"label": "Response for class quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.I-Java-Quartiles",
+    	"label": "Instability quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.RFC-Java",
+    	"label": "Response for class (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCC-Java",
+    	"label": "Loose class cohesion (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.MIF-Java-Quartiles",
+    	"label": "Method inheritance factor quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.DIT-Java",
+    	"label": "Depth of inheritance tree (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.MHF-Java",
+    	"label": "Method hiding factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.TCC-Java",
+    	"label": "Tight class cohesion (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.AHF-Java",
+    	"label": "Attribute hiding factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCOM-Java-Quartiles",
+    	"label": "Lack of cohesion in methods quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.Ca-Java",
+    	"label": "Afferent coupling (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.A-Java",
+    	"label": "Abstractness (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.DIT-Java-Quartiles",
+    	"label": "Depth of inheritance tree quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.TCC-Java-Quartiles",
+    	"label": "Tight class cohesion quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCOM4-Java-Quartiles",
+    	"label": "Lack of cohesion in methods 4 quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCOM4-Java",
+    	"label": "Lack of cohesion in methods 4 (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.SR-Java",
+    	"label": "Specialization ratio (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.AIF-Java-Quartiles",
+    	"label": "Attribute inheritance factor quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOC-Java-Quartiles",
+    	"label": "Loose class cohesion (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOC-Java",
+    	"label": "Number of children (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.AIF-Java",
+    	"label": "Attribute inheritance factor (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.RR-Java",
+    	"label": "Reuse ratio (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.LCC-Java-Quartiles",
+    	"label": "Loose class cohesion quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOA-Java",
+    	"label": "Number of attributes (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.Ce-Java-Quartiles",
+    	"label": "Efferent coupling quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOM-Java-Quartiles",
+    	"label": "Number of methods quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.NOA-Java-Quartiles",
+    	"label": "Number of attributes quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.CBO-Java-Quartiles",
+    	"label": "Coupling between objects quartiles (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.OO.java.MPC-Java",
+    	"label": "Message passing coupling (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.LOC.java.LOCoverJavaClass",
+    	"label": "Distribution of physical lines of code over Java classes, interfaces and enums"
+  	},{
+    	"metricProviderId": "trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJavaQuartiles",
+    	"label": "Usage of advanced Java features quartiles"
+  	},{
+    	"metricProviderId": "trans.rascal.advancedfeatures.java.AdvancedLanguageFeaturesJava",
+    	"label": "Usage of advanced Java features"
+  	},{
+    	"metricProviderId": "trans.rascal.CC.java.CCHistogramJava",
+    	"label": "Number of Java methods per CC risk factor"
+  	},{
+    	"metricProviderId": "trans.rascal.CC.java.CCOverJavaMethods",
+    	"label": "CC over Java methods"
+  	},{
+    	"metricProviderId": "trans.rascal.CC.java.CCJava",
+    	"label": "McCabe's Cyclomatic Complexity Metric (Java)"
+  	},{
+    	"metricProviderId": "trans.rascal.CC.java.WMCJava",
+    	"label": "Weighted Method Count (Java)"
+  	}],
+    "OSGi Dependencies": [{
+    	"metricProviderId": "trans.rascal.dependency.numberRequiredPackagesInSourceCode",
+    	"label": "Number required packages in source code"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.allOSGiPackageDependencies",
+    	"label": "All OSGi package dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.unversionedOSGiRequiredBundles",
+    	"label": "Unversioned OSGi required bundles"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.unusedOSGiImportedPackages",
+    	"label": "Unused OSGi imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.numberOSGiSplitImportedPackages",
+    	"label": " Number OSGi split imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.ratioUnusedOSGiImportedPackages",
+    	"label": "Ratio of unused OSGi imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.allOSGiBundleDependencies",
+    	"label": "All OSGi bundle dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.unversionedOSGiExportedPackages",
+    	"label": "Unversioned OSGi exported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.numberOSGiSplitExportedPackages",
+    	"label": "Number OSGi split exported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.allOSGiDynamicImportedPackages",
+    	"label": "All OSGi dynamically imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.numberOSGiBundleDependencies",
+    	"label": "Number all OSGi bundle dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.ratioUnversionedOSGiImportedPackages",
+    	"label": "Ratio unversioned OSGi imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.unversionedOSGiImportedPackages",
+    	"label": "Unversioned OSGi imported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.numberOSGiPackageDependencies",
+    	"label": "Number of all OSGi package dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.ratioUnversionedOSGiRequiredBundles",
+    	"label": "Ratio unversioned OSGi required bundles"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.usedOSGiUnimportedPackages",
+    	"label": "Used OSGi unimported packages"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.osgi.ratioUnversionedOSGiExportedPackages",
+    	"label": "Ratio of unversioned OSGi exported packages"
+  	}],
+    "Maven Dependencies":  [{
+    	"metricProviderId": "trans.rascal.dependency.numberRequiredPackagesInSourceCode",
+    	"label": "Number required packages in source code"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.ratioOptionalMavenDependencies",
+    	"label": "Ratio optional Maven dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.numberUniqueMavenDependencies",
+    	"label": "Number unique Maven dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.allOptionalMavenDependencies",
+    	"label": "All optional Maven dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.isUsingTycho",
+    	"label": "Is using Tycho"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.numberMavenDependencies",
+    	"label": "Number Maven dependencies"
+  	},{
+    	"metricProviderId": "trans.rascal.dependency.maven.allMavenDependencies",
+    	"label": "All Maven dependencies"
+  	}],
+      "Docker Dependencies": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.docker.dependencies.DockerDependenciesTransMetricProvider",
+    	"label": "Dependencies declared in Dockerfiles"
+  	}],
+      "Puppet Dependencies": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.puppet.dependencies.PuppetDependenciesTransMetricProvider",
+    	"label": "Transient Puppet Dependencies Metric"
+  	}],
+    "Docker Smells": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.docker.smells.DockerTransMetricProvider",
+    	"label": "Smells detected in Dockerfiles"
+  	}],
+    "Puppet Smells": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.puppet.designsmells.PuppetDesignTransMetricProvider",
+    	"label": "Transient Puppet Design Smells Metric"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationsmells.PuppetImplementationTransMetricProvider",
+    	"label": "Transient Puppet Implementation Smells Metric"
+  	}],
+    "Docker Antipatterns": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.docker.antipatterns.DockerAntipatternTransMetricProvider",
+    	"label": "Transient Docker Antipatterns"
+  	}],
+    "Puppet Antipatterns": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.puppet.designantipatterns.PuppetDesignAntipatternTransMetricProvider",
+    	"label": "Transient Puppet Design Antipatterns"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.puppet.implementationantipatterns.PuppetImplementationAntipatternTransMetricProvider",
+    	"label": "Transient Puppet Implementation Antipatterns"
+  	}],
+    "Projects Relations": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.configuration.projects.relations.ProjectsRelationsTransMetricProvider",
+    	"label": "Projects Relations Metric"
+  	}],
+    "New Versions": [{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.docker.NewVersionDockerTransMetricProvider",
+    	"label": "New Version Docker"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider",
+    	"label": "New Version Puppet"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider",
+    	"label": "New Versions of Osgi Bundles"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider",
+    	"label": "New Version Maven"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider",
+    	"label": "index preparation"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.bugs.BugsIndexingMetricProvider",
+    	"label": "bug tracking system indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.commits.CommitsIndexingMetricProvider",
+    	"label": "Commits indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.communicationchannels.CommunicationChannelsIndexingMetricProvider",
+    	"label": "communication channels indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.documentation.DocumentationIndexingMetricProvider",
+    	"label": "Documentation indexer"
+  	}
+	],
+    "Indexing":  [
+   	{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.docker.NewVersionDockerTransMetricProvider",
+    	"label": "New Version Docker"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.puppet.NewVersionPuppetTransMetricProvider",
+    	"label": "New Version Puppet"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.osgi.NewVersionOsgiTransMetricProvider",
+    	"label": "New versions of OSGi dependencies"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.newversion.maven.NewVersionMavenTransMetricProvider",
+    	"label": "New Version Maven"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.trans.indexing.preparation.IndexPreparationTransMetricProvider",
+    	"label": "index preparation"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.bugs.BugsIndexingMetricProvider",
+    	"label": "bug tracking system indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.commits.CommitsIndexingMetricProvider",
+    	"label": "Commits indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.communicationchannels.CommunicationChannelsIndexingMetricProvider",
+    	"label": "communication channels indexer"
+  	},{
+    	"metricProviderId": "org.eclipse.scava.metricprovider.indexing.documentation.DocumentationIndexingMetricProvider",
+    	"label": "Documentation indexer"
+  	}
+  	],
+    "API":  [
+   	{
+    	"metricProviderId": "trans.rascal.api.changedMethods",
+    	"label": "Changed methods"
+  	}
+  	]
+  },
+  "Factoids": {
+    "Bug Trackers": [
+    	{
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.channelusage.BugsChannelUsageFactoid",
+    	"label": "Bug Tracker Usage data"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.emotion.BugsChannelEmotionFactoid",
+    	"label": "Bug Tracker Emotions"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.hourly.BugsChannelHourlyFactoid",
+    	"label": "Bug Tracker hourly data"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.responsetime.BugsChannelResponseTimeFactoid",
+    	"label": "Bug Tracker Response Time"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.sentiment.BugsChannelSentimentFactoid",
+    	"label": "Bug Tracker Sentiment"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.severity.BugsChannelSeverityFactoid",
+    	"label": "Bug Tracker Severity"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.size.BugsChannelSizeFactoid",
+    	"label": "Bug Tracker Size"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.status.BugsChannelStatusFactoid",
+    	"label": "Bug Tracker Status"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.threadlength.BugsChannelThreadLengthFactoid",
+    	"label": "Bug Tracker Thread Length"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.users.BugsChannelUsersFactoid",
+    	"label": "Bug Tracker Users"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.bugs.weekly.BugsChannelWeeklyFactoid",
+    	"label": "Bug Tracker Weekly"
+  	}
+  	],
+    "Newsgroups and Forums":[
+   	{
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.channelusage.NewsgroupsChannelUsageFactoid",
+    	"label": "Newsgroup Channel Usage"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.emotion.NewsgroupsChannelEmotionFactoid",
+    	"label": "Newsgroup Channel Emotion"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.hourly.NewsgroupsChannelHourlyFactoid",
+    	"label": "Newsgroup Channel Hourly"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.responsetime.NewsgroupsChannelResponseTimeFactoid",
+    	"label": "Newsgroup Channel Response Time"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.sentiment.NewsgroupsChannelSentimentFactoid",
+    	"label": "Newsgroup Channel Sentiment"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.severity.NewsgroupsChannelSeverityFactoid",
+    	"label": "Newsgroup Channel Severity"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.size.NewsgroupsChannelSizeFactoid",
+    	"label": "Newsgroup Channel Size"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.status.NewsgroupsChannelStatusFactoid",
+    	"label": "Newsgroup Channel Status"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.threadlength.NewsgroupsChannelThreadLengthFactoid",
+    	"label": "Newsgroup Channel Thread Length"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.users.NewsgroupsChannelUsersFactoid",
+    	"label": "Newsgroup Channel Users"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.newsgroups.weekly.NewsgroupsChannelWeeklyFactoid",
+    	"label": "Newsgroup Channel Weekly"
+  	}
+ 	 
+  	],
+	"Documentation": [
+   	{
+    	"metricProviderId": "org.eclipse.scava.factoid.documentation.entries.DocumentationEntriesFactoid",
+    	"label": "Documentation Entries"
+  	}, {
+    	"metricProviderId": "org.eclipse.scava.factoid.documentation.sentiment.DocumentationSentimentFactoid",
+    	"label": "Documentation Sentiment"
+  	}
+  ]
+  }
+}
